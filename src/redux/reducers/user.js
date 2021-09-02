@@ -3,7 +3,7 @@ import {
   ACTION_GET_TOKEN_SUCESS,
 } from '../actions/actionTypes'
 
-INITIAL_STATE = {
+const INITIAL_STATE = {
   token: '', // Token inicia vazio
   errorToken: '',
 }
