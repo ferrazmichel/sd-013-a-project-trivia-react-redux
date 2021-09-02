@@ -12,6 +12,7 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.receiveToken = this.receiveToken.bind(this);
   }
 
   onSubmitForm() {
@@ -20,7 +21,14 @@ class Login extends React.Component {
     // de actions.js, que apelidamos de EmailKey
     const { email } = this.state;
     emailKey(email);
+    this.receiveToken();
     history.push('/trivia');
+  }
+
+  async receiveToken() {
+    const Api = await fetch('https://opentdb.com/api_token.php?command=request');
+    const json = await Api.json();
+    localStorage.setItem('token', JSON.stringify(json.token));
   }
 
   handleChange({ target }) {
@@ -52,7 +60,7 @@ class Login extends React.Component {
           />
         </div>
         <button
-          type="submit"
+          type="button"
           disabled={ !(Boolean(email) && Boolean(nameUser)) }
           onClick={ this.onSubmitForm }
           data-testid="btn-play"
