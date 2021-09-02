@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,15 +33,15 @@ class Login extends React.Component {
   render() {
     const { name, email } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit }>
+      <form onSubmit={this.handleSubmit}>
         <label htmlFor="name">
           Name:
           <input
             data-testid="input-player-name"
             type="text"
             id="name"
-            value={ name }
-            onChange={ this.handleChange }
+            value={name}
+            onChange={this.handleChange}
           />
         </label>
         <label htmlFor="email">
@@ -49,17 +50,25 @@ class Login extends React.Component {
             data-testid="input-gravatar-email"
             type="text"
             id="email"
-            value={ email }
-            onChange={ this.handleChange }
+            value={email}
+            onChange={this.handleChange}
           />
         </label>
         <button
           data-testid="btn-play"
           type="submit"
-          disabled={ this.checkInputs() }
+          disabled={this.checkInputs()}
         >
           Jogar
         </button>
+        <Link to="/configs">
+          <button
+            data-testid="btn-settings"
+            type="submit"
+          >
+            Configurações
+          </button>
+        </Link>
       </form>
 
     );
