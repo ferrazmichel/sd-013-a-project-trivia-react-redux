@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUser, fetchTrivia } from '../redux/actions';
+import { Link } from 'react-router-dom';
 
 //
 
@@ -84,6 +85,14 @@ class Login extends Component {
           >
             JOGAR!
           </button>
+          <Link to="/settings">
+            <button
+              type="submit"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
         </form>
       </div>
     );
