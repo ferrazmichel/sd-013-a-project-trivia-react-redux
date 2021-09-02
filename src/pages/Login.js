@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { saveUser, fetchTrivia } from '../redux/actions';
 
 function validateEmail(email) {
   const re = /\S+@\S+\.\S+/;
@@ -8,14 +11,20 @@ function validateEmail(email) {
 class Login extends Component {
   constructor() {
     super();
-
-    this.enableButton = this.enableButton.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.state = {
       email: '',
       name: '',
       isDisabled: true,
     };
+    this.enableButton = this.enableButton.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillUnmount() {
+    const { token, history } = this.props;
+    localStorage.setItem('token', JSON.stringify({ token }));
+    history.push('/game');
   }
 
   handleChange({ target }) {
@@ -32,6 +41,14 @@ class Login extends Component {
     } else {
       this.setState({ isDisabled: true });
     }
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const { email, name } = this.state;
+    const { setUser, fetchToken } = this.props;
+    setUser(email, name);
+    fetchToken();
   }
 
   render() {
@@ -61,6 +78,7 @@ class Login extends Component {
             data-testid="btn-play"
             type="submit"
             disabled={ isDisabled }
+            onClick={ this.handleSubmit }
           >
             JOGAR!
           </button>
@@ -70,4 +88,20 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (email, name) => dispatch(saveUser(email, name)),
+  fetchToken: () => dispatch(fetchTrivia()),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+});
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  fetchToken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
