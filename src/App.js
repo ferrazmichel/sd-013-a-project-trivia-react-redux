@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import './App.css';
 import Config from './pages/Config';
 import Login from './pages/Login';
+import TelaDeJogo from './pages/TelaDeJogo';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       </header> */}
       <Route exact path="/" component={ Login } />
       <Route exact path="/config" component={ Config } />
+      <Route exact path="/tela-de-jogo" component={ TelaDeJogo } />
     </div>
   );
 }

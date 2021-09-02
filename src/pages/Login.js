@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor() {
@@ -36,6 +37,12 @@ class Login extends Component {
     history.push('/config');
   }
 
+  async saveToLocalStorage() {
+    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+    const result = await response.json();
+    localStorage.setItem('token', JSON.stringify(result.token));
+  }
+
   render() {
     const { btnDisable } = this.state;
     return (
@@ -61,21 +68,22 @@ class Login extends Component {
           />
         </label>
         <button
-          disabled={ btnDisable }
-          data-testid="btn-play"
-          type="button"
-        >
-          Jogar
-        </button>
-
-        <button
           data-testid="btn-settings"
           type="button"
           onClick={ this.goToConfig }
         >
           Configurações
         </button>
-
+        <Link to="/tela-de-jogo">
+          <button
+            disabled={ btnDisable }
+            data-testid="btn-play"
+            type="button"
+            onClick={ this.saveToLocalStorage }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
