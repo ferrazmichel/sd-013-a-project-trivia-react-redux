@@ -1,4 +1,6 @@
 import React from 'react';
+import ButtonPlayGame from '../components/ButtonPlayGame';
+import InputLogin from '../components/InputLogin';
 
 class Login extends React.Component {
   constructor(props) {
@@ -36,33 +38,21 @@ class Login extends React.Component {
     return (
       <div>
         <form action="">
-          <label htmlFor="input-player-name">
-            Nome
-            <input
-              type="text"
-              data-testid="input-player-name"
-              id="input-player-name"
-              onChange={ this.handleChange }
-              value={ inputName }
-            />
-          </label>
-          <label htmlFor="input-gravatar-email">
-            E-mail
-            <input
-              type="text"
-              data-testid="input-gravatar-email"
-              id="input-gravatar-email"
-              onChange={ this.handleChange }
-              value={ inputEmail }
-            />
-          </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ btnDisabledStatus }
-          >
-            Jogar
-          </button>
+          <InputLogin
+            labelValue="Nome"
+            dataTestId="input-player-name"
+            onChange={ this.handleChange }
+            value={ inputName }
+          />
+          <InputLogin
+            labelValue="E-mail"
+            dataTestId="input-gravatar-email"
+            onChange={ this.handleChange }
+            value={ inputEmail }
+          />
+          <ButtonPlayGame
+            isDisabled={ btnDisabledStatus }
+          />
         </form>
       </div>
     );
