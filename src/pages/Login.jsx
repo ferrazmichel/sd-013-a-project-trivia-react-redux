@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import fetchToken from '../redux/fetchs/fetchToken';
 import { actionSaveDataUser } from '../redux/actions/index';
-import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class Login extends React.Component {
   }
 }
 
-const mapDipatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   // A chave getToken e saveUser são as props do componente que vão ser invocados
   // E eu passo uma callback que vai ser o dispatch que vou realizar na action, no caso será a fetchToken
   // O data/payload vai conter o NOVO valor que vai ser passado e alterado na state da store
