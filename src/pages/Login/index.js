@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchData } from '../../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class Login extends Component {
 
   render() {
     const { userEmail, userName, disabled } = this.state;
+    const { fetch } = this.props;
     return (
       <fieldset>
         <label htmlFor="name">
@@ -55,11 +58,12 @@ class Login extends Component {
             value={ userEmail }
             onChange={ this.handleChange }
           />
-          <Link to="/">
+          <Link to="/game">
             <button
               data-testid="btn-play"
               type="button"
               disabled={ disabled }
+              onClick={ () => fetch() }
             >
               Jogar
             </button>
@@ -70,4 +74,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetch: () => dispatch(fetchData()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
