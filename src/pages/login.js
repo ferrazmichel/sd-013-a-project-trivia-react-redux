@@ -14,6 +14,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.receiveToken = this.receiveToken.bind(this);
+    this.saveNameEmail = this.saveNameEmail.bind(this);
   }
 
   onSubmitForm() {
@@ -23,7 +24,21 @@ class Login extends React.Component {
     const { email } = this.state;
     emailKey(email);
     this.receiveToken();
+    this.saveNameEmail();
     history.push('/trivia');
+  }
+
+  saveNameEmail() {
+    const { email, nameUser } = this.state;
+    const state = {
+      player: {
+        name: nameUser,
+        assertions: '',
+        score: '',
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async receiveToken() {
