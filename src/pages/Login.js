@@ -23,9 +23,10 @@ class Login extends React.Component {
 
   handleClick() {
     const { login, email } = this.state;
-    const { loginSet, fetchQuest } = this.props;
+    const { loginSet, fetchQuest, history } = this.props;
     loginSet(login, email);
     fetchQuest();
+    history.push('/game');
   }
 
   render() {
@@ -84,6 +85,7 @@ const mapDispatchToState = (dispatch) => ({
 Login.propTypes = {
   fetchQuest: PropTypes.func.isRequired,
   loginSet: PropTypes.func.isRequired,
+  history: PropTypes.objectOf({}).isRequired,
 };
 
 export default connect(null, mapDispatchToState)(Login);
