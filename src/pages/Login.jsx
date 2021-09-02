@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import Input from '../components/Input';
+import { addUser } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
   constructor() {
     super();
-
     this.state = {
       name: '',
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmitForm = this.onSubmitForm.bind(this);
+  }
+
+  onSubmitForm(event) {
+    event.preventDefault();
+
+    const { name, email } = this.state;
+    const { handleSubmit } = this.props;
+
+    const data = {
+      name,
+      email,
+    };
+    handleSubmit(data);
   }
 
   handleChange({ target: { name, value } }) {
@@ -34,7 +50,7 @@ class Login extends Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header>
-        <form>
+        <form onSubmit={ this.onSubmitForm }>
           <Input
             label="Nome"
             type="text"
@@ -62,4 +78,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  handleSubmit: (data) => dispatch(addUser(data)),
+});
+
+Login.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
