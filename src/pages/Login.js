@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUser, fetchTrivia } from '../redux/actions';
 
+//
+
 function validateEmail(email) {
   const re = /\S+@\S+\.\S+/;
   return re.test(email);
