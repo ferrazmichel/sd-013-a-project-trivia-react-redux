@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 // import logo from './trivia.png';
 import './App.css';
 import Login from './pages/Login';
-import Feedback from './pages/Feedback';
+import Feedbacks from './pages/Feedbacks';
 
 class App extends React.Component {
   render() {
