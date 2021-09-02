@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { fetchAvatar } from '../redux/actions';
+import { fetchAvatar, fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -17,16 +17,19 @@ class Login extends React.Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
-  onSubmitForm(event) {
+  async onSubmitForm(event) {
     event.preventDefault();
-    const { history, dispatchfetchAvatar } = this.props;
+    const { history, dispatchfetchAvatar, dispatchfetchToken } = this.props;
     const { email, name } = this.state;
     const convertedEmail = md5(email).toString();
     // console.log(convertedEmail);
     // Disparamos a nossa action através da função importada
     // de actions.js, que apelidamos de dispatchSetValue
     dispatchfetchAvatar(convertedEmail, name);
-    history.push('/');
+    await dispatchfetchToken();
+    const { token } = this.props;
+    localStorage.setItem('token', token);
+    history.push('/jogo');
   }
 
   handleChange({ target }) {
@@ -85,13 +88,20 @@ class Login extends React.Component {
 
 Login.propTypes = {
   dispatchfetchAvatar: PropTypes.func.isRequired,
+  dispatchfetchToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchfetchAvatar: (email, name) => dispatch(fetchAvatar(email, name)),
+  dispatchfetchToken: () => dispatch(fetchToken()),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  token: state.game.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
