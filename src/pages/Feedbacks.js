@@ -1,19 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-class Feedbacks extends React.Component {
+class Feedbacks extends Component {
   render() {
     return (
       <div>
-        <header data-testid="header-score">
-          <label htmlFor="header-player-name">
-            Nome:
-            <input
-              data-testid="header-player-name"
-              id=""
-            />
-          </label>
-          <img data-testid="header-profile-picture" alt="imagem do avatar" />
-          <h3>Placar:</h3>
+        <header>
+          <img data-testid="header-profile-picture" src=" " alt="imagem do avatar" />
+          <h2 data-testid="header-player-name">Nome:</h2>
+          <h3 data-testid="header-score">Valor Atual:</h3>
         </header>
       </div>
     );
