@@ -15,7 +15,7 @@ export default function App() {
         </p>
       </header> */}
       <Route exact path="/" component={ Login } />
-      <Route exact path="/telaDeJogo" component={ TelaDeJogo } />
+      <Route exact path="/tela-de-jogo" component={ TelaDeJogo } />
     </div>
   );
 }
