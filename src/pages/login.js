@@ -34,7 +34,7 @@ class Login extends React.Component {
       player: {
         name: nameUser,
         assertions: '',
-        score: '',
+        score: 0,
         gravatarEmail: email,
       },
     };
