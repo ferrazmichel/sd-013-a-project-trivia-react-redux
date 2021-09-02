@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
@@ -27,8 +28,14 @@ const mapStateToProps = (state) => (
   {
     userName: state.userReducer.name,
     score: state.gameReducer.score,
-    gravatar: state.gameReducer.gravatar,
+    gravatar: state.userReducer.gravatar,
   }
 );
 
 export default connect(mapStateToProps)(Header);
+
+Header.propTypes = {
+  userName: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
+  gravatar: PropTypes.string.isRequired,
+};
