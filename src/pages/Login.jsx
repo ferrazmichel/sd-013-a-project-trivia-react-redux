@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Input from '../components/Input';
+import { fetchToken } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -11,14 +13,27 @@ class Login extends Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.playSubmit = this.playSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const { getToken } = this.props;
+    getToken();
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
   }
 
+  playSubmit() {
+    const { valueToken, history } = this.props;
+    localStorage.setItem('userToken', JSON.stringify(valueToken.token));
+    history.push('/gameScreen');
+  }
+
   render() {
     const { name, email } = this.state;
+
     const six = 6;
     const validateEmail = () => {
       const isValid = email.match(/^([\w.%+-]+)@([\w-]+.)+([\w]{2,})$/i);
@@ -53,7 +68,7 @@ class Login extends Component {
             dataTestid="input-gravatar-email"
             id="user-email"
           />
-          <button disabled={ !enable } type="submit" data-testid="btn-play">
+          <button disabled={ !enable } type="button" data-testid="btn-play" onClick={ this.playSubmit }>
             Jogar
           </button>
         </form>
@@ -62,4 +77,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(fetchToken()),
+});
+
+const mapStateToProps = (state) => ({
+  valueToken: state.users.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
