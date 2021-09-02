@@ -7,7 +7,6 @@ import store from './store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={ store }>
