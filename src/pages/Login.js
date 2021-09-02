@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { fetchAvatar, fetchToken } from '../redux/actions';
@@ -39,11 +40,7 @@ class Login extends React.Component {
 
   render() {
     const { email, name } = this.state;
-    // const VALIDATION_LENGTH = 1;
-    // const validateEmail = email.length >= VALIDATION_LENGTH;
-    // const validateName = name.length >= VALIDATION_LENGTH;
     const isDisabled = !email || !name;
-
     return (
       <div>
         <form>
@@ -79,8 +76,13 @@ class Login extends React.Component {
           >
             Jogar
           </button>
+          <Link
+            to="/configuracoes"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </Link>
         </form>
-
       </div>
     );
   }
