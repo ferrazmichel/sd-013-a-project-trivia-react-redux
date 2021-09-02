@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ButtonConfig from '../components/ButtonConfig';
 
 class Login extends React.Component {
   constructor() {
@@ -50,6 +51,7 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+        <ButtonConfig />
       </form>);
   }
 }
