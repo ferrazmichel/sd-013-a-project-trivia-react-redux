@@ -1,0 +1,3 @@
+// Actions do reducer User
+export const ACTION_GET_TOKEN_ERROR = 'ACTION_GET_TOKEN_ERROR';
+export const ACTION_GET_TOKEN_SUCESS = 'ACTION_GET_TOKEN_SUCESS';
