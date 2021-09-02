@@ -13,6 +13,12 @@ class Login extends React.Component {
     this.checkInputs = this.checkInputs.bind(this);
   }
 
+  fetchAPI() {
+    fetch('https://opentdb.com/api_token.php?command=request')
+      .then((response) => response.json())
+      .then((json) => localStorage.setItem('token', json.token));
+  }
+
   handleChange({ target }) {
     const { id, value } = target;
     this.setState({
@@ -54,13 +60,17 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          data-testid="btn-play"
-          type="submit"
-          disabled={ this.checkInputs() }
-        >
-          Jogar
-        </button>
+
+        <Link to="/game">
+          <button
+            data-testid="btn-play"
+            type="submit"
+            disabled={ this.checkInputs() }
+            onClick={ this.fetchAPI }
+          >
+            Jogar
+          </button>
+        </Link>
         <Link to="/configs">
           <button
             data-testid="btn-settings"
