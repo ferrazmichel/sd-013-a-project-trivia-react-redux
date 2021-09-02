@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchData } from '../../redux/actions';
@@ -36,43 +37,52 @@ class Login extends Component {
     const { userEmail, userName, disabled } = this.state;
     const { fetch } = this.props;
     return (
-      <fieldset>
-        <label htmlFor="name">
-          Escreve o nome da pessoa jogadora
-          <input
-            name="userName"
-            type="text"
-            data-testid="input-player-name"
-            id="name"
-            value={ userName }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Escreve o email da pessoa jogadora
-          <input
-            name="userEmail"
-            type="text"
-            data-testid="input-gravatar-email"
-            id="email"
-            value={ userEmail }
-            onChange={ this.handleChange }
-          />
-          <Link to="/game">
-            <button
-              data-testid="btn-play"
-              type="button"
-              disabled={ disabled }
-              onClick={ () => fetch() }
-            >
-              Jogar
-            </button>
-          </Link>
-        </label>
-      </fieldset>
+      <div>
+        <fieldset>
+          <label htmlFor="name">
+            Escreve o nome da pessoa jogadora
+            <input
+              name="userName"
+              type="text"
+              data-testid="input-player-name"
+              id="name"
+              value={ userName }
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="email">
+            Escreve o email da pessoa jogadora
+            <input
+              name="userEmail"
+              type="text"
+              data-testid="input-gravatar-email"
+              id="email"
+              value={ userEmail }
+              onChange={ this.handleChange }
+            />
+            <Link to="/game">
+              <button
+                data-testid="btn-play"
+                type="button"
+                disabled={ disabled }
+                onClick={ () => fetch() }
+              >
+                Jogar
+              </button>
+            </Link>
+          </label>
+        </fieldset>
+        <Link to="/config">
+          <button type="button" data-testid="btn-settings">Configurações</button>
+        </Link>
+      </div>
     );
   }
 }
+
+Login.propTypes = {
+  fetch: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchData()),
