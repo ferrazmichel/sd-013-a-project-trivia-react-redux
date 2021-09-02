@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setLogin } from '../Actions';
 
 class Forms extends React.Component {
   constructor(props) {
@@ -8,6 +11,12 @@ class Forms extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.onSubmitForm = this.onSubmitForm.bind(this);
+  }
+
+  onSubmitForm() {
+    const { dispatchSetLogin } = this.props;
+    dispatchSetLogin(this.state);
   }
 
   handleChange({ target }) {
@@ -53,6 +62,7 @@ class Forms extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ this.validEmail(email, nome) }
+          onClick={ this.onSubmitForm }
         >
           Jogar
         </button>
@@ -61,4 +71,12 @@ class Forms extends React.Component {
   }
 }
 
-export default Forms;
+Forms.propTypes = {
+  dispatchSetLogin: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetLogin: (state) => dispatch(setLogin(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Forms);
