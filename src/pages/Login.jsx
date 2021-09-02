@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { getToken } from '../redux/actions';
+
 
 class Login extends Component {
   constructor(props) {
@@ -9,9 +12,21 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
+      shouldRedirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSumit = this.handleSumit.bind(this);
+  }
+
+  handleSumit(event) {
+  const { dispatchLogin } = this.props;
+  const { name, email } = this.state;
+  event.preventDefault();
+  dispatchLogin(({name, email}));
+  this.setState({
+    shouldRedirect: true,
+  })
   }
 
   handleChange({ target: { name, value } }) {
@@ -19,9 +34,11 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, shouldRedirect } = this.state;
+    if(shouldRedirect) return <Redirect to="/game" />
+       
     return (
-      <form>
+      <form onSubmit={ this.handleSumit }>
         <input
           data-testid="input-player-name"
           type="text"
@@ -39,7 +56,7 @@ class Login extends Component {
           onChange={ this.handleChange }
         />
         <button
-          type="button"
+          type="submit"
           data-testid="btn-play"
           disabled={ name.length < 1 || email.length < 1 }
         >
@@ -54,11 +71,11 @@ class Login extends Component {
 
 // });
 
-// const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
+dispatchLogin: (userInfo) => dispatch(getToken(userInfo))
+ });
 
-// });
-
-export default connect(null, null)(Login);
+export default connect(null, mapDispatchToProps)(Login);
 
 // Login.propTypes = {
 
