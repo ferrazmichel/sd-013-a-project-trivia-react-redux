@@ -6,7 +6,7 @@ class LoginPage extends Component {
     super(props);
     this.state = {
       email: '',
-      password: '',
+      nickname: '',
       buttonDisable: true,
     };
     this.verifyInputs = this.verifyInputs.bind(this);
@@ -29,9 +29,9 @@ class LoginPage extends Component {
 
   verifyInputs() {
     const verifyEmail = /.+@.+\.[A-Za-z]+$/;
-    const verifyPassword = 5;
-    const { email, password } = this.state;
-    if (verifyEmail.test(email) && password.length > verifyPassword) {
+    const verifyNickname = 5;
+    const { email, nickname } = this.state;
+    if (verifyEmail.test(email) && nickname.length > verifyNickname) {
       this.setState({ buttonDisable: false });
     } else { this.setState({ buttonDisable: true }); }
   }
