@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 function validateEmail(email) {
   const re = /\S+@\S+\.\S+/;
@@ -64,6 +65,14 @@ class Login extends Component {
           >
             JOGAR!
           </button>
+          <Link to="/settings">
+            <button
+              type="submit"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
         </form>
       </div>
     );
