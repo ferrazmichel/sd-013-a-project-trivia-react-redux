@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import { getToken } from '../redux/actions';
 
 class Login extends Component {
@@ -15,17 +16,18 @@ class Login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSumit = this.handleSumit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSumit(event) {
-  const { dispatchLogin } = this.props;
-  const { name, email } = this.state;
-  event.preventDefault();
-  dispatchLogin(({name, email}));
-  this.setState({
-    shouldRedirect: true,
-  })
+  async handleSubmit(event) {
+    const { dispatchLogin } = this.props;
+    const { name, email } = this.state;
+    event.preventDefault();
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    await dispatchLogin(({ name, email, gravatar }));
+    this.setState({
+      shouldRedirect: true,
+    });
   }
 
   handleChange({ target: { name, value } }) {
@@ -34,10 +36,10 @@ class Login extends Component {
 
   render() {
     const { name, email, shouldRedirect } = this.state;
-    if(shouldRedirect) return <Redirect to="/game" />
-       
+    if (shouldRedirect) return <Redirect to="/game" />;
+
     return (
-      <form onSubmit={ this.handleSumit }>
+      <form onSubmit={ this.handleSubmit }>
         <input
           data-testid="input-player-name"
           type="text"
@@ -61,14 +63,14 @@ class Login extends Component {
         >
           Jogar
         </button>
-        
+
         <Link to="/settings">
           <button
-          type="button"
-          data-testid="btn-settings"
-        >
-         Configurações 
-        </button>
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
         </Link>
       </form>
     );
@@ -80,11 +82,11 @@ class Login extends Component {
 // });
 
 const mapDispatchToProps = (dispatch) => ({
-dispatchLogin: (userInfo) => dispatch(getToken(userInfo))
- });
+  dispatchLogin: (userInfo) => dispatch(getToken(userInfo)),
+});
 
 export default connect(null, mapDispatchToProps)(Login);
 
-// Login.propTypes = {
-
-// };
+Login.propTypes = {
+  dispatchLogin: PropTypes.func.isRequired,
+};

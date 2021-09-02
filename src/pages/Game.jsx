@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions } from '../redux/actions';
@@ -22,7 +22,6 @@ class Game extends Component {
     if (questions.length < 1) return <h3>Loading...</h3>;
     return (
       <div>
-        Game Page
         <Header />
         <GameBoard question={ questions[0] } />
       </div>
@@ -41,6 +40,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
-// Game.propTypes = {
-
-// };
+Game.propTypes = {
+  getQs: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
