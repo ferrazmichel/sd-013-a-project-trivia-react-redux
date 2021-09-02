@@ -17,6 +17,10 @@ class Login extends React.Component {
     });
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
   render() {
     const { nome, email } = this.state;
     return (
@@ -47,6 +51,7 @@ class Login extends React.Component {
           type="submit"
           data-testid="btn-play"
           disabled={ !nome.length || !email.length }
+          onClick={ this.handleSubmit }
         >
           Jogar
         </button>
