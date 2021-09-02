@@ -1,7 +1,10 @@
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Input from '../components/Input';
 import fetchToken from '../redux/fetchs/fetchToken';
+import { actionSaveDataUser } from '../redux/actions/index';
+import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   constructor(props) {
@@ -34,10 +37,6 @@ class Login extends React.Component {
     this.setState({ validation });
   }
 
-  handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value }, () => this.onValidation());
-  }
-
   // Essa função vai ser executada quando clicar no botão "Jogar"
   onSubmit(event) {
     // Basicamente evita o reload de página quando der submit
@@ -46,10 +45,22 @@ class Login extends React.Component {
     const { email, playerName } = this.state;
     // Desconstroi o saveUser da props, criado pela mapDispatchToProps disparando a action actionSaveDataUser que vai bascicamente salvar na state o email e o playername
     const { saveUser } = this.props;
+    saveUser({ email, playerName });
+    // Aponta que o redirect da state é true, ou seja, login realizado com sucesso e pagina redirecionada
+    this.setState({ redirect: true });
+  }
+
+  handleChange({ target: { name, value } }) {
+    this.setState({ [name]: value }, () => this.onValidation());
   }
 
   render() {
-    const { email, playerName, validation } = this.state;
+    const { token } = this.props;
+    const { email, playerName, validation, redirect } = this.state;
+
+    // Se o redirect da state for true e também tiver o token então redireciona para a pagina /game
+    if (redirect && token) { return <Redirect to="/game" />; }
+
     return (
       <form>
         <Input
@@ -91,5 +102,12 @@ const mapDipatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   token: state.user.token,
 });
+
+// Faço a validação se os dados que recebi são válidos
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+  saveUser: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
