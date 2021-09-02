@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUser, fetchTrivia } from '../redux/actions';
-import { Link } from 'react-router-dom';
-
-//
 
 function validateEmail(email) {
   const re = /\S+@\S+\.\S+/;
