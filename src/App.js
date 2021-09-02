@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage';
 import GamePage from './pages/GamePage';
 import RankingPage from './pages/RankingPage';
 import FeedBackPage from './pages/FeedbackPage';
+import SettingsPage from './pages/SettingsPage';
 import './App.css';
 
 export default function App() {
@@ -22,6 +23,9 @@ export default function App() {
         </Route>
         <Route path="/feedbackpage">
           <FeedBackPage />
+        </Route>
+        <Route path="/settingspage">
+          <SettingsPage />
         </Route>
       </Switch>
     </div>
