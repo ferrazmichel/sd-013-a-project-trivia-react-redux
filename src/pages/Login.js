@@ -61,7 +61,7 @@ class Login extends Component {
           />
         </label>
 
-        <Link to="/telaDeJogo">
+        <Link to="/tela-de-jogo">
           <button
             disabled={ btnDisable }
             data-testid="btn-play"
