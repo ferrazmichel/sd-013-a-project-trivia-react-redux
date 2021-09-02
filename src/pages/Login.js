@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 class Login extends Component {
@@ -13,6 +14,7 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     // this.checkLogin = this.checkLogin.bind(this);
+    this.goToConfig = this.goToConfig.bind(this);
   }
 
   handleChange({ target }) {
@@ -28,6 +30,11 @@ class Login extends Component {
     const emailValidation = /\S+@\S+\.\S+/;
     if (emailValidation.test(email) && name) this.setState({ btnDisable: false });
     else this.setState({ btnDisable: true });
+  }
+
+  goToConfig() {
+    const { history } = this.props;
+    history.push('/config');
   }
 
   async saveToLocalStorage() {
@@ -60,7 +67,13 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.goToConfig }
+        >
+          Configurações
+        </button>
         <Link to="/tela-de-jogo">
           <button
             disabled={ btnDisable }
@@ -75,5 +88,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.object,
+}.isRequired;
 
 export default Login;
