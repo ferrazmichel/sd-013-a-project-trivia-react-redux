@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import setLogin, { fetchAPI } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -10,11 +13,19 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target }) {
     const { name, value } = target;
     this.setState({ [name]: value });
+  }
+
+  handleClick() {
+    const { login, email } = this.state;
+    const { loginSet, fetchQuest } = this.props;
+    loginSet(login, email);
+    fetchQuest();
   }
 
   render() {
@@ -55,6 +66,7 @@ class Login extends React.Component {
             disabled={ !validadeButton } // retorna false caso ambos os campos estejam preenchidos
             type="button"
             data-testid="btn-play"
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -64,4 +76,14 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToState = (dispatch) => ({
+  loginSet: (login, email) => dispatch(setLogin(login, email)),
+  fetchQuest: () => dispatch(fetchAPI()),
+});
+
+Login.propTypes = {
+  fetchQuest: PropTypes.func.isRequired,
+  loginSet: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToState)(Login);

@@ -11,7 +11,7 @@ const login = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       email: action.email,
-      login: action.email,
+      login: action.login,
     };
   default:
     return state;
