@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Game extends Component {
   render() {
@@ -10,4 +11,9 @@ class Game extends Component {
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  userEmail: state.userReducer.email,
+  userName: state.userReducer.name,
+});
+
+export default connect(mapStateToProps)(Game);

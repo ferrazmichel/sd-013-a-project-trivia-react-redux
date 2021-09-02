@@ -2,6 +2,7 @@ import {
   START_FETCH,
   FINISH_FETCH,
   API_URL_TOKEN,
+  REGISTER_USER,
   API_URL } from '../../constants';
 
 export const startFetch = () => ({
@@ -13,11 +14,17 @@ export const finishFetch = (payload) => ({
   payload,
 });
 
+export const registerUser = (payload) => ({
+  type: REGISTER_USER,
+  payload,
+});
+
 export const fetchData = () => (
   async (dispatch) => {
     dispatch(startFetch());
 
     try {
+      console.log(registerUser({ teste: 'oi', teste2: 'a' }));
       const response = await fetch(API_URL_TOKEN);
       const data = await response.json();
       const { token } = await data;
