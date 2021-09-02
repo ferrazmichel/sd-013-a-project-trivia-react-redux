@@ -26,6 +26,7 @@ class Login extends React.Component {
     const { getToken } = this.props;
 
     getToken();
+    this.handleSettings = this.handleSettings.bind(this);
   }
 
   onValidation() {
@@ -36,6 +37,7 @@ class Login extends React.Component {
     && (/[A-z\s]+/).test(playerName));
     this.setState({ validation });
   }
+
 
   // Essa função vai ser executada quando clicar no botão "Jogar"
   onSubmit(event) {
@@ -48,6 +50,10 @@ class Login extends React.Component {
     saveUser({ email, playerName });
     // Aponta que o redirect da state é true, ou seja, login realizado com sucesso e pagina redirecionada
     this.setState({ redirect: true });
+  handleSettings(event) {
+    event.preventDefault();
+    const { history } = this.props;
+    history.push('/settings');
   }
 
   handleChange({ target: { name, value } }) {
@@ -86,10 +92,18 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ this.handleSettings }
+        >
+          Settings
+        </button>
       </form>
     );
   }
 }
+
 
 const mapDispatchToProps = (dispatch) => ({
   // A chave getToken e saveUser são as props do componente que vão ser invocados
@@ -111,3 +125,9 @@ Login.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  history: PropTypes.arrayOf(Object),
+}.isRequired;
+
+export default Login;
