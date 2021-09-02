@@ -23,9 +23,8 @@ class Login extends Component {
   }
 
   componentWillUnmount() {
-    const { token, history } = this.props;
+    const { token } = this.props;
     localStorage.setItem('token', JSON.stringify({ token }));
-    history.push('/game');
   }
 
   handleChange({ target }) {
@@ -81,7 +80,9 @@ class Login extends Component {
             disabled={ isDisabled }
             onClick={ this.handleSubmit }
           >
-            JOGAR!
+            <Link to="/game">
+              JOGAR!
+            </Link>
           </button>
           <Link to="/settings">
             <button
@@ -110,7 +111,6 @@ Login.propTypes = {
   setUser: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
-  history: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
