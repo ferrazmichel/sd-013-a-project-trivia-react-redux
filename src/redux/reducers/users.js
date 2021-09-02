@@ -1,8 +1,9 @@
-import { GET_TOKEN_SUCCESS, GET_TOKEN_ERROR } from '../actions';
+import { GET_TOKEN_SUCCESS, GET_TOKEN_ERROR, ADD_USER } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
   name: '',
+  gravatarEmail: '',
 };
 
 export const player = (state = INITIAL_STATE, action) => {
@@ -17,6 +18,12 @@ export const player = (state = INITIAL_STATE, action) => {
       ...state,
       error: action.payload,
     };
+  case ADD_USER:
+    return {
+      ...state,
+      email: action.payload.email,
+      name: action.payload.name,
+      gravatarEmail: `https://www.gravatar.com/avatar/${action.generateHash}` };
   default:
     return state;
   }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import Input from '../components/Input';
-import { fetchToken } from '../redux/actions';
+import { fetchToken, addUser } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
   constructor() {
     super();
-
     this.state = {
       name: '',
       email: '',
@@ -16,19 +16,27 @@ class Login extends Component {
     this.playSubmit = this.playSubmit.bind(this);
   }
 
-  componentDidMount() {
+  // componentDidMount() {
+  // }
+
+  async playSubmit() {
     const { getToken } = this.props;
-    getToken();
+    await getToken();
+    const { valueToken, history } = this.props;
+    history.push('/gameScreen');
+    localStorage.setItem('token', JSON.stringify(valueToken.token));
+    const { name, email } = this.state;
+    const { handleSubmit } = this.props;
+
+    const data = {
+      name,
+      email,
+    };
+    handleSubmit(data);
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
-  }
-
-  playSubmit() {
-    const { valueToken, history } = this.props;
-    localStorage.setItem('userToken', JSON.stringify(valueToken.token));
-    history.push('/gameScreen');
   }
 
   render() {
@@ -68,7 +76,12 @@ class Login extends Component {
             dataTestid="input-gravatar-email"
             id="user-email"
           />
-          <button disabled={ !enable } type="button" data-testid="btn-play" onClick={ this.playSubmit }>
+          <button
+            disabled={ !enable }
+            type="button"
+            data-testid="btn-play"
+            onClick={ this.playSubmit }
+          >
             Jogar
           </button>
         </form>
@@ -79,6 +92,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchToken()),
+  handleSubmit: (data) => dispatch(addUser(data)),
 });
 
 const mapStateToProps = (state) => ({
@@ -86,3 +100,16 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  getToken: PropTypes.func.isRequired,
+  valueToken: PropTypes.shape({
+    response_code: PropTypes.number,
+    response_message: PropTypes.string,
+    token: PropTypes.string,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
