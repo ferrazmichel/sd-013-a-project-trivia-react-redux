@@ -11,7 +11,7 @@ class Settings extends Component {
 
   render() {
     return (
-      <div>
+      <div data-testid="settings-title">
         Settings Page
       </div>
     );
