@@ -8,8 +8,6 @@ class Login extends React.Component {
     this.state = {
       email: '',
       playerName: '',
-      // validEmail: false,
-      // validName: false,
       validation: true,
     };
 
