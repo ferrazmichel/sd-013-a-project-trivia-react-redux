@@ -1,4 +1,4 @@
-import { ADD_USER } from '../actions';
+import { GET_TOKEN_SUCCESS, GET_TOKEN_ERROR, ADD_USER } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
@@ -8,6 +8,16 @@ const INITIAL_STATE = {
 
 export const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case GET_TOKEN_SUCCESS:
+    return {
+      ...state,
+      token: action.payload,
+    };
+  case GET_TOKEN_ERROR:
+    return {
+      ...state,
+      error: action.payload,
+    };
   case ADD_USER:
     return {
       ...state,
