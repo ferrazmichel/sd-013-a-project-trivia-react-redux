@@ -1,9 +1,12 @@
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  nome: '',
+  email: '',
+};
 
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case '':
-    return state;
+  case 'login':
+    return { ...state, nome: action.state.nome, email: action.state.email };
   default:
     return state;
   }
