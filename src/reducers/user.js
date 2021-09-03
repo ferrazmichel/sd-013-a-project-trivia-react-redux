@@ -15,7 +15,8 @@ function userReducer(state = INITIAL_STATE, action) {
     return {
       ...state,
       name: action.payload.name,
-      gravatarEmail: action.payload.gravatarEmail };
+      gravatarEmail: action.payload.gravatarEmail,
+      score: 0 };
   default: return state;
   }
 }
