@@ -5,8 +5,8 @@ class ButtonConfig extends Component {
   render() {
     return (
       <Link to="/settings">
-        <button type="button" data-testid="btn-settings">
-          Configurações
+        <button type="button" data-testid="btn-settings" className="button-config">
+          CONFIGURAÇÃO
         </button>
       </Link>
     );
