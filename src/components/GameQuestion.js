@@ -13,7 +13,6 @@ class GameQuestion extends Component {
 
   dispatchCorrectAnswer() {
     const { props: { dispatch } } = this;
-    dispatch({ type: 'CORRECT_ANSWER' });
 
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
     const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
@@ -23,11 +22,14 @@ class GameQuestion extends Component {
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
+
+    dispatch({ type: 'CORRECT_ANSWER' });
   }
 
   handleQuestion() {
     const { questions } = this.props;
     const currQuestion = questions[index];
+
     index += 1;
     const currQuestionOptions = [currQuestion.correct_answer,
       ...currQuestion.incorrect_answers].sort();
@@ -56,6 +58,7 @@ class GameQuestion extends Component {
                 type="button"
                 key={ questionIndex }
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
+
                 onClick={ this.dispatchCorrectAnswer }
               >
                 {question}
