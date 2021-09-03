@@ -8,7 +8,9 @@ import {
   SAVE_INFO_PLAYER,
 } from './actionsTypes';
 
-export const infoPlayer = (payload) => ({ type: SAVE_INFO_PLAYER, payload });
+export const infoPlayer = (email, nickname) => ({
+  type: SAVE_INFO_PLAYER, email, nickname,
+});
 
 const isLoadShowMilhao = () => ({ type: IS_LOADING_SHOW_MILHAO });
 
