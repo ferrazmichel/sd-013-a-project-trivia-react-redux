@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import setLogin, { fetchAPI } from '../actions';
+import setLogin, { fetchAPI, fetchQuestions } from '../actions';
+import Buttons from '../components/Buttons';
 
 class Login extends React.Component {
   constructor() {
@@ -22,11 +23,12 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { loginSet, fetchQuest, history } = this.props;
-    await fetchQuest();
+    const { loginSet, fetchToken, history, fetchQuest } = this.props;
+    await fetchToken();
     const { login, email } = this.state;
     loginSet(login, email);
     const { token } = this.props;
+    await fetchQuest(token);
     localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
@@ -65,14 +67,7 @@ class Login extends React.Component {
         <div
           className="btn"
         >
-          <button
-            disabled={ !validadeButton } // retorna false caso ambos os campos estejam preenchidos
-            type="button"
-            data-testid="btn-play"
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+          <Buttons validadeButton={ validadeButton } handleClick={ this.handleClick } />
         </div>
       </main>
     );
@@ -85,10 +80,12 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToState = (dispatch) => ({
   loginSet: (login, email) => dispatch(setLogin(login, email)),
-  fetchQuest: () => dispatch(fetchAPI()),
+  fetchToken: () => dispatch(fetchAPI()),
+  fetchQuest: (token) => dispatch(fetchQuestions(token)),
 });
 
 Login.propTypes = {
+  fetchToken: PropTypes.func.isRequired,
   fetchQuest: PropTypes.func.isRequired,
   loginSet: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
