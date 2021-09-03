@@ -12,7 +12,7 @@ class GameBoard extends React.Component {
       <button
         key={ opt }
         type="button"
-        id={ opt === correctOption ? 'correct' : 'incorrect' }
+        className={ opt === correctOption ? 'dev-correct' : null }
         data-testid={ opt === correctOption ? 'correct-answer'
           : `wrong-answer-${incorrectOptions.indexOf(opt)}` }
         name="options"
