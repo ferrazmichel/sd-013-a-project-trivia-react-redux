@@ -6,6 +6,7 @@ class TelaDeJogo extends Component {
     super();
 
     this.state = {
+      loading: true,
       questions: {
         results: [{
           category: '',
@@ -18,14 +19,13 @@ class TelaDeJogo extends Component {
 
   componentDidMount() {
     this.getQuestions();
-    this.shuffleAnswers();
   }
 
   async getQuestions() {
     const userToken = JSON.parse(localStorage.getItem('token'));
     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`);
     const questions = await response.json();
-    this.setState({ questions });
+    this.setState({ questions, loading: false });
   }
 
   shuffleAnswers() {
@@ -33,18 +33,42 @@ class TelaDeJogo extends Component {
     const { incorrect_answers: incorrectAnswers, correct_answer: correctAnswer } = results[0];
     const randomIndex = Math.floor(Math.random() * (2 - 0 + 1) + 0);
     const answers = [...incorrectAnswers];
-    const spliceAnswers = answers.splice(randomIndex, 0, correctAnswer);
-    console.log(spliceAnswers);
+    answers.splice(randomIndex, 0, correctAnswer);
+    return answers;
   }
 
-  // createButtons() {
-  //   const answers = this.shuffleAnswers();
-  //   return (
-  //     answers.map((answer) => <button type="button" key={ answer }>answer</button>)
-  //   );
-  // }
+  createButtons() {
+    const answers = this.shuffleAnswers();
+    const { questions: { results } } = this.state;
+    const { correct_answer: correctAnswer } = results[0];
+    return (
+      // answers.map((answer) => <button type="button" key={ answer }>{ answer }</button>)
+      answers.map((answer, index) => {
+        if (answer === correctAnswer) {
+          return (
+            <button
+              data-testid="correct-answer"
+              type="button"
+              key={ answer }
+            >
+              { answer }
+            </button>
+          );
+        }
+        return (
+          <button
+            data-testid={ `wrong-answer-${index}` }
+            type="button"
+            key={ answer }
+          >
+            { answer }
+          </button>
+        );
+      })
+    );
+  }
 
-  render() {
+  renderContent() {
     const { questions: { results } } = this.state;
     return (
       <>
@@ -52,9 +76,20 @@ class TelaDeJogo extends Component {
         <section>
           <p data-testid="question-category">{ results[0].category }</p>
           <p data-testid="question-text">{ results[0].question }</p>
-          {/* <div data-testid="">{ this.createButtons() }</div> */}
+          <div>
+            { results[0].correct_answer && this.createButtons() }
+          </div>
         </section>
       </>
+    );
+  }
+
+  render() {
+    const { loading } = this.state;
+    return (
+      <div>
+        { loading ? <p>Loading...</p> : this.renderContent() }
+      </div>
     );
   }
 }
