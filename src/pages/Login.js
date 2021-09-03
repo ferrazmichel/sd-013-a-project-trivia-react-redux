@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userLoggedIn } from '../actions';
 
+const TRIVIA_TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
 const RE_EMAIL = /^[a-z0-9_.-]+@[a-z]+\.[a-z]{2,3}(?:\.[a-z]{2})?$/;
 
 class Login extends React.Component {
@@ -24,13 +25,17 @@ class Login extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
   }
 
-  // Valida o email e o salva no state do component Login.
-  handleEmailChange(userInput) {
-    const value = (RE_EMAIL.test(userInput))
-      ? userInput
-      : '';
-
-    this.setState({ email: value });
+  async getToken() {
+    try {
+      const response = await fetch(TRIVIA_TOKEN_URL);
+      const data = await response.json();
+      // Conforme https://opentdb.com/api_config.php
+      if (data.response_code === 0) { // Se a requisição foi realizada com sucesso.
+        localStorage.setItem('token', data.token);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // Valida o nome do jogador e o salva no state do component Login.
@@ -47,10 +52,13 @@ class Login extends React.Component {
 
     // Se o nome e o email forem válidos
     if (name && email) {
+      // Se ainda não existe um `token`, faz a requisição.
+      if (!localStorage.getItem('token')) this.getToken();
+
       // Dispara a action que salva os dados do `player` na store do redux.
       // { name, gravatarEmail } é o `payload` da action.
       logPlayerIn({ name, gravatarEmail: email });
-      console.log('PLAYER LOGGED IN!');
+      console.log(history);
       history.push('/match'); // Redireciona o usuário para a página do jogo.
 
       // Reseta o state do component Login, já que este foi utilizado
@@ -59,12 +67,21 @@ class Login extends React.Component {
     }
   }
 
+  // Valida o email e o salva no state do component Login.
+  handleEmailChange(userInput) {
+    const value = (RE_EMAIL.test(userInput))
+      ? userInput
+      : '';
+
+    this.setState({ email: value });
+  }
+
   render() {
     const { name, email } = this.state;
 
     // Se o nome e o email informados forem válidos, habilita o botão `Jogar`.
-    let desableButton = true;
-    if (name && email) desableButton = false;
+    let disableButton = true;
+    if (name && email) disableButton = false;
 
     return (
       <form onSubmit={ this.handleSubmission }>
@@ -93,7 +110,7 @@ class Login extends React.Component {
         <button
           type="submit"
           data-testid="btn-play"
-          disabled={ desableButton } // Habilita o botão somente se os dados forem válidos.
+          disabled={ disableButton } // Habilita o botão somente se os dados forem válidos.
         >
           Jogar
         </button>
@@ -104,7 +121,9 @@ class Login extends React.Component {
 
 Login.propTypes = {
   logPlayerIn: PropTypes.func.isRequired,
-  history: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
