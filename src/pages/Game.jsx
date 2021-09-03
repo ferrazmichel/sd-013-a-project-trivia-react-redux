@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { func, bool, string, number, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Question } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
@@ -142,7 +143,7 @@ class Game extends Component {
     const { questions } = this.props;
 
     // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
-    if (gameOver) { return console.log('página feedback'); }
+    if (gameOver) { return <Redirect to="/feedback" />; }
 
     return (
       <>
