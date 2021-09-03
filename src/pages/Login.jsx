@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Input from '../components/Input';
@@ -123,13 +123,11 @@ class Login extends React.Component {
         >
           Jogar
         </button>
-        <button
-          data-testid="btn-settings"
-          type="button"
-          onClick={ this.handleSettings }
-        >
-          Settings
-        </button>
+        <Link to="/settings">
+          <button data-testid="btn-settings" type="button">
+            Settings
+          </button>
+        </Link>
       </form>
     );
   }

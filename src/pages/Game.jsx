@@ -5,6 +5,7 @@ import { Question } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
 import randomize from '../functions/randomize';
+import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -146,7 +147,7 @@ class Game extends Component {
     return (
       <>
         {/* Chama o componente Header passando a props de score/pontuação */}
-        { /* <Header> e passa o score={ score } como props */}
+        <Header />
         <p>{timer}</p>
         {/* Chama o componente de questão passando algumas props */}
         <Question
