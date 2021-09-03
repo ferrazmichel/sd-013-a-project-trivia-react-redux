@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveEmail } from '../actions';
+import { saveEmail, requestApi } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -10,6 +10,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       nameUser: '',
+      token: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -18,14 +19,13 @@ class Login extends React.Component {
   }
 
   onSubmitForm() {
-    const { history, emailKey } = this.props;
+    const { emailKey } = this.props;
     // Disparamos a nossa action através da função importada
     // de actions.js, que apelidamos de EmailKey
     const { email } = this.state;
     emailKey(email);
-    this.receiveToken();
     this.saveNameEmail();
-    history.push('/trivia');
+    this.receiveToken();
   }
 
   saveNameEmail() {
@@ -42,9 +42,16 @@ class Login extends React.Component {
   }
 
   async receiveToken() {
+    const { token } = this.state;
+    const { trivia, history } = this.props;
     const Api = await fetch('https://opentdb.com/api_token.php?command=request');
     const json = await Api.json();
     localStorage.setItem('token', JSON.stringify(json.token));
+    this.setState({
+      token: json.token,
+    });
+    trivia(token);
+    history.push('/trivia');
   }
 
   handleChange({ target }) {
@@ -54,7 +61,6 @@ class Login extends React.Component {
 
   render() {
     const { email, nameUser } = this.state;
-
     return (
       <div>
         <div>
@@ -101,10 +107,12 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  trivia: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   emailKey: (email) => dispatch(saveEmail(email)),
+  trivia: (token) => dispatch(requestApi(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
