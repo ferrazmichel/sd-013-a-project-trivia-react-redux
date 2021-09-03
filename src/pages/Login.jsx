@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchDados } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -10,6 +13,7 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleCLick = this.handleCLick.bind(this);
   }
 
   handleChange({ target }) {
@@ -21,13 +25,18 @@ class Login extends React.Component {
       const regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+?$/i;
       const boolValidateEmail = regexEmail.test(playerEmail);
       const nameRegex = /[A-Za-z-0-9]/;
-      // const boolValidateName = playerName ? true : false
       const boolValidateName = nameRegex.test(playerName);
       const boolValidateLogin = !(boolValidateEmail && boolValidateName);
       this.setState({
         validateLogin: boolValidateLogin,
       });
     });
+  }
+
+  handleCLick() {
+    const { history, fetchDadosTrivia } = this.props;
+    fetchDadosTrivia();
+    history.push('/game');
   }
 
   render() {
@@ -60,6 +69,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ validateLogin }
+          onClick={ () => this.handleCLick() }
         >
           Jogar
         </button>
@@ -68,4 +78,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  fetchDadosTrivia: () => dispatch(fetchDados()),
+});
+
+Login.propTypes = {
+  history: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
