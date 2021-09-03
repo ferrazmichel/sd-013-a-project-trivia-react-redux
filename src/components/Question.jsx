@@ -9,6 +9,7 @@ class Question extends Component {
   constructor(props) {
     super(props);
 
+    // State inicial vai ser as chaves abaixo:
     this.state = {
       button: false,
       showCorrect: false,
@@ -22,6 +23,7 @@ class Question extends Component {
   handleClickButton({ target }) {
     const { checkQuestion, stopTimer } = this.props;
     const id = target.dataset.testid;
+    // Se o botão é a resposta correta, então :
     if (id === 'correct-answer') checkQuestion();
 
     this.setState({ button: true });
@@ -49,8 +51,11 @@ class Question extends Component {
   render() {
     const { button, showCorrect } = this.state;
     const { loading, timeout, question, randomIndex } = this.props;
+    // Mostragem da mensagem de Loading conforme atributo loading(true/false)
     if (loading) { return <p>Loading...</p>; }
+    // Grava na variável alternatives analisando o question, qual é a correta e quais são as incorretas
     const alternatives = question.correct_answer ? [
+      // Faz um .map neste spreac operator para colocar no alternatives essas questões incorretas
       ...question.incorrect_answers.map((alt, index) => ({
         correct: false, alt, index, isCorrect: 'wrong',
       })),
