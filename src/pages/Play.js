@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 
 class Play extends Component {
   render() {
     return (
       <div>
-        <h1>Play</h1>
+        <Header />
         <button
           type="button"
           data-testid="btn-settings"

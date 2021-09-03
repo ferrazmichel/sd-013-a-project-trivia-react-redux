@@ -5,3 +5,11 @@ export const fetchAPI = () => fetch('https://opentdb.com/api_token.php?command=r
 export const TokenApi = () => {
   fetchAPI().then(({ token }) => localStorage.setItem('token', token));
 };
+
+export const saveToLocalStorage = (key, object) => {
+  localStorage.setItem(key, JSON.stringify(object));
+};
+
+export const loadFromLocalStaorage = (key) => (
+  JSON.parse(localStorage.getItem(key))
+);
