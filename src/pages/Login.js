@@ -33,7 +33,7 @@ class Login extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     this.fetchAPI();
     const { saveUser } = this.props;
