@@ -24,7 +24,7 @@ class FeedbackPage extends Component {
           </span>
         </div>
         <Link data-testid="btn-play-again" to="/">Play Again</Link>
-        <Link data-testid="btn-ranking" to="/rakingpage">Raking</Link>
+        <Link data-testid="btn-ranking" to="/rankingpage">Raking</Link>
       </div>
     );
   }
