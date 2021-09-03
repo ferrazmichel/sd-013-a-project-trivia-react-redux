@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ButtonConfig from '../components/ButtonConfig';
 
 class Login extends React.Component {
@@ -8,8 +9,10 @@ class Login extends React.Component {
     this.state = {
       nome: '',
       email: '',
+      play: false,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.playButton = this.playButton.bind(this);
   }
 
   handleChange({ target: { value, name } }) {
@@ -18,14 +21,29 @@ class Login extends React.Component {
     });
   }
 
+  playButton() {
+    fetch('https://opentdb.com/api_token.php?command=request')
+      .then((res) => {
+        res.json()
+          .then((json) => {
+            localStorage.setItem('token', json.token);
+            this.setState({ play: true });
+          });
+      });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
   }
 
   render() {
     const { nome, email } = this.state;
+    const { play } = this.state;
+    if (play) {
+      return <Link to="/game" />;
+    }
     return (
-      <form>
+      <form onSubmit={ this.handleSubmit }>
         <label htmlFor="input-player-name">
           Nome:
           <input
@@ -52,7 +70,7 @@ class Login extends React.Component {
           type="submit"
           data-testid="btn-play"
           disabled={ !nome.length || !email.length }
-          onClick={ this.handleSubmit }
+          onClick={ this.playButton }
         >
           Jogar
         </button>
