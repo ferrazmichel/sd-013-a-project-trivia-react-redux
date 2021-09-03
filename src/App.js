@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Login from './pages/Login';
-import Match from './pages/Match';
+import { ConfigScreen, Login, Match } from './pages';
 
 class App extends React.Component {
   render() {
@@ -9,6 +8,7 @@ class App extends React.Component {
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/match" component={ Match } />
+        <Route path="/configurations" component={ ConfigScreen } />
       </Switch>
     );
   }
