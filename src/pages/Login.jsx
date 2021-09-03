@@ -14,6 +14,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCLick = this.handleCLick.bind(this);
+    this.handleCLickConfig = this.handleCLickConfig.bind(this);
   }
 
   handleChange({ target }) {
@@ -37,6 +38,14 @@ class Login extends React.Component {
     const { history, fetchDadosTrivia } = this.props;
     fetchDadosTrivia();
     history.push('/game');
+    // console.log(resultado);
+  }
+
+  handleCLickConfig() {
+    const { history } = this.props;
+    history.push('/config');
+    // console.log(this.props);
+    // console.log(history);
   }
 
   render() {
@@ -72,6 +81,13 @@ class Login extends React.Component {
           onClick={ () => this.handleCLick() }
         >
           Jogar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.handleCLickConfig() }
+        >
+          Configurações
         </button>
       </div>
     );

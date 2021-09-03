@@ -15,9 +15,9 @@ function apiReducer(state = initialState, action) {
   case REQUEST_API:
     return { ...state, loading: true };
   case SAVE_TOKEN:
-    return { ...state, token: action.payload };
+    return { ...state, loading: false, token: action.payload };
   case SAVE_PERGUNTAS:
-    return { ...state, resultFrases: action.payload };
+    return { ...state, loading: false, resultFrases: action.payload };
   default:
     return state;
   }
