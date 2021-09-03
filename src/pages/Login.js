@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ButtonPlayGame from '../components/ButtonPlayGame';
 import InputLogin from '../components/InputLogin';
+import { getUserData } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
