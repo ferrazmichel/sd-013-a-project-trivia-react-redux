@@ -47,7 +47,6 @@ class Login extends React.Component {
 
   // Essa função vai ser executada quando clicar no botão "Jogar"
   onSubmit(event) {
-    console.log('teste')
     // Basicamente evita o reaload de página quando der submit
     event.preventDefault();
     // Desconstrói direto do state o email e o playerName gravado
@@ -140,8 +139,8 @@ const mapDispatchToProps = (dispatch) => ({
   // A chave getToken e saveUser são as props do componente que vão ser invocadas
   // E eu passo uma callback que vai ser o dispatch que vou realizar na action, no caso será a fetchToken
   // O data/payload vai conter o NOVO valor que vai ser passado e alterado na state da store
-  getToken: (data) => dispatch(fetchToken(data)),
-  saveUser: (data) => dispatch(actionSaveDataUser(data)),
+  getToken: () => dispatch(fetchToken()),
+  saveUser: (data) => dispatch(actionSaveDataUser(data)), // email, playername
 });
 
 // A função mapStateToProps mapeia as states armazenadas na store para uma props

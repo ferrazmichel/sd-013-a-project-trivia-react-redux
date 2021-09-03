@@ -33,7 +33,7 @@ class Game extends Component {
 
   componentDidMount() {
     const { getQuiz, token, amount, id, difficulty, type } = this.props;
-    
+
     console.log('id:', id);
 
     this.startTimer(0, true);
