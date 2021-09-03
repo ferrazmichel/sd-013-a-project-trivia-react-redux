@@ -15,6 +15,7 @@ class Question extends Component {
       showCorrect: false,
     };
 
+    // As funções abaixo serão habilitadas para serem usadas em todo o componente/page
     this.handleClickButton = this.handleClickButton.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.changeBorder = this.changeBorder.bind(this);
