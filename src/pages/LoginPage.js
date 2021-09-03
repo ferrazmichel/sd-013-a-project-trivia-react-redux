@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import { infoPlayer, questionsShowMilhao, showMilhaoAPI } from '../actions';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -20,11 +23,15 @@ class LoginPage extends Component {
       verifyInputs);
   }
 
-  handleClick() {
-    const { email, buttonDisable } = this.state;
-    const { history, dispatchInputLogin } = this.props;
-    dispatchInputLogin(email);
-    if (buttonDisable === false) history.push('/carteira');
+  async handleClick(e) {
+    e.preventDefault();
+    const { email } = this.state;
+    const { startGame, questionsGame, player } = this.props;
+    await startGame();
+    const { token } = this.props;
+    localStorage.setItem('token', token);
+    await questionsGame(token);
+    player(email);
   }
 
   verifyInputs() {
@@ -37,7 +44,9 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { handleChange, handleClick, state: { buttonDisable } } = this;
+    const { handleChange, handleClick,
+      state: { buttonDisable }, props: { stateEmail } } = this;
+    if (stateEmail) return <Redirect to="/gamepage" />;
     return (
       <div className="login-container">
         <form className="login-form">
@@ -76,8 +85,20 @@ class LoginPage extends Component {
 LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-  }).isRequired,
-  dispatchInputLogin: PropTypes.func.isRequired,
-};
+  }),
+  startGame: PropTypes.func,
+  dispatchInputLogin: PropTypes.func,
+}.isRequired;
 
-export default LoginPage;
+const mapDispatchToProps = (dispatch) => ({
+  player: (payload) => dispatch(infoPlayer(payload)),
+  startGame: () => dispatch(showMilhaoAPI()),
+  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.questions.token,
+  stateEmail: state.user.email,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

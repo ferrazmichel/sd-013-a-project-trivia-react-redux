@@ -1,12 +1,16 @@
 const SHOW_API = 'https://opentdb.com/api_token.php?command=request';
 
-const getShowMilhao = () => (
+export const getShowMilhao = () => (
   fetch(SHOW_API)
     .then((response) => (
       response
         .json()
-        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))
+        .then((token) => (response.ok ? Promise.resolve(token) : Promise.reject(token)))
     ))
 );
 
-export default getShowMilhao;
+export const getQuestionsApi = async (token) => {
+  const results = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+  const json = await results.json();
+  return json;
+};
