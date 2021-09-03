@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import ButtonPlayGame from '../components/ButtonPlayGame';
 import InputLogin from '../components/InputLogin';
 import fetchTriviaAPI from '../services/triviaAPI';
+import { getUserData } from '../redux/actions';
+import { connect } from 'react-redux';
 
 class Login extends React.Component {
   constructor(props) {
