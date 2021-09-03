@@ -1,17 +1,17 @@
-import { SAVE_AVATAR } from '../actions';
+import { VALID_LOGIN } from '../actions';
 
 const initialState = {
-  avatar: '',
-  user: '',
+  name: '',
+  email: '',
 };
 
 function login(state = initialState, action) {
   switch (action.type) {
-  case SAVE_AVATAR:
+  case VALID_LOGIN:
     return {
       ...state,
-      avatar: action.link,
-      user: action.user,
+      name: action.name,
+      email: action.email,
     };
   default:
     return state;
