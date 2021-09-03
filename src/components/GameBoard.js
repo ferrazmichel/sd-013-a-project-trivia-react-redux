@@ -27,12 +27,12 @@ class GameBoard extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.cronometerInterval);
+    clearInterval(this.intervalID);
   }
 
   cronometer() {
     const ONE_SECOND = 1000;
-    this.cronometerInterval = setInterval(() => {
+    this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
       console.log('Intervalo rodando!');
     }, ONE_SECOND);
@@ -40,13 +40,19 @@ class GameBoard extends React.Component {
 
   resetCronometer() {
     this.setState({
-      seconds: null,
+      seconds: 'ACABOU O TEMPO!',
     });
     const btns = document.getElementsByName('options');
     btns.forEach((btn) => {
       btn.disabled = true;
     });
-    clearInterval(this.cronometerInterval);
+    clearInterval(this.intervalID);
+  }
+
+  decode(str) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = str;
+    return textArea.value;
   }
 
   shuffleOptions() {
@@ -68,9 +74,13 @@ class GameBoard extends React.Component {
           : `wrong-answer-${incorrectOptions.indexOf(opt)}` }
         name="options"
         value={ opt }
-        onClick={ () => onSelect(correctOption) }
+        onClick={ ({ target }) => {
+          const { seconds } = this.state;
+          clearInterval(this.intervalID);
+          onSelect(question, target, seconds);
+        } }
       >
-        { opt }
+        { this.decode(opt) }
       </button>
     ));
     this.setState({ options: allOptions });
@@ -84,7 +94,7 @@ class GameBoard extends React.Component {
         <div>
           {seconds}
           <h3 data-testid="question-category">{ question.category }</h3>
-          <h4 data-testid="question-text">{ question.question }</h4>
+          <h4 data-testid="question-text">{ this.decode(question.question) }</h4>
         </div>
         <div>
           {options}
