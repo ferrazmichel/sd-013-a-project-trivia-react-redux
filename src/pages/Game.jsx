@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 import { Question } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
@@ -135,11 +135,8 @@ class Game extends Component {
   }
 
   render() {
-    const { timer, gameOver, question, score, randomIndex } = this.state;
+    const { timer, question, randomIndex } = this.state;
     const { questions } = this.props;
-
-    // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
-    if (gameOver) { return <Redirect to="/feedback" />; }
 
     return (
       <>
@@ -182,23 +179,23 @@ const mapStateToProps = (state) => ({
 
 // Faço a validação se os dados que recebi são válidos
 Game.propTypes = {
-  timeoutTrue: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  getQuiz: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  difficulty: PropTypes.string.isRequired,
-  amount: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
+  timeoutTrue: PropTypes.func,
+  loading: PropTypes.bool,
+  getQuiz: PropTypes.func,
+  token: PropTypes.string,
+  name: PropTypes.string,
+  picture: PropTypes.string,
+  type: PropTypes.string,
+  difficulty: PropTypes.string,
+  amount: PropTypes.number,
+  id: PropTypes.number,
   questions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string,
     question: PropTypes.string,
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   })).isRequired,
-};
+}.isRequired;
 
 // O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

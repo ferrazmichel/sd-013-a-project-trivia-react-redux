@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { bool, string, func, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './Button';
 import { actionTimeoutFalse } from '../redux/actions/index';
@@ -116,19 +116,19 @@ const mapDispatchToProps = (dispatch) => ({
 
 // Faço a validação se os dados que recebi são válidos
 Question.propTypes = {
-  timeoutFalse: PropTypes.func.isRequired,
-  startTimer: PropTypes.func.isRequired,
-  stopTimer: PropTypes.func.isRequired,
-  checkQuestion: PropTypes.func.isRequired,
-  nextQuestion: PropTypes.func.isRequired,
-  timeout: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
-  randomIndex: PropTypes.arrayOf(PropTypes.number).isRequired,
-  question: PropTypes.shape({
-    category: PropTypes.string,
-    question: PropTypes.string,
-    correct_answer: PropTypes.string,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+  timeoutFalse: func.isRequired,
+  startTimer: func.isRequired,
+  stopTimer: func.isRequired,
+  checkQuestion: func.isRequired,
+  nextQuestion: func.isRequired,
+  timeout: bool.isRequired,
+  loading: bool.isRequired,
+  randomIndex: arrayOf(PropTypes.number).isRequired,
+  question: shape({
+    category: string,
+    question: string,
+    correct_answer: string,
+    incorrect_answers: arrayOf(string),
   }).isRequired,
 };
 
