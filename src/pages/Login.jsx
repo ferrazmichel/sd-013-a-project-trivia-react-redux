@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import Input from '../components/Input';
+import { Input } from '../components';
 import { fetchToken, addUser } from '../redux/actions';
 import logo from '../trivia.png';
 
