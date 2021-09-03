@@ -1,8 +1,12 @@
 import React from 'react';
+// o componente está sendo renderizado, mas não está passando no teste. Acredito que o teste está sendo executado mais rápido do que o retorno da API e por isso está pegando o estado ainda vazio. Não consegui fazer o setState no componentDidMount, mas acho que se deixá-lo assíncrono e atualizar o estado nele, talvez o teste consiga já pegar o estado atualizado.
 
 class Questions extends React.Component {
   constructor() {
     super();
+    this.state = {
+      questionsArray: [],
+    };
     this.getQuestions = this.getQuestions.bind(this);
   }
 
@@ -14,16 +18,17 @@ class Questions extends React.Component {
     const getToken = JSON.parse(localStorage.getItem('token'));
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${getToken}`);
     const json = await fetchQuestions.json();
-    // const { results } = json;
-    return json;
+    const { results } = json;
+    this.setState({ questionsArray: results });
   }
 
   render() {
-    console.log(this.getQuestions());
+    const { questionsArray } = this.state;
+
     return (
       <div>
         {
-          this.getQuestions().map((question, index) => (
+          questionsArray.map((question, index) => (
             <div key={ index }>
               <p>
                 Category:
