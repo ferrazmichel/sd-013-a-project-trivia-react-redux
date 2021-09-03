@@ -8,7 +8,7 @@
 // });
 
 // export const actionXXY = () => ({
-//   type: 'XXXY',
+//   type: 'XXX',
 //   payload: {
 
 //   },
