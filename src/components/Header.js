@@ -1,21 +1,38 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-class Header extends Component {
+class Header extends React.Component {
   render() {
+    const { nome, picture } = this.props;
+    const imagem = JSON.parse(localStorage.getItem('ranking'));
     return (
       <header>
-        <img src="" alt="Imagem do usuario" data-testid="header-profile-picture" />
-        <h3>
-          Nome:
-          <span data-testid="header-player-name" />
-        </h3>
-        <h3>
-          Placar:
-          <span data-testid="header-score">0</span>
-        </h3>
+        <img
+          src={ picture || imagem[0].picture }
+          alt="Imagem do usuario"
+          data-testid="header-profile-picture"
+        />
+        <br />
+        Nome:
+        <span data-testid="header-player-name">{nome}</span>
+        <br />
+        Placar:
+        <span data-testid="header-score">0</span>
+        <br />
       </header>
     );
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  nome: state.user.name,
+  picture: state.user.picture,
+});
+
+Header.propTypes = {
+  nome: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(Header);
