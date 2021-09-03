@@ -18,7 +18,7 @@ class Game extends React.Component {
             0
           </span>
     </p> */}
-        Tela de jogoo
+        Tela de game
       </header>
     );
   }
