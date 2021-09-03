@@ -1,7 +1,7 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../actions';
+import '../App.css';
 
 import Header from '../components/Header';
 
@@ -10,19 +10,20 @@ class Game extends React.Component {
     super();
     this.state = {
       index: 0, // lógica para aparecer cada pergunta
+      respondido: false,
     };
+    this.checkClick = this.checkClick.bind(this);
   }
 
-componentDidMount() {
-  const { fetchQuest } = this.props,
-  fetchQuest('b61fd17daa5e8de8029810644d0292c50630722206e6c13ccbdfa4ea4f0fc7c3');
-}
+  checkClick() {
+    this.setState({ respondido: true });
+  }
 
   render() {
-    const { index } = this.state;
+    const { index, respondido } = this.state;
     const { questions } = this.props;
     const currentQuestion = questions[index];
-    const { category, type, difficulty, question,
+    const { category, /* type, difficulty, */question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = currentQuestion;
     return (
@@ -42,7 +43,8 @@ componentDidMount() {
         <button
           type="button"
           data-testid="correct-answer"
-          className="correct"
+          className={ respondido ? 'correct' : '' }
+          onClick={ this.checkClick }
         >
           {correctAnswer}
         </button>
@@ -50,6 +52,8 @@ componentDidMount() {
           <button
             type="button"
             key={ i }
+            onClick={ this.checkClick }
+            className={ respondido ? 'wrong' : '' }
             data-testid={ `wrong-answer-${i}` }
           >
             {answer}
@@ -61,15 +65,11 @@ componentDidMount() {
 }
 
 Game.propTypes = {
-  //  questions: PropTypes.arrayOf(PropTypes.object({})).isRequired,
+  questions: PropTypes.arrayOf({}).isRequired,
 };
-
-const mapDispatchToState = (dispatch) => ({
-  fetchQuest: (token) => dispatch(fetchQuestions(token)),
-});
 
 const mapStateToProps = (state) => ({
   questions: state.fetchQuestions.questions,
 });
 
-export default connect(mapStateToProps, mapDispatchToState)(Game);
+export default connect(mapStateToProps, null)(Game);
