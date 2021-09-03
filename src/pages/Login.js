@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
-import { fetchAvatar, fetchToken } from '../redux/actions';
+import { validLogin, fetchToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -20,16 +19,11 @@ class Login extends React.Component {
 
   async onSubmitForm(event) {
     event.preventDefault();
-    const { history, dispatchfetchAvatar, dispatchfetchToken } = this.props;
+    const { history, dispatchValidLogin, dispatchfetchToken, token } = this.props;
     const { email, name } = this.state;
-    const convertedEmail = md5(email).toString();
-    // console.log(convertedEmail);
-    // Disparamos a nossa action através da função importada
-    // de actions.js, que apelidamos de dispatchSetValue
-    dispatchfetchAvatar(convertedEmail, name);
     await dispatchfetchToken();
-    const { token } = this.props;
     localStorage.setItem('token', token);
+    dispatchValidLogin(name, email);
     history.push('/jogo');
   }
 
@@ -66,8 +60,6 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </label>
-
-          {/* Parte do disabled foi feita com ajuda a Aline Hoshino */}
           <button
             type="submit"
             disabled={ isDisabled }
@@ -89,7 +81,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  dispatchfetchAvatar: PropTypes.func.isRequired,
+  dispatchValidLogin: PropTypes.func.isRequired,
   dispatchfetchToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
@@ -98,7 +90,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  dispatchfetchAvatar: (email, name) => dispatch(fetchAvatar(email, name)),
+  dispatchValidLogin: (name, email) => dispatch(validLogin(name, email)),
   dispatchfetchToken: () => dispatch(fetchToken()),
 });
 

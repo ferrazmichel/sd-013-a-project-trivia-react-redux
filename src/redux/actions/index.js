@@ -1,13 +1,7 @@
-export const SAVE_AVATAR = 'SAVE_AVATAR';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const GET_TOKEN_SUCESS = 'GET_TOKEN_SUCESS';
 export const GET_TOKEN_FAIL = 'GET_TOKEN_FAIL';
-
-export const saveAvatar = (link, user) => ({
-  type: SAVE_AVATAR,
-  link,
-  user,
-});
+export const VALID_LOGIN = 'VALID_LOGIN';
 
 export const requestToken = () => ({
   type: REQUEST_TOKEN,
@@ -23,15 +17,11 @@ export const getTokenFail = (error) => ({
   error,
 });
 
-// export const errorAvatar = (payload) => ({
-//   type: ERROR_AVATAR,
-//   payload,
-// });
-
-export const fetchAvatar = (hash, user) => (dispatch) => {
-  const avatar = `https://www.gravatar.com/avatar/${hash}`;
-  return dispatch(saveAvatar(avatar, user));
-};
+export const validLogin = (name, email) => ({
+  type: VALID_LOGIN,
+  name,
+  email,
+});
 
 export function fetchToken() {
   return async (dispatch) => {
