@@ -18,11 +18,14 @@ class GameBoard extends React.Component {
     this.shuffleOptions();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { seconds } = this.state;
     const ZERO_SECOND = 0;
     if (seconds === ZERO_SECOND) {
       this.resetCronometer();
+    }
+    if (prevProps !== this.props) {
+      this.shuffleOptions();
     }
   }
 
@@ -34,7 +37,6 @@ class GameBoard extends React.Component {
     const ONE_SECOND = 1000;
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
-      console.log('Intervalo rodando!');
     }, ONE_SECOND);
   }
 
@@ -46,6 +48,7 @@ class GameBoard extends React.Component {
     btns.forEach((btn) => {
       btn.disabled = true;
     });
+    document.querySelector('.btn-next').classList.remove('invisible');
     clearInterval(this.intervalID);
   }
 
@@ -87,7 +90,7 @@ class GameBoard extends React.Component {
   }
 
   render() {
-    const { question } = this.props;
+    const { question, onNext } = this.props;
     const { seconds, options } = this.state;
     return (
       <div>
@@ -98,6 +101,14 @@ class GameBoard extends React.Component {
         </div>
         <div>
           {options}
+          <button
+            type="button"
+            data-testid="btn-next"
+            className="btn-next invisible"
+            onClick={ onNext }
+          >
+            Próxima
+          </button>
         </div>
       </div>
     );
@@ -116,4 +127,5 @@ GameBoard.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   onSelect: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
 };

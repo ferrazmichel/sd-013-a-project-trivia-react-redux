@@ -1,3 +1,7 @@
+.invisible {
+  display: none;
+}
+
 .game-correct {
   border: 3px solid rgb(6, 240, 15);
 }
