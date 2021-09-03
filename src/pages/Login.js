@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import ButtonPlayGame from '../components/ButtonPlayGame';
 import InputLogin from '../components/InputLogin';
 
@@ -10,10 +11,18 @@ class Login extends React.Component {
       inputName: '',
       inputEmail: '',
       btnDisabledStatus: true,
+      redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      redirect: true,
+    });
   }
 
   handleChange({ target: { name, value } }) {
@@ -33,7 +42,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { btnDisabledStatus, inputName, inputEmail } = this.state;
+    const { btnDisabledStatus, inputName, inputEmail, redirect } = this.state;
 
     return (
       <div>
@@ -54,6 +63,7 @@ class Login extends React.Component {
             isDisabled={ btnDisabledStatus }
           />
         </form>
+        { redirect && <Redirect to="/game" /> }
       </div>
     );
   }
