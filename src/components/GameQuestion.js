@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import GameCounter from './GameCounter';
 import { connect } from 'react-redux';
 
 let index = 0;
@@ -7,6 +8,7 @@ let index = 0;
 class GameQuestion extends Component {
   constructor(props) {
     super(props);
+
     this.handleQuestion = this.handleQuestion.bind(this);
     this.dispatchCorrectAnswer = this.dispatchCorrectAnswer.bind(this);
   }
@@ -65,6 +67,7 @@ class GameQuestion extends Component {
               </button>);
           }) }
         </div>
+        <GameCounter />
       </div>
     );
   }
