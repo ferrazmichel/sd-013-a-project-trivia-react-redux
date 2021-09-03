@@ -10,7 +10,7 @@ store.subscribe(() => {
   localStorage.setItem('state', JSON.stringify({
     player,
   }));
-})
+});
 
 if (window.Cypress) {
   window.store = store;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { saveUserInfo } from '../redux/actions';
 
 class Login extends React.Component {
@@ -70,13 +71,13 @@ class Login extends React.Component {
           />
         </label>
 
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ this.checkInputs() }
-          >
-            Jogar
-          </button>
+        <button
+          data-testid="btn-play"
+          type="submit"
+          disabled={ this.checkInputs() }
+        >
+          Jogar
+        </button>
         <Link to="/configs">
           <button
             data-testid="btn-settings"
@@ -93,6 +94,13 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (payload) => dispatch(saveUserInfo(payload)),
-})
+});
+
+Login.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Login);
