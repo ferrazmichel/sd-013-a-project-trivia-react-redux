@@ -140,7 +140,7 @@ class Game extends Component {
     const { questions } = this.props;
 
     // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
-
+    if (gameOver) { return console.log('página feedback'); }
     return (
       <>
         {/* Chama o componente Header passando a props de score/pontuação */}
