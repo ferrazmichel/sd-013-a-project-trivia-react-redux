@@ -21,11 +21,13 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleClick() {
-    const { login, email } = this.state;
+  async handleClick() {
     const { loginSet, fetchQuest, history } = this.props;
+    await fetchQuest();
+    const { login, email } = this.state;
     loginSet(login, email);
-    fetchQuest();
+    const { token } = this.props;
+    localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
 
@@ -77,6 +79,10 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  token: state.fetchToken.token,
+});
+
 const mapDispatchToState = (dispatch) => ({
   loginSet: (login, email) => dispatch(setLogin(login, email)),
   fetchQuest: () => dispatch(fetchAPI()),
@@ -85,7 +91,8 @@ const mapDispatchToState = (dispatch) => ({
 Login.propTypes = {
   fetchQuest: PropTypes.func.isRequired,
   loginSet: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
   history: PropTypes.objectOf({}).isRequired,
 };
 
-export default connect(null, mapDispatchToState)(Login);
+export default connect(mapStateToProps, mapDispatchToState)(Login);

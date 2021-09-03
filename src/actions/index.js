@@ -10,9 +10,9 @@ export default setLogin;
 
 export const requestApi = () => ({ type: REQUEST_API });
 
-export const finishAPI = (questions) => ({
+export const finishAPI = (token) => ({
   type: SUCCESS_API,
-  questions,
+  token,
 });
 
 export function fetchAPI() {
@@ -21,8 +21,6 @@ export function fetchAPI() {
     return fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((data) => data.token)
-      .then((token) => fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
-        .then((info) => info.json())
-        .then((questions) => dispatch(finishAPI(questions))));
+      .then((token) => dispatch(finishAPI(token)));
   };
 }

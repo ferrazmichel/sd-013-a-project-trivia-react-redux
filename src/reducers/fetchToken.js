@@ -1,21 +1,21 @@
 import { REQUEST_API, SUCCESS_API } from '../actions';
 
 const INITIAL_STATE = {
-  questions: null,
+  token: '',
 };
 
-const fetchQuest = (state = INITIAL_STATE, action) => {
+const fetchToken = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case REQUEST_API:
     return { ...state };
   case SUCCESS_API:
     return {
       ...state,
-      questions: action.questions,
+      token: action.token,
     };
   default:
     return state;
   }
 };
 
-export default fetchQuest;
+export default fetchToken;
