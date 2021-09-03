@@ -11,7 +11,7 @@ class Feedback extends React.Component {
       <div className="feedback-main">
         <FeedbackMSG score={ score } />
         <button type="button" data-testid="btn-play-again">
-          <Link to="/ranking">Jogar Novamente 🗘</Link>
+          <Link to="/ranking">Ranking &#127942;</Link>
         </button>
         <button type="button" data-testid="btn-play-again">
           <Link to="/play">Jogar Novamente 🗘</Link>
