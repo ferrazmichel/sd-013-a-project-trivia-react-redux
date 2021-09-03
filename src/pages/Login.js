@@ -46,9 +46,10 @@ class Login extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, name } = this.state;
-    const { setUser, fetchToken } = this.props;
+    const { setUser, fetchToken, history } = this.props;
     setUser(email, name);
     fetchToken();
+    history.push('/game');
   }
 
   render() {
@@ -80,9 +81,7 @@ class Login extends Component {
             disabled={ isDisabled }
             onClick={ this.handleSubmit }
           >
-            <Link to="/game">
-              JOGAR!
-            </Link>
+            JOGAR!
           </button>
           <Link to="/settings">
             <button
@@ -111,6 +110,7 @@ Login.propTypes = {
   setUser: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  history: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
