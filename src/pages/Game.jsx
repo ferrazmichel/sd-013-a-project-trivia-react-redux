@@ -32,8 +32,11 @@ class Game extends Component {
 
   componentDidMount() {
     const { getQuiz, token, amount, id, difficulty, type } = this.props;
-    console.log('token:', token);
+    
+    console.log('id:', id);
+
     this.startTimer(0, true);
+
     getQuiz({ token, amount, id, difficulty, type });
     this.completeRandomIndex();
   }

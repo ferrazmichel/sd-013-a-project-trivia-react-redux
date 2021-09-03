@@ -24,8 +24,8 @@ export const actionTimeoutFalse = () => ({ type: ACTION_TIMEOUT_FALSE });
 export const actionTimeoutTrue = () => ({ type: ACTION_TIMEOUT_TRUE });
 
 // Actions do reducer User
-export const actionSaveImgUrl = (payload) => ({ type: ACTION_SAVE_IMG_URL, payload });
-export const actionGetTokenSucess = (state) => ({ type: ACTION_GET_TOKEN_SUCESS, state });
-export const actionGetTokenError = () => ({ type: ACTION_GET_TOKEN_ERROR });
-export const actionAddSetting = (state) => ({ type: ACTION_ADD_SETTING, state });
-export const actionSaveDataUser = (state) => ({ type: ACTION_SAVE_DATA_USER, state });
+export const actionSaveImgUrl = (payload) => ({ type: ACTION_SAVE_IMG_URL, payload }); // Requisito 04
+export const actionGetTokenSucess = (state) => ({ type: ACTION_GET_TOKEN_SUCESS, state }); // Requisito 01
+export const actionGetTokenError = () => ({ type: ACTION_GET_TOKEN_ERROR }); // Requisito 01
+export const actionAddSetting = (state) => ({ type: ACTION_ADD_SETTING, state }); // Requisito 03
+export const actionSaveDataUser = (state) => ({ type: ACTION_SAVE_DATA_USER, state }); // Requisito 01/02
