@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import GameHeader from '../../components/GameHeader';
 
 class Game extends Component {
   render() {
     return (
       <div>
-        GAME
+        <GameHeader />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  userEmail: state.userReducer.email,
-  userName: state.userReducer.name,
-});
-
-export default connect(mapStateToProps)(Game);
+export default Game;

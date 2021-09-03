@@ -1,4 +1,5 @@
 export const userReducerInitialState = {
+  score: 0,
 };
 
 export const loginReducerInitialState = {
