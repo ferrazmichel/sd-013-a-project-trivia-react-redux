@@ -42,7 +42,6 @@ class TelaDeJogo extends Component {
     const { questions: { results } } = this.state;
     const { correct_answer: correctAnswer } = results[0];
     return (
-      // answers.map((answer) => <button type="button" key={ answer }>{ answer }</button>)
       answers.map((answer, index) => {
         if (answer === correctAnswer) {
           return (

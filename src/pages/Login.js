@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { saveLogin } from '../redux/actions';
 
@@ -37,6 +36,11 @@ class Login extends Component {
   goToConfig() {
     const { history } = this.props;
     history.push('/config');
+  }
+
+  goToGamePage() {
+    const { history } = this.props;
+    history.push('/tela-de-jogo');
   }
 
   async saveToLocalStorage() {
@@ -77,19 +81,18 @@ class Login extends Component {
         >
           Configurações
         </button>
-        <Link to="/tela-de-jogo">
-          <button
-            disabled={ btnDisable }
-            data-testid="btn-play"
-            type="button"
-            onClick={ () => {
-              this.saveToLocalStorage();
-              sendLogin(name, email);
-            } }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          disabled={ btnDisable }
+          data-testid="btn-play"
+          type="button"
+          onClick={ () => {
+            this.saveToLocalStorage();
+            sendLogin(name, email);
+            this.goToGamePage();
+          } }
+        >
+          Jogar
+        </button>
       </form>
     );
   }
