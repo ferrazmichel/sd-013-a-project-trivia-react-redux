@@ -2,7 +2,7 @@ import React from 'react';
 
 class QuestionCard extends React.Component {
   shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
       const temp = array[i];
       array[i] = array[j];
@@ -15,7 +15,7 @@ class QuestionCard extends React.Component {
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
-      <button type="button" data-testid="correct-answer">{correctAnswer}</button>);
+      <button key={ correctAnswer } type="button" data-testid="correct-answer">{correctAnswer}</button>);
     const wrongButtons = incorrectAnswers.map((answer, index) => (
       <button
         type="button"
@@ -34,9 +34,6 @@ class QuestionCard extends React.Component {
   render() {
     const { questionData } = this.props;
     const { category, question } = questionData;
-    // const allQuestions = [...incorrect_answers, correct_answer];
-
-    // console.log(this.renderQuestionButton());
 
     return (
       <div>

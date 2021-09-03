@@ -13,10 +13,14 @@ class Login extends React.Component {
     this.checkInputs = this.checkInputs.bind(this);
   }
 
-  fetchAPI() {
+  async fetchAPI() {
+    const { history } = this.props;
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
-      .then((json) => localStorage.setItem('token', json.token));
+      .then((json) => {
+        localStorage.setItem('token', json.token);
+        history.push('/game');
+      });
   }
 
   handleChange({ target }) {
@@ -26,8 +30,9 @@ class Login extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
+    await this.fetchAPI();
   }
 
   checkInputs() {
@@ -61,20 +66,17 @@ class Login extends React.Component {
           />
         </label>
 
-        <Link to="/game">
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ this.checkInputs() }
-            onClick={ this.fetchAPI }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          data-testid="btn-play"
+          type="submit"
+          disabled={ this.checkInputs() }
+        >
+          Jogar
+        </button>
         <Link to="/configs">
           <button
             data-testid="btn-settings"
-            type="submit"
+            type="button"
           >
             Configurações
           </button>
