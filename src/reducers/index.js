@@ -3,7 +3,8 @@ import user from './user';
 import play from './play';
 
 const rootReducers = combineReducers({
-  user, play,
+  user,
+  play,
 });
 
 export default rootReducers;

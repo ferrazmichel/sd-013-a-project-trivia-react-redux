@@ -13,6 +13,8 @@ class Play extends Component {
         >
           <Link to="/feedback">Feedback</Link>
         </button>
+        <h1>Play</h1>
+        <Header />
       </div>
     );
   }
