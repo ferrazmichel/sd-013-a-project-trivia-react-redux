@@ -3,6 +3,7 @@ import {
   FINISH_FETCH,
   API_URL_TOKEN,
   REGISTER_USER,
+  CORRECT_ANSWER,
   API_URL } from '../../constants';
 
 export const startFetch = () => ({
@@ -16,6 +17,11 @@ export const finishFetch = (payload) => ({
 
 export const registerUser = (payload) => ({
   type: REGISTER_USER,
+  payload,
+});
+
+export const correctAnswer = (payload) => ({
+  type: CORRECT_ANSWER,
   payload,
 });
 
