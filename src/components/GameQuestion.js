@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
-import { connect } from 'react-redux';
 
-let index = 0;
+const index = 0;
 
 class GameQuestion extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      disabled: false,
+    };
+
     this.handleQuestion = this.handleQuestion.bind(this);
     this.dispatchCorrectAnswer = this.dispatchCorrectAnswer.bind(this);
+    this.dispatchIncorrectAnswer = this.dispatchIncorrectAnswer.bind(this);
   }
 
   dispatchCorrectAnswer() {
@@ -24,15 +29,34 @@ class GameQuestion extends Component {
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
-
     dispatch({ type: 'CORRECT_ANSWER' });
+    this.setState({
+      disabled: true,
+    });
+  }
+
+  dispatchIncorrectAnswer() {
+    const { props: { dispatch } } = this;
+
+    // adiciona cores a borda das alternativas conforme resposta correta ou errada
+    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
+    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+
+    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
+    wrongAnswers.forEach((wrongAnswer) => {
+      wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
+    });
+    dispatch({ type: 'INCORRECT_ANSWER' });
+    this.setState({
+      disabled: true,
+    });
   }
 
   handleQuestion() {
     const { questions } = this.props;
+    const { disabled } = this.state;
     const currQuestion = questions[index];
 
-    index += 1;
     const currQuestionOptions = [currQuestion.correct_answer,
       ...currQuestion.incorrect_answers].sort();
     let wrongIndex = 0;
@@ -49,6 +73,7 @@ class GameQuestion extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
+                  disabled={ disabled }
                   onClick={ this.dispatchCorrectAnswer }
                 >
                   {question}
@@ -59,9 +84,9 @@ class GameQuestion extends Component {
               <button
                 type="button"
                 key={ questionIndex }
+                disabled={ disabled }
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
-
-                onClick={ this.dispatchCorrectAnswer }
+                onClick={ this.dispatchIncorrectAnswer }
               >
                 {question}
               </button>);
