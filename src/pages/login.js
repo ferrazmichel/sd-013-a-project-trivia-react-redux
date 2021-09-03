@@ -19,14 +19,13 @@ class Login extends React.Component {
   }
 
   onSubmitForm() {
-    const { history, emailKey } = this.props;
+    const { emailKey } = this.props;
     // Disparamos a nossa action através da função importada
     // de actions.js, que apelidamos de EmailKey
     const { email } = this.state;
     emailKey(email);
-    this.receiveToken();
     this.saveNameEmail();
-    history.push('/trivia');
+    this.receiveToken();
   }
 
   saveNameEmail() {
@@ -44,12 +43,15 @@ class Login extends React.Component {
 
   async receiveToken() {
     const { token } = this.state;
-    const { trivia } = this.props;
+    const { trivia, history } = this.props;
     const Api = await fetch('https://opentdb.com/api_token.php?command=request');
     const json = await Api.json();
     localStorage.setItem('token', JSON.stringify(json.token));
-    this.setState({ token: json.token });
+    this.setState({
+      token: json.token,
+    });
     trivia(token);
+    history.push('/trivia');
   }
 
   handleChange({ target }) {
@@ -59,7 +61,6 @@ class Login extends React.Component {
 
   render() {
     const { email, nameUser } = this.state;
-
     return (
       <div>
         <div>
