@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getLogin } from '../redux/actions';
 import { getToken } from '../services/Api';
 
 class Login extends React.Component {
@@ -37,7 +40,9 @@ class Login extends React.Component {
   }
 
   handleOnClick() {
+    const { setLogin } = this.props;
     this.fetchToken();
+    setLogin(this.state);
   }
 
   render() {
@@ -89,4 +94,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setLogin: (payload) => dispatch(getLogin(payload)),
+});
+
+Login.propTypes = {
+  setLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
