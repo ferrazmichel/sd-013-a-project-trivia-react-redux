@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
@@ -22,6 +23,8 @@ class FeedbackPage extends Component {
             {`final score: ${finalScore}`}
           </span>
         </div>
+        <Link data-testid="btn-play-again" to="/">Play Again</Link>
+        <Link data-testid="btn-ranking" to="/rakingpage">Raking</Link>
       </div>
     );
   }
