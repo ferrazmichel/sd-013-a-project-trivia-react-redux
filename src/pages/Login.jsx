@@ -18,7 +18,8 @@ class Login extends Component {
     this.validateEmail = this.validateEmail.bind(this);
   }
 
-  async playSubmit() {
+  async playSubmit(e) {
+    e.preventDefault();
     const { getToken, history, handleSubmit } = this.props;
     await getToken();
     const { valueToken } = this.props; // I had to call props here, because the async function
@@ -58,7 +59,7 @@ class Login extends Component {
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
         </header>
-        <form>
+        <form action="submit">
           <Input
             label="Nome"
             type="text"
@@ -79,7 +80,7 @@ class Login extends Component {
           />
           <button
             disabled={ !enable }
-            type="button"
+            type="submit"
             data-testid="btn-play"
             onClick={ this.playSubmit }
           >
