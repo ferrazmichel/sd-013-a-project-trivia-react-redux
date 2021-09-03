@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { savePlayer } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -12,6 +15,7 @@ class Login extends React.Component {
     };
 
     this.handleInput = this.handleInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleInput({ target }) {
@@ -22,11 +26,19 @@ class Login extends React.Component {
     }));
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    const { handleSavePlayer, history } = this.props;
+    const { name, email } = this.state;
+    handleSavePlayer({ name, email });
+    history.push('/trivia');
+  }
+
   render() {
     const { name, email, nameValidation, emailValidation } = this.state;
 
     return (
-      <form>
+      <form onSubmit={ this.handleSubmit }>
         <label htmlFor="input-name">
           Nome:
           <input
@@ -65,4 +77,13 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  handleSavePlayer: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+};
+
+const mapDistatchToProps = (dispatch) => ({
+  handleSavePlayer: (player) => dispatch(savePlayer(player)),
+});
+
+export default connect(null, mapDistatchToProps)(Login);
