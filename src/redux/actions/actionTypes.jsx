@@ -1,7 +1,7 @@
 // actions do gravatar
 export const ACTION_FETCH_SUCCESS = 'ACTION_FETCH_SUCCESS';
 
-// Actions do reducer User aa
+// Actions do reducer User
 export const ACTION_GET_TOKEN_ERROR = 'ACTION_GET_TOKEN_ERROR';
 export const ACTION_GET_TOKEN_SUCESS = 'ACTION_GET_TOKEN_SUCESS';
 export const ACTION_SAVE_DATA_USER = 'ACTION_SAVE_DATA_USER';
