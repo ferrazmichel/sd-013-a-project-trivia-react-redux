@@ -22,16 +22,6 @@ class GameBoard extends React.Component {
         { opt }
       </button>
     ));
-
-    // <button type="button" data-testid="correct-answer">{ correct }</button>
-    //       { incorrects.map((answer, index) => (
-    //         <button
-    //           type="button"
-    //           data-testid={ `wrong-answer-${index}` }
-    //           key={ answer }
-    //         >
-    //           { answer }
-    //         </button>
   }
 
   render() {
