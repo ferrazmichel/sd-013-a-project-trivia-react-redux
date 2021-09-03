@@ -1,4 +1,5 @@
 import React from 'react';
+import Countdown from 'react-countdown';
 import './style.css';
 
 class Questions extends React.Component {
@@ -9,7 +10,7 @@ class Questions extends React.Component {
       answered: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.changeState = this.changeState.bind(this);
     this.isAnswered = this.isAnswered.bind(this);
   }
 
@@ -25,7 +26,7 @@ class Questions extends React.Component {
     this.setState({ questionsArray: results });
   }
 
-  handleClick() {
+  changeState() {
     this.setState({
       answered: true,
     });
@@ -36,8 +37,14 @@ class Questions extends React.Component {
     return answered ? className : '';
   }
 
+  isCompleted() {
+    const { answered } = this.state;
+    return answered;
+  }
+
   render() {
     const { questionsArray } = this.state;
+    const number = 30000;
     if (questionsArray.length === 0) return <p>Loading...</p>;
     return (
       <div>
@@ -55,8 +62,9 @@ class Questions extends React.Component {
               <button
                 type="button"
                 data-testid="correct-answer"
-                onClick={ this.handleClick }
+                onClick={ this.changeState }
                 className={ this.isAnswered('correct') }
+                disabled={ this.isCompleted() }
               >
                 {questionsArray[0].correct_answer}
               </button>
@@ -66,14 +74,16 @@ class Questions extends React.Component {
                 <button
                   type="button"
                   data-testid={ `wrong-answer-${i}` }
-                  onClick={ this.handleClick }
+                  onClick={ this.changeState }
                   className={ this.isAnswered('incorrect') }
+                  disabled={ this.isCompleted() }
                 >
                   {incorrect}
                 </button>
               </li>
             ))}
           </ul>
+          <Countdown date={ Date.now() + number } onComplete={ this.changeState } />
         </div>
       </div>
     );
