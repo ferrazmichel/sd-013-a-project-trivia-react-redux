@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Header } from '../components';
 
-class Game extends Component {
+class Feedback extends Component {
   render() {
     return (
-      <div><Header /></div>
+      <header>
+        <Header />
+      </header>
     );
   }
 }
 
-export default Game;
+export default Feedback;
