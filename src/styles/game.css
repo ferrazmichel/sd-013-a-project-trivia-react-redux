@@ -1,0 +1,11 @@
+.wrong {
+  border: 3px solid red;
+}
+
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.alternatives button {
+  margin-left: 5px;
+}
