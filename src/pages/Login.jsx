@@ -39,46 +39,45 @@ class Login extends React.Component {
   }
 
   render() {
-    const { nome, email } = this.state;
-    const { play } = this.state;
-    if (play) {
-      return <Link to="/game" />;
-    }
+    const { play, nome, email } = this.state;
+    if (play) { return <Link to="/game" />; }
     return (
       <div className="login-wrapper">
         <h1 className="login-title">Jogo de Trivia</h1>
         <form className="login-container" onSubmit={ this.handleSubmit }>
           <div className="login-form-control">
             <label htmlFor="input-player-name">
-              Nome do Jogador:
-              <input
-                name="nome"
-                value={ nome }
-                id="input-player-name"
-                type="text"
-                data-testid="input-player-name"
-                onChange={ this.handleChange }
-              />
+              { 'Nome do Jogador: ' }
             </label>
+            <input
+              name="nome"
+              value={ nome }
+              id="input-player-name"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
           </div>
           <div className="login-form-control">
             <label htmlFor="input-gravatar-email">
-              Email do Gravatar:
-              <input
-                name="email"
-                value={ email }
-                id="input-gravatar-email"
-                type="email"
-                data-testid="input-gravatar-email"
-                onChange={ this.handleChange }
-              />
+              { 'Email do Gravatar: ' }
             </label>
+            <input
+              name="email"
+              value={ email }
+              id="input-gravatar-email"
+              type="email"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
           </div>
           <button
+            className="ui-button"
             type="submit"
             data-testid="btn-play"
             disabled={ !nome.length || !email.length }
             onClick={ this.playButton }
+            rounded
           >
             JOGAR!
           </button>
