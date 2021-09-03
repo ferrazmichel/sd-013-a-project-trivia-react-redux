@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Question, Header } from '../components/index';
+import { Question } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
 import randomize from '../functions/randomize';
@@ -143,8 +143,6 @@ class Game extends Component {
 
     return (
       <>
-        {/* Chama o componente Header passando a props de score/pontuação */}
-        <Header score={ score } />
         <p>{timer}</p>
         {/* Chama o componente de questão passando algumas props */}
         <Question
