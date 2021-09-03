@@ -8,7 +8,6 @@ class Header extends React.Component {
     super();
     this.state = {
       img: '',
-      placar: 0,
     };
     this.trocaState = this.trocaState.bind(this);
   }
@@ -24,7 +23,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { state: { img, placar }, props: { user } } = this;
+    const { state: { img }, props: { user, score, respondido } } = this;
     return (
       <div>
         <img
@@ -36,16 +35,17 @@ class Header extends React.Component {
           {user}
         </h3>
         <p data-testid="header-score">
-          {placar}
+          {respondido ? score : 0}
         </p>
       </div>
     );
   }
 }
 Header.propTypes = {
-  emailUser: PropTypes.string.isRequired,
-  user: PropTypes.string.isRequired,
-};
+  emailUser: PropTypes.string,
+  user: PropTypes.string,
+  score: PropTypes.number,
+}.isRequired;
 const mapStateToProps = (state) => ({
   emailUser: state.login.email,
   user: state.login.login,
