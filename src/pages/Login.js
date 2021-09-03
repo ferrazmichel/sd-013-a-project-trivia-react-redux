@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sendUserInfo } from '../redux/actions';
+import getTokenApi from '../redux/services/fetchToken';
 
 class Login extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class Login extends Component {
     const { userLogin } = this.props;
     this.setState({ redirect: true });
     userLogin(({ email, player }));
+    getTokenApi();
   }
 
   activateButton() {
