@@ -16,7 +16,6 @@ class Header extends React.Component {
       name,
       score,
     };
-    console.log(obj);
     return obj;
   }
 

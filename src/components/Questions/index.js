@@ -1,13 +1,16 @@
 import React from 'react';
-// o componente está sendo renderizado, mas não está passando no teste. Acredito que o teste está sendo executado mais rápido do que o retorno da API e por isso está pegando o estado ainda vazio. Não consegui fazer o setState no componentDidMount, mas acho que se deixá-lo assíncrono e atualizar o estado nele, talvez o teste consiga já pegar o estado atualizado.
+import './style.css';
 
 class Questions extends React.Component {
   constructor() {
     super();
     this.state = {
       questionsArray: [],
+      answered: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.isAnswered = this.isAnswered.bind(this);
   }
 
   componentDidMount() {
@@ -20,6 +23,17 @@ class Questions extends React.Component {
     const json = await fetchQuestions.json();
     const { results } = json;
     this.setState({ questionsArray: results });
+  }
+
+  handleClick() {
+    this.setState({
+      answered: true,
+    });
+  }
+
+  isAnswered(className) {
+    const { answered } = this.state;
+    return answered ? className : '';
   }
 
   render() {
@@ -38,13 +52,23 @@ class Questions extends React.Component {
           </p>
           <ul>
             <li>
-              <button type="button" data-testid="correct-answer">
+              <button
+                type="button"
+                data-testid="correct-answer"
+                onClick={ this.handleClick }
+                className={ this.isAnswered('correct') }
+              >
                 {questionsArray[0].correct_answer}
               </button>
             </li>
             {questionsArray[0].incorrect_answers.map((incorrect, i) => (
               <li key={ i }>
-                <button type="button" data-testid={ `wrong-answer-${i}` }>
+                <button
+                  type="button"
+                  data-testid={ `wrong-answer-${i}` }
+                  onClick={ this.handleClick }
+                  className={ this.isAnswered('incorrect') }
+                >
                   {incorrect}
                 </button>
               </li>
