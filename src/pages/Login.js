@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import ButtonPlayGame from '../components/ButtonPlayGame';
 import InputLogin from '../components/InputLogin';
+import fetchTriviaAPI from '../services/triviaAPI';
 
 class Login extends React.Component {
   constructor(props) {
@@ -19,7 +20,12 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick() {
+  async handleClick() {
+    const response = await fetchTriviaAPI();
+    const { token } = response;
+
+    localStorage.setItem('token', token);
+
     this.setState({
       redirect: true,
     });
@@ -73,7 +79,7 @@ class Login extends React.Component {
             onClick={ this.handleClick }
           />
         </form>
-        { redirect && <Redirect to="/game" /> }
+        { redirect && <Redirect to="/gamePage" /> }
       </div>
     );
   }
