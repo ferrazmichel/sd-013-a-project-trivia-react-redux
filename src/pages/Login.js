@@ -22,12 +22,13 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { loginSet, fetchQuest } = this.props;
+    const { loginSet, fetchQuest, history } = this.props;
     await fetchQuest();
     const { login, email } = this.state;
     loginSet(login, email);
     const { token } = this.props;
     localStorage.setItem('token', JSON.stringify(token));
+    history.push('/game');
   }
 
   render() {
@@ -91,6 +92,7 @@ Login.propTypes = {
   fetchQuest: PropTypes.func.isRequired,
   loginSet: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  history: PropTypes.objectOf({}).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToState)(Login);
