@@ -88,7 +88,7 @@ LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  startGame: PropTypes.func,
+  StartToken: PropTypes.func,
   dispatchInputLogin: PropTypes.func,
 }.isRequired;
 
