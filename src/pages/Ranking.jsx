@@ -17,13 +17,20 @@ class Ranking extends Component {
   }
 
   renderPlayerList() {
-    // implementacao com localStorage
-    const { player } = JSON.parse(localStorage.getItem('state'));
-    const playersArray = [];
-    const playerFake = { name: 'Leonardo', email: 'lcds90@gmail.com', gravatar: 'https://www.gravatar.com/avatar/a9014bf18369dcdc8d21c32e92135e78', assertions: 0, score: 200 };
-    playersArray.push(player, playerFake);
-    playersArray.sort((a, b) => b.score - a.score);
-    this.setState({ players: playersArray });
+    const { name, score, assertions, gravatar } = JSON.parse(localStorage.state).player;
+    const newEntry = { name, score, assertions, gravatar };
+
+    if (localStorage.ranking) {
+      const ranking = JSON.parse(localStorage.ranking);
+      const newRanking = [...ranking, newEntry];
+      newRanking.sort((a, b) => b.score - a.score);
+      localStorage.ranking = JSON.stringify(newRanking);
+      this.setState({ players: newRanking });
+    } else {
+      const newRanking = [newEntry];
+      localStorage.ranking = JSON.stringify(newRanking);
+      this.setState({ players: newRanking });
+    }
   }
 
   render() {
