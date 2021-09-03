@@ -22,7 +22,8 @@ class Game extends Component {
   handleSelect(correctOpt) {
     const options = document.getElementsByName('options');
     options.forEach((opt) => {
-      opt.className = opt.value === correctOpt ? 'game-correct' : 'game-incorrect';
+      const className = opt.value === correctOpt ? 'game-correct' : 'game-incorrect';
+      opt.classList.add(className);
     });
   }
 
