@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
 import Feedbacks from './pages/Feedbacks';
+import GamePage from './pages/GamePage';
 
 class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ class App extends React.Component {
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/feedbacks" component={ Feedbacks } />
+        <Route path="/gamepage" component={ GamePage } />
       </Switch>
     );
   }
