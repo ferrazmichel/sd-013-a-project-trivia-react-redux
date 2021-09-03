@@ -16,6 +16,7 @@ class Game extends Component {
       position: 0,
       question: { incorrect_answers: [] },
       score: 0,
+      gameOver: false,
       randomIndex: [],
       assertions: 0,
     };
@@ -116,7 +117,7 @@ class Game extends Component {
         const updatedRanking = this.checkPlayer(ranking, name, score, picture);
         localStorage.setItem('ranking', JSON.stringify(updatedRanking));
       }
-      this.setState({ question: questions[position] });
+      this.setState({ question: questions[position], gameOver });
     });
     this.completeRandomIndex();
   }
@@ -133,11 +134,16 @@ class Game extends Component {
   }
 
   render() {
-    const { timer, question, randomIndex } = this.state;
+    const { timer, gameOver, question, score, randomIndex } = this.state;
     const { questions } = this.props;
+
+    // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
+    if (gameOver) { return console.log('página feedback'); }
 
     return (
       <>
+        {/* Chama o componente Header passando a props de score/pontuação */}
+        { /* <Header> e passa o score={ score } como props */}
         <p>{timer}</p>
         {/* Chama o componente de questão passando algumas props */}
         <Question
