@@ -4,17 +4,26 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions } from '../redux/actions';
 import GameBoard from '../components/GameBoard';
+import './Game.css';
 
 class Game extends Component {
   constructor(props) {
     super(props);
 
     this.state = {};
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   componentDidMount() {
     const { getQs, token } = this.props;
     getQs(token);
+  }
+
+  handleSelect(correctOpt) {
+    const options = document.getElementsByName('options');
+    options.forEach((opt) => {
+      opt.className = opt.value === correctOpt ? 'game-correct' : 'game-incorrect';
+    });
   }
 
   render() {
@@ -23,7 +32,10 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <GameBoard question={ questions[0] } />
+        <GameBoard
+          question={ questions[0] }
+          onSelect={ this.handleSelect }
+        />
       </div>
     );
   }

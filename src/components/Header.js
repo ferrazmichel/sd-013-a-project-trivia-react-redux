@@ -36,6 +36,6 @@ export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {
   userName: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
   gravatar: PropTypes.string.isRequired,
 };
