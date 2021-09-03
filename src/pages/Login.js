@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getLogin } from '../redux/actions';
-import { getToken } from '../services/Api';
+import { getToken, getGravatar } from '../services/Api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -35,8 +35,11 @@ class Login extends React.Component {
   }
 
   async fetchToken() {
+    const { email } = this.state;
     const result = await getToken();
+    const imagem = getGravatar(email);
     localStorage.setItem('token', result.token);
+    localStorage.setItem('ranking', JSON.stringify({ picture: imagem }));
   }
 
   handleOnClick() {
