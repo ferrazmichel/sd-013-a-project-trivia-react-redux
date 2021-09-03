@@ -5,6 +5,13 @@ import rootReducer from '../reducers';
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
+store.subscribe(() => {
+  const { player } = store.getState();
+  localStorage.setItem('state', JSON.stringify({
+    player,
+  }));
+})
+
 if (window.Cypress) {
   window.store = store;
 }

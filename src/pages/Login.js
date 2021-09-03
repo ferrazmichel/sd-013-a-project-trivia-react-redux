@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { saveUserInfo } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,9 +16,13 @@ class Login extends React.Component {
   }
 
   fetchAPI() {
+    const { history } = this.props;
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
-      .then((json) => localStorage.setItem('token', json.token));
+      .then((json) => {
+        localStorage.setItem('token', json.token);
+        history.push('/game');
+      });
   }
 
   handleChange({ target }) {
@@ -28,6 +34,9 @@ class Login extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.fetchAPI();
+    const { saveUser } = this.props;
+    saveUser(this.state);
   }
 
   checkInputs() {
@@ -61,20 +70,17 @@ class Login extends React.Component {
           />
         </label>
 
-        <Link to="/game">
           <button
             data-testid="btn-play"
             type="submit"
             disabled={ this.checkInputs() }
-            onClick={ this.fetchAPI }
           >
             Jogar
           </button>
-        </Link>
         <Link to="/configs">
           <button
             data-testid="btn-settings"
-            type="submit"
+            type="button"
           >
             Configurações
           </button>
@@ -85,4 +91,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (payload) => dispatch(saveUserInfo(payload)),
+})
+
+export default connect(null, mapDispatchToProps)(Login);
