@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
 
 class TelaDeJogo extends Component {
   render() {
     return (
-      <div>TELA DE JOGO</div>
+      <>
+        <Header />
+        <div>TELA DE JOGO</div>
+      </>
     );
   }
 }
