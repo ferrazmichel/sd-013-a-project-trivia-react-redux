@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import QuestionCard from '../components/QuestionCard';
+import Header from '../components/Header';
 import { fetchQuestions } from '../redux/actions';
 
 class Game extends React.Component {
@@ -31,6 +32,7 @@ class Game extends React.Component {
     return (
       <div>
         Game
+        <Header />
         <QuestionCard questionData={ questions[currentQuestion] } />
         <button type="button">Próxima pergunta</button>
       </div>

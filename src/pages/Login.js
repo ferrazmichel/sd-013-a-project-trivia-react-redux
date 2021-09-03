@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { saveUserInfo } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,7 +16,7 @@ class Login extends React.Component {
     this.checkInputs = this.checkInputs.bind(this);
   }
 
-  async fetchAPI() {
+  fetchAPI() {
     const { history } = this.props;
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
@@ -32,7 +35,9 @@ class Login extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    await this.fetchAPI();
+    this.fetchAPI();
+    const { saveUser } = this.props;
+    saveUser(this.state);
   }
 
   checkInputs() {
@@ -87,4 +92,15 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (payload) => dispatch(saveUserInfo(payload)),
+});
+
+Login.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
