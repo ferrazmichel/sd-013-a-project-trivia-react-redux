@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 const assertionsThreshold = 3;
@@ -31,6 +32,26 @@ class Feedback extends Component {
               <span data-testid="feedback-total-question">{assertions}</span>
               &nbsp;questões!
             </p>
+            <Link
+              to="/"
+            >
+              <button
+                data-testid="btn-play-again"
+                type="button"
+              >
+                Jogar novamente
+              </button>
+            </Link>
+            <Link
+              to="/ranking"
+            >
+              <button
+                data-testid="btn-ranking"
+                type="button"
+              >
+                Ver Ranking
+              </button>
+            </Link>
           </div>
         </main>
       </>
@@ -53,3 +74,6 @@ Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
+
+// 39:17  error  Expected the depth of nested jsx elements to be <= 4, but found 5  react/jsx-max-depth
+//  49:17  error  Expected the depth of nested jsx elements to be <= 4, but found 5  react/jsx-max-depth
