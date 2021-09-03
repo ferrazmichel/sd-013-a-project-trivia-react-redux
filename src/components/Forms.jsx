@@ -13,12 +13,19 @@ class Forms extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.tokenRecebido = this.tokenRecebido.bind(this);
   }
 
   onSubmitForm() {
     const { dispatchSetLogin } = this.props;
     dispatchSetLogin(this.state);
-    // history.push('/jogo');
+    this.apiFetch();
+  }
+
+  async apiFetch() {
+    const Api = await fetch('https://opentdb.com/api_token.php?command=request');
+    const json = await Api.json();
+    localStorage.setItem('token', JSON.stringify(json.token));
   }
 
   handleChange({ target }) {
