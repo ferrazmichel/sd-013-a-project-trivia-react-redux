@@ -11,22 +11,20 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
+      enable: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.playSubmit = this.playSubmit.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
   }
 
-  // componentDidMount() {
-  // }
-
   async playSubmit() {
-    const { getToken } = this.props;
+    const { getToken, history, handleSubmit } = this.props;
     await getToken();
-    const { valueToken, history } = this.props;
+    const { valueToken } = this.props; // I had to call props here, because the async function
     history.push('/gameScreen');
     localStorage.setItem('token', JSON.stringify(valueToken.token));
     const { name, email } = this.state;
-    const { handleSubmit } = this.props;
 
     const data = {
       name,
@@ -36,22 +34,25 @@ class Login extends Component {
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => (
+      this.setState((prevState) => (
+        { enable: prevState.name !== '' && this.validateEmail() }))
+    ));
+  }
+
+  validateEmail() {
+    const { email } = this.state;
+    const isValid = /^([\w.%+-]+)@([\w-]+.)+([\w]{2,})$/i.test(email);
+    if (!isValid || email === '') {
+      return false;
+    }
+    return true;
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, enable } = this.state;
+    const { history } = this.props;
 
-    const six = 6;
-    const validateEmail = () => {
-      const isValid = email.match(/^([\w.%+-]+)@([\w-]+.)+([\w]{2,})$/i);
-      if (!isValid || email.lenght === 0) {
-        return false;
-      }
-      return true;
-    };
-
-    const enable = validateEmail() && (name.length >= six);
     return (
       <section>
         <header className="App-header">
@@ -83,6 +84,13 @@ class Login extends Component {
             onClick={ this.playSubmit }
           >
             Jogar
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/configScreen') }
+          >
+            Configurações
           </button>
         </form>
       </section>
