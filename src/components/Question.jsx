@@ -63,7 +63,6 @@ class Question extends Component {
       // Pega também a questão correta e joga ela dentro do alternatives também
       { correct: true, alt: question.correct_answer, isCorrect: 'correct' },
     ] : [];
-    console.log('alternatives: ', alternatives);
     return (
       <div className="question">
         {/* Mostra a categoria da Questão. Ex: General Knowledge */}
