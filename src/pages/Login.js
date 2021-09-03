@@ -9,8 +9,8 @@ class Login extends React.Component {
     super(props);
 
     this.state = {
-      inputName: '',
-      inputEmail: '',
+      name: '',
+      email: '',
       btnDisabledStatus: true,
       redirect: false,
     };
@@ -38,12 +38,12 @@ class Login extends React.Component {
   }
 
   verifyInputs() {
-    const { inputName, inputEmail } = this.state;
+    const { name, email } = this.state;
 
     const emailVerification = /\S+@\S+\.\S+/;
-    const isValidEmail = emailVerification.test(inputEmail);
+    const isValidEmail = emailVerification.test(email);
 
-    if (inputName !== '' && inputEmail !== '' && isValidEmail) {
+    if (name !== '' && email !== '' && isValidEmail) {
       this.setState({
         btnDisabledStatus: false,
       });
@@ -55,7 +55,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { btnDisabledStatus, inputName, inputEmail, redirect } = this.state;
+    const { btnDisabledStatus, name, email, redirect } = this.state;
 
     return (
       <div>
@@ -64,15 +64,15 @@ class Login extends React.Component {
             labelValue="Nome"
             dataTestId="input-player-name"
             onChange={ this.handleChange }
-            name="inputName"
-            value={ inputName }
+            name="name"
+            value={ name }
           />
           <InputLogin
             labelValue="E-mail"
             dataTestId="input-gravatar-email"
             onChange={ this.handleChange }
-            name="inputEmail"
-            value={ inputEmail }
+            name="email"
+            value={ email }
           />
           <ButtonPlayGame
             isDisabled={ btnDisabledStatus }
