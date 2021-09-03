@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class QuestionCard extends React.Component {
   shuffleArray(array) {
@@ -15,7 +16,13 @@ class QuestionCard extends React.Component {
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
-      <button key={ correctAnswer } type="button" data-testid="correct-answer">{correctAnswer}</button>);
+      <button
+        key={ correctAnswer }
+        type="button"
+        data-testid="correct-answer"
+      >
+        {correctAnswer}
+      </button>);
     const wrongButtons = incorrectAnswers.map((answer, index) => (
       <button
         type="button"
@@ -44,5 +51,14 @@ class QuestionCard extends React.Component {
     );
   }
 }
+
+QuestionCard.propTypes = {
+  questionData: PropTypes.shape({
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string,
+    question: PropTypes.string,
+  }).isRequired,
+};
 
 export default QuestionCard;

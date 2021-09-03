@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import QuestionCard from '../components/QuestionCard';
 import Header from '../components/Header';
 import { fetchQuestions } from '../redux/actions';
@@ -49,5 +50,10 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = ({ questionsReducer }) => ({
   questions: questionsReducer.questions,
 });
+
+Game.propTypes = {
+  getQuestions: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
