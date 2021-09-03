@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchDados } from '../redux/actions';
+import { fetchDados, loginSubmit } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -14,6 +14,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleCLick = this.handleCLick.bind(this);
+    this.handleCLickConfig = this.handleCLickConfig.bind(this);
   }
 
   handleChange({ target }) {
@@ -34,9 +35,19 @@ class Login extends React.Component {
   }
 
   handleCLick() {
-    const { history, fetchDadosTrivia } = this.props;
+    const { history, fetchDadosTrivia, loginSubmitTrivia } = this.props;
+    const { playerEmail, playerName } = this.state;
+    loginSubmitTrivia({ playerEmail, playerName });
     fetchDadosTrivia();
     history.push('/game');
+    // console.log(resultado);
+  }
+
+  handleCLickConfig() {
+    const { history } = this.props;
+    history.push('/config');
+    // console.log(this.props);
+    // console.log(history);
   }
 
   render() {
@@ -73,6 +84,13 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.handleCLickConfig() }
+        >
+          Configurações
+        </button>
       </div>
     );
   }
@@ -80,6 +98,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDadosTrivia: () => dispatch(fetchDados()),
+  loginSubmitTrivia: (usuario) => dispatch(loginSubmit(usuario)),
 });
 
 Login.propTypes = {
