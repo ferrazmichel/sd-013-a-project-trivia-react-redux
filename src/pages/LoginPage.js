@@ -30,7 +30,7 @@ class LoginPage extends Component {
     const { startGame, questionsGame, player } = this.props;
     await startGame();
     const { token } = this.props;
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', JSON.stringify(token));
     await questionsGame(token);
     player(email);
   }
