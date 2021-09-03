@@ -11,15 +11,19 @@ class Jogo extends React.Component {
       questions: [],
       currentIndex: 0,
       isLoading: true,
+      seconds: 30,
     };
 
     this.renderHeader = this.renderHeader.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.getData = this.getData.bind(this);
+    this.tickSecond = this.tickSecond.bind(this);
   }
 
   componentDidMount() {
     this.getData();
+    const MAGIC_NUMBER = 1000;
+    this.intervalId = setInterval(this.tickSecond, MAGIC_NUMBER);
   }
 
   async getData() {
@@ -31,6 +35,24 @@ class Jogo extends React.Component {
       questions: data,
       isLoading: false,
     });
+  }
+
+  tickSecond() {
+    const { seconds } = this.state;
+    if (seconds > 0) {
+      this.setState((prevState) => ({
+        seconds: prevState.seconds - 1,
+      }));
+    } else {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  handleClickAnswer(event) {
+    const { target } = event;
+    const alternatives = [...target.parentElement.children];
+    console.log(alternatives);
+    alternatives.forEach((alternative) => alternative.classList.toggle('selected'));
   }
 
   renderHeader() {
@@ -52,21 +74,22 @@ class Jogo extends React.Component {
   }
 
   renderQuestions() {
-    const { questions, currentIndex } = this.state;
+    const { questions, currentIndex, seconds } = this.state;
     const currentQuestion = questions[currentIndex];
     const correctAnswer = currentQuestion.correct_answer;
     const alternatives = [...currentQuestion.incorrect_answers, correctAnswer];
     const sortAlternatives = alternatives.sort();
-    console.log(sortAlternatives);
-
     return (
-
       <div>
         <div>
           <h2 data-testid="question-category">{ currentQuestion.category }</h2>
           <p data-testid="question-text">{ currentQuestion.question }</p>
+          <p>
+            Tempo:
+            {' '}
+            { seconds }
+          </p>
         </div>
-
         <div>
           {sortAlternatives.map((alternative, index) => {
             if (alternative === correctAnswer) {
@@ -75,6 +98,9 @@ class Jogo extends React.Component {
                   key={ index }
                   data-testid="correct-answer"
                   type="button"
+                  className="correct"
+                  onClick={ this.handleClickAnswer }
+                  disabled={ seconds === 0 }
                 >
                   { alternative }
                 </button>
@@ -85,13 +111,15 @@ class Jogo extends React.Component {
                 key={ index }
                 data-testid={ `wrong-answer-${index}` }
                 type="button"
+                className="incorrect"
+                onClick={ this.handleClickAnswer }
+                disabled={ seconds === 0 }
               >
                 { alternative }
               </button>);
           })}
+          <button type="button">Próxima</button>
         </div>
-
-        <button type="button">Próxima</button>
       </div>
     );
   }
