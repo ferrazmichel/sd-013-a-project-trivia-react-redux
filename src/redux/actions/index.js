@@ -24,7 +24,6 @@ export const fetchData = () => (
     dispatch(startFetch());
 
     try {
-      console.log(registerUser({ teste: 'oi', teste2: 'a' }));
       const response = await fetch(API_URL_TOKEN);
       const data = await response.json();
       const { token } = await data;
