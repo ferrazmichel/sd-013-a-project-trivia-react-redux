@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { setLogin } from '../Actions';
 
 class Forms extends React.Component {
@@ -17,6 +18,7 @@ class Forms extends React.Component {
   onSubmitForm() {
     const { dispatchSetLogin } = this.props;
     dispatchSetLogin(this.state);
+    // history.push('/jogo');
   }
 
   handleChange({ target }) {
@@ -58,20 +60,26 @@ class Forms extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ this.validEmail(email, nome) }
-          onClick={ this.onSubmitForm }
-        >
-          Jogar
-        </button>
+        <Link to="/jogo">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ this.validEmail(email, nome) }
+            onClick={ this.onSubmitForm }
+          >
+            Jogar
+          </button>
+        </Link>
+
       </form>
     );
   }
 }
 
 Forms.propTypes = {
+  // history: PropTypes.shape({
+  //   push: PropTypes.func.isRequired,
+  // }).isRequired,
   dispatchSetLogin: PropTypes.func.isRequired,
 };
 
