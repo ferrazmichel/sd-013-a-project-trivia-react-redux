@@ -24,38 +24,33 @@ class Questions extends React.Component {
 
   render() {
     const { questionsArray } = this.state;
-
+    if (questionsArray.length === 0) return <p>Loading...</p>;
     return (
       <div>
-        {
-          questionsArray.map((question, index) => (
-            <div key={ index }>
-              <p>
-                Category:
-                <span data-testid="question-category">{question.category}</span>
-              </p>
-              <p>
-                Question:
-                <span data-testid="question-text">{question.question}</span>
-              </p>
-              <ul>
-                <li key={ index }>
-                  <button type="button" data-testid="correct-answer">
-                    {question.correct_answer}
-                  </button>
-                </li>
-                {question.incorrect_answers.map((incorrect, i) => (
-                  <li key={ i }>
-                    <button type="button" data-testid={ `wrong-answer-${i}` }>
-                      {incorrect}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))
-
-        }
+        <div>
+          <p>
+            Category:
+            <span data-testid="question-category">{questionsArray[0].category}</span>
+          </p>
+          <p>
+            Question:
+            <span data-testid="question-text">{questionsArray[0].question}</span>
+          </p>
+          <ul>
+            <li>
+              <button type="button" data-testid="correct-answer">
+                {questionsArray[0].correct_answer}
+              </button>
+            </li>
+            {questionsArray[0].incorrect_answers.map((incorrect, i) => (
+              <li key={ i }>
+                <button type="button" data-testid={ `wrong-answer-${i}` }>
+                  {incorrect}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
