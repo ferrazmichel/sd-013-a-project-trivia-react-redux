@@ -70,6 +70,7 @@ class Login extends React.Component {
           />
           <ButtonPlayGame
             isDisabled={ btnDisabledStatus }
+            onClick={ this.handleClick }
           />
         </form>
         { redirect && <Redirect to="/game" /> }

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 class ButtonPlayGame extends React.Component {
   render() {
-    const { isDisabled } = this.props;
+    const { isDisabled, onClick } = this.props;
 
     return (
       <button
         data-testid="btn-play"
         type="button"
         disabled={ isDisabled }
+        onClick={ onClick }
       >
         Jogar
       </button>
@@ -19,6 +20,7 @@ class ButtonPlayGame extends React.Component {
 
 ButtonPlayGame.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default ButtonPlayGame;
