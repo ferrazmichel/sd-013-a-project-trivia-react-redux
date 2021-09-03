@@ -111,7 +111,7 @@ describe.only('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para 
 
 // game
 
-describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
+describe.only('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

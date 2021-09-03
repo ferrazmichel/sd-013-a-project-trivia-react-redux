@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { saveLogin } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -44,7 +46,8 @@ class Login extends Component {
   }
 
   render() {
-    const { btnDisable } = this.state;
+    const { btnDisable, name, email } = this.state;
+    const { sendLogin } = this.props;
     return (
       <form>
         <label htmlFor="name">
@@ -79,7 +82,10 @@ class Login extends Component {
             disabled={ btnDisable }
             data-testid="btn-play"
             type="button"
-            onClick={ this.saveToLocalStorage }
+            onClick={ () => {
+              this.saveToLocalStorage();
+              sendLogin(name, email);
+            } }
           >
             Jogar
           </button>
@@ -89,8 +95,12 @@ class Login extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  sendLogin: (name, email) => dispatch(saveLogin(name, email)),
+});
+
 Login.propTypes = {
   history: PropTypes.object,
 }.isRequired;
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
