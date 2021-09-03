@@ -3,6 +3,7 @@ import { bool, string, func, arrayOf, shape, number } from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './Button';
 import { actionTimeoutFalse } from '../redux/actions/index';
+import '../styles/game.css';
 
 class Question extends Component {
   constructor(props) {
