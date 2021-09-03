@@ -29,6 +29,8 @@ class Login extends React.Component {
     loginSet(login, email);
     const { token } = this.props;
     await fetchQuest(token);
+    const { perguntas } = this.props;
+    localStorage.setItem('perguntas', JSON.stringify(perguntas));
     localStorage.setItem('token', JSON.stringify(token));
     history.push('/game');
   }
@@ -76,6 +78,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => ({
   token: state.fetchToken.token,
+  perguntas: state.fetchQuestions.questions,
 });
 
 const mapDispatchToState = (dispatch) => ({
@@ -90,6 +93,7 @@ Login.propTypes = {
   loginSet: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   history: PropTypes.objectOf({}).isRequired,
+  perguntas: PropTypes.objectOf({}).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToState)(Login);
