@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   timeout: false,
 };
 
-const quizReducer = (state = INITIAL_STATE, action) => {
+const quiz = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTION_FETCHING_QUIZ:
     return { ...state, loading: true };
@@ -26,4 +26,4 @@ const quizReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default quizReducer;
+export default quiz;

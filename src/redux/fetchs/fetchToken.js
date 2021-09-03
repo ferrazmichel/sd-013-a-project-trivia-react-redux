@@ -15,7 +15,7 @@ const fetchToken = () => async (dispatch) => {
   // Guardar no localStorage o token
   localStorage.setItem('token', JSON.stringify(token));
   // Disparar uma action de conexão com a API e getToken de sucesso
-  dispatch(actionGetTokenSucess({ token }));
+  dispatch(actionGetTokenSucess(token));
 };
 
 export default fetchToken;

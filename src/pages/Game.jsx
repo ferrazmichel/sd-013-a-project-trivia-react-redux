@@ -32,7 +32,7 @@ class Game extends Component {
 
   componentDidMount() {
     const { getQuiz, token, amount, id, difficulty, type } = this.props;
-
+    console.log('token:', token);
     this.startTimer(0, true);
     getQuiz({ token, amount, id, difficulty, type });
     this.completeRandomIndex();
@@ -134,7 +134,7 @@ class Game extends Component {
   }
 
   render() {
-    const { timer, gameOver, question, score, randomIndex } = this.state;
+    const { timer, gameOver, question, randomIndex } = this.state;
     const { questions } = this.props;
 
     // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback

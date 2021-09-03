@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 const reducerUser = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTION_GET_TOKEN_SUCESS:
-    return { ...state, ...action.state, errorToken: '' };
+    return { ...state, token: action.state, errorToken: '' };
   case ACTION_GET_TOKEN_ERROR:
     return { ...state, error: 'Ocorreu um erro com a requisição do token' };
   default: return state;
