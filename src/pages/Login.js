@@ -34,9 +34,16 @@ class Login extends React.Component {
   verifyInputs() {
     const { inputName, inputEmail } = this.state;
 
-    if (inputName !== '' && inputEmail !== '') {
+    const emailVerification = /\S+@\S+\.\S+/;
+    const isValidEmail = emailVerification.test(inputEmail);
+
+    if (inputName !== '' && inputEmail !== '' && isValidEmail) {
       this.setState({
         btnDisabledStatus: false,
+      });
+    } else {
+      this.setState({
+        btnDisabledStatus: true,
       });
     }
   }
@@ -51,12 +58,14 @@ class Login extends React.Component {
             labelValue="Nome"
             dataTestId="input-player-name"
             onChange={ this.handleChange }
+            name="inputName"
             value={ inputName }
           />
           <InputLogin
             labelValue="E-mail"
             dataTestId="input-gravatar-email"
             onChange={ this.handleChange }
+            name="inputEmail"
             value={ inputEmail }
           />
           <ButtonPlayGame
