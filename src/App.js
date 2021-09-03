@@ -18,7 +18,7 @@ export default function App() {
         <Route exact path="/gamepage">
           <GamePage />
         </Route>
-        <Route path="/rakingpage">
+        <Route path="/rankingpage">
           <RankingPage />
         </Route>
         <Route path="/feedbackpage">
