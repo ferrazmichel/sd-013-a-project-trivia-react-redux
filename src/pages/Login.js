@@ -38,14 +38,17 @@ class Login extends React.Component {
     const { email } = this.state;
     const result = await getToken();
     const imagem = getGravatar(email);
+    console.log(imagem);
     localStorage.setItem('token', result.token);
-    localStorage.setItem('ranking', JSON.stringify({ picture: imagem }));
+    localStorage.setItem('ranking', JSON.stringify([{ picture: imagem }]));
   }
 
   handleOnClick() {
+    const { email } = this.state;
+    const imagem = getGravatar(email);
     const { setLogin } = this.props;
     this.fetchToken();
-    setLogin(this.state);
+    setLogin({ ...this.state, picture: imagem });
   }
 
   render() {
