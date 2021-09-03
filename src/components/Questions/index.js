@@ -1,34 +1,21 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-// o componente está sendo renderizado, mas não está passando no teste. Acredito que o teste está sendo executado mais rápido do que o retorno da API e por isso está pegando o estado ainda vazio. Não consegui fazer o setState no componentDidMount, mas acho que se deixá-lo assíncrono e atualizar o estado nele, talvez o teste consiga já pegar o estado atualizado.
+import { connect } from 'react-redux';
+import { fetchApiQuestions } from '../../actions';
 
 class Questions extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      questionsArray: [],
-    };
-    this.getQuestions = this.getQuestions.bind(this);
-  }
-
   componentDidMount() {
-    this.getQuestions();
-  }
-
-  async getQuestions() {
-    const getToken = JSON.parse(localStorage.getItem('token'));
-    const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${getToken}`);
-    const json = await fetchQuestions.json();
-    const { results } = json;
-    this.setState({ questionsArray: results });
+    const { token, apiQuestions } = this.props;
+    apiQuestions(token);
   }
 
   render() {
-    const { questionsArray } = this.state;
+    const { questions } = this.props;
 
     return (
       <div>
         {
-          questionsArray.map((question, index) => (
+          questions.map((question, index) => (
             <div key={ index }>
               <p>
                 Category:
@@ -61,4 +48,18 @@ class Questions extends React.Component {
   }
 }
 
-export default Questions;
+Questions.propTypes = {
+  apiQuestions: PropTypes.func,
+  token: PropTypes.string,
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  token: state.trivia.token,
+  questions: state.trivia.questions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  apiQuestions: (token) => dispatch(fetchApiQuestions(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);

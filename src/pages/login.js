@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveEmail } from '../actions';
+import { fetchApiToken, saveEmail } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -13,17 +13,16 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.receiveToken = this.receiveToken.bind(this);
     this.saveNameEmail = this.saveNameEmail.bind(this);
   }
 
   onSubmitForm() {
-    const { history, emailKey } = this.props;
+    const { history, emailKey, apiToken } = this.props;
     // Disparamos a nossa action através da função importada
     // de actions.js, que apelidamos de EmailKey
     const { email } = this.state;
     emailKey(email);
-    this.receiveToken();
+    apiToken();
     this.saveNameEmail();
     history.push('/trivia');
   }
@@ -39,12 +38,6 @@ class Login extends React.Component {
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
-  }
-
-  async receiveToken() {
-    const Api = await fetch('https://opentdb.com/api_token.php?command=request');
-    const json = await Api.json();
-    localStorage.setItem('token', JSON.stringify(json.token));
   }
 
   handleChange({ target }) {
@@ -101,10 +94,12 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  apiToken: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   emailKey: (email) => dispatch(saveEmail(email)),
+  apiToken: () => dispatch(fetchApiToken()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
