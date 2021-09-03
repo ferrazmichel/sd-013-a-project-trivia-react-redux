@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import '../App.css';
 
 class DisplayQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: 0,
+      classCorrect: '',
+      classWrong: '',
     };
+    this.handleAnswer = this.handleAnswer.bind(this);
+  }
+
+  handleAnswer() {
+    this.setState({ classCorrect: 'correct-answer', classWrong: 'wrong-answer' });
   }
 
   render() {
     const { questions } = this.props;
-    const { id } = this.state;
+    const { id, classCorrect, classWrong } = this.state;
     const question = questions[id];
     const NUMBER = 0.5;
     const INDEX_NUM = -1;
@@ -31,6 +39,9 @@ class DisplayQuestion extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
+                  id="correct-answer"
+                  onClick={ this.handleAnswer }
+                  className={ classCorrect }
                 >
                   {alternative}
                 </button>);
@@ -41,6 +52,8 @@ class DisplayQuestion extends Component {
                 key={ index }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
+                onClick={ this.handleAnswer }
+                className={ classWrong }
               >
                 {alternative}
               </button>);
