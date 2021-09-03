@@ -1,42 +1,40 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-const email = md5('email@email.com').toString();
+import fetchGravatar from '../redux/fetchs/fetchGravatar';
+import { actionSaveImgUrl } from '../redux/actions/index';
 
 class Header extends React.Component {
   render() {
-    const {
-      props: { name, score } } = this;
+    const { email, playerName, saveImg } = this.props;
+    const hash = md5(email).toString();
+    const imgURL = `https://www.gravatar.com/avatar/${hash}`;
+    saveImg(imgURL);
     return (
       <header>
-        <img
-          data-testid="header-profile-picture"
-          src={ `http://www.gravatar.com/avatar/${email}` }
-          alt="User Avatar"
-        />
-        <h2 data-testid="header-player-name">{ `User: ${name}` }</h2>
-        <aside data-testid="header-score">{ `Score: ${score}` }</aside>
+        <img src={ imgURL } data-testid="header-profile-picture" alt="User Avatar" />
+        <p data-testid="header-player-name">{ playerName }</p>
+        <p data-testid="header-score">0</p>
       </header>
-
     );
   }
 }
 
-const {
-  string,
-  number,
-} = PropTypes;
-
-Header.propTypes = {
-  name: string,
-  score: number,
-}.isRequired;
-
-const mapStateToProps = (state) => ({
-  name: state.user.name,
-  score: state.user.score,
+const mapDispatchToProps = (dispatch) => ({
+  pushFetch: (state) => dispatch(fetchGravatar(state)),
+  saveImg: (url) => dispatch(actionSaveImgUrl(url)),
 });
 
-export default connect(mapStateToProps)(Header);
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+  playerName: state.user.playerName,
+});
+
+Header.propTypes = {
+  email: PropTypes.string,
+  playerName: PropTypes.string,
+  saveImg: PropTypes.func,
+}.isRequired;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

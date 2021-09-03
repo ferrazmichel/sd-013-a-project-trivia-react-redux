@@ -1,4 +1,4 @@
-import md5 from 'crypto-js';
+import md5 from 'crypto-js/md5';
 import { actionGetGravatar } from '../actions/index';
 
 const fetchGravatar = (hash) => {
