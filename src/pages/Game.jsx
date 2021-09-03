@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { func, bool, string, number, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router-dom';
 import { Question } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
@@ -17,7 +16,6 @@ class Game extends Component {
       position: 0,
       question: { incorrect_answers: [] },
       score: 0,
-      gameOver: false,
       randomIndex: [],
       assertions: 0,
     };
@@ -118,7 +116,7 @@ class Game extends Component {
         const updatedRanking = this.checkPlayer(ranking, name, score, picture);
         localStorage.setItem('ranking', JSON.stringify(updatedRanking));
       }
-      this.setState({ question: questions[position], gameOver });
+      this.setState({ question: questions[position] });
     });
     this.completeRandomIndex();
   }
@@ -179,21 +177,21 @@ const mapStateToProps = (state) => ({
 
 // Faço a validação se os dados que recebi são válidos
 Game.propTypes = {
-  timeoutTrue: PropTypes.func,
-  loading: PropTypes.bool,
-  getQuiz: PropTypes.func,
-  token: PropTypes.string,
-  name: PropTypes.string,
-  picture: PropTypes.string,
-  type: PropTypes.string,
-  difficulty: PropTypes.string,
-  amount: PropTypes.number,
-  id: PropTypes.number,
-  questions: PropTypes.arrayOf(PropTypes.shape({
-    category: PropTypes.string,
-    question: PropTypes.string,
-    correct_answer: PropTypes.string,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+  timeoutTrue: func,
+  loading: bool,
+  getQuiz: func,
+  token: string,
+  name: string,
+  picture: string,
+  type: string,
+  difficulty: string,
+  amount: number,
+  id: number,
+  questions: arrayOf(shape({
+    category: string,
+    question: string,
+    correct_answer: string,
+    incorrect_answers: arrayOf(string),
   })).isRequired,
 }.isRequired;
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { bool, string, func, arrayOf, shape } from 'prop-types';
+import { bool, string, func, arrayOf, shape, number } from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './Button';
 import { actionTimeoutFalse } from '../redux/actions/index';
@@ -123,7 +123,7 @@ Question.propTypes = {
   nextQuestion: func.isRequired,
   timeout: bool.isRequired,
   loading: bool.isRequired,
-  randomIndex: arrayOf(PropTypes.number).isRequired,
+  randomIndex: arrayOf(number).isRequired,
   question: shape({
     category: string,
     question: string,
