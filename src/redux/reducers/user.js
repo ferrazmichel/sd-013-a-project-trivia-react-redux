@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   email: '',
   token: '',
   isLoading: false,
+  score: 0,
 };
 
 const user = (state = INITIAL_STATE, action) => {
