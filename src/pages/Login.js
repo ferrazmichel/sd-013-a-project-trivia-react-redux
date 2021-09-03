@@ -66,14 +66,16 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ disabledButton }
-          onClick={ this.handleOnClick }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ disabledButton }
+            onClick={ this.handleOnClick }
+          >
+            Jogar
+          </button>
+        </Link>
         <Link to="/settings">
           <button
             type="button"

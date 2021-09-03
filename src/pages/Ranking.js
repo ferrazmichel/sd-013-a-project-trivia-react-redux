@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Ranking extends Component {
+class Ranking extends React.Component {
   render() {
     return (
       <h1>Hello my friends Ranking</h1>

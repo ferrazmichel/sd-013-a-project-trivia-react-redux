@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Feedback extends Component {
+class Feedback extends React.Component {
   render() {
     return (
       <h1>Hello my friends Feedback</h1>
