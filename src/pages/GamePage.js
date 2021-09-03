@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
 
 class GamePage extends Component {
+  componentDidMount() {
+    // const { questions } = this.props;
+    // questions();
+  }
+
   render() {
     return (
       <div>
-        <h1>oi</h1>
+        <Header />
+        <h1>Game Page</h1>
       </div>
     );
   }
 }
 
 GamePage.propTypes = {
-  startGame: PropTypes.func,
+  questions: PropTypes.object,
 }.isRequired;
 
 const mapStateToProps = ({ questions: { questions } }) => ({

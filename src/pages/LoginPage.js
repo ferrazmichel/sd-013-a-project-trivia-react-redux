@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { infoPlayer, questionsShowMilhao, showMilhaoAPI } from '../actions';
 
@@ -25,13 +26,14 @@ class LoginPage extends Component {
 
   async handleClick(e) {
     e.preventDefault();
-    const { email } = this.state;
-    const { StartToken, questionsGame, player } = this.props;
-    await StartToken();
+
+    const { email, nickname } = this.state;
+    const { startGame, questionsGame, player } = this.props;
+    await startGame();
     const { token } = this.props;
-    localStorage.setItem('token', token);
+    localStorage.setItem('token', JSON.stringify(token));
     await questionsGame(token);
-    player(email);
+    player(email, nickname);
   }
 
   verifyInputs() {
@@ -74,8 +76,9 @@ class LoginPage extends Component {
             onClick={ handleClick }
             disabled={ buttonDisable }
           >
-            Jogar
+            Play
           </button>
+          <Link to="/settingspage" data-testid="btn-settings">Settings</Link>
         </form>
       </div>
     );
@@ -91,13 +94,13 @@ LoginPage.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  player: (payload) => dispatch(infoPlayer(payload)),
-  StartToken: () => dispatch(showMilhaoAPI()),
+  player: (email, nickname) => dispatch(infoPlayer(email, nickname)),
+  startGame: () => dispatch(showMilhaoAPI()),
   questionsGame: (token) => dispatch(questionsShowMilhao(token)),
 });
 
 const mapStateToProps = (state) => ({
-  token: state.questions.token,
+  token: state.questions.token.token,
   stateEmail: state.user.email,
 });
 
