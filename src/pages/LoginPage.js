@@ -26,7 +26,6 @@ class LoginPage extends Component {
 
   async handleClick(e) {
     e.preventDefault();
-
     const { email, nickname } = this.state;
     const { startGame, questionsGame, player } = this.props;
     await startGame();
