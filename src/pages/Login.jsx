@@ -38,7 +38,6 @@ class Login extends React.Component {
     this.setState({ validation });
   }
 
-
   // Essa função vai ser executada quando clicar no botão "Jogar"
   onSubmit(event) {
     // Basicamente evita o reload de página quando der submit
@@ -50,6 +49,8 @@ class Login extends React.Component {
     saveUser({ email, playerName });
     // Aponta que o redirect da state é true, ou seja, login realizado com sucesso e pagina redirecionada
     this.setState({ redirect: true });
+  }
+
   handleSettings(event) {
     event.preventDefault();
     const { history } = this.props;
@@ -104,7 +105,6 @@ class Login extends React.Component {
   }
 }
 
-
 const mapDispatchToProps = (dispatch) => ({
   // A chave getToken e saveUser são as props do componente que vão ser invocados
   // E eu passo uma callback que vai ser o dispatch que vou realizar na action, no caso será a fetchToken
@@ -124,10 +124,8 @@ Login.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
 Login.propTypes = {
   history: PropTypes.arrayOf(Object),
 }.isRequired;
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
