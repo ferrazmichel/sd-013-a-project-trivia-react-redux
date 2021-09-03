@@ -20,6 +20,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onValidation = this.onValidation.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +50,20 @@ class Login extends React.Component {
     saveUser({ email, playerName });
     // Aponta que o redirect da state é true, ou seja, login realizado com sucesso e pagina redirecionada
     this.setState({ redirect: true });
+    const state = JSON.parse(localStorage.getItem('state')) || {};
+    // Renova/Grava no localStorage as informações do state conforme abaixo, com zeramento de score/pontuação e assertions/acertos
+    localStorage.setItem(
+      'state',
+      JSON.stringify({
+        player: {
+          ...state.player,
+          name: playerName,
+          gravatarEmail: email,
+          score: 0,
+          assertions: 0,
+        },
+      }),
+    );
   }
 
   handleSettings(event) {
@@ -59,6 +74,9 @@ class Login extends React.Component {
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value }, () => this.onValidation());
+    this.setState({ [name]: value }, () => {
+      this.onValidation();
+    });
   }
 
   render() {
@@ -124,6 +142,9 @@ Login.propTypes = {
 };
 
 Login.propTypes = {
+  getToken: PropTypes.func,
+  saveUser: PropTypes.func,
+  token: PropTypes.string,
   history: PropTypes.arrayOf(Object),
 }.isRequired;
 
