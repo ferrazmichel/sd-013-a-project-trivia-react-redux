@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap') ;
+
+* {
+  box-sizing: border-box;
+  font-family: Lato , sans-serif;
+}
+
+.login-wrapper {
+  margin: 10% auto;
+  width: 25%;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-title {
+  color: #1dd1a1;
+  font-size: 40px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.login-form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.login-form-control label {
+  color: #979797;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.login-form-control input {
+  align-items: center;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 36px;
+  justify-content: center;
+  padding: 5px 10px;
+  width: 100%;
+}
+
+.btn-play {
+  background-color: #1dd1a1;
+  border-radius: 100px;
+  color: white;
+}
+
+.ui-button {
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 9px 10px;
+  text-decoration: none;
+}
+
+.ui-button.btn-play {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 10px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.ui-button:hover {
+  background-color: #1dd1a1;
+  color: white;
+}
