@@ -2,25 +2,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchData } from '../../redux/actions';
+import { fetchData, registerUser } from '../../redux/actions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userName: '',
-      userEmail: '',
+      name: '',
+      email: '',
       disabled: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.checkUser = this.checkUser.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   checkUser() {
-    const { userEmail, userName } = this.state;
-    if (userEmail && userName) {
+    const { email, name } = this.state;
+    if (email && name) {
       this.setState({
         disabled: false,
       });
@@ -33,31 +34,37 @@ class Login extends Component {
     }, () => this.checkUser());
   }
 
+  async handleClick() {
+    const { fetch, registry } = this.props;
+    const { email, name } = this.state;
+    await fetch();
+    registry({ name, email });
+  }
+
   render() {
-    const { userEmail, userName, disabled } = this.state;
-    const { fetch } = this.props;
+    const { name, email, disabled } = this.state;
     return (
       <div>
         <fieldset>
           <label htmlFor="name">
             Escreve o nome da pessoa jogadora
             <input
-              name="userName"
+              name="name"
               type="text"
               data-testid="input-player-name"
               id="name"
-              value={ userName }
+              value={ name }
               onChange={ this.handleChange }
             />
           </label>
           <label htmlFor="email">
             Escreve o email da pessoa jogadora
             <input
-              name="userEmail"
+              name="email"
               type="text"
               data-testid="input-gravatar-email"
               id="email"
-              value={ userEmail }
+              value={ email }
               onChange={ this.handleChange }
             />
             <Link to="/game">
@@ -65,7 +72,7 @@ class Login extends Component {
                 data-testid="btn-play"
                 type="button"
                 disabled={ disabled }
-                onClick={ () => fetch() }
+                onClick={ () => this.handleClick() }
               >
                 Jogar
               </button>
@@ -82,10 +89,16 @@ class Login extends Component {
 
 Login.propTypes = {
   fetch: PropTypes.func.isRequired,
+  registry: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  user: state,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchData()),
+  registry: (data) => console.log(dispatch(registerUser(data))),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
