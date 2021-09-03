@@ -1,9 +1,9 @@
 import React from 'react';
 
-class Config extends Component {
+class Config extends React.Component {
   render() {
     return (
-      <h1>Hello my friends Config</h1>
+      <h1 data-testid="settings-title">Configurações</h1>
     );
   }
 }

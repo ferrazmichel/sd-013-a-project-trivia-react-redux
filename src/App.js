@@ -1,13 +1,20 @@
 import React from 'react';
+import { Route, Switch } from 'react-router';
 import './App.css';
-import Login from './pages/Login';
+import { Feedback, GamePage, Ranking, Config, Login } from './pages';
 
-export default function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Login />
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route exact path="/settings" component={ Config } />
+        <Route exact path="/game" component={ GamePage } />
+        <Route exact path="/feedback" component={ Feedback } />
+        <Route exact path="/ranking" component={ Ranking } />
+      </Switch>
+    );
+  }
 }
+
+export default App;
