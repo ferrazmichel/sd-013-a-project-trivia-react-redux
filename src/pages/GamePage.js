@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class GamePage extends Component {
-  componentDidMount() {
-    const { questions } = this.props;
-    questions();
-  }
-
   render() {
     return (
       <div>

@@ -8,7 +8,7 @@ const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SAVE_INFO_PLAYER:
     return {
-      email: action.email,
+      email: action.payload,
     };
   default:
     return state;

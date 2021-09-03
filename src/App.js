@@ -14,7 +14,7 @@ export default function App() {
         <Route exact path="/">
           <LoginPage />
         </Route>
-        <Route path="/gamepage">
+        <Route exact path="/gamepage">
           <GamePage />
         </Route>
         <Route path="/rakingpage">

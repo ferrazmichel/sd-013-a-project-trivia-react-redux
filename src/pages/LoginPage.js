@@ -26,8 +26,8 @@ class LoginPage extends Component {
   async handleClick(e) {
     e.preventDefault();
     const { email } = this.state;
-    const { startGame, questionsGame, player } = this.props;
-    await startGame();
+    const { StartToken, questionsGame, player } = this.props;
+    await StartToken();
     const { token } = this.props;
     localStorage.setItem('token', token);
     await questionsGame(token);
@@ -86,13 +86,13 @@ LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  startGame: PropTypes.func,
+  StartToken: PropTypes.func,
   dispatchInputLogin: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   player: (payload) => dispatch(infoPlayer(payload)),
-  startGame: () => dispatch(showMilhaoAPI()),
+  StartToken: () => dispatch(showMilhaoAPI()),
   questionsGame: (token) => dispatch(questionsShowMilhao(token)),
 });
 
