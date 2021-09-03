@@ -15,6 +15,7 @@ class GamePage extends Component {
 
     this.submitAnswer = this.submitAnswer.bind(this);
     this.randomAnswer = this.randomAnswer.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
   }
 
   randomAnswer() {
@@ -38,6 +39,15 @@ class GamePage extends Component {
     );
   }
 
+  handleColorChange() {
+    const getBtnsOptions = document.querySelectorAll('.button-answers');
+    getBtnsOptions.forEach((button) => {
+      if (button.name === 'correct') {
+        button.style.border = '3px solid rgb(6, 240, 15)';
+      } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
+    });
+  }
+
   answers() {
     const { questions } = this.props;
     const { numberOfQuestion, isLoading } = this.state;
@@ -55,8 +65,11 @@ class GamePage extends Component {
         return (
           <button
             data-testid="correct-answer"
+            className="button-answers"
+            name="correct"
             type="button"
             key={ index }
+            onClick={ this.handleColorChange }
           >
             { answer }
           </button>
@@ -64,9 +77,12 @@ class GamePage extends Component {
       }
       return (
         <button
-          key={ index }
           data-testid={ `wrong-answer-${index}` }
+          className="button-answers"
+          name="wrong"
           type="button"
+          key={ index }
+          onClick={ this.handleColorChange }
         >
           { answer }
         </button>
