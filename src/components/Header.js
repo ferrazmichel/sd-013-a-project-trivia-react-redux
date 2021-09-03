@@ -1,43 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import fetchAvatar from '../fetchAvatar';
 
 class Header extends React.Component {
   render() {
-    const { gravatarEmail, name, score } = this.props;
+    const { gravatarEmail, name } = this.props;
+    const avatar = fetchAvatar(gravatarEmail);
     return (
-      <div>
-        <img src="" alt="" data-testid="header-player-name" />
-        <p data-testid="header-player-name">
-          Nome:
-          { name }
-        </p>
-      </div>
-
-      // <div className="container-header">
-      //   <p data-testid="email-field">
-      //     Email:
-      //     {gravatarEmail}
-      //   </p>
-      //   <div>
-      //     <p data-testid="total-field">Despesa: 0 </p>
-      //   </div>
-      //   <div>
-      //     <p data-testid="header-currency-field">BRL</p>
-      //   </div>
-      // </div>
+      <header>
+        <div>
+          <div>
+            <img src={ avatar } alt="avatar" data-testid="header-player-name" />
+          </div>
+          <div>
+            <p data-testid="header-player-name">
+              Nome:
+              { name }
+            </p>
+            <p data-testid="header-score">
+              Placar: 0
+            </p>
+          </div>
+        </div>
+      </header>
     );
   }
 }
 
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  gravatarEmail: state.user.email, // Olhar o user.email
-  name,
-  score,
+  gravatarEmail: state.player.gravatarEmail,
+  name: state.player.name,
 });
 
 export default connect(mapStateToProps)(Header);

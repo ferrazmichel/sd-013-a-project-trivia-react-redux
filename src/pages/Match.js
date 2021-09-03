@@ -4,10 +4,15 @@
  */
 
 import React from 'react';
+import Header from '../components/Header';
 
 class Match extends React.Component {
   render() {
-    return <h1>Match Page</h1>;
+    return (
+      <div>
+        <Header />
+      </div>
+    );
   }
 }
 
