@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './Game.css';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { decode } from 'html-entities';
@@ -12,6 +13,7 @@ class Game extends Component {
       index: 0,
     };
     this.changeIndex = this.changeIndex.bind(this);
+    this.optionSelect = this.optionSelect.bind(this);
   }
 
   async componentDidMount() {
@@ -22,6 +24,9 @@ class Game extends Component {
   changeIndex() {
     const { index } = this.state;
     this.setState({ index: index + 1 });
+    document.querySelectorAll('.answer').forEach((answer) => {
+      answer.className = 'answer';
+    });
   }
 
   buttonsAnswers() {
@@ -36,25 +41,18 @@ class Game extends Component {
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
 
-    return randomAnswers([...incorrectAnswers, correctAnswer]).map((answer, key) => {
-      if (answer === correctAnswer) {
-        return (
-          <button
-            type="button"
-            key={ key }
-            data-testid="correct-answer"
-          >
-            {answer}
-          </button>);
-      }
-      return (
-        <button
-          type="button"
-          key={ key }
-          data-testid={ `wrong-answer-${this.wrongAnswers(answer)}` }
-        >
-          {decode(answer)}
-        </button>);
+    return randomAnswers([...incorrectAnswers, correctAnswer]);
+  }
+
+  optionSelect() {
+    const { gameQuestions } = this.props;
+    const { index } = this.state;
+    const { correct_answer: correctAnswer } = gameQuestions[index];
+    document.querySelectorAll('.answer').forEach((answer) => {
+      console.log(answer.innerText);
+      const cName = answer.innerText === correctAnswer
+        ? 'answer correct-answer' : 'answer incorrect-answer';
+      answer.className = (cName);
     });
   }
 
@@ -69,7 +67,7 @@ class Game extends Component {
     const { gameQuestions } = this.props;
     const { index } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, category } = gameQuestions[index];
+    const { question, category, correct_answer: correctAnswer } = gameQuestions[index];
     return (
       <div>
         <header><Header /></header>
@@ -80,7 +78,18 @@ class Game extends Component {
           <div data-testid="question-text">
             { decode(question) }
           </div>
-          { this.buttonsAnswers() }
+
+          { this.buttonsAnswers().map((answer, key) => (
+            <button
+              onClick={ this.optionSelect }
+              type="button"
+              key={ key }
+              className="answer"
+              data-testid={ answer === correctAnswer ? 'correct-answer'
+                : `wrong-answer-${this.wrongAnswers(answer)}` }
+            >
+              { decode(answer) }
+            </button>))}
           <button type="button" onClick={ () => this.changeIndex() }>NEXT</button>
         </section>
       </div>
