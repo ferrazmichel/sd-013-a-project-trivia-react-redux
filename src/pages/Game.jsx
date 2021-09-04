@@ -55,12 +55,6 @@ class Game extends Component {
     });
   }
 
-  wrongAnswers(answer) {
-    const { index } = this.state;
-    const { gameQuestions } = this.props;
-    const { incorrect_answers: incorrectAnswers } = gameQuestions[index];
-    return incorrectAnswers.findIndex((inc) => inc === answer);
-  }
 
   render() {
     const { gameQuestions } = this.props;
