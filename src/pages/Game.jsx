@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { func, bool, string, number, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Question } from '../components/index';
+import { Question, Header } from '../components/index';
 import { actionTimeoutTrue } from '../redux/actions/index';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
 import randomize from '../functions/randomize';
-import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -137,7 +136,7 @@ class Game extends Component {
   }
 
   render() {
-    const { timer, gameOver, question, randomIndex } = this.state;
+    const { timer, gameOver, question, score, randomIndex } = this.state;
     const { questions } = this.props;
 
     // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
@@ -145,7 +144,7 @@ class Game extends Component {
     return (
       <>
         {/* Chama o componente Header passando a props de score/pontuação */}
-        <Header />
+        <Header score={ score } />
         <p>{timer}</p>
         {/* Chama o componente de questão passando algumas props */}
         <Question
