@@ -5,27 +5,11 @@ import { Login, Game, Feedback, Ranking, Settings } from './pages';
 export default function App() {
   return (
     <Switch>
-
-      <Route exact path="/">
-        <Login />
-      </Route>
-
-      <Route exact path="/game">
-        <Game />
-      </Route>
-
-      <Route exact path="/feedback">
-        <Feedback />
-      </Route>
-
-      <Route exact path="/ranking">
-        <Ranking />
-      </Route>
-
-      <Route exact path="/settings">
-        <Settings />
-      </Route>
-
+      <Route exact path="/" component={ Login } />
+      <Route exact path="/game" component={ Game } />
+      <Route exact path="/feedback" component={ Feedback } />
+      <Route exact path="/ranking" component={ Ranking } />
+      <Route exact path="/settings" component={ Settings } />
     </Switch>
   );
 }
