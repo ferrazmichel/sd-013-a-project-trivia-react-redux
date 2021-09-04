@@ -49,7 +49,6 @@ class Game extends Component {
     const { index } = this.state;
     const { correct_answer: correctAnswer } = gameQuestions[index];
     document.querySelectorAll('.answer').forEach((answer) => {
-      console.log(answer.innerText);
       const cName = answer.innerText === correctAnswer
         ? 'answer correct-answer' : 'answer incorrect-answer';
       answer.className = (cName);
