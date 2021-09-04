@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import { fetchURL, loadFromLocalStaorage } from '../services';
 
+const MAX_QUESTIONS = 5;
 class Play extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +13,11 @@ class Play extends Component {
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
+    console.log('MONTOU');
     this.handleQuestions();
   }
 
@@ -38,9 +41,17 @@ class Play extends Component {
 
   async handleQuestions() {
     const token = loadFromLocalStaorage('token');
-    const questionURL = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const questionURL = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&token=${token}`;
     const requestQuestions = await fetchURL(questionURL);
     this.setState({ questions: requestQuestions });
+  }
+
+  nextQuestion() {
+    this.setState((prevState) => {
+      if (prevState.questionIndex < MAX_QUESTIONS - 1) {
+        return { ...prevState, questionIndex: prevState.questionIndex + 1 };
+      }
+    });
   }
 
   render() {
@@ -49,7 +60,7 @@ class Play extends Component {
       return <div>Loading...</div>;
     }
     const { results } = questions;
-    console.log('L50', questions);
+    console.log('L50', questionIndex, results);
     return (
       <div className="play-main">
         <Header />
@@ -66,7 +77,7 @@ class Play extends Component {
             <div className="playquestion-answers-options">
               { this.handleAnswers(results[questionIndex]) }
             </div>
-            <button type="button" onClick=()>Próxima</button>
+            <button type="button" onClick={ this.nextQuestion }>Próxima</button>
           </div>
         </div>
 
