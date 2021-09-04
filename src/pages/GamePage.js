@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { questionsShowMilhao } from '../actions/index';
 
 class GamePage extends Component {
   constructor(props) {
@@ -11,11 +12,25 @@ class GamePage extends Component {
       numberOfQuestion: 0,
       allAnswers: [],
       isLoading: false,
+      counter: 30,
     };
 
     this.submitAnswer = this.submitAnswer.bind(this);
     this.randomAnswer = this.randomAnswer.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
+    this.handleAnswerTime = this.handleAnswerTime.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleAnswerTime();
+  }
+
+  handleAnswerTime() {
+    const INTERVAL = 1000;
+    const chrono = setInterval(() => {
+      this.setState(({ counter }) => ({ counter: counter - 1 }));
+    }, INTERVAL);
+    console.log(chrono);
   }
 
   randomAnswer() {
@@ -92,12 +107,12 @@ class GamePage extends Component {
 
   render() {
     const { questions } = this.props;
-    const { numberOfQuestion } = this.state;
+    const { numberOfQuestion, counter } = this.state;
     return (
       <div>
         <Header />
         <h1>Game Page</h1>
-        <span>temporizador</span>
+        <span>{ counter }</span>
         <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
         <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
         { this.answers() }
@@ -115,4 +130,8 @@ const mapStateToProps = (stateStore) => ({
   questions: stateStore.questions.questions.results,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = (dispatch) => ({
+  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
