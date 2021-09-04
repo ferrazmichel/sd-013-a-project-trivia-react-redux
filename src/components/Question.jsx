@@ -113,21 +113,20 @@ const mapDispatchToProps = (dispatch) => ({
   timeoutFalse: () => dispatch(actionTimeoutFalse()),
 });
 
-// Faço a validação se os dados que recebi são válidos
 Question.propTypes = {
-  timeoutFalse: func.isRequired,
-  startTimer: func.isRequired,
-  stopTimer: func.isRequired,
-  checkQuestion: func.isRequired,
-  nextQuestion: func.isRequired,
-  timeout: bool.isRequired,
-  loading: bool.isRequired,
-  randomIndex: arrayOf(number).isRequired,
-  question: shape({
-    category: string,
-    question: string,
-    correct_answer: string,
-    incorrect_answers: arrayOf(string),
+  timeoutFalse: PropTypes.func.isRequired,
+  startTimer: PropTypes.func.isRequired,
+  stopTimer: PropTypes.func.isRequired,
+  checkQuestion: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  timeout: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  randomIndex: PropTypes.arrayOf(PropTypes.number).isRequired,
+  question: PropTypes.shape({
+    category: PropTypes.string,
+    question: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
 
