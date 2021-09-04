@@ -3,7 +3,7 @@ import { func, bool, string, number, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Question, Header } from '../components/index';
-import { actionTimeoutTrue } from '../redux/actions/index';
+import { actionTimeoutTrue } from '../redux/actions';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
 import randomize from '../functions/randomize';
 
@@ -184,23 +184,23 @@ const mapStateToProps = (state) => ({
 
 // Faço a validação se os dados que recebi são válidos
 Game.propTypes = {
-  timeoutTrue: func,
-  loading: bool,
-  getQuiz: func,
-  token: string,
-  name: string,
-  picture: string,
-  type: string,
-  difficulty: string,
-  amount: number,
-  id: number,
+  timeoutTrue: func.isRequired,
+  loading: bool.isRequired,
+  getQuiz: func.isRequired,
+  token: string.isRequired,
+  name: string.isRequired,
+  picture: string.isRequired,
+  type: string.isRequired,
+  difficulty: string.isRequired,
+  amount: number.isRequired,
+  id: number.isRequired,
   questions: arrayOf(shape({
     category: string,
     question: string,
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   })).isRequired,
-}.isRequired;
+}
 
 // O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

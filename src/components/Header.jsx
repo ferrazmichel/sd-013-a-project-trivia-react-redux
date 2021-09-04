@@ -13,7 +13,7 @@ class Header extends React.Component {
     saveImg(imgURL);
     return (
       <header>
-        <img src={ imgURL } data-testid="header-profile-picture" alt="User Avatar" />
+        <img src={ imgURL } alt="" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{ playerName }</p>
         <p data-testid="header-score">0</p>
       </header>
