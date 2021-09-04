@@ -200,7 +200,7 @@ Game.propTypes = {
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   })).isRequired,
-}
+};
 
 // O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
