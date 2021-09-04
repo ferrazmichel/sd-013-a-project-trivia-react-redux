@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { questionsShowMilhao } from '../actions/index';
 
 class GamePage extends Component {
   constructor(props) {
@@ -140,4 +141,8 @@ const mapStateToProps = (stateStore) => ({
   questions: stateStore.questions.questions.results,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = (dispatch) => ({
+  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
