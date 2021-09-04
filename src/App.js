@@ -11,7 +11,6 @@ export default function App() {
         <Route path="/game" component={ Game } />
         <Route exact path="/settings" component={ Settings } />
         <Route exact path="/feedback" component={ FeedBack } />
-        <Route path="/ranking" component={ Ranking } />
       </Switch>
     </div>
   );
