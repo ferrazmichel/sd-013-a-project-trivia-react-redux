@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   email: '',
   name: '',
   gravatarEmail: '',
+  error: '',
 };
 
 export const player = (state = INITIAL_STATE, action) => {

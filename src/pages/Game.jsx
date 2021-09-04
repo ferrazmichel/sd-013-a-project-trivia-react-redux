@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import { decode } from 'html-entities';
 import { fetchQuestions } from '../redux/actions';
 import { Header } from '../components';
 
 class Game extends Component {
   constructor() {
     super();
-
     this.state = {
       index: 0,
     };
@@ -24,19 +24,52 @@ class Game extends Component {
     this.setState({ index: index + 1 });
   }
 
+  buttonsAnswers() {
+    const { index } = this.state;
+    const { gameQuestions } = this.props;
+    const { incorrect_answers: incorrectAnswers,
+      correct_answer: correctAnswer } = gameQuestions[index];
+
+    // source https://stackoverflow.com/a/46545530
+    const randomAnswers = (allAnswers) => allAnswers
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    return randomAnswers([...incorrectAnswers, correctAnswer]).map((answer, key) => {
+      if (answer === correctAnswer) {
+        return (
+          <button
+            type="button"
+            key={ key }
+            data-testid="correct-answer"
+          >
+            {answer}
+          </button>);
+      }
+      return (
+        <button
+          type="button"
+          key={ key }
+          data-testid={ `wrong-answer-${this.wrongAnswers(answer)}` }
+        >
+          {decode(answer)}
+        </button>);
+    });
+  }
+
+  wrongAnswers(answer) {
+    const { index } = this.state;
+    const { gameQuestions } = this.props;
+    const { incorrect_answers: incorrectAnswers } = gameQuestions[index];
+    return incorrectAnswers.findIndex((inc) => inc === answer);
+  }
+
   render() {
     const { gameQuestions } = this.props;
     const { index } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, correct_answer: correctAnswer, category,
-      incorrect_answers: incorrectAnswers } = gameQuestions[index];
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-    const randomAnswers = allAnswers
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-    const indexWrongAnswers = (answer) => incorrectAnswers
-      .findIndex((inc) => inc === answer);
+    const { question, category } = gameQuestions[index];
     return (
       <div>
         <header><Header /></header>
@@ -45,28 +78,9 @@ class Game extends Component {
             { category }
           </div>
           <div data-testid="question-text">
-            { question }
+            { decode(question) }
           </div>
-          {randomAnswers.map((answer, key) => {
-            if (answer === correctAnswer) {
-              return (
-                <button
-                  type="button"
-                  key={ key }
-                  data-testid="correct-answer"
-                >
-                  {answer}
-                </button>);
-            }
-            return (
-              <button
-                type="button"
-                key={ key }
-                data-testid={ `wrong-answer-${indexWrongAnswers(answer)}` }
-              >
-                {answer}
-              </button>);
-          })}
+          { this.buttonsAnswers() }
           <button type="button" onClick={ () => this.changeIndex() }>NEXT</button>
         </section>
       </div>
@@ -88,7 +102,7 @@ Game.propTypes = {
   token: PropTypes.shape({
     token: PropTypes.string.isRequired,
   }).isRequired,
-  gameQuestions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
