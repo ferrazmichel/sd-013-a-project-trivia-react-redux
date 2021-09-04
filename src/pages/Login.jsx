@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -6,7 +6,7 @@ import Input from '../components/Input';
 import fetchToken from '../redux/fetchs/fetchToken';
 import { actionSaveDataUser } from '../redux/actions/index';
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -25,9 +25,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     const { getToken } = this.props;
-
     getToken();
-    this.handleSettings = this.handleSettings.bind(this);
   }
 
   onValidation() {
@@ -73,7 +71,6 @@ class Login extends React.Component {
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value }, () => this.onValidation());
     this.setState({ [name]: value }, () => {
       this.onValidation();
     });
@@ -87,7 +84,7 @@ class Login extends React.Component {
     if (redirect && token) { return <Redirect to="/game" />; }
 
     return (
-      <form>
+      <form onSubmit={ this.onSubmit }>
         <Input
           labelText="jogador"
           testid="input-player-name"
@@ -108,7 +105,6 @@ class Login extends React.Component {
           data-testid="btn-play"
           type="submit"
           disabled={ validation }
-          onClick={ this.onSubmit }
         >
           Jogar
         </button>
@@ -135,12 +131,6 @@ const mapStateToProps = (state) => ({
 });
 
 // Faço a validação se os dados que recebi são válidos
-Login.propTypes = {
-  getToken: PropTypes.func.isRequired,
-  saveUser: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-};
-
 Login.propTypes = {
   getToken: PropTypes.func,
   saveUser: PropTypes.func,
