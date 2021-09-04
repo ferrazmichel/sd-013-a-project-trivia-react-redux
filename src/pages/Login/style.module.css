@@ -1,4 +1,22 @@
+.background {
+  background-color: var(--primary);
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+
+}
+
+.trivia {
+  animation: IntroTrivia 3s cubic-bezier(0.77, 0, 0.175, 1);
+  background-image: url('../../assets/trivia.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+}
+
 .buttonPlay, .buttonConfig {
+  animation: IntroButton 1.5s ease;
   border: 0;
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
@@ -38,6 +56,7 @@
 }
 
 .input {
+  animation: IntroInput 1.5s ease;
   border: 0;
   border-radius: 5px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
@@ -58,5 +77,42 @@
   overflow: auto;
   place-items: center;
   width: 100vw;
+}
+
+@keyframes IntroTrivia {
+
+  from {
+    filter: brightness(120%) blur(5px);
+    transform: translateY(-150%) scale(0);
+  }
+
+  to {
+    filter: brightness(100%) blur(0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes IntroInput {
+
+  from {
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes IntroButton {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 

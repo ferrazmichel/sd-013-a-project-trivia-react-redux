@@ -35,50 +35,60 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
+  renderForm() {
+    const { name, email } = this.state;
+    return (
+      <form className={ style.form } onSubmit={ this.handleSubmit }>
+        <input
+          className={ style.input }
+          data-testid="input-player-name"
+          type="text"
+          name="name"
+          placeholder="Nome"
+          value={ name }
+          onChange={ this.handleChange }
+        />
+        <input
+          className={ style.input }
+          data-testid="input-gravatar-email"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={ email }
+          onChange={ this.handleChange }
+        />
+        <button
+          className={ style.buttonPlay }
+          type="submit"
+          data-testid="btn-play"
+          disabled={ name.length < 1 || email.length < 1 }
+        >
+          Jogar
+        </button>
+
+        <Link to="/settings">
+          <button
+            className={ style.buttonConfig }
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
+      </form>
+    );
+  }
+
   render() {
-    const { name, email, shouldRedirect } = this.state;
+    const { shouldRedirect } = this.state;
     return shouldRedirect
       ? <Redirect to="/game" />
       : (
         <main className={ style.main }>
-          <form className={ style.form } onSubmit={ this.handleSubmit }>
-            <input
-              className={ style.input }
-              data-testid="input-player-name"
-              type="text"
-              name="name"
-              placeholder="Nome"
-              value={ name }
-              onChange={ this.handleChange }
-            />
-            <input
-              className={ style.input }
-              data-testid="input-gravatar-email"
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={ email }
-              onChange={ this.handleChange }
-            />
-            <button
-              className={ style.buttonPlay }
-              type="submit"
-              data-testid="btn-play"
-              disabled={ name.length < 1 || email.length < 1 }
-            >
-              Jogar
-            </button>
-
-            <Link to="/settings">
-              <button
-                className={ style.buttonConfig }
-                type="button"
-                data-testid="btn-settings"
-              >
-                Configurações
-              </button>
-            </Link>
-          </form>
+          {this.renderForm()}
+          <section className={ style.background }>
+            <article className={ style.trivia } />
+          </section>
         </main>
       );
   }

@@ -15,7 +15,9 @@ class Header extends React.Component {
             <span className={ style.playerLabel }>
               Player
             </span>
-            <span className={ style.player } data-testid="header-player-name">{ userName }</span>
+            <span className={ style.player } data-testid="header-player-name">
+              { userName }
+            </span>
           </article>
         </section>
         <section className={ style.score }>
