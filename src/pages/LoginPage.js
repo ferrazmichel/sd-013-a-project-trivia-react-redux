@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import { infoPlayer, questionsShowMilhao, showMilhaoAPI } from '../actions';
 
@@ -77,7 +76,16 @@ class LoginPage extends Component {
           >
             Play
           </button>
-          <Link to="/settingspage" data-testid="btn-settings">Settings</Link>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => {
+              const { history } = this.props;
+              history.push('/settingspage');
+            } }
+          >
+            Settings
+          </button>
         </form>
       </div>
     );
