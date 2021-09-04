@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
-import { getQuestions, updateScore } from '../redux/actions';
-import GameBoard from '../components/GameBoard';
+import Header from '../../components/Header';
+import { getQuestions, updateScore } from '../../redux/actions';
+import GameBoard from '../../components/GameBoard';
+import style from './style.module.css';
 import './Game.css';
 
 const basePoints = 10;
@@ -69,14 +70,14 @@ class Game extends Component {
     if (questions.length < 1) return <h3>Loading...</h3>;
     if (redirect) return <Redirect to="/feedback" />;
     return (
-      <div>
+      <main className={ style.main }>
         <Header />
         <GameBoard
           question={ questions[qIndex] }
           onSelect={ this.handleSelect }
           onNext={ this.handleNext }
         />
-      </div>
+      </main>
     );
   }
 }

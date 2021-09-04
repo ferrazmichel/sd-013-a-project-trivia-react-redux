@@ -2,23 +2,21 @@
   border: 0;
   border-radius: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   font-size: 1.25rem;
   padding: 5px;
   width: 100%;
-
 }
 
 .buttonPlay {
   background: var(--primary);
   color: white;
-  cursor: help;
   transition: background 0.5s ease-in-out , color 0.5s ease-in-out , filter 1s ease;
 }
 
 .buttonConfig {
   background: var(--secondary);
   color: black;
-  cursor: alias;
   transition: filter 1s ease;
 }
 
@@ -29,6 +27,7 @@
 .buttonPlay:disabled {
   background: gray;
   color: black;
+  cursor: not-allowed;
   transition: background 0.5s ease-in-out , color 0.5s ease-in-out , filter 1s ease;
 }
 

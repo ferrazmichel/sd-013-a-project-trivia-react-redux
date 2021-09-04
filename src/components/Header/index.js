@@ -1,23 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import style from './style.module.css';
 
 class Header extends React.Component {
   render() {
     const { userName, score, gravatar } = this.props;
 
     return (
-      <header className="game-header">
-        <div className="game-header-player-info">
+      <header className={ style.header }>
+        <article className="game-header-player-info">
           <img data-testid="header-profile-picture" src={ gravatar } alt="Gravatar Pic" />
           <span>
             Player:&nbsp;
             <span data-testid="header-player-name">{ userName }</span>
           </span>
-        </div>
-        <span>
-          Score:&nbsp;
-          <span data-testid="header-score">{ score }</span>
+        </article>
+        <span className={ style.score }>
+          Score
+          <span className={ style.points } data-testid="header-score">{ score }</span>
         </span>
       </header>
     );

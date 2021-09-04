@@ -1,0 +1,26 @@
+.header {
+  align-items: center;
+  background: var(--primary);
+  color: white;
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  justify-content: space-around;
+  justify-items: center;
+}
+
+.score {
+  align-items: center;
+  background-color: var(--secondary);
+  border-radius: 5px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  font-weight: 300;
+  padding: 15px;
+}
+
+.points {
+  font-size: 2rem;
+  font-weight: 700;
+}
