@@ -7,11 +7,16 @@ class GamePage extends Component {
   constructor(props) {
     super(props);
 
+    const noMagicNumber = 4;
+
     this.state = {
       numberOfQuestion: 0,
       counter: 30,
-      crono: 'Timer Function',
-      buttonsDisables: false,
+      cronoInterval: 'Timer Function Interval',
+      cronoTimeout: 'Timer Function Timeout',
+      answersButtonsDisables: false,
+      nextButtonAppear: 'none',
+      randomNumber: Math.floor(Math.random() * noMagicNumber),
     };
 
     this.submitAnswer = this.submitAnswer.bind(this);
@@ -25,54 +30,55 @@ class GamePage extends Component {
   }
 
   handleColorChange() {
-    const { crono } = this.state;
+    const { cronoInterval } = this.state;
     const getBtnsOptions = document.querySelectorAll('.button-answers');
     getBtnsOptions.forEach((button) => {
       if (button.name === 'correct') {
         button.style.border = '3px solid rgb(6, 240, 15)';
       } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
     });
-    clearInterval(crono);
-    this.setState(() => ({ buttonsDisables: true }));
+    clearInterval(cronoInterval);
+    this.setState(() => ({ answersButtonsDisables: true, nextButtonAppear: 'flex' }));
   }
 
   timer() {
     document.querySelectorAll('.button-answers')
       .forEach((element) => {
-        element.style.border = 'currentColor';
+        element.style.border = '1px solid black';
       });
     const INTERVAL = 1000;
     const TIMEOUT = 30000;
-    setTimeout(this.handleColorChange, TIMEOUT);
-    const crono = setInterval(() => {
+    const cronoTimeout = setTimeout(this.handleColorChange, TIMEOUT);
+    const cronoInterval = setInterval(() => {
       this.setState(({ counter }) => ({ counter: counter - 1 }));
     }, INTERVAL);
-    this.setState(() => ({ crono }));
+    this.setState(() => ({ cronoTimeout, cronoInterval, nextButtonAppear: 'none' }));
   }
 
   randomAnswer() {
-    const { numberOfQuestion } = this.state;
+    const { numberOfQuestion, randomNumber } = this.state;
     const { questions } = this.props;
-    const index = 4;
     const randomizer = [...questions[numberOfQuestion].incorrect_answers];
-    randomizer.splice(Math.floor(Math.random() * index),
+    randomizer.splice(randomNumber,
       0, questions[numberOfQuestion].correct_answer);
     return randomizer;
   }
 
   submitAnswer() {
+    const noMagicNumber = 4;
     this.setState(
       ({ numberOfQuestion }) => ({
         numberOfQuestion: numberOfQuestion + 1,
         counter: 30,
-        buttonsDisables: false,
+        answersButtonsDisables: false,
+        randomNumber: Math.floor(Math.random() * noMagicNumber),
       }), this.timer,
     );
   }
 
   answers() {
     const { questions } = this.props;
-    const { numberOfQuestion, buttonsDisables } = this.state;
+    const { numberOfQuestion, answersButtonsDisables, cronoTimeout } = this.state;
     return this.randomAnswer().map((answer, index) => {
       let testidButton;
       let nameButton;
@@ -87,10 +93,13 @@ class GamePage extends Component {
         <button
           className="button-answers"
           data-testid={ testidButton }
-          disabled={ buttonsDisables }
+          disabled={ answersButtonsDisables }
           key={ index }
           name={ nameButton }
-          onClick={ this.handleColorChange }
+          onClick={ () => {
+            clearTimeout(cronoTimeout);
+            this.handleColorChange();
+          } }
           type="button"
         >
           { answer }
@@ -101,7 +110,7 @@ class GamePage extends Component {
 
   render() {
     const { questions } = this.props;
-    const { numberOfQuestion, counter } = this.state;
+    const { numberOfQuestion, counter, nextButtonAppear } = this.state;
     return (
       <div>
         <Header />
@@ -110,7 +119,14 @@ class GamePage extends Component {
         <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
         <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
         { this.answers() }
-        <button type="button" onClick={ this.submitAnswer }>Next Question</button>
+        <button
+          data-testid="btn-next"
+          onClick={ this.submitAnswer }
+          style={ { display: nextButtonAppear } }
+          type="button"
+        >
+          Next Question
+        </button>
       </div>
     );
   }
