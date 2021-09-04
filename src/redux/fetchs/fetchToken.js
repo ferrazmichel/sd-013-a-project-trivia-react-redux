@@ -1,7 +1,7 @@
 import {
   actionGetTokenError,
   actionGetTokenSucess,
-} from '../actions/index';
+} from '../actions';
 
 // Essa função tem o objetivo de gerar um token aleatório e salvar no localStorage. Para que cada jogador tenha seu token de sessão
 const fetchToken = () => async (dispatch) => {
@@ -14,6 +14,7 @@ const fetchToken = () => async (dispatch) => {
   const { token } = respObject;
   // Guardar no localStorage o token
   localStorage.setItem('token', JSON.stringify(token));
+  if (!localStorage.ranking)localStorage.setItem('ranking', JSON.stringify([]));
   // Disparar uma action de conexão com a API e getToken de sucesso
   dispatch(actionGetTokenSucess({ token }));
 };

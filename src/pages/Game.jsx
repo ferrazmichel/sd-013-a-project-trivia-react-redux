@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { func, bool, string, number, arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
-import { Question } from '../components/index';
-import { actionTimeoutTrue } from '../redux/actions/index';
+import { Redirect } from 'react-router-dom';
+import { Question, Header } from '../components/index';
+import { actionTimeoutTrue } from '../redux/actions';
 import fetchQuiz from '../redux/fetchs/fetchQuiz';
 import randomize from '../functions/randomize';
-import Header from '../components/Header';
 
 class Game extends Component {
   constructor(props) {
@@ -136,15 +136,15 @@ class Game extends Component {
   }
 
   render() {
-    const { timer, gameOver, question, randomIndex } = this.state;
+    const { timer, gameOver, question, score, randomIndex } = this.state;
     const { questions } = this.props;
 
     // Se o state gameOver for marcado como true, significa que o jogo acabou e redireciona para page de feedback
-    if (gameOver) { return console.log('página feedback'); }
+    if (gameOver) { return <Redirect to="/feedback" />; }
     return (
       <>
         {/* Chama o componente Header passando a props de score/pontuação */}
-        <Header />
+        <Header score={ score } />
         <p>{timer}</p>
         {/* Chama o componente de questão passando algumas props */}
         <Question
@@ -184,23 +184,23 @@ const mapStateToProps = (state) => ({
 
 // Faço a validação se os dados que recebi são válidos
 Game.propTypes = {
-  timeoutTrue: func,
-  loading: bool,
-  getQuiz: func,
-  token: string,
-  name: string,
-  picture: string,
-  type: string,
-  difficulty: string,
-  amount: number,
-  id: number,
+  timeoutTrue: func.isRequired,
+  loading: bool.isRequired,
+  getQuiz: func.isRequired,
+  token: string.isRequired,
+  name: string.isRequired,
+  picture: string.isRequired,
+  type: string.isRequired,
+  difficulty: string.isRequired,
+  amount: number.isRequired,
+  id: number.isRequired,
   questions: arrayOf(shape({
     category: string,
     question: string,
     correct_answer: string,
     incorrect_answers: arrayOf(string),
   })).isRequired,
-}.isRequired;
+};
 
 // O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

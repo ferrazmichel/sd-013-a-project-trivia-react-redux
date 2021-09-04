@@ -1,4 +1,4 @@
-import { ACTION_FETCH_SUCCESS } from '../actions/actionTypes';
+import { ACTION_FETCH_SUCCESS } from '../actions';
 
 const INITIAL_STATE = {
   gravatar: '',

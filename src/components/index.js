@@ -1,4 +1,4 @@
-export { default as Button } from './Button';
 export { default as Header } from './Header';
 export { default as input } from './Input';
+export { default as Timer } from './Timer';
 export { default as Question } from './Question';

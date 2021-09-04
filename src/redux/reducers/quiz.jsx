@@ -3,7 +3,7 @@ import {
   ACTION_GET_QUIZ,
   ACTION_TIMEOUT_FALSE,
   ACTION_TIMEOUT_TRUE,
-} from '../actions/actionTypes';
+} from '../actions/index';
 
 const INITIAL_STATE = {
   questions: [],
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   timeout: false,
 };
 
-const quiz = (state = INITIAL_STATE, action) => {
+const quizReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case ACTION_FETCHING_QUIZ:
     return { ...state, loading: true };
@@ -26,4 +26,4 @@ const quiz = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default quiz;
+export default quizReducer;

@@ -1,7 +1,7 @@
 import {
   actionFetchingQuiz,
   actionGetQuiz,
-} from '../actions/index';
+} from '../actions';
 
 const decodeResults = (questions) => {
   const decoded = questions
