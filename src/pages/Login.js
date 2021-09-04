@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userLoggedIn, getQuestionsFromResponse } from '../actions';
+import ButtonConfig from '../components/buttonConfig';
 import { fetchQuestions } from '../fetchers';
 
 const RE_EMAIL = /^[a-z0-9_.-]+@[a-z]+\.[a-z]{2,3}(?:\.[a-z]{2})?$/;
@@ -77,37 +78,40 @@ class Login extends React.Component {
     if (name && email) disableButton = false;
 
     return (
-      <form onSubmit={ this.handleSubmission }>
-        <label htmlFor="gravatarEmail">
-          Email do Gravatar
-          <input
-            id="gravatarEmail"
-            type="text"
-            name="gravatarEmail"
-            onChange={ (e) => this.handleEmailChange(e.target.value) }
-            data-testid="input-gravatar-email"
-          />
-        </label>
+      <div>
+        <ButtonConfig />
+        <form onSubmit={ this.handleSubmission }>
+          <label htmlFor="gravatarEmail">
+            Email do Gravatar
+            <input
+              id="gravatarEmail"
+              type="text"
+              name="gravatarEmail"
+              onChange={ (e) => this.handleEmailChange(e.target.value) }
+              data-testid="input-gravatar-email"
+            />
+          </label>
 
-        <label htmlFor="playerName">
-          Nome do Jogador
-          <input
-            id="playerName"
-            type="text"
-            name="playerName"
-            onChange={ (e) => this.handleNameChange(e.target.value) }
-            data-testid="input-player-name"
-          />
-        </label>
+          <label htmlFor="playerName">
+            Nome do Jogador
+            <input
+              id="playerName"
+              type="text"
+              name="playerName"
+              onChange={ (e) => this.handleNameChange(e.target.value) }
+              data-testid="input-player-name"
+            />
+          </label>
 
-        <button
-          type="submit"
-          data-testid="btn-play"
-          disabled={ disableButton } // Habilita o botão somente se os dados forem válidos.
-        >
-          Jogar
-        </button>
-      </form>
+          <button
+            type="submit"
+            data-testid="btn-play"
+            disabled={ disableButton } // Habilita o botão somente se os dados forem válidos.
+          >
+            Jogar
+          </button>
+        </form>
+      </div>
     );
   }
 }
