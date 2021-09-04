@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { bool, string, func, arrayOf, shape, number } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from './Button';
-import { actionTimeoutFalse } from '../redux/actions/index';
+import { actionTimeoutFalse } from '../redux/actions';
 import '../styles/game.css';
 
 class Question extends Component {
@@ -61,8 +61,7 @@ class Question extends Component {
         correct: false, alt, index, isCorrect: 'wrong',
       })),
       // Pega também a questão correta e joga ela dentro do alternatives também
-      { correct: true, alt: question.correct_answer, isCorrect: 'correct' },
-    ] : [];
+      { correct: true, alt: question.correct_answer, isCorrect: 'correct' }] : [];
     return (
       <div className="question">
         {/* Mostra a categoria da Questão. Ex: General Knowledge */}

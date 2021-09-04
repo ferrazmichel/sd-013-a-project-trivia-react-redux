@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actionTimeoutTrue } from '../redux/actions/index';
+import { actionTimeoutTrue } from '../redux/actions';
 
 class Timer extends Component {
   render() {
