@@ -9,17 +9,21 @@ class Header extends React.Component {
 
     return (
       <header className={ style.header }>
-        <article className="game-header-player-info">
+        <section className={ style.playerInfo }>
           <img data-testid="header-profile-picture" src={ gravatar } alt="Gravatar Pic" />
-          <span>
-            Player:&nbsp;
-            <span data-testid="header-player-name">{ userName }</span>
-          </span>
-        </article>
-        <span className={ style.score }>
+          <article className={ style.playerArticle }>
+            <span className={ style.playerLabel }>
+              Player
+            </span>
+            <span className={ style.player } data-testid="header-player-name">{ userName }</span>
+          </article>
+        </section>
+        <section className={ style.score }>
           Score
-          <span className={ style.points } data-testid="header-score">{ score }</span>
-        </span>
+          <article className={ style.points } data-testid="header-score">
+            { score }
+          </article>
+        </section>
       </header>
     );
   }
