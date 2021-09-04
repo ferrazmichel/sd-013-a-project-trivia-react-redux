@@ -3,7 +3,7 @@ import {
   ACTION_GET_QUIZ,
   ACTION_TIMEOUT_FALSE,
   ACTION_TIMEOUT_TRUE,
-} from '../actions/actionTypes';
+} from '../actions/index';
 
 const INITIAL_STATE = {
   questions: [],

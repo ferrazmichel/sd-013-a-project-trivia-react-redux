@@ -1,5 +1,5 @@
 import md5 from 'crypto-js/md5';
-import { actionGetGravatar } from '../actions/index';
+import { actionGetGravatar } from '../actions';
 
 const fetchGravatar = (hash) => {
   const fechamento = md5(hash.toLowerCase().trim()).toString();

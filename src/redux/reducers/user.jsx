@@ -4,7 +4,7 @@ import {
   ACTION_GET_TOKEN_SUCESS,
   ACTION_SAVE_DATA_USER,
   ACTION_SAVE_IMG_URL,
-} from '../actions/actionTypes';
+} from '../actions';
 
 const INITIAL_STATE = {
   token: '',
