@@ -1,5 +1,10 @@
 import { SAVE_INFO_PLAYER } from '../actions/actionsTypes';
 
+// const testState = {
+//   email: 'murilorainho01@gmail.com',
+//   nickname: 'A_Mask_Collect',
+// };
+
 const INITIAL_STATE = {
   email: '',
   nickname: '',

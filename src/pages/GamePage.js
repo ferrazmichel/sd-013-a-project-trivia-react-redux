@@ -8,96 +8,100 @@ class GamePage extends Component {
   constructor(props) {
     super(props);
 
+    const noMagicNumber = 4;
+
     this.state = {
       numberOfQuestion: 0,
-      allAnswers: [],
-      isLoading: false,
       counter: 30,
+      cronoInterval: 'Timer Function Interval',
+      cronoTimeout: 'Timer Function Timeout',
+      answersButtonsDisables: false,
+      nextButtonAppear: 'none',
+      randomNumber: Math.floor(Math.random() * noMagicNumber),
     };
 
     this.submitAnswer = this.submitAnswer.bind(this);
     this.randomAnswer = this.randomAnswer.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
-    this.handleAnswerTime = this.handleAnswerTime.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
-    this.handleAnswerTime();
-  }
-
-  handleAnswerTime() {
-    const INTERVAL = 1000;
-    const chrono = setInterval(() => {
-      this.setState(({ counter }) => ({ counter: counter - 1 }));
-    }, INTERVAL);
-    console.log(chrono);
-  }
-
-  randomAnswer() {
-    const { allAnswers, numberOfQuestion } = this.state;
-    const { questions } = this.props;
-    const index = 4;
-    allAnswers.splice(Math.floor(Math.random() * index),
-      0, questions[numberOfQuestion].correct_answer);
-    this.setState(() => ({ allAnswers, isLoading: false }));
-  }
-
-  submitAnswer() {
-    const { questions } = this.props;
-    this.setState(
-      ({ numberOfQuestion }) => ({
-        isLoading: true,
-        numberOfQuestion: numberOfQuestion + 1,
-        allAnswers: questions[numberOfQuestion + 1].incorrect_answers,
-      }),
-      this.randomAnswer,
-    );
+    this.timer();
   }
 
   handleColorChange() {
+    const { cronoInterval } = this.state;
     const getBtnsOptions = document.querySelectorAll('.button-answers');
     getBtnsOptions.forEach((button) => {
       if (button.name === 'correct') {
         button.style.border = '3px solid rgb(6, 240, 15)';
       } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
     });
+    clearInterval(cronoInterval);
+    this.setState(() => ({ answersButtonsDisables: true, nextButtonAppear: 'flex' }));
+  }
+
+  timer() {
+    document.querySelectorAll('.button-answers')
+      .forEach((element) => {
+        element.style.border = '1px solid black';
+      });
+    const INTERVAL = 1000;
+    const TIMEOUT = 30000;
+    const cronoTimeout = setTimeout(this.handleColorChange, TIMEOUT);
+    const cronoInterval = setInterval(() => {
+      this.setState(({ counter }) => ({ counter: counter - 1 }));
+    }, INTERVAL);
+    this.setState(() => ({ cronoTimeout, cronoInterval, nextButtonAppear: 'none' }));
+  }
+
+  randomAnswer() {
+    const { numberOfQuestion, randomNumber } = this.state;
+    const { questions } = this.props;
+    const randomizer = [...questions[numberOfQuestion].incorrect_answers];
+    randomizer.splice(randomNumber,
+      0, questions[numberOfQuestion].correct_answer);
+    return randomizer;
+  }
+
+  submitAnswer() {
+    const noMagicNumber = 4;
+    this.setState(
+      ({ numberOfQuestion }) => ({
+        numberOfQuestion: numberOfQuestion + 1,
+        counter: 30,
+        answersButtonsDisables: false,
+        randomNumber: Math.floor(Math.random() * noMagicNumber),
+      }), this.timer,
+    );
   }
 
   answers() {
     const { questions } = this.props;
-    const { numberOfQuestion, isLoading } = this.state;
-    let { allAnswers } = this.state;
-    if (isLoading) return <span>Loading...</span>;
-    if (!allAnswers.length) {
-      const index = 4;
-      questions[numberOfQuestion].incorrect_answers
-        .splice(Math.floor(Math.random() * index),
-          0, questions[numberOfQuestion].correct_answer);
-      allAnswers = questions[numberOfQuestion].incorrect_answers;
-    }
-    return allAnswers.map((answer, index) => {
+    const { numberOfQuestion, answersButtonsDisables, cronoTimeout } = this.state;
+    return this.randomAnswer().map((answer, index) => {
+      let testidButton;
+      let nameButton;
       if (answer === questions[numberOfQuestion].correct_answer) {
-        return (
-          <button
-            data-testid="correct-answer"
-            className="button-answers"
-            name="correct"
-            type="button"
-            key={ index }
-            onClick={ this.handleColorChange }
-          >
-            { answer }
-          </button>
-        );
+        testidButton = 'correct-answer';
+        nameButton = 'correct';
+      } else {
+        testidButton = `wrong-answer-${index}`;
+        nameButton = 'wrong';
       }
       return (
         <button
-          data-testid={ `wrong-answer-${index}` }
           className="button-answers"
-          name="wrong"
-          type="button"
+          data-testid={ testidButton }
+          disabled={ answersButtonsDisables }
           key={ index }
-          onClick={ this.handleColorChange }
+          name={ nameButton }
+          onClick={ () => {
+            clearTimeout(cronoTimeout);
+            this.handleColorChange();
+          } }
+          type="button"
         >
           { answer }
         </button>
@@ -107,7 +111,7 @@ class GamePage extends Component {
 
   render() {
     const { questions } = this.props;
-    const { numberOfQuestion, counter } = this.state;
+    const { numberOfQuestion, counter, nextButtonAppear } = this.state;
     return (
       <div>
         <Header />
@@ -116,7 +120,14 @@ class GamePage extends Component {
         <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
         <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
         { this.answers() }
-        <button type="button" onClick={ this.submitAnswer }>Next Question</button>
+        <button
+          data-testid="btn-next"
+          onClick={ this.submitAnswer }
+          style={ { display: nextButtonAppear } }
+          type="button"
+        >
+          Next Question
+        </button>
       </div>
     );
   }
