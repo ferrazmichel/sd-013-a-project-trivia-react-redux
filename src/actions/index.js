@@ -9,18 +9,16 @@ export const userLoggedIn = (playerInfo) => (
   //   name: 'Fulana da Silva',
   //   gravatarEmail: 'fulana@mail.com',
   // }
+  // Será utilizado em reducers/player.js da seguinte forma:
+  // name: action.payload.name,
+  // gravatarEmail: action.payload.gravatarEmail,
   {
     type: PLAYER_LOGGED_IN,
     payload: playerInfo,
   }
 );
 
-export const requestQuestions = (questions) => ({
-  type: REQUEST_QUESTIONS,
-  payload: questions,
-});
-
-export const getQuestionsFromResponse = (data) => ({
+export const getQuestionsFromResponse = (questions) => ({
   type: GET_QUESTIONS,
-  payload: data.results, // Array contendo as 5 questões
+  payload: questions, // Array contendo as 5 questões
 });

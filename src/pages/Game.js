@@ -5,22 +5,29 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Question from '../components/Question';
 
 class Game extends React.Component {
   render() {
-    const { questions } = this.props;
+    const { questions } = this.props; // Vem da store do redux
 
     return (
       <div>
+        {/* Por enquanto o game está mostrando as 5 perguntas.
+        Implementar aqui a lógica para mostrar uma pergunta por vez. */}
         {questions.map((q, idx) => <Question key={ idx } question={ q } />)}
       </div>
     );
   }
 }
 
+Game.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
 });
 
-export default connect(mapStateToProps, null)(Game);
+export default connect(mapStateToProps)(Game);
