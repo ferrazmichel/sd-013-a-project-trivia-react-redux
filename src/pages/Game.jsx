@@ -60,7 +60,8 @@ class Game extends Component {
     const { gameQuestions } = this.props;
     const { index } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, category, correct_answer: correctAnswer } = gameQuestions[index];
+    const { question, category, correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = gameQuestions[index];
     return (
       <div>
         <header><Header /></header>
