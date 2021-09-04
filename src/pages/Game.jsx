@@ -29,19 +29,12 @@ class Game extends Component {
     });
   }
 
-  buttonsAnswers() {
-    const { index } = this.state;
-    const { gameQuestions } = this.props;
-    const { incorrect_answers: incorrectAnswers,
-      correct_answer: correctAnswer } = gameQuestions[index];
-
+  buttonsAnswers(array) {
     // source https://stackoverflow.com/a/46545530
-    const randomAnswers = (allAnswers) => allAnswers
+    return array
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
-
-    return randomAnswers([...incorrectAnswers, correctAnswer]);
   }
 
   optionSelect() {
@@ -59,8 +52,8 @@ class Game extends Component {
     const { gameQuestions } = this.props;
     const { index } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, category, correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = gameQuestions[index];
+    const { question, category, correct_answer: correct,
+      incorrect_answers: incorrect } = gameQuestions[index];
     return (
       <div>
         <header><Header /></header>
@@ -71,15 +64,14 @@ class Game extends Component {
           <div data-testid="question-text">
             { decode(question) }
           </div>
-
-          { this.buttonsAnswers().map((answer, key) => (
+          { this.buttonsAnswers([...incorrect, correct]).map((answer, key) => (
             <button
               onClick={ this.optionSelect }
               type="button"
               key={ key }
               className="answer"
-              data-testid={ answer === correctAnswer ? 'correct-answer'
-                : `wrong-answer-${incorrectAnswers.findIndex((inc) => inc === answer)}` }
+              data-testid={ answer === correct ? 'correct-answer'
+                : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
             >
               { decode(answer) }
             </button>))}
