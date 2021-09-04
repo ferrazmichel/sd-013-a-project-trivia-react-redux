@@ -3,6 +3,7 @@ import {
   GET_TOKEN_LOADING,
   GET_TOKEN_FAILED,
   GET_STATE_STORE,
+  GET_GAME,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   login: '',
   isLoading: false,
   erro: null,
+  game: [],
 };
 
 const reducerLogin = (state = INITIAL_STATE, action) => {
@@ -37,6 +39,11 @@ const reducerLogin = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.payload.name,
       login: action.payload.login,
+    };
+  case GET_GAME:
+    return {
+      ...state,
+      game: action.payload,
     };
   default:
     return state;
