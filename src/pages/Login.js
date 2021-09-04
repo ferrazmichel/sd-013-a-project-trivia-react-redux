@@ -20,13 +20,13 @@ class Login extends React.Component {
     this.formSubmit = this.formSubmit.bind(this);
   }
 
-  formSubmit(event) {
+  async formSubmit(event) {
     event.preventDefault();
     const { gravatarEmail, name } = this.state;
     const { submitUser } = this.props;
-    TokenApi();
     submitUser(({ gravatarEmail, name }));
-    this.setState({ shouldRedirect: true });
+    const response = await TokenApi();
+    this.setState({ shouldRedirect: response });
   }
 
   validateEmail({ target }) {
@@ -92,11 +92,7 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
-        <button
-          type="button"
-          data-testid="btn-settings"
-        //   onClick={ this.handleClick }
-        >
+        <button type="button" data-testid="btn-settings">
           <Link to="/config">Configurações</Link>
         </button>
       </>
