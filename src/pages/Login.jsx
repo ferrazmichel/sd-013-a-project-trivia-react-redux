@@ -41,7 +41,7 @@ class Login extends React.Component {
     event.preventDefault();
     const { dispatchLogin, history } = this.props;
     dispatchLogin(this.state);
-    history.push('/game');
+    history.push('/Game');
   }
 
   render() {
@@ -53,7 +53,7 @@ class Login extends React.Component {
         <form className="login-container" onSubmit={ this.handleSubmit }>
           <div className="login-form-control">
             <label htmlFor="input-player-name">
-              { 'Nome do Jogador: ' }
+              { 'Usuário do Jogador: ' }
             </label>
             <input
               name="nome"
