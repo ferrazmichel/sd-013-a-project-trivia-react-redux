@@ -41,8 +41,9 @@ class Login extends Component {
       ? <Redirect to="/game" />
       : (
         <main className={ style.main }>
-          <form onSubmit={ this.handleSubmit }>
+          <form className={ style.form } onSubmit={ this.handleSubmit }>
             <input
+              className={ style.input }
               data-testid="input-player-name"
               type="text"
               name="name"
@@ -51,6 +52,7 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
             <input
+              className={ style.input }
               data-testid="input-gravatar-email"
               type="email"
               name="email"
@@ -59,6 +61,7 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
             <button
+              className={ style.buttonPlay }
               type="submit"
               data-testid="btn-play"
               disabled={ name.length < 1 || email.length < 1 }
@@ -68,6 +71,7 @@ class Login extends Component {
 
             <Link to="/settings">
               <button
+                className={ style.buttonConfig }
                 type="button"
                 data-testid="btn-settings"
               >

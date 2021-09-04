@@ -1,6 +1,63 @@
-.main {
+.buttonPlay, .buttonConfig {
+  border: 0;
+  border-radius: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  font-size: 1.25rem;
+  padding: 5px;
+  width: 100%;
+
+}
+
+.buttonPlay {
+  background: var(--primary);
+  color: white;
+  cursor: help;
+  transition: background 0.5s ease-in-out , color 0.5s ease-in-out , filter 1s ease;
+}
+
+.buttonConfig {
+  background: var(--secondary);
+  color: black;
+  cursor: alias;
+  transition: filter 1s ease;
+}
+
+.buttonPlay:hover, .buttonConfig:hover {
+  filter: brightness(125%);
+}
+
+.buttonPlay:disabled {
+  background: gray;
+  color: black;
+  transition: background 0.5s ease-in-out , color 0.5s ease-in-out , filter 1s ease;
+}
+
+.form {
   display: grid;
+  gap: 15px;
+  width: 50%;
+}
+
+.input {
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+  font-size: 1.25rem;
+  padding: 5px;
+}
+
+.input::placeholder {
+  text-align: center;
+}
+
+.main {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--primary) 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
   height: 100vh;
+  overflow: auto;
   place-items: center;
   width: 100vw;
 }
+
