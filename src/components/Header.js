@@ -12,13 +12,15 @@ class Header extends Component {
 
     return (
       <header className="main-header">
-        <img data-testid="header-profile-picture" src={ gravatarAvatar } alt="Player" />
-        <span data-testid="header-player-name">
-          {`Jogador: ${name}`}
-        </span>
-        <span data-testid="header-score">
-          Pontuação: 0
-        </span>
+        <div className="header-div">
+          <img data-testid="header-profile-picture" src={ gravatarAvatar } alt="Player" />
+          <h2 data-testid="header-player-name">
+            {`Jogador: ${name}`}
+          </h2>
+          <h2 data-testid="header-score">
+            Pontuação: 0
+          </h2>
+        </div>
       </header>
     );
   }
