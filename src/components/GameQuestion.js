@@ -29,6 +29,7 @@ class GameQuestion extends Component {
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
+
     dispatch({ type: 'CORRECT_ANSWER' });
     this.setState({
       disabled: true,
@@ -46,7 +47,10 @@ class GameQuestion extends Component {
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
+
     dispatch({ type: 'INCORRECT_ANSWER' });
+    dispatch({ type: 'UPDATE_SCORE' });
+
     this.setState({
       disabled: true,
     });
@@ -55,6 +59,8 @@ class GameQuestion extends Component {
   handleQuestion() {
     const { questions } = this.props;
     const { disabled } = this.state;
+    const { difficulty } = questions[index];
+
     const currQuestion = questions[index];
 
     const currQuestionOptions = [currQuestion.correct_answer,
@@ -92,7 +98,7 @@ class GameQuestion extends Component {
               </button>);
           }) }
         </div>
-        <GameCounter />
+        <GameCounter difficulty={ difficulty } />
       </div>
     );
   }

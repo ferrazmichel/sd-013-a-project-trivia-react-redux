@@ -12,10 +12,46 @@ class GameCounter extends Component {
 
     this.handleCounterChange = this.handleCounterChange.bind(this);
     this.dispatchIncorrectAnswer = this.dispatchIncorrectAnswer.bind(this);
+    this.scoreCalculator = this.scoreCalculator.bind(this);
+  }
+
+  componentDidMount() {
+    this.scoreCalculator();
+  }
+
+  scoreCalculator() {
+    const { updateScore } = this.props;
+    const ten = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    const { difficulty } = this.props;
+    const { counter } = this.state;
+    let diffMultiplier = 0;
+
+    switch (difficulty) {
+    case 'hard':
+      diffMultiplier = hard;
+      break;
+
+    case 'medium':
+      diffMultiplier = medium;
+      break;
+
+    case 'easy':
+      diffMultiplier = easy;
+      break;
+
+    default:
+      break;
+    }
+
+    const score = ten + (counter * diffMultiplier);
+    return updateScore(score);
   }
 
   dispatchIncorrectAnswer(timeout) {
-    const { props: { dispatch } } = this;
+    const { props: { handleTimeout } } = this;
 
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
     const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
@@ -30,7 +66,7 @@ class GameCounter extends Component {
 
     window.clearTimeout(timeout);
 
-    dispatch({ type: 'INCORRECT_ANSWER' });
+    handleTimeout();
   }
 
   async handleCounterChange() {
@@ -60,8 +96,15 @@ class GameCounter extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
+  handleTimeout: () => dispatch({ type: 'INCORRECT_ANSWER' }),
+});
+
 GameCounter.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  handleTimeout: PropTypes.func.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  updateScore: PropTypes.func.isRequired,
 };
 
-export default connect()(GameCounter);
+export default connect(null, mapDispatchToProps)(GameCounter);

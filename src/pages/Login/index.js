@@ -98,7 +98,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchData()),
-  registry: (data) => console.log(dispatch(registerUser(data))),
+  registry: (data) => dispatch(registerUser(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
