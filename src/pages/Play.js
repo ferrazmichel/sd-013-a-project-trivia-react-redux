@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import { fetchURL, loadFromLocalStaorage } from '../services';
 
+const correctAnswer = 'correct-answer';
 const MAX_QUESTIONS = 5;
 class Play extends Component {
   constructor(props) {
@@ -14,15 +15,16 @@ class Play extends Component {
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.handleStyle = this.handleButtonStyle.bind(this);
   }
 
   componentDidMount() {
-    console.log('MONTOU');
+    // console.log('MONTOU');
     this.handleQuestions();
   }
 
   handleAnswers(results) {
-    console.log(results);
+    // console.log(results);
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
     answers.sort(() => Math.random() - HALF);
@@ -31,12 +33,25 @@ class Play extends Component {
       <button
         key={ answer }
         type="button"
-        data-testid={ answer === results.correct_answer ? 'correct-answer'
+        className="answer-style"
+        name={ answer === results.correct_answer ? correctAnswer
           : `wrong-answer-${index}` }
+        data-testid={ answer === results.correct_answer ? correctAnswer
+          : `wrong-answer-${index}` }
+        onClick={ this.handleButtonStyle }
       >
         {answer}
       </button>))
     );
+  }
+
+  handleButtonStyle() {
+    const whichButton = document.querySelectorAll('.answer-style');
+    whichButton.forEach((button) => {
+      if (button.name === correctAnswer) {
+        button.style.border = '3px solid rgb(6, 240, 15)';
+      } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
+    });
   }
 
   async handleQuestions() {
@@ -60,27 +75,34 @@ class Play extends Component {
       return <div>Loading...</div>;
     }
     const { results } = questions;
-    console.log('L50', questionIndex, results);
+    // console.log('L50', questionIndex, results);
     return (
       <div className="play-main">
         <Header />
-        <div className="play-question">
-          <section className="play-question-board">
-            <h2 data-testid="question-category">
-              { results[questionIndex].category }
-            </h2>
-            <p data-testid="question-text">
-              { results[questionIndex].question }
-            </p>
-          </section>
-          <div className="play-question-answers">
-            <div className="playquestion-answers-options">
-              { this.handleAnswers(results[questionIndex]) }
+        <div className="body-div">
+          <div className="play-question">
+            <section className="play-question-board">
+              <h2 data-testid="question-category">
+                { results[questionIndex].category }
+              </h2>
+              <p data-testid="question-text">
+                { results[questionIndex].question }
+              </p>
+            </section>
+            <div className="play-question-answers">
+              <div className="playquestion-answers-options">
+                { this.handleAnswers(results[questionIndex]) }
+              </div>
+              <button
+                className="nextButton"
+                type="button"
+                onClick={ this.nextQuestion }
+              >
+                Próxima
+              </button>
             </div>
-            <button type="button" onClick={ this.nextQuestion }>Próxima</button>
           </div>
         </div>
-
       </div>
     );
   }

@@ -1,7 +1,64 @@
+html {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  background-repeat: no-repeat;
+}
+
+.body-div {
+  align-items: center;
+  display: flex;
+}
+
 .main-header {
   align-items: center;
   background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
-  color: aliceblue;
+  border-radius: 10px;
+}
+
+header img {
+  border-radius: 10px;
+  margin: 5px auto;
+}
+
+header h2 {
+  margin: 30px auto;
+}
+
+.header-div {
   display: flex;
   justify-content: space-around;
+  margin: 0 auto;
+}
+
+.play-question {
+  background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
+  border-radius: 10px;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  margin: 10px auto;
+  padding: 10px;
+  width: 600px;
+}
+
+.play-question-board {
+  margin: 5px auto;
+}
+
+.play-question-answers {
+  display: grid;
+  margin: 5px;
+}
+
+.playquestion-answers-options {
+  display: grid;
+}
+
+.answer-style {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  margin-top: 5px;
+}
+
+.nextButton {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  margin-top: 100px;
 }
