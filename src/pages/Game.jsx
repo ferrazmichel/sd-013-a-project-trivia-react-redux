@@ -56,18 +56,12 @@ class Game extends Component {
     });
   }
 
-  wrongAnswers(answer) {
-    const { index } = this.state;
-    const { gameQuestions } = this.props;
-    const { incorrect_answers: incorrectAnswers } = gameQuestions[index];
-    return incorrectAnswers.findIndex((inc) => inc === answer);
-  }
-
   render() {
     const { gameQuestions } = this.props;
     const { index } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, category, correct_answer: correctAnswer } = gameQuestions[index];
+    const { question, category, correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = gameQuestions[index];
     return (
       <div>
         <header><Header /></header>
@@ -86,7 +80,7 @@ class Game extends Component {
               key={ key }
               className="answer"
               data-testid={ answer === correctAnswer ? 'correct-answer'
-                : `wrong-answer-${this.wrongAnswers(answer)}` }
+                : `wrong-answer-${incorrectAnswers.findIndex((inc) => inc === answer)}` }
             >
               { decode(answer) }
             </button>))}
