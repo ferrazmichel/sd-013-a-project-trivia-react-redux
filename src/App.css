@@ -1,0 +1,7 @@
+.main-header {
+  align-items: center;
+  background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
+  color: aliceblue;
+  display: flex;
+  justify-content: space-around;
+}

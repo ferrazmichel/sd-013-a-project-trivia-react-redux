@@ -11,15 +11,13 @@ class Header extends Component {
     const gravatarAvatar = `https://www.gravatar.com/avatar/${hashGerada}`;
 
     return (
-      <header>
+      <header className="main-header">
         <img data-testid="header-profile-picture" src={ gravatarAvatar } alt="Player" />
         <span data-testid="header-player-name">
-          Jogador:
-          { name }
+          {`Jogador: ${name}`}
         </span>
         <span data-testid="header-score">
-          Pontuação:
-          0
+          Pontuação: 0
         </span>
       </header>
     );
