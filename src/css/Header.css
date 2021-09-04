@@ -1,0 +1,28 @@
+.header-container {
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+}
+
+.header-profile {
+  align-items: center;
+  display: flex;
+}
+
+.header-profile img {
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.header-score-container {
+  align-items: center;
+  display: flex;
+}
+
+.header-score {
+  margin-left: 5px;
+}
