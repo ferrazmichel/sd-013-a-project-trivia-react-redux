@@ -21,6 +21,7 @@ class Gamepage extends React.Component {
 
     this.answerRandom = this.answerRandom.bind(this);
     this.enableNextBtn = this.enableNextBtn.bind(this);
+    this.sendScoreToLocalStorage = this.sendScoreToLocalStorage.bind(this);
   }
 
   enableNextBtn() {
@@ -28,7 +29,39 @@ class Gamepage extends React.Component {
     enableNextBtnDispatch();
   }
 
-  handleAnswerClick() {
+  sendScoreToLocalStorage({ target }) {
+    console.log(target.classList);
+    if (target.classList[0] === ('correct-highlight')) {
+      // Obtendo dados
+      const timer = 1;
+      // = this.state utilizar o timer do state;
+      const { games, questionNumber } = this.props;
+      const { difficulty } = games[questionNumber];
+      // Utilizando variaveis de controle
+      const obj = { hard: 3, medium: 2, easy: 1 };
+      let valor;
+      switch (difficulty) {
+      case 'hard':
+        valor = obj.hard;
+        break;
+      case 'medium':
+        valor = obj.medium;
+        break;
+      case 'easy':
+        valor = obj.easy;
+        break;
+      default:
+      }
+      // Obtendo dados do localStorage
+      const state = JSON.parse(localStorage.getItem('state'));
+      const defaultReward = 10;
+      state.player.score += defaultReward + valor * timer;
+      // devolvendo os dados para o localStorage
+      localStorage.setItem('state', JSON.stringify(state));
+    }
+  }
+
+  handleAnswerClick(event) {
     // Adiciona estilo para a alternativa correta
     const correta = document.querySelector('#correct-answer');
     correta.classList.add('correct-highlight');
@@ -39,6 +72,9 @@ class Gamepage extends React.Component {
 
     // Habilitar nova pergunta
     this.enableNextBtn();
+
+    // Enviar score para o state do LocalStorage
+    this.sendScoreToLocalStorage(event);
   }
 
   answerRandom() {

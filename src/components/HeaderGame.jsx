@@ -34,10 +34,12 @@ class HeaderGame extends Component {
       }
     */
     const player = {
-      name: playerName,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: gravatar(playerEmail),
+      player: {
+        name: playerName,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: gravatar(playerEmail),
+      },
     };
 
     window.localStorage.setItem('state', JSON.stringify(player));
