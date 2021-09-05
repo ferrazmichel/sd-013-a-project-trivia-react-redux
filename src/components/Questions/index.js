@@ -14,6 +14,7 @@ class Questions extends React.Component {
     this.changeState = this.changeState.bind(this);
     this.isAnswered = this.isAnswered.bind(this);
     this.next = this.next.bind(this);
+    this.renderButton = this.renderButton.bind(this);
   }
 
   componentDidMount() {
@@ -48,11 +49,24 @@ class Questions extends React.Component {
     const { id } = this.state;
     this.setState({
       id: id + 1,
+      answered: false,
     });
   }
 
+  renderButton() {
+    return (
+      <button
+        type="button"
+        onClick={ this.next }
+        data-testid="btn-next"
+      >
+        Pŕoxima
+      </button>
+    );
+  }
+
   render() {
-    const { questionsArray, id } = this.state;
+    const { questionsArray, id, answered } = this.state;
     const number = 30000;
     if (questionsArray.length === 0) return <p>Loading...</p>;
     return (
@@ -94,7 +108,7 @@ class Questions extends React.Component {
           </ul>
           <Countdown date={ Date.now() + number } onComplete={ this.changeState } />
         </div>
-        <button type="button" onClick={ this.next }>Pŕoxima Questão</button>
+        {answered && this.renderButton()}
       </div>
     );
   }
