@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shuffleArray from '../helpers';
 import './Question.css';
-import { enableNextButton } from '../actions/index';
+import { toggleNextButton } from '../actions/index';
 
 class Question extends React.Component {
   // O elemento com a alternativa correta deve possuir o atributo data-testid com o valor correct-answer
@@ -89,7 +89,7 @@ Question.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  enable: (bool) => dispatch(enableNextButton(bool)),
+  enable: (bool) => dispatch(toggleNextButton(bool)),
 });
 
 export default connect(null, mapDispatchToProps)(Question);

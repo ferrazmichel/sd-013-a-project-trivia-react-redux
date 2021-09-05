@@ -24,7 +24,7 @@ export const getQuestionsFromResponse = (questions) => ({
   payload: questions, // Array contendo as 5 questões
 });
 
-export const enableNextButton = (bool) => ({
+export const toggleNextButton = (bool) => ({
   type: ENABLE_NEXT_QUESTION,
   payload: bool,
 });
