@@ -38,7 +38,6 @@ class Question extends React.Component {
 
   render() {
     const { question } = this.props;
-
     const incorrectAnswers = question.incorrect_answers;
     const correctAnswer = question.correct_answer;
 

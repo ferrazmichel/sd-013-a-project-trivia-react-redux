@@ -9,14 +9,37 @@ import PropTypes from 'prop-types';
 import Question from '../components/Question';
 
 class Game extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      index: 0,
+    };
+
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  nextQuestion() {
+    this.setState((prev) => ({ index: prev.index + 1 }));
+  }
+
   render() {
-    const { questions } = this.props; // Vem da store do redux
+    const { questions, loading } = this.props; // Vem da store do redux
+    const { index } = this.state;
+
+    if (loading) {
+      return <h3>loading...</h3>;
+    }
 
     return (
       <div>
-        {/* Por enquanto o game está mostrando as 5 perguntas.
-        Implementar aqui a lógica para mostrar uma pergunta por vez. */}
-        {questions.map((q, idx) => <Question key={ idx } question={ q } />)}
+        <Question key={ index } question={ questions[index] } />
+        <button
+          onClick={ this.nextQuestion }
+          type="button"
+        >
+          Próxima pergunta
+        </button>
       </div>
     );
   }
@@ -24,10 +47,12 @@ class Game extends React.Component {
 
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  loading: state.game.loading,
 });
 
 export default connect(mapStateToProps)(Game);
