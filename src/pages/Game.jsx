@@ -4,13 +4,14 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { decode } from 'html-entities';
 import { fetchQuestions } from '../redux/actions';
-import { Header } from '../components';
+import { Cronometer, Header } from '../components';
 
 class Game extends Component {
   constructor() {
     super();
     this.state = {
       index: 0,
+      time: true,
     };
     this.changeIndex = this.changeIndex.bind(this);
     this.optionSelect = this.optionSelect.bind(this);
@@ -45,15 +46,19 @@ class Game extends Component {
       const cName = answer.innerText === correctAnswer
         ? 'answer correct-answer' : 'answer incorrect-answer';
       answer.className = (cName);
+      if (answer.innerText === correctAnswer) {
+        answer.disabled = true;
+      }
     });
   }
 
   render() {
     const { gameQuestions } = this.props;
-    const { index } = this.state;
+    const { index, time } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
     const { question, category, correct_answer: correct,
       incorrect_answers: incorrect } = gameQuestions[index];
+
     return (
       <div>
         <header><Header /></header>
@@ -61,6 +66,7 @@ class Game extends Component {
           <div data-testid="question-category">
             { category }
           </div>
+          { time && <Cronometer optionSelect={ this.optionSelect } time={ time } /> }
           <div data-testid="question-text">
             { decode(question) }
           </div>
@@ -75,7 +81,7 @@ class Game extends Component {
             >
               { decode(answer) }
             </button>))}
-          <button type="button" onClick={ () => this.changeIndex() }>NEXT</button>
+          <button type="button" onClick={ this.changeIndex }>NEXT</button>
         </section>
       </div>
     );
