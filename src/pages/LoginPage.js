@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { infoPlayer, questionsShowMilhao, showMilhaoAPI } from '../actions';
+import { infoPlayer } from '../actions';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -23,14 +23,10 @@ class LoginPage extends Component {
       verifyInputs);
   }
 
-  async handleClick(e) {
+  handleClick(e) {
     e.preventDefault();
     const { email, nickname } = this.state;
-    const { startGame, questionsGame, player } = this.props;
-    await startGame();
-    const { token } = this.props;
-    localStorage.setItem('token', JSON.stringify(token));
-    await questionsGame(token);
+    const { player } = this.props;
     player(email, nickname);
   }
 
@@ -102,12 +98,9 @@ LoginPage.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   player: (email, nickname) => dispatch(infoPlayer(email, nickname)),
-  startGame: () => dispatch(showMilhaoAPI()),
-  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
 });
 
 const mapStateToProps = (state) => ({
-  token: state.questions.token.token,
   stateEmail: state.user.email,
 });
 

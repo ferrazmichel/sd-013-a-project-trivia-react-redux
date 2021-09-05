@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { questionsShowMilhao } from '../actions/index';
+import { showMilhaoAPI } from '../actions/index';
 
 class GamePage extends Component {
   constructor(props) {
@@ -23,11 +23,18 @@ class GamePage extends Component {
     this.submitAnswer = this.submitAnswer.bind(this);
     this.randomAnswer = this.randomAnswer.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
+    this.dispatchRequestQuestions = this.dispatchRequestQuestions.bind(this);
     this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
+    this.dispatchRequestQuestions();
     this.timer();
+  }
+
+  async dispatchRequestQuestions() {
+    const { startGame } = this.props;
+    await startGame();
   }
 
   handleColorChange() {
@@ -77,49 +84,54 @@ class GamePage extends Component {
     );
   }
 
-  answers() {
+  questionAndAnswers() {
     const { questions } = this.props;
     const { numberOfQuestion, answersButtonsDisables, cronoTimeout } = this.state;
-    return this.randomAnswer().map((answer, index) => {
-      let testidButton;
-      let nameButton;
-      if (answer === questions[numberOfQuestion].correct_answer) {
-        testidButton = 'correct-answer';
-        nameButton = 'correct';
-      } else {
-        testidButton = `wrong-answer-${index}`;
-        nameButton = 'wrong';
-      }
-      return (
-        <button
-          className="button-answers"
-          data-testid={ testidButton }
-          disabled={ answersButtonsDisables }
-          key={ index }
-          name={ nameButton }
-          onClick={ () => {
-            clearTimeout(cronoTimeout);
-            this.handleColorChange();
-          } }
-          type="button"
-        >
-          { answer }
-        </button>
-      );
-    });
+    return (
+      <>
+        <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+        <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
+        { this.randomAnswer().map((answer, index) => {
+          let testidButton;
+          let nameButton;
+          if (answer === questions[numberOfQuestion].correct_answer) {
+            testidButton = 'correct-answer';
+            nameButton = 'correct';
+          } else {
+            testidButton = `wrong-answer-${index}`;
+            nameButton = 'wrong';
+          }
+          return (
+            <button
+              className="button-answers"
+              data-testid={ testidButton }
+              disabled={ answersButtonsDisables }
+              key={ index }
+              name={ nameButton }
+              onClick={ () => {
+                clearTimeout(cronoTimeout);
+                this.handleColorChange();
+              } }
+              type="button"
+            >
+              { answer }
+            </button>
+          );
+        }) }
+      </>
+    );
   }
 
   render() {
-    const { questions } = this.props;
-    const { numberOfQuestion, counter, nextButtonAppear } = this.state;
+    const { isLoading } = this.props;
+    const { counter, nextButtonAppear } = this.state;
+    const loading = (<span>Loading...</span>);
     return (
       <div>
         <Header />
         <h1>Game Page</h1>
         <span>{ counter }</span>
-        <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
-        <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
-        { this.answers() }
+        { (isLoading) ? loading : this.questionAndAnswers() }
         <button
           data-testid="btn-next"
           onClick={ this.submitAnswer }
@@ -139,10 +151,12 @@ GamePage.propTypes = {
 
 const mapStateToProps = (stateStore) => ({
   questions: stateStore.questions.questions.results,
+  isLoading: stateStore.questions.isLoading,
+  token: stateStore.questions.token.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
+  startGame: () => dispatch(showMilhaoAPI()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
