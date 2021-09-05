@@ -6,10 +6,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { userLoggedIn } from '../actions';
+import { userLoggedIn, getQuestionsFromResponse } from '../actions';
 import ButtonConfig from '../components/buttonConfig';
+import { fetchQuestions } from '../fetchers';
 
-const TRIVIA_TOKEN_URL = 'https://opentdb.com/api_token.php?command=request';
 const RE_EMAIL = /^[a-z0-9_.-]+@[a-z]+\.[a-z]{2,3}(?:\.[a-z]{2})?$/;
 
 class Login extends React.Component {
@@ -26,17 +26,11 @@ class Login extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
   }
 
-  async getToken() {
-    try {
-      const response = await fetch(TRIVIA_TOKEN_URL);
-      const data = await response.json();
-      // Conforme https://opentdb.com/api_config.php
-      if (data.response_code === 0) { // Se a requisição foi realizada com sucesso.
-        localStorage.setItem('token', data.token);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  async getQuestions() {
+    const { saveQuestions } = this.props;
+
+    const questions = await fetchQuestions(); // questions
+    saveQuestions(questions); // Salva as questões na store do redux.
   }
 
   // Valida o nome do jogador e o salva no state do component Login.
@@ -53,18 +47,17 @@ class Login extends React.Component {
 
     // Se o nome e o email forem válidos
     if (name && email) {
-      // Se ainda não existe um `token`, faz a requisição.
-      if (!localStorage.getItem('token')) this.getToken();
+      this.getQuestions(); // Executa o fetch do token e das questões
 
       // Dispara a action que salva os dados do `player` na store do redux.
       // { name, gravatarEmail } é o `payload` da action.
       logPlayerIn({ name, gravatarEmail: email });
-      console.log(history);
-      history.push('/match'); // Redireciona o usuário para a página do jogo.
 
       // Reseta o state do component Login, já que este foi utilizado
       // apenas para validação dos dados informados pelo usuário.
       this.setState({ name: '', email: '' });
+
+      history.push('/game'); // Redireciona o usuário para a página do jogo.
     }
   }
 
@@ -128,10 +121,12 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  saveQuestions: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   logPlayerIn: (email) => dispatch(userLoggedIn(email)),
+  saveQuestions: (data) => dispatch(getQuestionsFromResponse(data)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
