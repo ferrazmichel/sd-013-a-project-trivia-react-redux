@@ -108,8 +108,6 @@ const mapStateToProps = (state) => ({
   valueToken: state.users.token,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
 Login.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   getToken: PropTypes.func.isRequired,
@@ -117,8 +115,14 @@ Login.propTypes = {
     response_code: PropTypes.number,
     response_message: PropTypes.string,
     token: PropTypes.string,
-  }).isRequired,
+  }),
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
+
+Login.defaultProps = {
+  valueToken: { token: '' },
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
