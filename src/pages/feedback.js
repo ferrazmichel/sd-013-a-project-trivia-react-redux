@@ -4,7 +4,7 @@ class FeedBack extends React.Component {
   render() {
     return (
       <div>
-        <p>Página FeedBack</p>
+        <p data-testid="feedback-text">Página FeedBack</p>
       </div>
     );
   }
