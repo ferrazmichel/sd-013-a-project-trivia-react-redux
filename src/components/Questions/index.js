@@ -8,10 +8,12 @@ class Questions extends React.Component {
     this.state = {
       questionsArray: [],
       answered: false,
+      id: 0,
     };
     this.getQuestions = this.getQuestions.bind(this);
     this.changeState = this.changeState.bind(this);
     this.isAnswered = this.isAnswered.bind(this);
+    this.next = this.next.bind(this);
   }
 
   componentDidMount() {
@@ -42,8 +44,15 @@ class Questions extends React.Component {
     return answered;
   }
 
+  next() {
+    const { id } = this.state;
+    this.setState({
+      id: id + 1,
+    });
+  }
+
   render() {
-    const { questionsArray } = this.state;
+    const { questionsArray, id } = this.state;
     const number = 30000;
     if (questionsArray.length === 0) return <p>Loading...</p>;
     return (
@@ -51,11 +60,11 @@ class Questions extends React.Component {
         <div>
           <p>
             Category:
-            <span data-testid="question-category">{questionsArray[0].category}</span>
+            <span data-testid="question-category">{questionsArray[id].category}</span>
           </p>
           <p>
             Question:
-            <span data-testid="question-text">{questionsArray[0].question}</span>
+            <span data-testid="question-text">{questionsArray[id].question}</span>
           </p>
           <ul>
             <li>
@@ -66,10 +75,10 @@ class Questions extends React.Component {
                 className={ this.isAnswered('correct') }
                 disabled={ this.isCompleted() }
               >
-                {questionsArray[0].correct_answer}
+                {questionsArray[id].correct_answer}
               </button>
             </li>
-            {questionsArray[0].incorrect_answers.map((incorrect, i) => (
+            {questionsArray[id].incorrect_answers.map((incorrect, i) => (
               <li key={ i }>
                 <button
                   type="button"
@@ -85,6 +94,7 @@ class Questions extends React.Component {
           </ul>
           <Countdown date={ Date.now() + number } onComplete={ this.changeState } />
         </div>
+        <button type="button" onClick={ this.next }>Pŕoxima Questão</button>
       </div>
     );
   }
