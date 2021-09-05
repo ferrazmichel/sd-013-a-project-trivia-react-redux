@@ -7,6 +7,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Question from '../components/Question';
+import { enableNextButton } from '../actions/index';
 
 class Game extends React.Component {
   constructor() {
@@ -20,11 +21,13 @@ class Game extends React.Component {
   }
 
   nextQuestion() {
+    const { enable } = this.props;
+    enable(false);
     this.setState((prev) => ({ index: prev.index + 1 }));
   }
 
   render() {
-    const { questions, loading } = this.props; // Vem da store do redux
+    const { questions, loading, answered } = this.props; // Vem da store do redux
     const { index } = this.state;
 
     if (loading) {
@@ -37,6 +40,7 @@ class Game extends React.Component {
         <button
           onClick={ this.nextQuestion }
           type="button"
+          disabled={ !answered }
         >
           Próxima pergunta
         </button>
@@ -48,11 +52,18 @@ class Game extends React.Component {
 Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
+  enable: PropTypes.func.isRequired,
+  answered: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   loading: state.game.loading,
+  answered: state.game.answered,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  enable: (bool) => dispatch(enableNextButton(bool)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

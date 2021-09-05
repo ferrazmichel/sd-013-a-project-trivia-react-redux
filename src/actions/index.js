@@ -1,6 +1,7 @@
 export const PLAYER_LOGGED_IN = 'player/login';
 export const REQUEST_QUESTIONS = 'match/request_questions';
 export const GET_QUESTIONS = 'match/get_questions';
+export const ENABLE_NEXT_QUESTION = 'match/enable_button';
 
 // Action disparada no momento do login. Após os dados terem sido validados.
 export const userLoggedIn = (playerInfo) => (
@@ -21,4 +22,9 @@ export const userLoggedIn = (playerInfo) => (
 export const getQuestionsFromResponse = (questions) => ({
   type: GET_QUESTIONS,
   payload: questions, // Array contendo as 5 questões
+});
+
+export const enableNextButton = (bool) => ({
+  type: ENABLE_NEXT_QUESTION,
+  payload: bool,
 });
