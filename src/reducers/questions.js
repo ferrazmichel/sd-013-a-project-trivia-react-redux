@@ -88,21 +88,18 @@ const questions = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case IS_LOADING:
     return { ...state, isLoading: true };
-
   case REQUEST_SHOW_MILHAO_SUCESS:
     return { ...state,
       isLoading: false,
       token: action.token,
       questions: action.questions,
     };
-
   case REQUEST_FAILED:
     return {
       ...state,
       isLoading: false,
       error: action.error,
     };
-
   default:
     return state;
   }
