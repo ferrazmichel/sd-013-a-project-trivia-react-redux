@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Question from '../components/Question';
 import { toggleNextButton } from '../actions/index';
 import Header from '../components/Header';
+import FeedbackPage from './FeedbackPage';
 
 class Game extends React.Component {
   constructor() {
