@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Question from '../components/Question';
 import { toggleNextButton } from '../actions/index';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   constructor() {
