@@ -37,7 +37,7 @@ class GamePage extends Component {
   }
 
   initialLocalStorage() {
-    const { name, gravatarEmail } = this.props;
+    const { gravatarEmail, name } = this.props;
     const { assertions, score } = this.state;
     const obj = { player: { name, gravatarEmail, assertions, score } };
     localStorage.setItem('state', JSON.stringify(obj));

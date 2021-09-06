@@ -12,10 +12,18 @@ class LoginPage extends Component {
       email: '',
       nickname: '',
       buttonDisable: true,
+      score: 0,
     };
     this.verifyInputs = this.verifyInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.startLocalStorage = this.startLocalStorage.bind(this);
+  }
+
+  startLocalStorage() {
+    const { score } = this.state;
+    const obj = { player: { score } };
+    return localStorage.setItem('state', JSON.stringify(obj));
   }
 
   handleChange({ target: { name, value } }) {
@@ -31,6 +39,7 @@ class LoginPage extends Component {
     const cryptoEmail = md5(email.trim()).toString();
     const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
     player({ email, nickname, gravatarEmail });
+    this.startLocalStorage();
   }
 
   verifyInputs() {
@@ -105,6 +114,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   stateEmail: state.user.email,
+  name: state.user.nickname,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
