@@ -73,15 +73,21 @@ class GamePage extends Component {
   }
 
   submitAnswer() {
+    const { numberOfQuestion: question } = this.state;
     const noMagicNumber = 4;
-    this.setState(
-      ({ numberOfQuestion }) => ({
-        numberOfQuestion: numberOfQuestion + 1,
-        counter: 30,
-        answersButtonsDisables: false,
-        randomNumber: Math.floor(Math.random() * noMagicNumber),
-      }), this.timer,
-    );
+    if (question === noMagicNumber) {
+      const { history } = this.props;
+      history.push('/feedbackpage');
+    } else {
+      this.setState(
+        ({ numberOfQuestion }) => ({
+          numberOfQuestion: numberOfQuestion + 1,
+          counter: 30,
+          answersButtonsDisables: false,
+          randomNumber: Math.floor(Math.random() * noMagicNumber),
+        }), this.timer,
+      );
+    }
   }
 
   questionAndAnswers() {
@@ -123,7 +129,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { isLoading } = this.props;
+    const { isLoading, questions } = this.props;
     const { counter, nextButtonAppear } = this.state;
     const loading = (<span>Loading...</span>);
     return (
@@ -131,7 +137,7 @@ class GamePage extends Component {
         <Header />
         <h1>Game Page</h1>
         <span>{ counter }</span>
-        { (isLoading) ? loading : this.questionAndAnswers() }
+        { (isLoading || !questions) ? loading : this.questionAndAnswers() }
         <button
           data-testid="btn-next"
           onClick={ this.submitAnswer }

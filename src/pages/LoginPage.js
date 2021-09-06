@@ -42,7 +42,7 @@ class LoginPage extends Component {
   render() {
     const { handleChange, handleClick,
       state: { buttonDisable }, props: { stateEmail } } = this;
-    if (stateEmail) return <Redirect to="/gamepage" />;
+    if (stateEmail) { return <Redirect to="/gamepage" />; }
     return (
       <div className="login-container">
         <form className="login-form">
