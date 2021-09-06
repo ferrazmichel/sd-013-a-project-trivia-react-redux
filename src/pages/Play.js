@@ -1,30 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchURL, loadFromLocalStaorage } from '../services';
+import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services';
+import { sendPlayerInfo } from '../actions';
 
 const correctAnswer = 'correct-answer';
 const MAX_QUESTIONS = 5;
+const LAST_QUESTION_INDEX = MAX_QUESTIONS - 1;
 class Play extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: '',
       questionIndex: 0,
-      playerAnswers: [],
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.handleStyle = this.handleButtonStyle.bind(this);
+    this.redirectTo = this.redirectTo.bind(this);
   }
 
   componentDidMount() {
-    // console.log('MONTOU');
     this.handleQuestions();
   }
 
+  componentWillUnmount() {
+    const { player, submitPlayer } = this.props;
+    const { player: { name, gravatarEmail } } = player;
+    const TESTE = { name,
+      gravatarEmail,
+      score: 44,
+      assertions: 3 };
+    submitPlayer((TESTE));
+    saveToLocalStorage('state', player);
+  }
+
   handleAnswers(results) {
-    // console.log(results);
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
     answers.sort(() => Math.random() - HALF);
@@ -61,12 +74,18 @@ class Play extends Component {
     this.setState({ questions: requestQuestions });
   }
 
+  redirectTo(path) {
+    const { history } = this.props;
+    history.push(path);
+  }
+
   nextQuestion() {
-    this.setState((prevState) => {
-      if (prevState.questionIndex < MAX_QUESTIONS - 1) {
-        return { ...prevState, questionIndex: prevState.questionIndex + 1 };
-      }
-    });
+    const { questionIndex } = this.state;
+    if (questionIndex === LAST_QUESTION_INDEX) {
+      this.redirectTo('/feedback');
+    } else {
+      this.setState({ questionIndex: questionIndex + 1 });
+    }
   }
 
   render() {
@@ -107,4 +126,22 @@ class Play extends Component {
   }
 }
 
-export default Play;
+const mapStateToProps = ({ play }) => ({
+  player: play,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
+});
+
+Play.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.object).isRequired,
+  submitPlayer: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
+  }).isRequired,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Play);

@@ -6,7 +6,7 @@ import { sendPlayerInfo } from '../actions';
 
 class Header extends Component {
   render() {
-    const { name, gravatarEmail } = this.props;
+    const { name, gravatarEmail, score } = this.props;
     const hashGerada = md5(gravatarEmail.trim().toLowerCase()).toString();
     const gravatarAvatar = `https://www.gravatar.com/avatar/${hashGerada}`;
 
@@ -18,7 +18,7 @@ class Header extends Component {
             {`Jogador: ${name}`}
           </h2>
           <h2 data-testid="header-score">
-            Pontuação: 0
+            { `Pontuação: ${score}` }
           </h2>
         </div>
       </header>
@@ -36,6 +36,7 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   gravatarEmail: state.user.gravatarEmail,
   name: state.user.name,
+  score: state.play.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

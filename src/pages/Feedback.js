@@ -7,11 +7,11 @@ import Header from '../components/Header';
 
 class Feedback extends React.Component {
   render() {
-    const { score } = this.props;
+    const { score, assertions } = this.props;
     return (
       <div className="feedback-main">
         <Header />
-        <FeedbackMSG score={ score } />
+        <FeedbackMSG score={ score } assertions={ assertions } />
         <button type="button" data-testid="btn-play-again">
           <Link to="/ranking">Ranking &#127942;</Link>
         </button>
@@ -23,15 +23,13 @@ class Feedback extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user: { score } }) => ({
-  // name,
+const mapStateToProps = ({ play: { player: { score, assertions } } }) => ({
   score,
-  // gravatarEmail,
+  assertions,
 });
 
 Feedback.propTypes = {
-  // name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  // gravatarEmail: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 export default connect(mapStateToProps, null)(Feedback);

@@ -10,14 +10,17 @@ const INITIAL_STATE = {
 };
 
 function playerReducer(state = INITIAL_STATE, action) {
+  console.log(action.payload);
   switch (action.type) {
   case PLAYER_INFO:
-    return {
-      ...state,
+    return { player: {
+      ...state.player,
       name: action.payload.name,
-      gravatarEmail: action.payload.gravatarEmail,
-      score: action.payload.score };
-  default: return state;
+      assertions: action.payload.assertions,
+      score: action.payload.score,
+      gravatarEmail: action.payload.gravatarEmail } };
+  default:
+    return state;
   }
 }
 

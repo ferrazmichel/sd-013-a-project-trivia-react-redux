@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import { sendUserInfo } from '../actions';
+import { sendPlayerInfo, sendUserInfo } from '../actions';
 import { TokenApi } from '../services';
 
 class Login extends React.Component {
@@ -23,8 +23,9 @@ class Login extends React.Component {
   async formSubmit(event) {
     event.preventDefault();
     const { gravatarEmail, name } = this.state;
-    const { submitUser } = this.props;
+    const { submitUser, submitPlayer } = this.props;
     submitUser(({ gravatarEmail, name }));
+    submitPlayer(({ gravatarEmail, name, score: 0, assertions: 0 }));
     const response = await TokenApi();
     this.setState({ shouldRedirect: response });
   }
@@ -102,9 +103,11 @@ class Login extends React.Component {
 
 Login.propTypes = {
   submitUser: PropTypes.func,
+  submitPlayer: PropTypes.func,
 }.isRequired;
 
 const mapDispachToProps = (dispatch) => ({
   submitUser: (payload) => dispatch(sendUserInfo(payload)),
+  submitPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
 });
 export default connect(null, mapDispachToProps)(Login);
