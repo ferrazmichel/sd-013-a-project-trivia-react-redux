@@ -9,26 +9,79 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
+      timer: 30,
+      // point: 0,
       index: 0, // lógica para aparecer cada pergunta
       respondido: false,
     };
     this.checkClick = this.checkClick.bind(this);
+    this.passarTime = this.passarTime.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
   }
 
-  checkClick() {
+  componentDidMount() {
+    const number = 1000;
+    this.cronometro = setInterval(this.passarTime, number);
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      clearInterval(this.cronometro);
+    }
+  }
+
+  passarTime() {
+    this.setState((prev) => ({ timer: prev.timer - 1 }));
+  }
+
+  checkClass(e) {
+    return console.log(e.target.className);
+  }
+
+  // foi comentado as linhas pra poder fazer o merge do req. 8;
+  checkClick(e) {
+    // let { point } = this.state;
+    clearInterval(this.cronometro);
+    this.checkClass(e);
+    // const compClass = this.checkClass(e);
+    // if (compClass === 'wrong') {
+    //   point = 0;
+    // }
     this.setState({ respondido: true });
   }
 
+  calculateScore(difficulty) {
+    const { timer } = this.state;
+    const score = 10;
+    const hardMultiplyier = 3;
+    const mediumMultiplyier = 2;
+    console.log(difficulty);
+    switch (difficulty) {
+    case 'hard':
+      return (score + (timer * hardMultiplyier));
+    case 'medium':
+      return (score + (timer * mediumMultiplyier));
+    case 'easy':
+      return (score + timer);
+    default:
+      return 0;
+    }
+  }
+
   render() {
-    const { index, respondido } = this.state;
+    const { index, respondido, timer } = this.state;
     const { questions } = this.props;
     const currentQuestion = questions[index];
-    const { category, /* type, difficulty, */question,
+    const { category, /* type */ difficulty, question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = currentQuestion;
+    let score = 0;
+    score = this.calculateScore(difficulty);
     return (
       <main>
-        <Header />
+        <Header score={ score } respondido={ respondido } />
+        <h2>{ timer }</h2>
         <h2
           data-testid="question-category"
         >
@@ -42,6 +95,7 @@ class Game extends React.Component {
         </h3>
         <button
           type="button"
+          disabled={ timer === 0 }
           data-testid="correct-answer"
           className={ respondido ? 'correct' : '' }
           onClick={ this.checkClick }
@@ -52,8 +106,9 @@ class Game extends React.Component {
           <button
             type="button"
             key={ i }
-            onClick={ this.checkClick }
+            onClick={ (e) => this.checkClick(e) }
             className={ respondido ? 'wrong' : '' }
+            disabled={ timer === 0 }
             data-testid={ `wrong-answer-${i}` }
           >
             {answer}
