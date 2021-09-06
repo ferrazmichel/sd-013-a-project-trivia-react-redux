@@ -1,28 +1,30 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import ButtonPlayGame from '../components/ButtonPlayGame';
-import InputLogin from '../components/InputLogin';
-import fetchTriviaAPI from '../services/triviaAPI';
-import { getUserData } from '../redux/actions';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { getUserData } from '../redux/actions';
+import ButtonPlayGame from '../components/ButtonPlayGame';
+import fetchTriviaAPI from '../services/triviaAPI';
+import InputLogin from '../components/InputLogin';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
+class Login extends Component {
+  constructor() {
+    super();
 
     this.state = {
-      name: '',
-      email: '',
       btnDisabledStatus: true,
+      email: '',
+      name: '',
       redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.verifyInputs = this.verifyInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.verifyInputs = this.verifyInputs.bind(this);
   }
 
   async handleClick() {
+    const { state: { email, name } } = this;
+    await userData(getUser({ email, name }));
     const response = await fetchTriviaAPI();
     const { token } = response;
 
@@ -41,7 +43,6 @@ class Login extends React.Component {
 
   verifyInputs() {
     const { name, email } = this.state;
-
     const emailVerification = /\S+@\S+\.\S+/;
     const isValidEmail = emailVerification.test(email);
 
@@ -57,7 +58,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { btnDisabledStatus, name, email, redirect } = this.state;
+    const { btnDisabledStatus, email, name, redirect } = this.state;
 
     return (
       <div>
@@ -87,4 +88,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getUser: (userData) => dispatch(getUserData(userData)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);

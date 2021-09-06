@@ -1,17 +1,15 @@
-
-import { ActionCreators } from "redux-devtools-instrument";
-import { ADD_USER } from "../actions";
+import { ADD_USER } from '../actions';
 
 const initialState = {
-  name: '',
   email: '',
+  name: '',
 };
 
 function user(state = initialState, { type, payload }) {
   switch (type) {
   case ADD_USER:
-    return { ...state, name: action.userData.name, action.userData.email };   
-  
+    return { ...state, email: payload.userData.email, name: payload.userData.name };
+
   default:
     return state;
   }
