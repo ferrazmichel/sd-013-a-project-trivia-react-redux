@@ -1,33 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.scorelocalStorage = this.scorelocalStorage.bind(this);
+  }
+
+  scorelocalStorage() {
+    const score = JSON.parse(localStorage.getItem('state'));
+    return score.player.score;
+  }
+
   render() {
-    const { email, nickname } = this.props;
-    const cryptoEmail = md5(email.trim()).toString();
+    const { nickname, gravatarEmail } = this.props;
     return (
-      <div>
+      <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${cryptoEmail}` }
+          src={ gravatarEmail }
           alt="Gravatar Email Img"
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
-        <h2 data-testid="header-score">0</h2>
-      </div>
+        <h2 data-testid="header-score">{`score: ${this.scorelocalStorage()}`}</h2>
+      </header>
     );
   }
 }
 
 const mapStateToProps = (stateStore) => ({
-  email: stateStore.user.email,
+  gravatarEmail: stateStore.user.gravatarEmail,
   nickname: stateStore.user.nickname,
 });
 
 Header.propTypes = {
-  email: PropTypes.string,
+  gravatarEmail: PropTypes.string,
   nickname: PropTypes.string,
 }.isRequired;
 

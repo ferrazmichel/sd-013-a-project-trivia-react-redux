@@ -1,9 +1,7 @@
 import {
-  IS_LOADING_SHOW_MILHAO,
+  IS_LOADING,
   REQUEST_SHOW_MILHAO_SUCESS,
   REQUEST_FAILED,
-  IS_LOADING_QUESTIONS_SHOW,
-  REQUEST_QUESTIONS_SHOW_SUCESS,
 } from '../actions/actionsTypes';
 
 // const testState = {
@@ -81,37 +79,26 @@ import {
 // };
 
 const INITIAL_STATE = {
-  isLoading: false,
+  isLoading: true,
   token: '',
   questions: {},
 };
 
 const questions = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case IS_LOADING_SHOW_MILHAO:
-    return { ...state, isLoading: action.loading };
-
+  case IS_LOADING:
+    return { ...state, isLoading: true };
   case REQUEST_SHOW_MILHAO_SUCESS:
     return { ...state,
       isLoading: false,
       token: action.token,
+      questions: action.questions,
     };
-
   case REQUEST_FAILED:
     return {
       ...state,
       isLoading: false,
       error: action.error,
-    };
-  case IS_LOADING_QUESTIONS_SHOW:
-    return {
-      ...state, isLoading: action.loading,
-    };
-  case REQUEST_QUESTIONS_SHOW_SUCESS:
-    return {
-      ...state,
-      isLoading: false,
-      questions: action.payload,
     };
   default:
     return state;

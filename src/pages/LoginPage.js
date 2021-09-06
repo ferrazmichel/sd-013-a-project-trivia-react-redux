@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { infoPlayer, questionsShowMilhao, showMilhaoAPI } from '../actions';
+import md5 from 'crypto-js/md5';
+import { infoPlayer } from '../actions';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -23,15 +24,13 @@ class LoginPage extends Component {
       verifyInputs);
   }
 
-  async handleClick(e) {
+  handleClick(e) {
     e.preventDefault();
     const { email, nickname } = this.state;
-    const { startGame, questionsGame, player } = this.props;
-    await startGame();
-    const { token } = this.props;
-    localStorage.setItem('token', JSON.stringify(token));
-    await questionsGame(token);
-    player(email, nickname);
+    const { player } = this.props;
+    const cryptoEmail = md5(email.trim()).toString();
+    const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
+    player({ email, nickname, gravatarEmail });
   }
 
   verifyInputs() {
@@ -46,7 +45,7 @@ class LoginPage extends Component {
   render() {
     const { handleChange, handleClick,
       state: { buttonDisable }, props: { stateEmail } } = this;
-    if (stateEmail) return <Redirect to="/gamepage" />;
+    if (stateEmail) { return <Redirect to="/gamepage" />; }
     return (
       <div className="login-container">
         <form className="login-form">
@@ -101,13 +100,10 @@ LoginPage.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  player: (email, nickname) => dispatch(infoPlayer(email, nickname)),
-  startGame: () => dispatch(showMilhaoAPI()),
-  questionsGame: (token) => dispatch(questionsShowMilhao(token)),
+  player: (userInfos) => dispatch(infoPlayer(userInfos)),
 });
 
 const mapStateToProps = (state) => ({
-  token: state.questions.token.token,
   stateEmail: state.user.email,
 });
 
