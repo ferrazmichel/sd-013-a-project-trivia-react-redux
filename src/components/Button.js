@@ -6,17 +6,17 @@ class Button extends Component {
     super();
 
     this.state = {
-      disabled: true,
+      disabled: false,
     };
   }
 
   render() {
-    const { props: { dataTestId, name, func }, state: { disabled } } = this;
+    const { props: { dataTestId, name, onClick }, state: { disabled } } = this;
 
     return (
       <button
         data-testid={ dataTestId }
-        func={ func }
+        onClick={ onClick }
         type="button"
         disabled={ disabled }
       >
@@ -28,7 +28,7 @@ class Button extends Component {
 
 Button.propTypes = {
   name: PropTypes.string,
-  func: PropTypes.func,
+  onClick: PropTypes.onClick,
   text: PropTypes.string,
   type: PropTypes.string,
 }.isRequired;

@@ -5,6 +5,7 @@ import { getUserData } from '../redux/actions';
 import ButtonPlayGame from '../components/ButtonPlayGame';
 import fetchTriviaAPI from '../services/triviaAPI';
 import InputLogin from '../components/InputLogin';
+import Button from '../components/Button';
 
 class Login extends Component {
   constructor() {
@@ -14,15 +15,23 @@ class Login extends Component {
       btnDisabledStatus: true,
       email: '',
       name: '',
-      redirect: false,
+      redirectToGamePage: false,
+      redirectToSettings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleClickPlay = this.handleClickPlay.bind(this);
+    this.handleClickSettings = this.handleClickSettings.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
   }
 
-  async handleClick() {
+  handleClickSettings() {
+    this.setState({
+      redirectToSettings: true,
+    });
+  }
+
+  async handleClickPlay() {
     const { state: { email, name } } = this;
     await userData(getUser({ email, name }));
     const response = await fetchTriviaAPI();
@@ -31,7 +40,7 @@ class Login extends Component {
     localStorage.setItem('token', token);
 
     this.setState({
-      redirect: true,
+      redirectToGamePage: true,
     });
   }
 
@@ -58,7 +67,8 @@ class Login extends Component {
   }
 
   render() {
-    const { btnDisabledStatus, email, name, redirect } = this.state;
+    const { btnDisabledStatus, email, name,
+      redirectToGamePage, redirectToSettings } = this.state;
 
     return (
       <div>
@@ -79,10 +89,16 @@ class Login extends Component {
           />
           <ButtonPlayGame
             isDisabled={ btnDisabledStatus }
-            onClick={ this.handleClick }
+            onClick={ this.handleClickPlay }
+          />
+          <Button
+            dataTestId="btn-settings"
+            name="Configurações"
+            onClick={ this.handleClickSettings }
           />
         </form>
-        { redirect && <Redirect to="/gamePage" /> }
+        { redirectToGamePage && <Redirect to="/gamepage" /> }
+        { redirectToSettings && <Redirect to="/settings" /> }
       </div>
     );
   }
