@@ -1,6 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getToken } from '../services/Api';
+import { getLogin } from '../redux/actions';
+import { getToken, getGravatar } from '../services/Api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,12 +35,20 @@ class Login extends React.Component {
   }
 
   async fetchToken() {
+    const { email } = this.state;
     const result = await getToken();
+    const imagem = getGravatar(email);
+    console.log(imagem);
     localStorage.setItem('token', result.token);
+    localStorage.setItem('ranking', JSON.stringify([{ picture: imagem }]));
   }
 
   handleOnClick() {
+    const { email } = this.state;
+    const imagem = getGravatar(email);
+    const { setLogin } = this.props;
     this.fetchToken();
+    setLogin({ ...this.state, picture: imagem });
   }
 
   render() {
@@ -89,4 +100,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  setLogin: (payload) => dispatch(getLogin(payload)),
+});
+
+Login.propTypes = {
+  setLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

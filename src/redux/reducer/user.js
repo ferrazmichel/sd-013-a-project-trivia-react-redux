@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_LOGIN:
-    return { ...state, name: action.payload.name, email: action.payload.email };
+    return { ...state, ...action.payload };
 
   default:
     return state;
