@@ -8,7 +8,7 @@ class Header extends Component {
     const { email, nickname } = this.props;
     const cryptoEmail = md5(email.trim()).toString();
     return (
-      <div>
+      <header>
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${cryptoEmail}` }
@@ -16,7 +16,7 @@ class Header extends Component {
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
         <h2 data-testid="header-score">0</h2>
-      </div>
+      </header>
     );
   }
 }
