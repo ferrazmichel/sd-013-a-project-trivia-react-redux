@@ -18,12 +18,12 @@ class FeedbackPage extends Component {
         )}
         <div>
           <span data-testid="feedback-total-question">
-            {`Right answers: ${assertionsLocalStorage()}`}
+            {assertionsLocalStorage()}
           </span>
         </div>
         <div>
           <span data-testid="feedback-total-score">
-            {`Final score: ${scorelocalStorage()}`}
+            {scorelocalStorage()}
           </span>
         </div>
         <Link data-testid="btn-play-again" to="/">

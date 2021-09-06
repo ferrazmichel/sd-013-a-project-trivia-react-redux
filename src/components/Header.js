@@ -14,7 +14,7 @@ class Header extends Component {
           alt="Gravatar Email Img"
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
-        <h2 data-testid="header-score">{`score: ${scorelocalStorage()}`}</h2>
+        <h2 data-testid="header-score">{scorelocalStorage()}</h2>
       </header>
     );
   }

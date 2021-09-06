@@ -40,7 +40,9 @@ class GamePage extends Component {
     const { gravatarEmail, name } = this.props;
     const { assertions, score } = this.state;
     const obj = { player: { name, gravatarEmail, assertions, score } };
-    localStorage.setItem('state', JSON.stringify(obj));
+    const infoPlayer = localStorage.setItem('state', JSON.stringify(obj));
+    const getInfoPlayer = JSON.parse(localStorage.getItem(infoPlayer));
+    return getInfoPlayer;
   }
 
   async dispatchRequestQuestions() {
