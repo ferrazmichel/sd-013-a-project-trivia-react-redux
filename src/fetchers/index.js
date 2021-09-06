@@ -26,7 +26,7 @@ export const fetchToken = async () => {
 
 export const fetchQuestions = async () => {
   let token = localStorage.getItem('token');
-  if (!token) {
+  if (!localStorage[token]) {
     token = await fetchToken();
   }
   const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);

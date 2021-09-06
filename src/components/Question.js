@@ -4,7 +4,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import shuffleArray from '../helpers';
+import './Question.css';
+import { toggleNextButton } from '../actions/index';
 
 class Question extends React.Component {
   // O elemento com a alternativa correta deve possuir o atributo data-testid com o valor correct-answer
@@ -12,10 +15,34 @@ class Question extends React.Component {
   // wrong-answer-${index}, com ${index} iniciando com o valor 0
   // As alternativas devem ser exibidas em ordem aleatória
   // Dica: utilize botões (<button/>) para as alternativas
+  constructor() {
+    super();
+
+    this.changeColor = this.changeColor.bind(this);
+  }
+
+  changeColor() {
+    const { enable } = this.props;
+    const questions = document.querySelectorAll('button');
+    questions.forEach((question) => {
+      if (question.id === 'correct') {
+        question.classList.add('correct-btn');
+      } if (question.id === 'incorrect') {
+        question.classList.add('incorrect-btn');
+      }
+    });
+    enable(true);
+  }
+
   renderAnswer(answer, idx) {
     return (
       <li key={ idx }>
-        <button data-testid={ answer.textId } type="button">
+        <button
+          data-testid={ answer.textId }
+          type="button"
+          onClick={ this.changeColor }
+          id={ answer.id }
+        >
           {answer.text}
         </button>
       </li>
@@ -24,9 +51,9 @@ class Question extends React.Component {
 
   renderAnswers(incorrects, correct) {
     const answers = incorrects.map(
-      (a, idx) => ({ text: a, textId: `wrong-answer-${idx}` }),
+      (a, idx) => ({ text: a, textId: `wrong-answer-${idx}`, id: 'incorrect' }),
     );
-    answers.push({ text: correct, textId: 'correct-answer' });
+    answers.push({ text: correct, textId: 'correct-answer', id: 'correct' });
     shuffleArray(answers);
 
     return (
@@ -38,7 +65,6 @@ class Question extends React.Component {
 
   render() {
     const { question } = this.props;
-
     const incorrectAnswers = question.incorrect_answers;
     const correctAnswer = question.correct_answer;
 
@@ -59,6 +85,11 @@ Question.propTypes = {
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     correct_answer: PropTypes.string.isRequired,
   }).isRequired,
+  enable: PropTypes.func.isRequired,
 };
 
-export default Question;
+const mapDispatchToProps = (dispatch) => ({
+  enable: (bool) => dispatch(toggleNextButton(bool)),
+});
+
+export default connect(null, mapDispatchToProps)(Question);
