@@ -39,13 +39,15 @@ class Game extends React.Component {
     return console.log(e.target.className);
   }
 
+  // foi comentado as linhas pra poder fazer o merge do req. 8;
   checkClick(e) {
     // let { point } = this.state;
     clearInterval(this.cronometro);
-    const compClass = this.checkClass(e);
-    if (compClass === 'wrong') {
-      point = 0;
-    }
+    this.checkClass(e);
+    // const compClass = this.checkClass(e);
+    // if (compClass === 'wrong') {
+    //   point = 0;
+    // }
     this.setState({ respondido: true });
   }
 
