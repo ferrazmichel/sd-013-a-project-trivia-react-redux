@@ -21,9 +21,15 @@ class Feedbacks extends Component {
   }
 
   render() {
+    const { correctAnswers, score } = this.props;
+    const WELL_PLAYED = 3;
+
     return (
       <div>
         <Header />
+        <section>
+
+        </section>
       </div>
     );
   }
