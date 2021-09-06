@@ -37,6 +37,7 @@ class Game extends React.Component {
 
     return (
       <div>
+        <Header />
         <Question key={ index } question={ questions[index] } />
         <button
           onClick={ this.nextQuestion }
