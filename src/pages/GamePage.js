@@ -48,7 +48,7 @@ class GamePage extends Component {
     await startGame();
   }
 
-  handleColorChange({ target: { name: answerName } }) {
+  handleColorChange({ target: { name: answerName } } = { target: { answerName: '' } }) {
     const { cronoInterval } = this.state;
     const getBtnsOptions = document.querySelectorAll('.button-answers');
     getBtnsOptions.forEach((button) => {
