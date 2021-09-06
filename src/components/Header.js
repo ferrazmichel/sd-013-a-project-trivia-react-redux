@@ -5,13 +5,13 @@ import fetchAvatar from '../fetchAvatar';
 
 class Header extends React.Component {
   render() {
-    const { gravatarEmail, name } = this.props;
+    const { gravatarEmail, name, score } = this.props;
     const avatar = fetchAvatar(gravatarEmail);
     return (
       <header>
         <div>
           <div>
-            <img src={ avatar } alt="avatar" data-testid="header-player-name" />
+            <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
           </div>
           <div>
             <p data-testid="header-player-name">
@@ -19,7 +19,7 @@ class Header extends React.Component {
               { name }
             </p>
             <p data-testid="header-score">
-              Placar: 0
+              { score }
             </p>
           </div>
         </div>
@@ -31,11 +31,13 @@ class Header extends React.Component {
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   gravatarEmail: state.player.gravatarEmail,
   name: state.player.name,
+  score: state.player.score,
 });
 
 export default connect(mapStateToProps)(Header);
