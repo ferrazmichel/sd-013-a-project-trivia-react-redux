@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { scorelocalStorage } from '../services/localstage';
 
 class Header extends Component {
   render() {
@@ -13,7 +14,7 @@ class Header extends Component {
           alt="Gravatar Email Img"
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
-        <h2 data-testid="header-score">0</h2>
+        <h2 data-testid="header-score">{scorelocalStorage()}</h2>
       </header>
     );
   }
