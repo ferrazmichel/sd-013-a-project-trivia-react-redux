@@ -4,17 +4,21 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { decode } from 'html-entities';
 import { fetchQuestions } from '../redux/actions';
-import { Cronometer, Header } from '../components';
+import { AnswersButton, Cronometer, Header } from '../components';
 
 class Game extends Component {
   constructor() {
     super();
     this.state = {
       index: 0,
-      time: true,
+      timer: true,
+      seconds: 0,
+      points: 0,
     };
     this.changeIndex = this.changeIndex.bind(this);
     this.optionSelect = this.optionSelect.bind(this);
+    this.changeSeconds = this.changeSeconds.bind(this);
+    this.clickSelected = this.clickSelected.bind(this);
   }
 
   async componentDidMount() {
@@ -27,15 +31,9 @@ class Game extends Component {
     this.setState({ index: index + 1 });
     document.querySelectorAll('.answer').forEach((answer) => {
       answer.className = 'answer';
+      answer.disabled = false;
     });
-  }
-
-  buttonsAnswers(array) {
-    // source https://stackoverflow.com/a/46545530
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+    this.setState({ timer: true });
   }
 
   optionSelect() {
@@ -46,15 +44,55 @@ class Game extends Component {
       const cName = answer.innerText === correctAnswer
         ? 'answer correct-answer' : 'answer incorrect-answer';
       answer.className = (cName);
-      if (answer.innerText === correctAnswer) {
-        answer.disabled = true;
-      }
+      answer.disabled = true;
     });
+    this.setState({ timer: false });
+  }
+
+  clickSelected(event) {
+    const { value } = event.target;
+    const { points } = this.state;
+    console.log(value);
+    if (value === 'correct') {
+      this.setState({ points: points + 1 });
+    }
+    this.optionSelect();
+  }
+
+  // buttonsAnswers() {
+  //   const { gameQuestions } = this.props;
+  //   if (gameQuestions.length === 0) return '';
+  //   const { index } = this.state;
+  //   const { correct_answer: correct,
+  //     incorrect_answers: incorrect } = gameQuestions[index];
+  //   // source https://stackoverflow.com/a/46545530
+  //   const answers = [...incorrect, correct]
+  //     .map((value) => ({ value, sort: Math.random() }))
+  //     .sort((a, b) => a.sort - b.sort)
+  //     .map(({ value }) => value);
+  //   const buttons = answers.map((answer, key) => (
+  //     <button
+  //       onClick={ this.clickSelected }
+  //       type="button"
+  //       key={ key }
+  //       className="answer"
+  //       data-testid={ answer === correct ? 'correct-answer'
+  //         : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
+  //       value={ answer === correct ? 'correct' : 'incorrect' }
+  //     >
+  //       { decode(answer) }
+  //     </button>
+  //   ));
+  //   this.setState({ questions: buttons });
+  // }
+
+  changeSeconds(seconds) {
+    this.setState({ seconds });
   }
 
   render() {
     const { gameQuestions } = this.props;
-    const { index, time } = this.state;
+    const { index, timer } = this.state;
     if (gameQuestions.length === 0) return <p>loading...</p>;
     const { question, category, correct_answer: correct,
       incorrect_answers: incorrect } = gameQuestions[index];
@@ -66,21 +104,35 @@ class Game extends Component {
           <div data-testid="question-category">
             { category }
           </div>
-          { time && <Cronometer optionSelect={ this.optionSelect } time={ time } /> }
+          {
+            timer
+              && <Cronometer
+                optionSelect={ this.optionSelect }
+                changeSeconds={ this.changeSeconds }
+              />
+          }
           <div data-testid="question-text">
             { decode(question) }
           </div>
-          { this.buttonsAnswers([...incorrect, correct]).map((answer, key) => (
-            <button
-              onClick={ this.optionSelect }
-              type="button"
-              key={ key }
-              className="answer"
-              data-testid={ answer === correct ? 'correct-answer'
-                : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
-            >
-              { decode(answer) }
-            </button>))}
+          <AnswersButton
+            correct={ correct }
+            incorrect={ incorrect }
+            onClick={ this.clickSelected }
+          />
+          {
+            // this.buttonsAnswers([...incorrect, correct]).map((answer, key) => (
+            //   <button
+            //     onClick={ this.clickSelected }
+            //     type="button"
+            //     key={ key }
+            //     className="answer"
+            //     data-testid={ answer === correct ? 'correct-answer'
+            //       : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
+            //     value={ answer === correct ? 'correct' : 'incorrect' }
+            //   >
+            //     { decode(answer) }
+            //   </button>))
+          }
           <button type="button" onClick={ this.changeIndex }>NEXT</button>
         </section>
       </div>
