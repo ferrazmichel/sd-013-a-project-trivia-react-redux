@@ -89,7 +89,7 @@ const INITIAL_STATE = {
 const questions = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case IS_LOADING_SHOW_MILHAO:
-    return { ...state, isLoading: true };
+    return { ...state, isLoading: action.loading };
 
   case REQUEST_SHOW_MILHAO_SUCESS:
     return { ...state,
@@ -105,7 +105,7 @@ const questions = (state = INITIAL_STATE, action) => {
     };
   case IS_LOADING_QUESTIONS_SHOW:
     return {
-      ...state, isLoading: true,
+      ...state, isLoading: action.loading,
     };
   case REQUEST_QUESTIONS_SHOW_SUCESS:
     return {

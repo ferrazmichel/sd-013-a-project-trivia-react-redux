@@ -27,6 +27,8 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
+    // const { questionsGame, token } = this.props;
+    // questionsGame(token);
     this.timer();
   }
 
@@ -110,24 +112,31 @@ class GamePage extends Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, loading } = this.props;
     const { numberOfQuestion, counter, nextButtonAppear } = this.state;
+    console.log(loading, 'loading');
+    console.log(questions, 'questoes');
+    console.log(numberOfQuestion, 'numberOfQuestion');
     return (
       <div>
         <Header />
         <h1>Game Page</h1>
-        <span>{ counter }</span>
-        <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
-        <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
-        { this.answers() }
-        <button
-          data-testid="btn-next"
-          onClick={ this.submitAnswer }
-          style={ { display: nextButtonAppear } }
-          type="button"
-        >
-          Next Question
-        </button>
+        {loading ? <span>loading...</span> : (
+          <>
+            <span>{ counter }</span>
+            <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+            <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
+            { this.answers() }
+            <button
+              data-testid="btn-next"
+              onClick={ this.submitAnswer }
+              style={ { display: nextButtonAppear } }
+              type="button"
+            >
+              Next Question
+            </button>
+          </>
+        ) }
       </div>
     );
   }
@@ -139,6 +148,8 @@ GamePage.propTypes = {
 
 const mapStateToProps = (stateStore) => ({
   questions: stateStore.questions.questions.results,
+  token: stateStore.questions.token.token,
+  loading: stateStore.questions.isLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

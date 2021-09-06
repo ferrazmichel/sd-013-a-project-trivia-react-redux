@@ -12,7 +12,7 @@ export const infoPlayer = (email, nickname) => ({
   type: SAVE_INFO_PLAYER, email, nickname,
 });
 
-const isLoadShowMilhao = () => ({ type: IS_LOADING_SHOW_MILHAO });
+const isLoadShowMilhao = () => ({ type: IS_LOADING_SHOW_MILHAO, loading: true });
 
 const requestShowMilhaoSucess = (token) => ({
   type: REQUEST_SHOW_MILHAO_SUCESS, token,
@@ -32,7 +32,7 @@ export const showMilhaoAPI = () => async (dispatch) => {
   }
 };
 
-const isLoadingQuestions = () => ({ type: IS_LOADING_QUESTIONS_SHOW });
+const isLoadingQuestions = () => ({ type: IS_LOADING_QUESTIONS_SHOW, loading: true });
 
 const requestQuestionsSucess = (payload) => ({
   type: REQUEST_QUESTIONS_SHOW_SUCESS, payload,
