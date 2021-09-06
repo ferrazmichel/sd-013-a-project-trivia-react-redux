@@ -10,7 +10,7 @@ class Game extends React.Component {
     super();
     this.state = {
       timer: 30,
-      point: 0,
+      // point: 0,
       index: 0, // lógica para aparecer cada pergunta
       respondido: false,
     };
@@ -40,7 +40,7 @@ class Game extends React.Component {
   }
 
   checkClick(e) {
-    let { point } = this.state;
+    // let { point } = this.state;
     clearInterval(this.cronometro);
     const compClass = this.checkClass(e);
     if (compClass === 'wrong') {
