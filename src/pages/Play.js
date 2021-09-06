@@ -27,14 +27,13 @@ class Play extends Component {
   }
 
   componentWillUnmount() {
-    const { player, submitPlayer } = this.props;
-    const { player: { name, gravatarEmail } } = player;
+    const { player: { name, gravatarEmail }, submitPlayer } = this.props;
     const TESTE = { name,
       gravatarEmail,
       score: 44,
       assertions: 3 };
     submitPlayer((TESTE));
-    saveToLocalStorage('state', player);
+    saveToLocalStorage('state', TESTE);
   }
 
   handleAnswers(results) {
@@ -126,8 +125,8 @@ class Play extends Component {
   }
 }
 
-const mapStateToProps = ({ play }) => ({
-  player: play,
+const mapStateToProps = ({ play: { player } }) => ({
+  player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
