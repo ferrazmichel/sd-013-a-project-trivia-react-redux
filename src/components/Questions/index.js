@@ -2,13 +2,12 @@ import React from 'react';
 import './style.css';
 
 class Questions extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       questionsArray: [],
       answered: false,
       id: 0,
-      time: {},
       seconds: 30,
       difficulty: '',
     };
@@ -39,55 +38,23 @@ class Questions extends React.Component {
 
   timerMount() {
     const { seconds } = this.state;
-    const number = 1000;
-    const timeLeftVar = this.secondsToTime(seconds);
-    this.setState({ time: timeLeftVar });
     if (this.timer === 0 && seconds > 0) {
-      this.timer = setInterval(this.countDown, number);
+      const timeToInitiate = 1000; // Tempo esperado para começar o cronômetro
+      this.timer = setInterval(this.countDown, timeToInitiate);
     }
   }
 
   countDown() {
-    // Remove one second, set state so a re-render happens.
-    const { answered } = this.state;
+    const { answered, seconds } = this.state;
     if (!answered) {
-      const { seconds } = this.state;
-      const second = seconds - 1;
-      this.setState({
-        time: this.secondsToTime(second),
-        seconds: second,
-      });
-      // Check if we're at zero.
-      if (second === 0) {
+      if (seconds === 0) {
         clearInterval(this.timer);
         this.setState({ answered: true });
-      }
+      } else this.setState({ seconds: seconds - 1 });
     }
   }
 
-  secondsToTime(secs) {
-    const sixty = 60;
-    const hours = Math.floor(secs / (sixty * sixty));
-
-    const divisorForMinute = secs % (sixty * sixty);
-    const minutes = Math.floor(divisorForMinute / sixty);
-
-    const divisorForSecond = divisorForMinute % sixty;
-    const seconds = Math.ceil(divisorForSecond);
-
-    const obj = {
-      h: hours,
-      m: minutes,
-      s: seconds,
-    };
-    return obj;
-  }
-
-  changeState() {
-    this.setState({
-      answered: true,
-    });
-  }
+  changeState() { this.setState({ answered: true }); }
 
   isAnswered(className) {
     const { answered } = this.state;
@@ -101,20 +68,17 @@ class Questions extends React.Component {
 
   next() {
     const maxId = 4;
-    const number = 1000;
     const { id, seconds } = this.state;
     if (id !== maxId) {
       this.setState({
         id: id + 1,
         answered: false,
-        time: {
-          s: 30,
-        },
         seconds: 30,
       });
       this.countDown();
       if (seconds === 0) {
-        this.timer = setInterval(this.countDown, number);
+        const timeToInitiate = 1000;
+        this.timer = setInterval(this.countDown, timeToInitiate);
       }
     }
   }
@@ -122,10 +86,8 @@ class Questions extends React.Component {
   linkOrNext() {
     const { id } = this.state;
     const maxId = 4;
-    if (id === maxId) {
-      window.open('/feedback', '_self');
-    }
-    this.next();
+    if (id === maxId) window.open('/feedback', '_self');
+    else this.next();
   }
 
   async sumScore() {
@@ -134,10 +96,8 @@ class Questions extends React.Component {
     await this.setState({ difficulty: questionsArray[id].difficulty });
     const { seconds, difficulty } = this.state;
     const state = JSON.parse(localStorage.getItem('state'));
-
     const ten = 10;
     const three = 3;
-
     switch (difficulty) {
     case 'easy':
       state.player.score += ten + (seconds);
@@ -151,11 +111,7 @@ class Questions extends React.Component {
     default: return;
     }
 
-    await localStorage.setItem('state', JSON.stringify(state));
-
-    console.log(`dificuldade ${difficulty}`);
-    console.log(`seconds ${difficulty}`);
-    console.log(`total: ${state.player.score}`);
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   renderButton() {
@@ -171,7 +127,7 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { time: { s } } = this.state;
+    const { seconds } = this.state;
     const { questionsArray, id, answered } = this.state;
     if (questionsArray.length === 0) return <p>Loading...</p>;
     return (
@@ -211,9 +167,7 @@ class Questions extends React.Component {
               </li>
             ))}
           </ul>
-          <div>
-            { s }
-          </div>
+          <div>{ seconds }</div>
         </div>
         {answered && this.renderButton()}
       </div>
