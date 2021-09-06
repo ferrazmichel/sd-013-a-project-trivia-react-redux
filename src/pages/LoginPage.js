@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { infoPlayer } from '../actions';
 
@@ -35,10 +34,11 @@ class LoginPage extends Component {
   handleClick(e) {
     e.preventDefault();
     const { email, nickname } = this.state;
-    const { player } = this.props;
+    const { player, history } = this.props;
     const cryptoEmail = md5(email.trim()).toString();
     const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
     player({ email, nickname, gravatarEmail });
+    history.push('/gamepage');
     this.startLocalStorage();
   }
 
@@ -53,8 +53,7 @@ class LoginPage extends Component {
 
   render() {
     const { handleChange, handleClick,
-      state: { buttonDisable }, props: { stateEmail } } = this;
-    if (stateEmail) { return <Redirect to="/gamepage" />; }
+      state: { buttonDisable } } = this;
     return (
       <div className="login-container">
         <form className="login-form">
