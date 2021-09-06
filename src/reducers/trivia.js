@@ -1,24 +1,13 @@
-import { REQUEST_API, RECEIVE_API } from '../actions';
+import { CORRECT_QUESTIONS } from '../actions';
 
 const INITIAL_STATE = ({
-  questions: [],
-  loading: false,
-
+  correctQuestions: 0,
 });
 
 function trivia(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case RECEIVE_API:
-    return {
-      ...state,
-      loading: false,
-      questions: { ...state, questions: action.data },
-    };
-  case REQUEST_API:
-    return {
-      ...state,
-      loading: true,
-    };
+  case CORRECT_QUESTIONS:
+    return { ...state, correctQuestions: action.correct };
   default:
     return state;
   }
