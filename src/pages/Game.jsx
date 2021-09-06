@@ -9,16 +9,20 @@ class Game extends Component {
     this.renderQuestions = this.renderQuestions.bind(this);
     this.fetchTriviaApi = this.fetchTriviaApi.bind(this);
     this.storeTokenOnLocalStorage = this.storeTokenOnLocalStorage.bind(this);
+    this.responseTime = this.responseTime.bind(this);
 
     this.state = {
       questions: [],
       questionNum: 0,
       loading: true,
+      timer: 30,
+      disabled: false,
     };
   }
 
   componentDidMount() {
     this.fetchTriviaApi();
+    this.responseTime();
   }
 
   getTokenOnLocalStorage() {
@@ -53,11 +57,24 @@ class Game extends Component {
     });
   }
 
+  responseTime() {
+    const second = 1000;
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.setState({ timer: timer - 1 }); // consulta ao site - "https://stackoverflow.com/questions/40885923/countdown-timer-in-react"
+      setTimeout(this.responseTime, second); // setInterval nao da, pulas os segundos rapidamente
+    }
+    if (timer === 0) {
+      this.setState({ disabled: true });
+    }
+  }
+
   renderQuestions() {
-    const { questions, questionNum } = this.state;
+    const { questions, questionNum, timer } = this.state;
 
     return (
       <>
+        <span>{ `Tempo: ${timer}` }</span>
         <h1 data-testid="question-text">
           { questions[questionNum].question }
         </h1>
@@ -70,40 +87,37 @@ class Game extends Component {
   }
 
   renderAnswers(question) {
-    console.log(question.incorrect_answers);
+    const { disabled } = this.state;
+    let incorrectAnswers;
     if (question.type === 'multiple') {
-      const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
+      incorrectAnswers = question.incorrect_answers.map((answer, index) => (
         <button
           data-testid={ `wrong-answer-${index}` }
           type="button"
           key={ index }
+          disabled={ disabled }
         >
           { answer }
         </button>
       ));
-      return (
-        <>
-          {incorrectAnswers}
-          <button
-            data-testid="correct-answer"
-            type="button"
-          >
-            { question.correct_answer }
-          </button>
-        </>
+    } else {
+      incorrectAnswers = (
+        <button
+          data-testid="wrong-answer-0"
+          type="button"
+          disabled={ disabled }
+        >
+          { question.incorrect_answers[0] }
+        </button>
       );
     }
     return (
       <>
-        <button
-          data-testid={ `wrong-answer-${0}` }
-          type="button"
-        >
-          { question.incorrect_answers[0] }
-        </button>
+        {incorrectAnswers}
         <button
           data-testid="correct-answer"
           type="button"
+          disabled={ disabled }
         >
           { question.correct_answer }
         </button>
@@ -113,19 +127,18 @@ class Game extends Component {
 
   render() {
     const { loading } = this.state;
-
     return (
       <div>
         <Header />
         {
           loading ? <div>Carregando</div> : this.renderQuestions()
         }
-        <div>
+        {/* <div> // caso precise mais para frente, pois está dinamico.
           <h2>Categoria da pergunta</h2>
           <div>
             Alternativas
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
