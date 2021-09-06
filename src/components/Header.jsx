@@ -6,10 +6,23 @@ import md5 from 'crypto-js/md5';
 import '../css/Header.css';
 
 class Header extends Component {
+  playerScore(name, email) {
+    const player = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   render() {
     const { nome, email } = this.props;
     const md5Email = md5(email).toString();
     const avatar = `https://www.gravatar.com/avatar/${md5Email}`;
+    this.playerScore(nome, email);
     return (
       <header className="header-container">
         <div className="header-profile">

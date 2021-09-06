@@ -10,6 +10,7 @@ class Game extends Component {
     this.fetchTriviaApi = this.fetchTriviaApi.bind(this);
     this.storeTokenOnLocalStorage = this.storeTokenOnLocalStorage.bind(this);
     this.responseTime = this.responseTime.bind(this);
+    this.handleClickQuestion = this.handleClickQuestion.bind(this);
 
     this.state = {
       questions: [],
@@ -69,6 +70,41 @@ class Game extends Component {
     }
   }
 
+  /** Calcula o score do jogador */
+  calcScore(timer, difficulty) {
+    const number10 = 10;
+    const defaultValue = 1;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+
+    switch (difficulty) {
+    case 'easy':
+      return number10 + (timer * easy);
+    case 'medium':
+      return number10 + (timer * medium);
+    case 'hard':
+      return number10 + (timer * hard);
+    default:
+      return number10 + (timer * defaultValue);
+    }
+  }
+
+  /** Salvar score do jogador no localStorage */
+  handleClickQuestion(event) {
+    const { target } = event;
+    const { questions, questionNum, timer } = this.state;
+    const { difficulty } = questions[questionNum];
+    const dataAtribute = target.getAttribute('data-testid');
+    const getPlayer = JSON.parse(localStorage.getItem('state'));
+
+    if (dataAtribute === 'correct-answer') {
+      getPlayer.player.assertions += 1;
+      getPlayer.player.score += this.calcScore(timer, difficulty);
+      localStorage.state = JSON.stringify(getPlayer);
+    }
+  }
+
   renderQuestions() {
     const { questions, questionNum, timer } = this.state;
 
@@ -95,6 +131,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           type="button"
           key={ index }
+          onClick={ this.handleClickQuestion }
           disabled={ disabled }
         >
           { answer }
@@ -105,6 +142,7 @@ class Game extends Component {
         <button
           data-testid="wrong-answer-0"
           type="button"
+          onClick={ this.handleClickQuestion }
           disabled={ disabled }
         >
           { question.incorrect_answers[0] }
@@ -117,6 +155,7 @@ class Game extends Component {
         <button
           data-testid="correct-answer"
           type="button"
+          onClick={ this.handleClickQuestion }
           disabled={ disabled }
         >
           { question.correct_answer }
@@ -126,10 +165,10 @@ class Game extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, score, assertions } = this.state;
     return (
       <div>
-        <Header />
+        <Header score={ score } assertions={ assertions } />
         {
           loading ? <div>Carregando</div> : this.renderQuestions()
         }
