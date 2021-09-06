@@ -18,18 +18,29 @@ class GamePage extends Component {
       answersButtonsDisables: false,
       nextButtonAppear: 'none',
       randomNumber: Math.floor(Math.random() * noMagicNumber),
+      assertions: 0,
+      score: 0,
     };
 
     this.submitAnswer = this.submitAnswer.bind(this);
     this.randomAnswer = this.randomAnswer.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
     this.dispatchRequestQuestions = this.dispatchRequestQuestions.bind(this);
+    this.initialLocalStorage = this.initialLocalStorage.bind(this);
     this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     this.dispatchRequestQuestions();
     this.timer();
+    this.initialLocalStorage();
+  }
+
+  initialLocalStorage() {
+    const { name, gravatarEmail } = this.props;
+    const { assertions, score } = this.state;
+    const obj = { player: { name, gravatarEmail, assertions, score } };
+    localStorage.setItem('state', JSON.stringify(obj));
   }
 
   async dispatchRequestQuestions() {
@@ -37,7 +48,7 @@ class GamePage extends Component {
     await startGame();
   }
 
-  handleColorChange() {
+  handleColorChange({ target: { name: answerName } } = { target: { answerName: '' } }) {
     const { cronoInterval } = this.state;
     const getBtnsOptions = document.querySelectorAll('.button-answers');
     getBtnsOptions.forEach((button) => {
@@ -46,7 +57,23 @@ class GamePage extends Component {
       } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
     });
     clearInterval(cronoInterval);
-    this.setState(() => ({ answersButtonsDisables: true, nextButtonAppear: 'flex' }));
+    this.setState(() => ({
+      answersButtonsDisables: true,
+      nextButtonAppear: 'flex',
+    }), () => {
+      if (answerName === 'correct') {
+        const { name, gravatarEmail } = this.props;
+        let { assertions, score } = this.state;
+        const { counter } = this.state;
+        assertions += 1;
+        score += (counter * assertions);
+        const obj = { player: {
+          name, gravatarEmail, assertions, score,
+        } };
+        localStorage.setItem('state', JSON.stringify(obj));
+        this.setState(() => ({ assertions, score }));
+      }
+    });
   }
 
   timer() {
@@ -114,9 +141,9 @@ class GamePage extends Component {
               disabled={ answersButtonsDisables }
               key={ index }
               name={ nameButton }
-              onClick={ () => {
+              onClick={ (event) => {
                 clearTimeout(cronoTimeout);
-                this.handleColorChange();
+                this.handleColorChange(event);
               } }
               type="button"
             >
@@ -159,6 +186,8 @@ const mapStateToProps = (stateStore) => ({
   questions: stateStore.questions.questions.results,
   isLoading: stateStore.questions.isLoading,
   token: stateStore.questions.token.token,
+  name: stateStore.user.nickname,
+  gravatarEmail: stateStore.user.gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({

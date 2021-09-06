@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import md5 from 'crypto-js/md5';
 import { infoPlayer } from '../actions';
 
 class LoginPage extends Component {
@@ -27,7 +28,9 @@ class LoginPage extends Component {
     e.preventDefault();
     const { email, nickname } = this.state;
     const { player } = this.props;
-    player(email, nickname);
+    const cryptoEmail = md5(email.trim()).toString();
+    const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
+    player({ email, nickname, gravatarEmail });
   }
 
   verifyInputs() {
@@ -97,7 +100,7 @@ LoginPage.propTypes = {
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
-  player: (email, nickname) => dispatch(infoPlayer(email, nickname)),
+  player: (userInfos) => dispatch(infoPlayer(userInfos)),
 });
 
 const mapStateToProps = (state) => ({

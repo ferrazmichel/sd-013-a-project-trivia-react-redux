@@ -6,8 +6,8 @@ import {
   SAVE_INFO_PLAYER,
 } from './actionsTypes';
 
-export const infoPlayer = (email, nickname) => ({
-  type: SAVE_INFO_PLAYER, email, nickname,
+export const infoPlayer = ({ email, nickname, gravatarEmail }) => ({
+  type: SAVE_INFO_PLAYER, email, nickname, gravatarEmail,
 });
 
 const isLoading = () => ({ type: IS_LOADING });

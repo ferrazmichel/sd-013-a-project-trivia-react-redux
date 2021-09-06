@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 
 class Header extends Component {
   render() {
-    const { email, nickname } = this.props;
-    const cryptoEmail = md5(email.trim()).toString();
+    const { nickname, gravatarEmail } = this.props;
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${cryptoEmail}` }
+          src={ gravatarEmail }
           alt="Gravatar Email Img"
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
@@ -22,12 +20,12 @@ class Header extends Component {
 }
 
 const mapStateToProps = (stateStore) => ({
-  email: stateStore.user.email,
+  gravatarEmail: stateStore.user.gravatarEmail,
   nickname: stateStore.user.nickname,
 });
 
 Header.propTypes = {
-  email: PropTypes.string,
+  gravatarEmail: PropTypes.string,
   nickname: PropTypes.string,
 }.isRequired;
 
