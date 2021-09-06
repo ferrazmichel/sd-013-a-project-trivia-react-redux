@@ -16,7 +16,7 @@ class Game extends React.Component {
     };
     this.checkClick = this.checkClick.bind(this);
     this.passarTime = this.passarTime.bind(this);
-    this.randomDif = this.randomDif.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
   }
 
   componentDidMount() {
@@ -49,18 +49,22 @@ class Game extends React.Component {
     this.setState({ respondido: true });
   }
 
-  randomDif(difficulty) {
-    if (difficulty === 'hard') return 3;
-    if (difficulty === 'medium') return 2;
-    if (difficulty === 'easy') return 1;
-  }
-
-  // COM PROBLEMAS
-  checkTimer(score) {
-    if (timer === 0) {
-      return score = 0;
+  calculateScore(difficulty) {
+    const { timer } = this.state;
+    const score = 10;
+    const hardMultiplyier = 3;
+    const mediumMultiplyier = 2;
+    console.log(difficulty);
+    switch (difficulty) {
+    case 'hard':
+      return (score + (timer * hardMultiplyier));
+    case 'medium':
+      return (score + (timer * mediumMultiplyier));
+    case 'easy':
+      return (score + timer);
+    default:
+      return 0;
     }
-    return score = (point * timer) + base;
   }
 
   render() {
@@ -70,11 +74,8 @@ class Game extends React.Component {
     const { category, /* type */ difficulty, question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = currentQuestion;
-    const base = 10;
     let score = 0;
-    // const points = this.checkTimer(score);
-    const diffValue = this.randomDif(difficulty);
-    score = (diffValue * timer) + base;
+    score = this.calculateScore(difficulty);
     return (
       <main>
         <Header score={ score } respondido={ respondido } />
@@ -92,6 +93,7 @@ class Game extends React.Component {
         </h3>
         <button
           type="button"
+          disabled={ timer === 0 }
           data-testid="correct-answer"
           className={ respondido ? 'correct' : '' }
           onClick={ this.checkClick }
@@ -104,6 +106,7 @@ class Game extends React.Component {
             key={ i }
             onClick={ (e) => this.checkClick(e) }
             className={ respondido ? 'wrong' : '' }
+            disabled={ timer === 0 }
             data-testid={ `wrong-answer-${i}` }
           >
             {answer}
