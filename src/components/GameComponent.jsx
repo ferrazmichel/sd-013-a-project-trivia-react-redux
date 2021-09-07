@@ -92,6 +92,7 @@ class GameComponent extends Component {
               this.buttonVisibility();
             } }
             hidden={ !visible }
+            data-testid="btn-next"
           >
             NEXT
           </button>
