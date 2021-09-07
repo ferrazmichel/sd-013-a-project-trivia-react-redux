@@ -115,3 +115,6 @@ const mapDispatchToProps = (dispatch) => ({
 Settings.propTypes = {
   dispatchSetting: func.isRequired,
 };
+
+// O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
+export default connect(null, mapDispatchToProps)(Settings);
