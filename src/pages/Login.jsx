@@ -100,7 +100,7 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
           <Input
-            labelText="email"
+            labelText="Email"
             testid="input-gravatar-email"
             name="email"
             type="text"
