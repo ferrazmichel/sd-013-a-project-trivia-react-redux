@@ -26,3 +26,12 @@ class Settings extends Component {
     this.onHandlerChange = this.onHandlerChange.bind(this);
     this.addSetting = this.addSetting.bind(this);
   }
+
+  componentDidMount() {
+    this.getCategory();
+  }
+
+  onHandlerChange({ target }) {
+    const { name, value } = target;
+    this.setState({ [name]: value });
+  }
