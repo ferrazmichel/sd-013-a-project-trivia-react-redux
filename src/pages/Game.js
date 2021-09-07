@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import '../App.css';
 
 import Header from '../components/Header';
+import NextButton from '../components/nextButton';
 
 class Game extends React.Component {
   constructor() {
@@ -17,6 +18,7 @@ class Game extends React.Component {
     this.checkClick = this.checkClick.bind(this);
     this.passarTime = this.passarTime.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.nextQuestionBtn = this.nextQuestionBtn.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +71,16 @@ class Game extends React.Component {
     }
   }
 
+  nextQuestionBtn() {
+    const number = 1000;
+    this.cronometro = setInterval(this.passarTime, number);
+    this.setState((prev) => ({
+      index: prev.index + 1,
+      timer: 30,
+      respondido: false,
+    }));
+  }
+
   render() {
     const { index, respondido, timer } = this.state;
     const { questions } = this.props;
@@ -114,6 +126,7 @@ class Game extends React.Component {
             {answer}
           </button>
         ))}
+        {respondido ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
       </main>
     );
   }
