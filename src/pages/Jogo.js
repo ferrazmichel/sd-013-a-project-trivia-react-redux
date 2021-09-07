@@ -69,6 +69,8 @@ class Jogo extends React.Component {
     if (target.classList.contains('correct')) {
       this.calculateScore();
     }
+    const nextBtn = document.getElementById('next');
+    nextBtn.hidden = false;
   }
 
   calculateScore() {
@@ -175,7 +177,7 @@ class Jogo extends React.Component {
                 { alternative }
               </button>);
           })}
-          <button type="button">Próxima</button>
+          <button id="next" data-testid="btn-next" type="button" hidden>Próxima</button>
         </div>
       </div>
     );
