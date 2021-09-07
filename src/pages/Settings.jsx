@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-
-class Settings extends Component {
-  render() {
-    return (
-      <div>
-        <h1 data-testid="settings-title">Settings</h1>
-      </div>
-    );
-  }
-}
-
-export default Settings;
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { func } from 'prop-types';
+import InputCard from '../components/InputCard';
+import Select from '../components/Select';
+import { actionAddSetting } from '../redux/actions/index';
