@@ -39,13 +39,15 @@ class Game extends React.Component {
       <div>
         <Header />
         <Question key={ index } question={ questions[index] } />
-        <button
-          onClick={ this.nextQuestion }
-          type="button"
-          disabled={ !answered }
-        >
-          Próxima pergunta
-        </button>
+        {answered && (
+          <button
+            onClick={ this.nextQuestion }
+            type="button"
+            data-testid="btn-next"
+          >
+            Próxima pergunta
+          </button>
+        )}
       </div>
     );
   }
