@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { getUserData } from '../redux/actions';
-import ButtonPlayGame from '../components/ButtonPlayGame';
 import fetchTriviaAPI from '../services/triviaAPI';
 import InputLogin from '../components/InputLogin';
 import Button from '../components/Button';
@@ -88,8 +88,10 @@ class Login extends Component {
             name="email"
             value={ email }
           />
-          <ButtonPlayGame
-            isDisabled={ btnDisabledStatus }
+          <Button
+            dataTestId="btn-play"
+            name="Jogar"
+            disabled={ btnDisabledStatus }
             onClick={ this.handleClickPlay }
           />
           <Button
@@ -104,6 +106,10 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  getUser: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   getUser: (userData) => dispatch(getUserData(userData)),

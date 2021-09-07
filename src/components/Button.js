@@ -2,23 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class Button extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      disabled: false,
-    };
-  }
-
   render() {
-    const { props: { dataTestId, name, onClick }, state: { disabled } } = this;
+    const { dataTestId, name, onClick, disabled } = this.props;
 
     return (
       <button
-        data-testid={ dataTestId }
-        onClick={ onClick }
         type="button"
+        data-testid={ dataTestId }
         disabled={ disabled }
+        onClick={ onClick }
       >
         { name }
       </button>
@@ -31,6 +23,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
 }.isRequired;
 
 export default Button;
