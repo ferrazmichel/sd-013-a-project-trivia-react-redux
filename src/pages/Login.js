@@ -118,12 +118,14 @@ class Login extends Component {
           <Button
             dataTestId="btn-play"
             name="Jogar"
+            classe="btn-play"
             disabled={ btnDisabledStatus }
             onClick={ this.handleClickPlay }
           />
           <Button
             dataTestId="btn-settings"
             name="Configurações"
+            classe="btn-config"
             onClick={ this.handleClickSettings }
           />
         </form>
