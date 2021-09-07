@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { getUserData } from '../redux/actions';
 import fetchTriviaAPI from '../services/triviaAPI';
 import InputLogin from '../components/InputLogin';
 import Button from '../components/Button';
@@ -23,6 +20,38 @@ class Login extends Component {
     this.handleClickPlay = this.handleClickPlay.bind(this);
     this.handleClickSettings = this.handleClickSettings.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
+    this.btnOn = this.btnOn.bind(this);
+    this.savePlayerData = this.savePlayerData.bind(this);
+  }
+
+  componentDidMount() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    if (state !== null) {
+      this.btnOn(false, state);
+    }
+    console.log(state);
+  }
+
+  savePlayerData() {
+    const { email, name } = this.state;
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  btnOn(on, state) {
+    const { player } = state;
+    this.setState({
+      name: player.name,
+      email: player.gravatarEmail,
+      btnDisabledStatus: on,
+    });
   }
 
   handleClickSettings() {
@@ -32,9 +61,7 @@ class Login extends Component {
   }
 
   async handleClickPlay() {
-    const { email, name } = this.state;
-    const { getUser } = this.props;
-    await getUser({ email, name });
+    this.savePlayerData();
     const response = await fetchTriviaAPI();
     const { token } = response;
 
@@ -107,12 +134,4 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
-  getUser: PropTypes.func,
-}.isRequired;
-
-const mapDispatchToProps = (dispatch) => ({
-  getUser: (userData) => dispatch(getUserData(userData)),
-});
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
