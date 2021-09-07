@@ -30,3 +30,9 @@ Select.propTypes = {
   name: string.isRequired,
   options: arrayOf(string).isRequired,
 };
+
+Select.defaultProps = {
+  value: 'Not found',
+};
+
+export default Select;
