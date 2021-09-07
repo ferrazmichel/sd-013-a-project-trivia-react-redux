@@ -32,8 +32,9 @@ class Login extends Component {
   }
 
   async handleClickPlay() {
-    const { state: { email, name } } = this;
-    await userData(getUser({ email, name }));
+    const { email, name } = this.state;
+    const { getUser } = this.props;
+    await getUser({ email, name });
     const response = await fetchTriviaAPI();
     const { token } = response;
 

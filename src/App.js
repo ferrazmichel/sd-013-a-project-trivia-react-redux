@@ -11,8 +11,8 @@ class App extends React.Component {
     return (
       <Switch>
         <Route exact path="/" component={ Login } />
-        <Route path="/feedbacks" component={ Feedbacks } />
-        <Route path="/gamepage" component={ GamePage } />
+        <Route exact path="/feedbacks" component={ Feedbacks } />
+        <Route exact path="/gamepage" component={ GamePage } />
       </Switch>
     );
   }
