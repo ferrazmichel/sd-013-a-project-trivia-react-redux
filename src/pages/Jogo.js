@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAvatar, getTriviaApi } from '../utils/utils';
+import { getTriviaApi } from '../utils/utils';
+import JogoHeader from '../components/JogoHeader';
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       questions: [],
       currentIndex: 0,
@@ -19,19 +19,18 @@ class Jogo extends React.Component {
         gravatarEmail: '',
       },
     };
-
-    this.renderHeader = this.renderHeader.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.getData = this.getData.bind(this);
     this.tickSecond = this.tickSecond.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.startClock = this.startClock.bind(this);
   }
 
   componentDidMount() {
     this.getData();
-    const MAGIC_NUMBER = 1000;
-    this.intervalId = setInterval(this.tickSecond, MAGIC_NUMBER);
+    this.startClock();
     const { player } = this.state;
     const objectPlayer = {
       player,
@@ -48,6 +47,14 @@ class Jogo extends React.Component {
       questions: data,
       isLoading: false,
     });
+  }
+
+  startClock() {
+    const MAGIC_NUMBER = 1000;
+    this.setState({
+      seconds: 30,
+    });
+    this.intervalId = setInterval(this.tickSecond, MAGIC_NUMBER);
   }
 
   tickSecond() {
@@ -71,6 +78,24 @@ class Jogo extends React.Component {
     }
     const nextBtn = document.getElementById('next');
     nextBtn.hidden = false;
+  }
+
+  handleClickNext() {
+    const { currentIndex } = this.state;
+    const NUMBER_OF_QUESTIONS = 4;
+    if (currentIndex < NUMBER_OF_QUESTIONS) {
+      this.setState((prevState) => ({
+        currentIndex: prevState.currentIndex + 1,
+      }), () => this.startClock());
+      const containerAlternatives = document.getElementById('alternatives-container');
+      const alternatives = [...containerAlternatives.children];
+      alternatives.forEach((alternative) => alternative.classList.remove('selected'));
+      const nextBtn = document.getElementById('next');
+      nextBtn.hidden = true;
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
   }
 
   calculateScore() {
@@ -113,22 +138,17 @@ class Jogo extends React.Component {
     }
   }
 
-  renderHeader() {
-    const { player: { score } } = this.state;
-    const { name, email } = this.props;
-    const gravatar = fetchAvatar(email);
+  renderNextButton() {
     return (
-      <header>
-        <div>
-          <img
-            src={ gravatar }
-            alt={ `${name} Avatar` }
-            data-testid="header-profile-picture"
-          />
-        </div>
-        <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
-      </header>
+      <button
+        id="next"
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleClickNext }
+        hidden
+      >
+        Próxima
+      </button>
     );
   }
 
@@ -149,7 +169,7 @@ class Jogo extends React.Component {
             { seconds }
           </p>
         </div>
-        <div>
+        <div id="alternatives-container">
           {sortAlternatives.map((alternative, index) => {
             if (alternative === correctAnswer) {
               return (
@@ -177,7 +197,7 @@ class Jogo extends React.Component {
                 { alternative }
               </button>);
           })}
-          <button id="next" data-testid="btn-next" type="button" hidden>Próxima</button>
+          { this.renderNextButton() }
         </div>
       </div>
     );
@@ -185,9 +205,10 @@ class Jogo extends React.Component {
 
   render() {
     const { isLoading } = this.state;
+    const { player: { score } } = this.state;
     return (
       <div>
-        { this.renderHeader() }
+        <JogoHeader score={ score } />
         { (!isLoading && this.renderQuestions()) }
       </div>
     );
@@ -198,6 +219,9 @@ Jogo.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
