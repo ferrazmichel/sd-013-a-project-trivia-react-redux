@@ -51,3 +51,55 @@ class Settings extends Component {
     const { id } = categoriesData.find(({ name }) => name === category);
     dispatchSetting({ id, amount, difficulty, type });
   }
+
+  render() {
+    const {
+      error, categoriesData, category, loading, amount, difficulty, type,
+    } = this.state;
+    const categories = categoriesData.map(({ name }) => name);
+    if (loading) return <p>Loading</p>;
+    return (
+      <div>
+        <h1 data-testid="settings-title"> Configurações </h1>
+        {error ? <p>error</p> : ''}
+        <form>
+          <Select
+            labelText="Selecione uma categoria"
+            id="category-input"
+            name="category"
+            value={ category }
+            change={ this.onHandlerChange }
+            options={ categories }
+          />
+          <Select
+            labelText="Selecione um grau de dificuldade:"
+            id="difficulty-input"
+            name="difficulty"
+            value={ difficulty }
+            change={ this.onHandlerChange }
+            options={ ['any difficulty', 'easy', 'medium', 'hard'] }
+          />
+          <Select
+            labelText="Selecione um tipo de questão:"
+            id="type-input"
+            name="type"
+            value={ type }
+            change={ this.onHandlerChange }
+            options={ ['any type', 'multiple choice', 'true/false'] }
+          />
+          <InputCard
+            labelText="Quantidade de perguntas:"
+            id="amount"
+            name="amount"
+            type="number"
+            value={ amount }
+            onChange={ this.onHandlerChange }
+          />
+          <Link to="/">
+            <button type="button" onClick={ this.addSetting }>Aplicar</button>
+          </Link>
+        </form>
+      </div>
+    );
+  }
+}
