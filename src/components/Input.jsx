@@ -9,6 +9,7 @@ class Input extends React.Component {
         { labelText }
         <input
           data-testid={ testid }
+          id={ testid }
           type={ type }
           name={ name }
           value={ value }

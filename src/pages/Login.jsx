@@ -92,7 +92,7 @@ class Login extends Component {
         <br />
         <form onSubmit={ this.onSubmit }>
           <Input
-            labelText="jogador"
+            labelText="Jogador"
             testid="input-player-name"
             name="playerName"
             type="text"
