@@ -35,3 +35,19 @@ class Settings extends Component {
     const { name, value } = target;
     this.setState({ [name]: value });
   }
+
+  getCategory() {
+    this.setState({ loading: true }, async () => {
+      const resp = await fetch('https://opentdb.com/api_category.php');
+      if (!resp.ok) this.setState({ error: 'ocorreu um erro com a requisição' });
+      const { trivia_categories: categoriesData } = await resp.json();
+      this.setState({ categoriesData, loading: false });
+    });
+  }
+
+  addSetting() {
+    const { dispatchSetting } = this.props;
+    const { category, categoriesData, amount, difficulty, type } = this.state;
+    const { id } = categoriesData.find(({ name }) => name === category);
+    dispatchSetting({ id, amount, difficulty, type });
+  }
