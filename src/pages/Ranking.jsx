@@ -19,4 +19,16 @@ class Ranking extends Component {
               </li>
             ))}
         </ul>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-go-home"
+          >
+            Voltar ao inicio
+          </button>
+        </Link>
+      </div>
+    );
+  }
+}
 
