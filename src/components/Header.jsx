@@ -6,7 +6,7 @@ class Header extends Component {
   render() {
     const { gravatarEmail, name } = this.props;
     return (
-      <div>
+      <header>
         <img
           src={ gravatarEmail }
           data-testid="header-profile-picture"
@@ -17,7 +17,7 @@ class Header extends Component {
           {' '}
         </p>
         <p data-testid="header-score">0</p>
-      </div>
+      </header>
 
     );
   }
