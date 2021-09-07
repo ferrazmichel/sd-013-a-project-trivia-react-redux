@@ -14,3 +14,7 @@
   padding: 20px;
   width: 30vw;
 }
+
+#input-player-name, #input-gravatar-email {
+  height: 25px;
+}
