@@ -20,3 +20,9 @@ class Settings extends Component {
       difficulty: 'any difficulty',
       type: 'any type',
     };
+
+    // As funções abaixo serão habilitadas para serem usadas em todo o componente/page
+    this.getCategory = this.getCategory.bind(this);
+    this.onHandlerChange = this.onHandlerChange.bind(this);
+    this.addSetting = this.addSetting.bind(this);
+  }
