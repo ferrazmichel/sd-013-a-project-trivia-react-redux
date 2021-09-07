@@ -18,3 +18,7 @@
 #input-player-name, #input-gravatar-email {
   height: 25px;
 }
+
+.trybe-trivia {
+  color: white
+}
