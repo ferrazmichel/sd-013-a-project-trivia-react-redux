@@ -23,7 +23,6 @@ class Login extends Component {
     const { getToken, history, handleSubmit } = this.props;
     await getToken();
     const { valueToken } = this.props; // I had to call props here, because the async function
-    history.push('/gameScreen');
     localStorage.setItem('token', JSON.stringify(valueToken.token));
     const { name, email } = this.state;
 
@@ -32,6 +31,7 @@ class Login extends Component {
       email,
     };
     handleSubmit(data);
+    history.push('/gameScreen');
   }
 
   handleChange({ target: { name, value } }) {

@@ -2,107 +2,88 @@ import React, { Component } from 'react';
 import './Game.css';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { decode } from 'html-entities';
-import { fetchQuestions } from '../redux/actions';
-import { Cronometer, Header } from '../components';
+import { fetchQuestions, resetSeconds } from '../redux/actions';
+import { GameComponent, Header } from '../components';
 
 class Game extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       index: 0,
-      time: true,
     };
+
     this.changeIndex = this.changeIndex.bind(this);
     this.optionSelect = this.optionSelect.bind(this);
   }
 
   async componentDidMount() {
-    const { questions, token } = this.props;
-    questions(token.token);
+    const { getQuestions, token } = this.props;
+    getQuestions(token);
   }
 
   changeIndex() {
     const { index } = this.state;
-    this.setState({ index: index + 1 });
-    document.querySelectorAll('.answer').forEach((answer) => {
-      answer.className = 'answer';
-    });
+    const { gameQuestions, resetSec } = this.props;
+    if (index < gameQuestions.length - 1) {
+      this.setState({ index: index + 1 });
+      document.querySelectorAll('.answer').forEach((answer) => {
+        answer.className = 'answer';
+        answer.disabled = false;
+      });
+      resetSec();
+    } // else {
+    // // Colocar booleano para redirecionar para /feedback
+    // }
   }
 
-  buttonsAnswers(array) {
-    // source https://stackoverflow.com/a/46545530
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-  }
-
-  optionSelect() {
-    const { gameQuestions } = this.props;
-    const { index } = this.state;
-    const { correct_answer: correctAnswer } = gameQuestions[index];
+  optionSelect(atualQt, seconds, value) {
+    const { correct_answer: correct } = atualQt;
     document.querySelectorAll('.answer').forEach((answer) => {
-      const cName = answer.innerText === correctAnswer
-        ? 'answer correct-answer' : 'answer incorrect-answer';
-      answer.className = (cName);
-      if (answer.innerText === correctAnswer) {
-        answer.disabled = true;
-      }
+      answer.disabled = true;
+      const cName = answer.value === correct ? 'answer correct-answer'
+        : 'answer incorrect-answer';
+      answer.className = cName;
     });
+
+    if (value === correct) {
+      console.log('acertou', seconds);
+    }
   }
 
   render() {
     const { gameQuestions } = this.props;
-    const { index, time } = this.state;
-    if (gameQuestions.length === 0) return <p>loading...</p>;
-    const { question, category, correct_answer: correct,
-      incorrect_answers: incorrect } = gameQuestions[index];
+    const { index } = this.state;
+    if (gameQuestions.length < 1) return <h1>loading...</h1>;
 
     return (
-      <div>
-        <header><Header /></header>
-        <section>
-          <div data-testid="question-category">
-            { category }
-          </div>
-          { time && <Cronometer optionSelect={ this.optionSelect } time={ time } /> }
-          <div data-testid="question-text">
-            { decode(question) }
-          </div>
-          { this.buttonsAnswers([...incorrect, correct]).map((answer, key) => (
-            <button
-              onClick={ this.optionSelect }
-              type="button"
-              key={ key }
-              className="answer"
-              data-testid={ answer === correct ? 'correct-answer'
-                : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
-            >
-              { decode(answer) }
-            </button>))}
-          <button type="button" onClick={ this.changeIndex }>NEXT</button>
-        </section>
-      </div>
+      <section>
+        <Header />
+        <GameComponent
+          atualQuestion={ gameQuestions[index] }
+          optionSelect={ this.optionSelect }
+          buttonNext={ this.changeIndex }
+        />
+      </section>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  questions: (payload) => dispatch(fetchQuestions(payload)),
+  getQuestions: (payload) => dispatch(fetchQuestions(payload)),
+  resetSec: () => dispatch(resetSeconds()),
+
 });
 const mapStateToProps = (state) => ({
-  token: state.users.token,
+  token: state.users.token.token,
   gameQuestions: state.game.questions,
   // score: state.game.score,
 });
 
 Game.propTypes = {
-  questions: PropTypes.func.isRequired,
-  token: PropTypes.shape({
-    token: PropTypes.string.isRequired,
-  }).isRequired,
+  getQuestions: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  resetSec: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
