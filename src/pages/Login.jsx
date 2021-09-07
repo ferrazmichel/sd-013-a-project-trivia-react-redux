@@ -81,10 +81,9 @@ class Login extends Component {
     const { token } = this.props;
     const { email, playerName, validation, redirect } = this.state;
 
-    // Se o redirect da state for true e também tiver o token então redireciona para a página /game
+    // Se o redirect da state for true e também tiver o token então redireciona para a pagina /game
     if (redirect && token) { return <Redirect to="/game" />; }
 
-    // O componente InputCard foi criado para resolver problemas de lint na questão de tamanho de uma função
     return (
       <main className="login-main">
         {/* <h1 className="trybe-trivia">Trybe Trivia</h1> */}
@@ -93,20 +92,20 @@ class Login extends Component {
         <br />
         <form onSubmit={ this.onSubmit }>
           <Input
-            labelText="Jogador"
-            id="input-player-name"
+            labelText="jogador"
+            testid="input-player-name"
             name="playerName"
             type="text"
             value={ playerName }
-            onChange={ this.onHandlerChange }
+            onChange={ this.handleChange }
           />
           <Input
-            labelText="Email"
-            id="input-gravatar-email"
+            labelText="email"
+            testid="input-gravatar-email"
             name="email"
-            type="texto"
+            type="text"
             value={ email }
-            onChange={ this.onHandlerChange }
+            onChange={ this.handleChange }
           />
           <br />
           <br />
@@ -128,29 +127,24 @@ class Login extends Component {
   }
 }
 
-// A função do mapDispatchToProps é despachar action para a store, com a finalidade de alterar o state da aplicação
-// A função dispatch() serve para despachar uma action para o reducer
-// Recebe como parametro uma dispatch, e retorna um objeto com chave e valor
-const mapDipatchToProps = (dispatch) => ({
-// A chave getToken e saveUser são as props do componente que vão ser invocadas
-// E eu passo uma callback que vai ser o dispatch que vou realizar na action, no caso será a fetchToken
-// O data/payload vai conter o NOVO valor que vai ser passado e alterado na state da store
+const mapDispatchToProps = (dispatch) => ({
+  // A chave getToken e saveUser são as props do componente que vão ser invocados
+  // E eu passo uma callback que vai ser o dispatch que vou realizar na action, no caso será a fetchToken
+  // O data/payload vai conter o NOVO valor que vai ser passado e alterado na state da store
   getToken: (data) => dispatch(fetchToken(data)),
   saveUser: (data) => dispatch(actionSaveDataUser(data)),
 });
 
-// A função mapStateToProps mapeia as states armazenadas na store para uma props
-// Ou seja, caso eu quiser acessar os dados providos pelo reducer user, como o caso abaixo, eu devo acessar o caminho do state com o reducer desejado e nomear a prop que o receberá, que no caso abaixo é a token.
 const mapStateToProps = (state) => ({
   token: state.user.token,
 });
 
 // Faço a validação se os dados que recebi são válidos
 Login.propTypes = {
-  getToken: PropTypes.func.isRequired,
-  saveUser: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-};
+  getToken: PropTypes.func,
+  saveUser: PropTypes.func,
+  token: PropTypes.string,
+  history: PropTypes.arrayOf(Object),
+}.isRequired;
 
-// O connect é responsável por fazer a conexão do meu componente Login com o mapStateToProps e o mapDispatchToProps.
-export default connect(mapStateToProps, mapDipatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
