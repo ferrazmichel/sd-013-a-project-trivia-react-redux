@@ -10,14 +10,18 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      timer: 30,
-      // point: 0,
+      assertions: 0,
       index: 0, // lógica para aparecer cada pergunta
+      score: 0,
+      // point: 0,
       respondido: false,
+      timer: 30,
+      total: 0,
     };
     this.checkClick = this.checkClick.bind(this);
     this.passarTime = this.passarTime.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.setLocalStorage = this.setLocalStorage.bind(this);
     this.nextQuestionBtn = this.nextQuestionBtn.bind(this);
   }
 
@@ -27,48 +31,82 @@ class Game extends React.Component {
   }
 
   componentDidUpdate() {
-    const { timer } = this.state;
-    if (timer === 0) {
+    const { state: { timer, respondido } } = this;
+    if (timer === 0 || respondido) {
       clearInterval(this.cronometro);
     }
+  }
+
+  setLocalStorage() {
+    const { props: { user, emailUser },
+      state: { assertions, score } } = this;
+
+    const obj = {
+      player: {
+        name: user,
+        assertions,
+        score,
+        gravatarEmail: emailUser,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(obj));
   }
 
   passarTime() {
     this.setState((prev) => ({ timer: prev.timer - 1 }));
   }
 
-  checkClass(e) {
-    return console.log(e.target.className);
-  }
-
-  // foi comentado as linhas pra poder fazer o merge do req. 8;
-  checkClick(e) {
-    // let { point } = this.state;
-    clearInterval(this.cronometro);
-    this.checkClass(e);
-    // const compClass = this.checkClass(e);
-    // if (compClass === 'wrong') {
-    //   point = 0;
-    // }
+  async checkAnswer(e) {
     this.setState({ respondido: true });
+
+    const { timer } = this.state;
+    let points = 0;
+    const elementId = e.target.id;
+
+    if (elementId === 'correct') {
+      points = timer === 0 ? 0 : this.calculateScore();
+      await this.setState((prevState) => ({
+        assertions: prevState.assertions + 1,
+        score: points,
+        total: prevState.total + points,
+      }));
+    }
   }
 
-  calculateScore(difficulty) {
-    const { timer } = this.state;
-    const score = 10;
-    const hardMultiplyier = 3;
-    const mediumMultiplyier = 2;
-    console.log(difficulty);
+  async checkClick(e) { // a função precisa ser assincrona para a linha 78 ocorrer antes da 79 (setState é assincrono)
+    clearInterval(this.cronometro);
+    await this.checkAnswer(e);
+    this.setLocalStorage();
+  }
+
+  handleDificulty() {
+    const { state: { index }, props: { questions } } = this;
+    const question = questions[index];
+    const { difficulty } = question;
+
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+
     switch (difficulty) {
     case 'hard':
-      return (score + (timer * hardMultiplyier));
+      return hard;
     case 'medium':
-      return (score + (timer * mediumMultiplyier));
+      return medium;
     case 'easy':
-      return (score + timer);
+      return easy;
     default:
       return 0;
     }
+  }
+
+  calculateScore() {
+    const { timer } = this.state;
+    const number = 10;
+    let score = 0;
+    const dif = this.handleDificulty();
+    score = (timer * dif) + number;
+    return score;
   }
 
   nextQuestionBtn() {
@@ -78,18 +116,19 @@ class Game extends React.Component {
       index: prev.index + 1,
       timer: 30,
       respondido: false,
+      score: 0,
     }));
   }
 
   render() {
-    const { index, respondido, timer } = this.state;
-    const { questions } = this.props;
+    const { state: { index, respondido, timer, score }, props: { questions } } = this;
     const currentQuestion = questions[index];
-    const { category, /* type */ difficulty, question,
+
+    const { category, question,
       correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = currentQuestion;
-    let score = 0;
-    score = this.calculateScore(difficulty);
+      incorrect_answers: incorrectAnswers,
+    } = currentQuestion;
+
     return (
       <main>
         <Header score={ score } respondido={ respondido } />
@@ -106,8 +145,9 @@ class Game extends React.Component {
           {question}
         </h3>
         <button
+          id="correct"
           type="button"
-          disabled={ timer === 0 }
+          disabled={ timer === 0 || respondido }
           data-testid="correct-answer"
           className={ respondido ? 'correct' : '' }
           onClick={ this.checkClick }
@@ -120,7 +160,7 @@ class Game extends React.Component {
             key={ i }
             onClick={ (e) => this.checkClick(e) }
             className={ respondido ? 'wrong' : '' }
-            disabled={ timer === 0 }
+            disabled={ timer === 0 || respondido }
             data-testid={ `wrong-answer-${i}` }
           >
             {answer}
@@ -134,10 +174,14 @@ class Game extends React.Component {
 
 Game.propTypes = {
   questions: PropTypes.arrayOf({}).isRequired,
+  user: PropTypes.string.isRequired,
+  emailUser: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.fetchQuestions.questions,
+  emailUser: state.login.email,
+  user: state.login.login,
 });
 
 export default connect(mapStateToProps, null)(Game);
