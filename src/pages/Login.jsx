@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import fetchToken from '../redux/fetchs/fetchToken';
 import { actionSaveDataUser } from '../redux/actions/index';
+import '../styles/login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -84,36 +85,44 @@ class Login extends Component {
     if (redirect && token) { return <Redirect to="/game" />; }
 
     return (
-      <form onSubmit={ this.onSubmit }>
-        <Input
-          labelText="jogador"
-          testid="input-player-name"
-          name="playerName"
-          type="text"
-          value={ playerName }
-          onChange={ this.handleChange }
-        />
-        <Input
-          labelText="email"
-          testid="input-gravatar-email"
-          name="email"
-          type="text"
-          value={ email }
-          onChange={ this.handleChange }
-        />
-        <button
-          data-testid="btn-play"
-          type="submit"
-          disabled={ validation }
-        >
-          Jogar
-        </button>
-        <Link to="/settings">
-          <button data-testid="btn-settings" type="button">
-            Settings
+      <main className="login-main">
+        {/* <h1 className="trybe-trivia">Trybe Trivia</h1> */}
+        <img className="logo-trivia1" src="trybe.png" alt="" />
+        <img className="logo-trivia2" src="trivia.png" alt="" />
+        <br />
+        <form onSubmit={ this.onSubmit }>
+          <Input
+            labelText="Jogador"
+            testid="input-player-name"
+            name="playerName"
+            type="text"
+            value={ playerName }
+            onChange={ this.handleChange }
+          />
+          <Input
+            labelText="Email"
+            testid="input-gravatar-email"
+            name="email"
+            type="text"
+            value={ email }
+            onChange={ this.handleChange }
+          />
+          <br />
+          <br />
+          <button
+            data-testid="btn-play"
+            type="submit"
+            disabled={ validation }
+          >
+            Jogar
           </button>
-        </Link>
-      </form>
+          <Link to="/settings">
+            <button data-testid="btn-settings" type="button">
+              Settings
+            </button>
+          </Link>
+        </form>
+      </main>
     );
   }
 }
