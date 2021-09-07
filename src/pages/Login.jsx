@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import fetchToken from '../redux/fetchs/fetchToken';
 import { actionSaveDataUser } from '../redux/actions/index';
+import '../styles/Login.css';
 
 class Login extends Component {
   constructor(props) {
