@@ -6,8 +6,8 @@ const initialState = {
   isLoading: false,
   player: {
     name: '',
-    assertions: 0,
-    score: 0,
+    // assertions: 0,
+    // score: 0,
     gravatarEmail: '',
   },
 };

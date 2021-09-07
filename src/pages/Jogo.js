@@ -1,29 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchAvatar, getTriviaApi } from '../utils/utils';
+import { getTriviaApi } from '../utils/utils';
+import JogoHeader from '../components/JogoHeader';
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       questions: [],
       currentIndex: 0,
       isLoading: true,
       seconds: 30,
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
     };
-
-    this.renderHeader = this.renderHeader.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.getData = this.getData.bind(this);
     this.tickSecond = this.tickSecond.bind(this);
+    this.handleClickAnswer = this.handleClickAnswer.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
+    this.startClock = this.startClock.bind(this);
   }
 
   componentDidMount() {
     this.getData();
-    const MAGIC_NUMBER = 1000;
-    this.intervalId = setInterval(this.tickSecond, MAGIC_NUMBER);
+    this.startClock();
+    const { player } = this.state;
+    const objectPlayer = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(objectPlayer));
   }
 
   async getData() {
@@ -35,6 +47,14 @@ class Jogo extends React.Component {
       questions: data,
       isLoading: false,
     });
+  }
+
+  startClock() {
+    const MAGIC_NUMBER = 1000;
+    this.setState({
+      seconds: 30,
+    });
+    this.intervalId = setInterval(this.tickSecond, MAGIC_NUMBER);
   }
 
   tickSecond() {
@@ -52,24 +72,83 @@ class Jogo extends React.Component {
     const { target } = event;
     const alternatives = [...target.parentElement.children];
     console.log(alternatives);
-    alternatives.forEach((alternative) => alternative.classList.toggle('selected'));
+    alternatives.forEach((alternative) => alternative.classList.add('selected'));
+    if (target.classList.contains('correct')) {
+      this.calculateScore();
+    }
+    const nextBtn = document.getElementById('next');
+    nextBtn.hidden = false;
   }
 
-  renderHeader() {
+  handleClickNext() {
+    const { currentIndex } = this.state;
+    const NUMBER_OF_QUESTIONS = 4;
+    if (currentIndex < NUMBER_OF_QUESTIONS) {
+      this.setState((prevState) => ({
+        currentIndex: prevState.currentIndex + 1,
+      }), () => this.startClock());
+      const containerAlternatives = document.getElementById('alternatives-container');
+      const alternatives = [...containerAlternatives.children];
+      alternatives.forEach((alternative) => alternative.classList.remove('selected'));
+      const nextBtn = document.getElementById('next');
+      nextBtn.hidden = true;
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
+    }
+  }
+
+  calculateScore() {
+    const MINIMUN_SCORE = 10;
+    const { questions, currentIndex, seconds } = this.state;
+    const currentQuestion = questions[currentIndex];
+    const { difficulty } = currentQuestion;
+    const difficultValue = this.switchDifficult(difficulty);
+    const assertionScore = MINIMUN_SCORE + (seconds * difficultValue);
     const { name, email } = this.props;
-    const gravatar = fetchAvatar(email);
+    this.setState((prevState) => ({
+      player: ({
+        name,
+        assertions: prevState.player.assertions + 1,
+        score: prevState.player.score + assertionScore,
+        gravatarEmail: email,
+      }),
+    }), () => {
+      const { player } = this.state;
+      const objectPlayer = {
+        player,
+      };
+      localStorage.setItem('state', JSON.stringify(objectPlayer));
+    });
+  }
+
+  switchDifficult(difficulty) {
+    const HARD_VALUE = 3;
+    const MEDIUM_VALUE = 2;
+    const EASY_VALUE = 1;
+    switch (difficulty) {
+    case 'hard':
+      return HARD_VALUE;
+    case 'medium':
+      return MEDIUM_VALUE;
+    case 'easy':
+      return EASY_VALUE;
+    default:
+      return 0;
+    }
+  }
+
+  renderNextButton() {
     return (
-      <header>
-        <div>
-          <img
-            src={ gravatar }
-            alt={ `${name} Avatar` }
-            data-testid="header-profile-picture"
-          />
-        </div>
-        <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">0</p>
-      </header>
+      <button
+        id="next"
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.handleClickNext }
+        hidden
+      >
+        Próxima
+      </button>
     );
   }
 
@@ -90,7 +169,7 @@ class Jogo extends React.Component {
             { seconds }
           </p>
         </div>
-        <div>
+        <div id="alternatives-container">
           {sortAlternatives.map((alternative, index) => {
             if (alternative === correctAnswer) {
               return (
@@ -118,7 +197,7 @@ class Jogo extends React.Component {
                 { alternative }
               </button>);
           })}
-          <button type="button">Próxima</button>
+          { this.renderNextButton() }
         </div>
       </div>
     );
@@ -126,9 +205,10 @@ class Jogo extends React.Component {
 
   render() {
     const { isLoading } = this.state;
+    const { player: { score } } = this.state;
     return (
       <div>
-        { this.renderHeader() }
+        <JogoHeader score={ score } />
         { (!isLoading && this.renderQuestions()) }
       </div>
     );
@@ -139,6 +219,9 @@ Jogo.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
