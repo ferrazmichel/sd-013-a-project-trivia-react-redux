@@ -87,7 +87,7 @@ class Settings extends Component {
             change={ this.onHandlerChange }
             options={ ['any type', 'multiple choice', 'true/false'] }
           />
-          <InputCard
+          <Input
             labelText="Quantidade de perguntas:"
             id="amount"
             name="amount"
