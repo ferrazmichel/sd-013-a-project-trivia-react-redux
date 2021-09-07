@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import '../App.css';
 
 import Header from '../components/Header';
-import nextButton from '../components/nextButton';
+import NextButton from '../components/nextButton';
 
 class Game extends React.Component {
   constructor() {
@@ -126,7 +126,7 @@ class Game extends React.Component {
             {answer}
           </button>
         ))}
-        <nextButton />
+        {respondido ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
       </main>
     );
   }

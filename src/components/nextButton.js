@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class nextButton extends React.Component {
   render() {
-    // const { nextQuestionBtn } = this.props;
+    const { nextQuestionBtn } = this.props;
     return (
       <div>
         <button
-        //   onClick={ nextQuestionBtn }
+          onClick={ nextQuestionBtn }
           data-testid="btn-next"
           type="button"
         >
@@ -17,8 +18,8 @@ class nextButton extends React.Component {
   }
 }
 
-// nextButton.propTypes = {
-//     nextQuestionBtn:
-// }
+nextButton.propTypes = {
+  nextQuestionBtn: PropTypes.func,
+}.isRequired;
 
 export default nextButton;
