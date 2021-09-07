@@ -92,7 +92,7 @@ class Login extends Component {
         <img className="logo-trivia2" src="trivia.png" alt="" />
         <br />
         <form onSubmit={ this.onSubmit }>
-          <InputCard
+          <Input
             labelText="Jogador"
             id="input-player-name"
             name="playerName"
@@ -100,7 +100,7 @@ class Login extends Component {
             value={ playerName }
             onChange={ this.onHandlerChange }
           />
-          <InputCard
+          <Input
             labelText="Email"
             id="input-gravatar-email"
             name="email"
