@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../App.css';
-
 import Header from '../components/Header';
 import NextButton from '../components/nextButton';
 import { feedBack } from '../actions';

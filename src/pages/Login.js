@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import setLogin, { fetchAPI, fetchQuestions } from '../actions';
 import Buttons from '../components/Buttons';
+import '../App.css';
 
 class Login extends React.Component {
   constructor() {

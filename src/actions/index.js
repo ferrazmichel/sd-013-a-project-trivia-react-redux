@@ -17,9 +17,10 @@ export const finishAPI = (token) => ({
   token,
 });
 
-export function fetchAPI() {
-  return (dispatch) => {
-    dispatch(requestApi);
+export function fetchAPI() { // thunk para puxar o token de sessão
+  return (dispatch) => { // func anonima
+    dispatch(requestApi); // faz o dispatch de actions de forma assíncrona
+    // retorna uma promise, nesse caso sem condição de erro
     return fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((data) => data.token)
@@ -32,7 +33,7 @@ export const questAPI = (questions) => ({
   questions,
 });
 
-export function fetchQuestions(token) {
+export function fetchQuestions(token) { // thunk das perguntas
   return (dispatch) => {
     dispatch(requestApi);
     return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
