@@ -13,7 +13,7 @@ class Forms extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
-    this.tokenRecebido = this.tokenRecebido.bind(this);
+    this.apiFetch = this.apiFetch.bind(this);
   }
 
   onSubmitForm() {
