@@ -21,7 +21,7 @@ class Login extends Component {
     this.handleClickPlay = this.handleClickPlay.bind(this);
     this.handleClickSettings = this.handleClickSettings.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
-    this.btnOn = this.btnOn.bind(this);
+    this.playBtnOn = this.playBtnOn.bind(this);
     this.savePlayerData = this.savePlayerData.bind(this);
   }
 
@@ -48,7 +48,7 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  btnOn(on, state) {
+  playBtnOn(on, state) {
     const { player } = state;
     this.setState({
       name: player.name,
