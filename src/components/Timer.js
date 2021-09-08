@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 
 class Cronometer extends React.Component {
   constructor() {
@@ -19,7 +19,7 @@ class Cronometer extends React.Component {
       this.setState((prevState) => ({ seconds: Math.max(prevState.seconds - 1, 0) }));
       console.log('Intervalo rodando!');
     }, ONE_SECOND);
-    setTimeout(() => this.clearCronometer(oi),6000 );
+    setTimeout(() => this.clearCronometer(oi), 6000 );
   }
 
   render() {
@@ -34,3 +34,4 @@ class Cronometer extends React.Component {
 }
 
 export default Cronometer;
+ */
