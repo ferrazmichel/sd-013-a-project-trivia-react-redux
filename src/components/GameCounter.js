@@ -15,18 +15,13 @@ class GameCounter extends Component {
     this.scoreCalculator = this.scoreCalculator.bind(this);
   }
 
-  componentDidMount() {
-    this.scoreCalculator();
-  }
-
   scoreCalculator() {
-    const { updateScore } = this.props;
+    const { updateScore, difficulty } = this.props;
+    const { counter } = this.state;
     const ten = 10;
     const hard = 3;
     const medium = 2;
     const easy = 1;
-    const { difficulty } = this.props;
-    const { counter } = this.state;
     let diffMultiplier = 0;
 
     switch (difficulty) {
@@ -45,7 +40,9 @@ class GameCounter extends Component {
     default:
       break;
     }
-
+    if (counter === 0) {
+      return updateScore(0);
+    }
     const score = ten + (counter * diffMultiplier);
     return updateScore(score);
   }
@@ -65,7 +62,7 @@ class GameCounter extends Component {
     });
 
     window.clearTimeout(timeout);
-
+    this.scoreCalculator();
     handleTimeout();
   }
 
