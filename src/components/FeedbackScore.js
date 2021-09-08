@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const THREE = 3;
-
 class FeedbackScore extends React.Component {
   render() {
     const { player } = this.props;
