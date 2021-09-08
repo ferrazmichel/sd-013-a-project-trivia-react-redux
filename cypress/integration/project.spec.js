@@ -223,7 +223,7 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it.skip('Aguarda 5 segundos e responde a alternativa correta', () => {
+  it('Aguarda 5 segundos e responde a alternativa correta', () => {
     cy.wait(5000);
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('not.be.disabled').click();
   });

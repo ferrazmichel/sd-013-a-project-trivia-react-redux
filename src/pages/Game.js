@@ -27,6 +27,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    this.setLocalStorage(); // chamando a função assim que o componente é montado
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
   }
