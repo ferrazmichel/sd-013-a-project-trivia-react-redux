@@ -2,25 +2,17 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import FeedbackMessage from '../components/FeedbackMessage';
 
-const feedbackMessage = () => {
-  // Mock do localStorage só para adiantar o requisito
-  const player = {
-    name: 'Bruno',
-    assertions: 4,
-    score: 42,
-    gravatarEmail: 'brunopinho@outlook.com',
-  };
-  const THREE = 3;
-
-  localStorage.setItem('player', JSON.stringify(player));
-
-  const playerObj = JSON.parse(localStorage.getItem('player'));
-
-  if (playerObj.assertions >= THREE) return <p data-testid="feedback-text">Mandou bem</p>;
-
-  return <p data-testid="feedback-text">Podia ser melhor...</p>;
+// Mock do localStorage só para adiantar o requisito
+const player = {
+  name: 'Bruno',
+  assertions: 2,
+  score: 42,
+  gravatarEmail: 'brunopinho@outlook.com',
 };
+localStorage.setItem('player', JSON.stringify(player));
+const mockedLocalStorage = JSON.parse(localStorage.getItem('player'));
 
 class Feedback extends React.Component {
   render() {
@@ -33,7 +25,7 @@ class Feedback extends React.Component {
           <span data-testid="header-score">{score}</span>
         </header>
         <main>
-          {feedbackMessage()}
+          <FeedbackMessage player={ mockedLocalStorage } />
         </main>
       </div>
     );
