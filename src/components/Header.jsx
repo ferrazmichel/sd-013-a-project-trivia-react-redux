@@ -14,9 +14,18 @@ class Header extends React.Component {
     const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
-        <img src={ imgURL } alt="" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{ playerName }</p>
-        <p data-testid="header-score">{+score}</p>
+        <div className="player">
+          <img src={ imgURL } alt="" data-testid="header-profile-picture" />
+          <p data-testid="header-player-name">
+            Player:
+            { playerName }
+          </p>
+        </div>
+        <div className="points">
+          <p data-testid="header-score">
+            {+score}
+          </p>
+        </div>
       </header>
     );
   }

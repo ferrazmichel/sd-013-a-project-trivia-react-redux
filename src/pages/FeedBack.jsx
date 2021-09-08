@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import '../styles/feedback.css';
 
 class FeedBack extends Component {
   render() {
@@ -9,13 +10,21 @@ class FeedBack extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="feedback-total-question">{assertions}</p>
-        <p data-testid="feedback-total-score">{score}</p>
+        <span>Correct answers: </span>
+        <span data-testid="feedback-total-question">
+          {assertions}
+        </span>
+        <br />
+        <span>Total score: </span>
+        <span data-testid="feedback-total-score">
+          {score}
+        </span>
         <p data-testid="feedback-text">
           {assertions < three ? 'Podia ser melhor...' : 'Mandou bem!'}
         </p>
         <Link to="/ranking">
           <button
+            className="btn-rank-feed"
             type="button"
             data-testid="btn-ranking"
           >
@@ -24,6 +33,7 @@ class FeedBack extends Component {
         </Link>
         <Link to="/">
           <button
+            className="btn-play"
             data-testid="btn-play-again"
             type="button"
           >

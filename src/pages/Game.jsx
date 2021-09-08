@@ -145,17 +145,22 @@ class Game extends Component {
       <>
         {/* Chama o componente Header passando a props de score/pontuação */}
         <Header score={ score } />
-        <p>{timer}</p>
+        <p className="timer">
+          Timer:
+          {timer}
+        </p>
         {/* Chama o componente de questão passando algumas props */}
-        <Question
-          stopTimer={ this.stopTimer }
-          startTimer={ this.startTimer }
-          questions={ questions }
-          checkQuestion={ this.checkQuestion }
-          nextQuestion={ this.nextQuestion }
-          question={ question }
-          randomIndex={ randomIndex }
-        />
+        <main className="main-game">
+          <Question
+            stopTimer={ this.stopTimer }
+            startTimer={ this.startTimer }
+            questions={ questions }
+            checkQuestion={ this.checkQuestion }
+            nextQuestion={ this.nextQuestion }
+            question={ question }
+            randomIndex={ randomIndex }
+          />
+        </main>
       </>
     );
   }

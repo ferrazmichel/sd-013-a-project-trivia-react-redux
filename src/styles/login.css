@@ -9,10 +9,36 @@
   height: 300px;
   justify-content: space-evenly;
   margin: 20vh auto;
-  max-width: 420px;
+  max-width: 350px;
   min-width: 240px;
   padding: 20px;
   width: 30vw;
+}
+
+.login-form {
+  max-width: 210px;
+}
+
+.input-player-name, .input-gravatar-email {
+  border-radius: 5px;
+  height: 20px;
+  width: 200px;
+}
+
+.label-input {
+  margin: 7px 0;
+}
+
+.btn-login {
+  height: 25px;
+  margin-right: 4px;
+  width: 70px;
+}
+
+.btn-stg {
+  height: 25px;
+  margin-left: 4px;
+  width: 70px;
 }
 
 .trybe-trivia {

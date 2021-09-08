@@ -6,9 +6,10 @@ const Select = (props) => {
 
   return (
     <label htmlFor={ id }>
-      {labelText}
+      <p className="label-select">{labelText}</p>
       <select
         id={ id }
+        className={ id }
         data-testid={ id }
         value={ value }
         onChange={ change }

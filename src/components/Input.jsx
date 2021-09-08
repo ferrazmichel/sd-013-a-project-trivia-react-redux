@@ -6,10 +6,11 @@ class Input extends React.Component {
     const { testid, labelText, type, name, value, onChange } = this.props;
     return (
       <label htmlFor={ testid }>
-        { labelText }
+        <p className="label-input">{ labelText }</p>
         <input
           data-testid={ testid }
           id={ testid }
+          className={ testid }
           type={ type }
           name={ name }
           value={ value }
