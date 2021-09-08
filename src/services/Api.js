@@ -15,4 +15,13 @@ export function getGravatar(email) {
   return `https://www.gravatar.com/avatar/${hashGrada}`;
 }
 
-export const test = 'test';
+export async function getQuestionsFetch() {
+  const token = localStorage.getItem('token');
+  try {
+    const fetchResult = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const questions = await fetchResult.json();
+    return questions;
+  } catch (err) {
+    console.error(err);
+  }
+}

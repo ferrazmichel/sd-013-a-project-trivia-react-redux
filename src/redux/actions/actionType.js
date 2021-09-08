@@ -1,3 +1,7 @@
 export const GET_LOGIN = 'GET_LOGIN';
-
-export const test = 'test';
+export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const GET_QUESTIONS_SUCCESS = 'GET_QUESTIONS_SUCCESS';
+export const GET_QUESTIONS_FAIL = 'GET_QUESTIONS_FAIL';
+export const GET_TOKEN = 'GET_TOKEN';
+export const GET_TOKEN_SUCCESS = 'GET_TOKEN_SUCCESS';
+export const GET_TOKEN_FAIL = 'GET_TOKEN_FAIL';
