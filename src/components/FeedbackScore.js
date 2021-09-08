@@ -20,7 +20,7 @@ class FeedbackScore extends React.Component {
 }
 
 FeedbackScore.propTypes = {
-  player: PropTypes.shape({ assertions, score }).isRequired,
+  player: PropTypes.shape({}).isRequired,
 };
 
 export default FeedbackScore;
