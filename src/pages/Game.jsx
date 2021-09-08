@@ -88,6 +88,7 @@ Game.propTypes = {
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
   resetSec: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
+  rightQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

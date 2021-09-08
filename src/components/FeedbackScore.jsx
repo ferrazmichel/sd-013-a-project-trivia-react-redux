@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class FeedbackScore extends Component {
@@ -43,5 +44,9 @@ class FeedbackScore extends Component {
 const mapStateToProps = ({ game }) => ({
   rightQuestions: game.asserts,
 });
+
+FeedbackScore.propTypes = {
+  rightQuestions: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps)(FeedbackScore);
