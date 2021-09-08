@@ -5,6 +5,7 @@ import '../App.css';
 
 import Header from '../components/Header';
 import NextButton from '../components/nextButton';
+import { feedBack } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -12,7 +13,7 @@ class Game extends React.Component {
     this.state = {
       assertions: 0,
       index: 0, // lógica para aparecer cada pergunta
-      score: 0,
+      // score: 0,
       // point: 0,
       respondido: false,
       timer: 30,
@@ -26,6 +27,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    this.setLocalStorage(); // chamando a função assim que o componente é montado
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
   }
@@ -39,7 +41,7 @@ class Game extends React.Component {
 
   setLocalStorage() {
     const { props: { user, emailUser },
-      state: { assertions, score } } = this;
+      state: { assertions, total: score } } = this;
 
     const obj = {
       player: {
@@ -49,7 +51,7 @@ class Game extends React.Component {
         gravatarEmail: emailUser,
       },
     };
-    localStorage.setItem('state', JSON.stringify(obj));
+    localStorage.state = JSON.stringify(obj);
   }
 
   passarTime() {
@@ -67,7 +69,7 @@ class Game extends React.Component {
       points = timer === 0 ? 0 : this.calculateScore();
       await this.setState((prevState) => ({
         assertions: prevState.assertions + 1,
-        score: points,
+        // score: points,
         total: prevState.total + points,
       }));
     }
@@ -76,7 +78,8 @@ class Game extends React.Component {
   async checkClick(e) { // a função precisa ser assincrona para a linha 78 ocorrer antes da 79 (setState é assincrono)
     clearInterval(this.cronometro);
     await this.checkAnswer(e);
-    this.setLocalStorage();
+    // Retiravel awai da funcao abaixo
+    await this.setLocalStorage();
   }
 
   handleDificulty() {
@@ -110,18 +113,28 @@ class Game extends React.Component {
   }
 
   nextQuestionBtn() {
+    const { index } = this.state;
+    // Gustavo Jezini : Aqui estou preparando terreno para pagina de feedBack
+    const lastQuest = 4;
+    const { history, feedback } = this.props;
+    const { total, assertions } = this.state;
+    if (index === lastQuest) {
+      feedback({ total, assertions });
+      history.push('/feedback');
+    }
+    // até aqui......  O codigo abaixo foi desenvolvido por voces
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
     this.setState((prev) => ({
       index: prev.index + 1,
       timer: 30,
       respondido: false,
-      score: 0,
+      // score: 0,
     }));
   }
 
   render() {
-    const { state: { index, respondido, timer, score }, props: { questions } } = this;
+    const { state: { index, respondido, timer, total }, props: { questions } } = this;
     const currentQuestion = questions[index];
 
     const { category, question,
@@ -131,7 +144,7 @@ class Game extends React.Component {
 
     return (
       <main>
-        <Header score={ score } respondido={ respondido } />
+        <Header score={ total } respondido={ respondido } />
         <h2>{ timer }</h2>
         <h2
           data-testid="question-category"
@@ -176,6 +189,8 @@ Game.propTypes = {
   questions: PropTypes.arrayOf({}).isRequired,
   user: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
+  history: PropTypes.objectOf({}).isRequired,
+  feedback: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -184,4 +199,8 @@ const mapStateToProps = (state) => ({
   user: state.login.login,
 });
 
-export default connect(mapStateToProps, null)(Game);
+const mapDispatchToState = (dispatch) => ({
+  feedback: (payload) => dispatch(feedBack(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToState)(Game);
