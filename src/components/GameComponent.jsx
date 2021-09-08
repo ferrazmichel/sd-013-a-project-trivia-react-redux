@@ -15,6 +15,7 @@ class GameComponent extends Component {
 
     this.buttonsAnswers = this.buttonsAnswers.bind(this);
     this.timer = this.timer.bind(this);
+    this.clearSeconds = this.clearSeconds.bind(this);
     this.buttonVisibility = this.buttonVisibility.bind(this);
   }
 
