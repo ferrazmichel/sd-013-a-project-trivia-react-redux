@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Header from '../components/Header';
 
@@ -112,13 +113,16 @@ class Game extends Component {
 
   /** Função do botão próxima pergunta  */
   nextQuestion() {
-    this.setState({ buttonNext: false });
     let { questionNum } = this.state;
+    const { history } = this.props;
     const maxQuestions = 4;
-    if (questionNum < maxQuestions) {
-      this.setState({
-        questionNum: questionNum += 1,
-      });
+    this.setState({
+      buttonNext: false,
+      questionNum: questionNum += 1,
+      timer: 30,
+    });
+    if (questionNum > maxQuestions) {
+      history.push('/feedback');
     }
   }
 
@@ -209,5 +213,11 @@ class Game extends Component {
     );
   }
 }
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Game;
