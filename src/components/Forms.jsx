@@ -2,11 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { setLogin } from '../Actions';
+import { setLogin, setQuestions } from '../Actions';
 
 class Forms extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       nome: '',
       email: '',
@@ -14,18 +14,30 @@ class Forms extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.apiFetch = this.apiFetch.bind(this);
+    this.apiFetchTrivia = this.apiFetchTrivia.bind(this);
   }
 
   onSubmitForm() {
     const { dispatchSetLogin } = this.props;
     dispatchSetLogin(this.state);
     this.apiFetch();
+    this.apiFetchTrivia();
+  }
+
+  async apiFetchTrivia() {
+    const { dispatchSetQuestions } = this.props;
+    const token = localStorage.getItem('token');
+    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const json = await response.json();
+    const { results } = json;
+    dispatchSetQuestions(results);
+    console.log(results);
   }
 
   async apiFetch() {
     const Api = await fetch('https://opentdb.com/api_token.php?command=request');
     const json = await Api.json();
-    localStorage.setItem('token', JSON.stringify(json.token));
+    localStorage.setItem('token', json.token);
   }
 
   handleChange({ target }) {
@@ -84,14 +96,13 @@ class Forms extends React.Component {
 }
 
 Forms.propTypes = {
-  // history: PropTypes.shape({
-  //   push: PropTypes.func.isRequired,
-  // }).isRequired,
   dispatchSetLogin: PropTypes.func.isRequired,
+  dispatchSetQuestions: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchSetLogin: (state) => dispatch(setLogin(state)),
+  dispatchSetQuestions: (state) => dispatch(setQuestions(state)),
 });
 
 export default connect(null, mapDispatchToProps)(Forms);

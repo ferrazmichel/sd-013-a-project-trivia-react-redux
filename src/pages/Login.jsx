@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Forms from '../components/Forms';
-// import ConfigPage from './ConfigPage';
 
 class Login extends React.Component {
   render() {
