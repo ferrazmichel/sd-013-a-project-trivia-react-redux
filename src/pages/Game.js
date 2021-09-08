@@ -115,9 +115,9 @@ class Game extends React.Component {
     // Gustavo Jezini : Aqui estou preparando terreno para pagina de feedBack
     const lastQuest = 4;
     const { history, feedback } = this.props;
-    const { total } = this.state;
+    const { total, assertions } = this.state;
     if (index === lastQuest) {
-      feedback(total);
+      feedback({ total, assertions });
       history.push('/feedback');
     }
     // até aqui......  O codigo abaixo foi desenvolvido por voces
