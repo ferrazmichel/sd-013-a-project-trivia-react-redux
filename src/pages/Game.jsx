@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import '../css/Login.css';
 
 class Game extends Component {
   constructor() {
@@ -13,6 +14,7 @@ class Game extends Component {
     this.responseTime = this.responseTime.bind(this);
     this.handleClickQuestion = this.handleClickQuestion.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.renderShowAnswers = this.renderShowAnswers.bind(this);
 
     this.state = {
       questions: [],
@@ -21,6 +23,8 @@ class Game extends Component {
       timer: 30,
       disabled: false,
       buttonNext: false,
+      correctAnswers: '',
+      wrongAnswers: '',
     };
   }
 
@@ -106,9 +110,12 @@ class Game extends Component {
       getPlayer.player.score += this.calcScore(timer, difficulty);
       localStorage.state = JSON.stringify(getPlayer);
       this.setState({ buttonNext: true });
+      // target.className = correctAnswers;
     } else {
       this.setState({ buttonNext: true });
+      // target.className = wrongAnswers
     }
+    this.renderShowAnswers();
   }
 
   /** Função do botão próxima pergunta  */
@@ -144,11 +151,12 @@ class Game extends Component {
   }
 
   renderAnswers(question) {
-    const { disabled } = this.state;
+    const { disabled, correctAnswers, wrongAnswers } = this.state;
     let incorrectAnswers;
     if (question.type === 'multiple') {
       incorrectAnswers = question.incorrect_answers.map((answer, index) => (
         <button
+          className={ wrongAnswers }
           data-testid={ `wrong-answer-${index}` }
           type="button"
           key={ index }
@@ -161,6 +169,7 @@ class Game extends Component {
     } else {
       incorrectAnswers = (
         <button
+          className={ wrongAnswers }
           data-testid="wrong-answer-0"
           type="button"
           onClick={ this.handleClickQuestion }
@@ -174,6 +183,7 @@ class Game extends Component {
       <>
         {incorrectAnswers}
         <button
+          className={ correctAnswers }
           data-testid="correct-answer"
           type="button"
           onClick={ this.handleClickQuestion }
@@ -183,6 +193,13 @@ class Game extends Component {
         </button>
       </>
     );
+  }
+
+  renderShowAnswers() {
+    this.setState({
+      correctAnswers: 'correct',
+      wrongAnswers: 'wrong',
+    });
   }
 
   render() {
