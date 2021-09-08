@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Game.css';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions, resetSeconds } from '../redux/actions';
+import { assertsAction, fetchQuestions, resetSeconds } from '../redux/actions';
 import { GameComponent, Header } from '../components';
 
 class Game extends Component {
@@ -23,17 +23,18 @@ class Game extends Component {
 
   changeIndex() {
     const { index } = this.state;
-    const { gameQuestions, resetSec } = this.props;
+    const { gameQuestions, resetSec, history } = this.props;
+    const two = 2000;
+    setTimeout(this.setState((prevState) => ({ index: prevState.index + 1 })), two);
     if (index < gameQuestions.length - 1) {
-      this.setState({ index: index + 1 });
       document.querySelectorAll('.answer').forEach((answer) => {
         answer.className = 'answer';
         answer.disabled = false;
       });
       resetSec();
-    } // else {
-    // // Colocar booleano para redirecionar para /feedback
-    // }
+    } else {
+      history.push('/feedBack');
+    }
   }
 
   optionSelect(atualQt, seconds, value) {
@@ -46,7 +47,8 @@ class Game extends Component {
     });
 
     if (value === correct) {
-      console.log('acertou', seconds);
+      const { rightQuestion } = this.props;
+      rightQuestion();
     }
   }
 
@@ -71,6 +73,7 @@ class Game extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: (payload) => dispatch(fetchQuestions(payload)),
   resetSec: () => dispatch(resetSeconds()),
+  rightQuestion: () => dispatch(assertsAction()),
 
 });
 const mapStateToProps = (state) => ({
@@ -84,6 +87,8 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
   resetSec: PropTypes.func.isRequired,
+  history: PropTypes.shape().isRequired,
+  rightQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
