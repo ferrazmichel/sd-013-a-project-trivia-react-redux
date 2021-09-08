@@ -4,7 +4,9 @@ import {
   API_URL_TOKEN,
   REGISTER_USER,
   CORRECT_ANSWER,
-  API_URL } from '../../constants';
+  INCORRECT_ANSWER,
+  API_URL,
+  UPDATE_SCORE } from '../../constants';
 
 export const startFetch = () => ({
   type: START_FETCH,
@@ -22,6 +24,16 @@ export const registerUser = (payload) => ({
 
 export const correctAnswer = (payload) => ({
   type: CORRECT_ANSWER,
+  payload,
+});
+
+export const incorrectAnswer = (payload) => ({
+  type: INCORRECT_ANSWER,
+  payload,
+});
+
+export const updateScore = (payload) => ({
+  type: UPDATE_SCORE,
   payload,
 });
 

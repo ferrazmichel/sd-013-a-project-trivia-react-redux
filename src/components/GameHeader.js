@@ -15,12 +15,11 @@ class GameHeader extends Component {
 
   componentDidMount() {
     const { gravatarHash } = this.state;
-    const { userEmail, userName } = this.props;
+    const { userEmail } = this.props;
     if (gravatarHash === '') {
       const hash = MD5(userEmail).toString();
       this.handleStateChange(hash);
     }
-    console.log(userEmail, userName);
   }
 
   handleStateChange(newHashValue) {
@@ -50,7 +49,7 @@ GameHeader.propTypes = {
 const mapStateToProps = (state) => ({
   userEmail: state.loginReducer.email,
   userName: state.loginReducer.name,
-  score: state.userReducer.score,
+  score: state.scoreReducer.score,
 });
 
 export default connect(mapStateToProps)(GameHeader);

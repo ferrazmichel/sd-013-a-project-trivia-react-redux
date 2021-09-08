@@ -37,6 +37,17 @@ class Login extends Component {
   async handleClick() {
     const { fetch, registry } = this.props;
     const { email, name } = this.state;
+    const { score } = this.props;
+    const player = {
+      name,
+      assertions: 0,
+      score,
+      gravatarEmail: email,
+    };
+    const state = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(state));
     await fetch();
     registry({ name, email });
   }
@@ -90,15 +101,17 @@ class Login extends Component {
 Login.propTypes = {
   fetch: PropTypes.func.isRequired,
   registry: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state,
+  score: state.scoreReducer.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetch: () => dispatch(fetchData()),
-  registry: (data) => console.log(dispatch(registerUser(data))),
+  registry: (data) => dispatch(registerUser(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
