@@ -55,7 +55,10 @@ class GameQuestion extends Component {
       score,
       gravatarEmail: userEmail,
     };
-    localStorage.setItem('player', JSON.stringify(player));
+    const state = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   dispatchCorrectAnswer(difficulty) {
@@ -95,7 +98,10 @@ class GameQuestion extends Component {
       score,
       gravatarEmail: userEmail,
     };
-    localStorage.setItem('player', JSON.stringify(player));
+    const state = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   handleQuestion() {

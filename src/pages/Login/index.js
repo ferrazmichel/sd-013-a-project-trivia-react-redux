@@ -37,8 +37,6 @@ class Login extends Component {
   async handleClick() {
     const { fetch, registry } = this.props;
     const { email, name } = this.state;
-    await fetch();
-    registry({ name, email });
     const { score } = this.props;
     const player = {
       name,
@@ -46,7 +44,12 @@ class Login extends Component {
       score,
       gravatarEmail: email,
     };
-    localStorage.setItem('player', JSON.stringify(player));
+    const state = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+    await fetch();
+    registry({ name, email });
   }
 
   render() {
