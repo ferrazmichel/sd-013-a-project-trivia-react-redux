@@ -65,9 +65,7 @@ class Login extends Component {
 
   async handleClickPlay() {
     this.savePlayerData();
-    const response = await fetchTriviaAPI();
-    const { token } = response;
-    localStorage.setItem('token', token);
+    fetchTriviaAPI();
 
     this.setState({
       redirectToGamePage: true,
