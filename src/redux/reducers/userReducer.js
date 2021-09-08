@@ -1,8 +1,6 @@
 import {
-  CORRECT_ANSWER,
-  INCORRECT_ANSWER,
+  DISABLE_ANSWER,
   FINISH_FETCH,
-  INCORRECT_ANSWER,
   NEXT_QUESTION,
   START_FETCH,
   userReducerInitialState,
@@ -19,10 +17,7 @@ const userReducer = (state = userReducerInitialState, action) => {
   case FINISH_FETCH:
     return { ...state, loading: false, questions: action.payload.results };
 
-  case CORRECT_ANSWER:
-    return { ...state, score: state.score + 1, disabled: true };
-
-  case INCORRECT_ANSWER:
+  case DISABLE_ANSWER:
     return { ...state, disabled: true };
 
   case NEXT_QUESTION:
