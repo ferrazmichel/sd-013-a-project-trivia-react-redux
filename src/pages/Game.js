@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import DisplayQuestion from '../components/DisplayQuestion';
 import Header from '../components/Header';
+import '../App.css';
 
 class Game extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class Game extends Component {
       fetching: true,
       questions: [],
     };
+
     this.questionsFetch = this.questionsFetch.bind(this);
   }
 
@@ -28,11 +30,13 @@ class Game extends Component {
 
   render() {
     const { fetching, questions } = this.state;
+    const { history } = this.props;
     const loading = <p>Loading...</p>;
     return (
       <div>
         <Header />
-        {fetching ? loading : <DisplayQuestion questions={ questions } />}
+        {fetching
+          ? loading : <DisplayQuestion questions={ questions } history={ history } />}
       </div>
     );
   }
@@ -44,6 +48,7 @@ const mapStateToProps = (state) => ({
 
 Game.propTypes = {
   token: PropTypes.string.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default connect(mapStateToProps)(Game);

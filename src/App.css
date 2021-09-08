@@ -5,3 +5,11 @@
 .wrong-answer {
   border: 3px solid red;
 }
+
+.btn-next-invisible {
+  display: none;
+}
+
+.btn-next-visible {
+  display: inline-block;
+}
