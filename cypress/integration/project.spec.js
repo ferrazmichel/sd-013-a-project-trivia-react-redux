@@ -223,7 +223,7 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it('Aguarda 5 segundos e responde a alternativa correta', () => {
+  it.skip('Aguarda 5 segundos e responde a alternativa correta', () => {
     cy.wait(5000);
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('not.be.disabled').click();
   });
@@ -569,7 +569,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
   });
 
-  it.only('A pessoa deve ser redirecionada para tela de ranking', () => {
+  it('A pessoa deve ser redirecionada para tela de ranking', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
     cy.get(RANKING_TITLE_SELECTOR).should('exist');
   });

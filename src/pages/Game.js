@@ -77,6 +77,7 @@ class Game extends React.Component {
   async checkClick(e) { // a função precisa ser assincrona para a linha 78 ocorrer antes da 79 (setState é assincrono)
     clearInterval(this.cronometro);
     await this.checkAnswer(e);
+    // Retiravel awai da funcao abaixo
     await this.setLocalStorage();
   }
 

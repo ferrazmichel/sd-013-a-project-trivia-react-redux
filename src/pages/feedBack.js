@@ -37,6 +37,12 @@ class Feedback extends React.Component {
         >
           <Link to="/ranking">Ver Ranking</Link>
         </button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+        >
+          <Link to="/">Jogar Novamente</Link>
+        </button>
       </div>
     );
   }
