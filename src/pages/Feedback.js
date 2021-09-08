@@ -10,7 +10,7 @@ class Feedback extends React.Component {
     const MINIMUN_ASSERTIONS = 3;
     return (
       <div>
-        <JogoHeader score={ score }/>
+        <JogoHeader score={ score } />
         <p data-testid="feedback-text">
           { (assertions >= MINIMUN_ASSERTIONS) ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>
