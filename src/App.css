@@ -7,15 +7,15 @@
 }
 
 .login {
+  align-items: center;
   background-color: grey;
+  color: white;
   display: flex;
   flex-direction: column;
-  text-align: center;
-  align-items: center;
-  padding: 10px;
-  color: white;
   font-size: large;
   justify-content: center;
+  padding: 10px;
+  text-align: center;
 }
 
 .login label {
