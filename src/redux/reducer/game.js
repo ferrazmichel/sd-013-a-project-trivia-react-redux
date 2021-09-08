@@ -4,7 +4,16 @@ import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
 const INITIAL_STATE = {
   isLoading: true,
   erro: null,
-  questions: '',
+  questions: [
+    {
+      category: ' ',
+      type: ' ',
+      difficulty: ' ',
+      question: ' ',
+      correct_answer: ' ',
+      incorrect_answers: ['', '', ''],
+    },
+  ],
 };
 
 const game = (state = INITIAL_STATE, action) => {

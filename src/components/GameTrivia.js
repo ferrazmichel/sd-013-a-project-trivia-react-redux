@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 class GameTrivia extends React.Component {
   render() {
     const { questions } = this.props;
-    console.log(questions);
     return (
       <form>
         <p
@@ -45,7 +44,7 @@ class GameTrivia extends React.Component {
 }
 
 GameTrivia.propTypes = {
-  questions: PropTypes.shape({}).isRequired,
+  questions: PropTypes.arrayOf({}).isRequired,
 };
 
 export default GameTrivia;
