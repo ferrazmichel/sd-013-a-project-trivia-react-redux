@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { sendUserInfo } from '../redux/actions';
 import getTokenApi from '../redux/services/fetchToken';
@@ -79,6 +79,14 @@ class Login extends Component {
         >
           Jogar
         </button>
+        <Link to="/config">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
       </form>
     );
   }
