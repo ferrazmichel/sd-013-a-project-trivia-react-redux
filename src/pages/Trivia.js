@@ -1,4 +1,15 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { fetchApiQuestions } from '../redux/actions';
+// import md5 from 'crypto-js/md5';
+
+class Trivia extends Component {
+  componentDidMount() {
+    const { fetchApi } = this.props;
+    fetchApi();
+=======
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
@@ -40,6 +51,19 @@ class Trivia extends Component {
 }
 
 Trivia.propTypes = {
+  fetchApi: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  info: state.trivia.results,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchApi: () => dispatch(fetchApiQuestions()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
+=======
   userEmail: PropTypes.shape({
     toLowerCase: PropTypes.func,
   }).isRequired,
