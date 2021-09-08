@@ -49,10 +49,7 @@ class GamePage extends React.Component {
   render() {
     const { index } = this.state;
     const { questions, loading } = this.props;
-    console.log(questions);
-
     if (loading === true) return <h1>Carregando as perguntas</h1>;
-
     return (
       <div>
         <Header />
