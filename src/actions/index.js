@@ -1,2 +1,2 @@
 export const login = (state) => ({ type: 'login', state });
-export const teste = () => ({ type: '' });
+export const score = (state) => ({ type: 'score', state });
