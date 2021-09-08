@@ -1,7 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Timer from './Timer';
+import { disableButtons } from '../redux/actions';
 
 class QuestionCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.alteraCor = this.alteraCor.bind(this);
+  }
+
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -12,16 +20,18 @@ class QuestionCard extends React.Component {
   }
 
   alteraCor() {
+    const { disable } = this.props;
     const correct = document.getElementsByClassName('correct-answer')[0];
     const incorrects = document.getElementsByClassName('wrong-answer');
     for (let i = 0; i < incorrects.length; i += 1) {
       incorrects[i].classList.add('wrong-color');
     }
     correct.classList.add('correct-color');
+    disable();
   }
 
   renderQuestionButton() {
-    const { questionData } = this.props;
+    const { questionData, handleDisable } = this.props;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
@@ -30,6 +40,7 @@ class QuestionCard extends React.Component {
         className="correct-answer"
         type="button"
         data-testid="correct-answer"
+        disabled={ handleDisable }
         onClick={ this.alteraCor }
       >
         {correctAnswer}
@@ -40,6 +51,7 @@ class QuestionCard extends React.Component {
         className="wrong-answer"
         key={ index }
         data-testid={ `wrong-answer-${index}` }
+        disabled={ handleDisable }
         onClick={ this.alteraCor }
       >
         {answer}
@@ -60,6 +72,7 @@ class QuestionCard extends React.Component {
         <h1 data-testid="question-category">{category}</h1>
         <p data-testid="question-text">{question}</p>
         {this.renderQuestionButton()}
+        <Timer />
       </div>
     );
   }
@@ -72,6 +85,16 @@ QuestionCard.propTypes = {
     category: PropTypes.string,
     question: PropTypes.string,
   }).isRequired,
+  disable: PropTypes.func.isRequired,
+  handleDisable: PropTypes.bool.isRequired,
 };
 
-export default QuestionCard;
+const mapStateToProps = ({ questionsReducer }) => ({
+  handleDisable: questionsReducer.disableButtons,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  disable: () => dispatch(disableButtons()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);
