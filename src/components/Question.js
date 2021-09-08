@@ -7,21 +7,62 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shuffleArray from '../helpers';
 import './Question.css';
-import { toggleNextButton } from '../actions/index';
+import { toggleNextButton, updateScore } from '../actions/index';
+
+const STARTING_POINTS = 10;
+
+const difficulties = {
+  EASY: 1,
+  MEDIUM: 2,
+  HARD: 3,
+};
 
 class Question extends React.Component {
-  // O elemento com a alternativa correta deve possuir o atributo data-testid com o valor correct-answer
-  // Os elementos com as alternativas incorretas devem possuir o atributo data-testid com o valor
-  // wrong-answer-${index}, com ${index} iniciando com o valor 0
-  // As alternativas devem ser exibidas em ordem aleatória
-  // Dica: utilize botões (<button/>) para as alternativas
   constructor() {
     super();
 
     this.changeColor = this.changeColor.bind(this);
+    this.getDifficulty = this.getDifficulty.bind(this);
+    this.handleQuestionAnswering = this.handleQuestionAnswering.bind(this);
   }
 
-  changeColor() {
+  getDifficulty() {
+    const { question } = this.props;
+
+    switch (question.difficulty) {
+    case 'easy':
+      return difficulties.EASY;
+    case 'medium':
+      return difficulties.MEDIUM;
+    case 'hard':
+      return difficulties.HARD;
+    default:
+      return false;
+    }
+  }
+
+  handleQuestionAnswering(questionId) {
+    const { updatePlayerScore } = this.props;
+
+    if (questionId === 'correct') {
+      console.log('correct answer from handleQuestionAnswering:', questionId);
+
+      // Atualiza o localStorage com a nova pontuação.
+      const localState = JSON.parse(localStorage.getItem('state'));
+      const { score, assertions } = localState.player;
+      const timer = 10; // Precisa vir do redux
+      const newScore = score + (STARTING_POINTS + (timer * this.getDifficulty()));
+      localState.player.score = newScore;
+      localState.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(localState));
+
+      // Atualiza a store do redux (para ser utilizado no Header)
+      updatePlayerScore(newScore);
+    }
+  }
+
+  // Método executado quando uma pessoa usuária responde uma questão.
+  changeColor({ target: { id } }) {
     const { enable } = this.props;
     const questions = document.querySelectorAll('button');
     questions.forEach((question) => {
@@ -32,6 +73,9 @@ class Question extends React.Component {
       }
     });
     enable(true);
+
+    // Calcula os pontos
+    this.handleQuestionAnswering(id);
   }
 
   renderAnswer(answer, idx) {
@@ -84,12 +128,15 @@ Question.propTypes = {
     category: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     correct_answer: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
   }).isRequired,
   enable: PropTypes.func.isRequired,
+  updatePlayerScore: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
+  updatePlayerScore: (score) => dispatch(updateScore(score)),
 });
 
 export default connect(null, mapDispatchToProps)(Question);

@@ -7,6 +7,7 @@ class Header extends React.Component {
   render() {
     const { gravatarEmail, score, name } = this.props;
     const avatar = fetchAvatar(gravatarEmail);
+
     return (
       <header>
         <div>
