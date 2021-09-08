@@ -20,7 +20,7 @@ class Header extends React.Component {
     const transformedEmail = md5(email).toString();
     const imgAvatar = `https://www.gravatar.com/avatar/${transformedEmail}`;
 
-    console.log(nome);
+    // console.log(nome);
     return (
       <div className="header">
         <img src={ imgAvatar } alt="" data-testid="header-profile-picture" />
