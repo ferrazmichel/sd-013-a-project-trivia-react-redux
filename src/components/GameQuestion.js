@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
-
-const index = 0;
+import { correctAnswer, incorrectAnswer, nextQuestion } from '../redux/actions';
 
 class GameQuestion extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      disabled: false,
-    };
 
     this.handleQuestion = this.handleQuestion.bind(this);
     this.dispatchCorrectAnswer = this.dispatchCorrectAnswer.bind(this);
@@ -19,43 +14,36 @@ class GameQuestion extends Component {
   }
 
   dispatchCorrectAnswer() {
-    const { props: { dispatch } } = this;
+    const { correct } = this.props;
 
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const onecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    onecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
 
     const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
-    dispatch({ type: 'CORRECT_ANSWER' });
-    this.setState({
-      disabled: true,
-    });
+    correct();
   }
 
   dispatchIncorrectAnswer() {
-    const { props: { dispatch } } = this;
+    const { incorrect } = this.props;
 
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const OnecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    OnecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
 
     const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
-    dispatch({ type: 'INCORRECT_ANSWER' });
-    this.setState({
-      disabled: true,
-    });
+    incorrect();
   }
 
   handleQuestion() {
-    const { questions } = this.props;
-    const { disabled } = this.state;
-    const currQuestion = questions[index];
+    const { questions, disabled, renderIndex } = this.props;
+    const currQuestion = questions[renderIndex];
 
     const currQuestionOptions = [currQuestion.correct_answer,
       ...currQuestion.incorrect_answers].sort();
@@ -92,37 +80,51 @@ class GameQuestion extends Component {
               </button>);
           }) }
         </div>
-        <GameCounter />
+        <GameCounter counter={ 30 } />
       </div>
     );
   }
 
   render() {
-    const { loading } = this.props;
-    const { disabled } = this.state;
-    const nextButton = !disabled ? null
-      : <button type="button" data-testid="btn-next">Próxima</button>;
+    const { loading, disabled, nextQ } = this.props;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => nextQ() }
+      >
+        Próxima
+      </button>);
+    const renderNextButton = disabled ? nextButton : null;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
       <div>
         { this.handleQuestion() }
-        { nextButton }
+        { renderNextButton }
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  nextQ: () => dispatch(nextQuestion()),
+  correct: () => dispatch(correctAnswer(1)),
+  incorrect: () => dispatch(incorrectAnswer()),
+});
+
 const mapStateToProps = ({ userReducer }) => ({
   loading: userReducer.loading,
   questions: userReducer.questions,
+  disabled: userReducer.disabled,
+  renderIndex: userReducer.renderIndex,
 });
 
 GameQuestion.propTypes = {
   loading: PropTypes.bool.isRequired,
   questions: PropTypes.objectOf().isRequired,
-  dispatch: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps)(GameQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);
