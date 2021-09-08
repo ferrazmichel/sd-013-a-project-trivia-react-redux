@@ -3,11 +3,11 @@ import {
   FINISH_FETCH,
   API_URL_TOKEN,
   REGISTER_USER,
-  CORRECT_ANSWER,
   API_URL,
-  INCORRECT_ANSWER,
   NEXT_QUESTION,
-  UPDATE_SCORE } from '../../constants';
+  UPDATE_SCORE,
+  DISABLE_ANSWER,
+} from '../../constants';
 
 export const startFetch = () => ({
   type: START_FETCH,
@@ -23,13 +23,8 @@ export const registerUser = (payload) => ({
   payload,
 });
 
-export const correctAnswer = (payload) => ({
-  type: CORRECT_ANSWER,
-  payload,
-});
-
-export const incorrectAnswer = () => ({
-  type: INCORRECT_ANSWER,
+export const disableAnswer = () => ({
+  type: DISABLE_ANSWER,
 });
 
 export const nextQuestion = () => ({

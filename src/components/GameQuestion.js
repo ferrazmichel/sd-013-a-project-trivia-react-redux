@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
+import {
+  disableAnswer,
+  nextQuestion } from '../redux/actions';
 
-import { correctAnswer, incorrectAnswer, nextQuestion } from '../redux/actions';
 let assertions = 0;
 
 class GameQuestion extends Component {
@@ -14,11 +16,9 @@ class GameQuestion extends Component {
     this.handleQuestion = this.handleQuestion.bind(this);
     this.dispatchCorrectAnswer = this.dispatchCorrectAnswer.bind(this);
     this.dispatchIncorrectAnswer = this.dispatchIncorrectAnswer.bind(this);
+    this.localStorage = this.localStorage.bind(this);
   }
 
-
-  dispatchCorrectAnswer() {
-    const { correct } = this.props;
   async scoreCalculator(difficulty) {
     const { updateScore, userName, userEmail } = this.props;
     const counter = document.getElementById('counter').innerHTML;
@@ -61,32 +61,8 @@ class GameQuestion extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  dispatchCorrectAnswer(difficulty) {
-    // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const onecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
-    onecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
-
-    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
-    wrongAnswers.forEach((wrongAnswer) => {
-      wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
-    });
-  }
-
-  dispatchIncorrectAnswer() {
-    // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const OnecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
-    OnecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
-
-    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
-    wrongAnswers.forEach((wrongAnswer) => {
-      wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
-    });
-  }
-
-  handleQuestion() {
-    const { questions, disabled, renderIndex, userName, userEmail, score } = this.props;
-    const currQuestion = questions[renderIndex];
-    const { difficulty } = questions[index];
+  localStorage() {
+    const { userName, userEmail, score } = this.props;
     const player = {
       name: userName,
       assertions,
@@ -98,6 +74,37 @@ class GameQuestion extends Component {
     };
     localStorage.setItem('state', JSON.stringify(state));
   }
+
+  dispatchCorrectAnswer(difficulty) {
+    const { disableAnswers } = this.props;
+    disableAnswers();
+    // adiciona cores a borda das alternativas conforme resposta correta ou errada
+    const onecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    onecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
+    wrongAnswers.forEach((wrongAnswer) => {
+      wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
+    });
+    this.localStorage();
+    this.scoreCalculator(difficulty);
+  }
+
+  dispatchIncorrectAnswer() {
+    const { disableAnswers } = this.props;
+    disableAnswers();
+    // adiciona cores a borda das alternativas conforme resposta correta ou errada
+    const OnecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    OnecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
+    wrongAnswers.forEach((wrongAnswer) => {
+      wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
+    });
+  }
+
+  handleQuestion() {
+    const { questions, disabled, renderIndex } = this.props;
+    const currQuestion = questions[renderIndex];
+    const { difficulty } = currQuestion;
     const currQuestionOptions = [currQuestion.correct_answer,
       ...currQuestion.incorrect_answers].sort();
     let wrongIndex = 0;
@@ -176,9 +183,8 @@ class GameQuestion extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   nextQ: () => dispatch(nextQuestion()),
-  correct: () => dispatch(correctAnswer(1)),
-  incorrect: () => dispatch(incorrectAnswer()),
   updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
+  disableAnswers: () => dispatch(disableAnswer()),
 });
 
 const mapStateToProps = ({ userReducer, loginReducer, scoreReducer }) => ({
@@ -198,11 +204,10 @@ GameQuestion.propTypes = {
   score: PropTypes.string.isRequired,
   questions: PropTypes.objectOf().isRequired,
   disabled: PropTypes.bool.isRequired,
-  correct: PropTypes.func.isRequired,
-  incorrect: PropTypes.func.isRequired,
   renderIndex: PropTypes.number.isRequired,
   nextQ: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
+  disableAnswers: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);

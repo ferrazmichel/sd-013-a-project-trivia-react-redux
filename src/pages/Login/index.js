@@ -35,9 +35,8 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { fetch, registry } = this.props;
+    const { fetch, registry, score } = this.props;
     const { email, name } = this.state;
-    const { score } = this.props;
     const player = {
       name,
       assertions: 0,
