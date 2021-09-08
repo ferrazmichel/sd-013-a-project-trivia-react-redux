@@ -23,6 +23,6 @@ GamePage.propTypes = {
   difficulty: PropTypes.string,
   cattegory: PropTypes.string,
   type: PropTypes.string,
-}.isRequire;
+}.isRequired;
 
 export default connect(mapStateToProps, null)(GamePage);
