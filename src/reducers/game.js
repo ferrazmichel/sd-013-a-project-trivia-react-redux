@@ -1,9 +1,11 @@
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  score: 0,
+};
 
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case '':
-    return state;
+  case 'score':
+    return { ...state, score: action.state };
   default:
     return state;
   }

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
+import { score } from '../actions';
 import '../css/Login.css';
 
 class Game extends Component {
@@ -121,16 +123,19 @@ class Game extends Component {
   /** Função do botão próxima pergunta  */
   nextQuestion() {
     let { questionNum } = this.state;
-    const { history } = this.props;
+    const { history, dispatchScore } = this.props;
     const maxQuestions = 4;
     this.setState({
       buttonNext: false,
       questionNum: questionNum += 1,
       timer: 30,
+      correctAnswers: '',
+      wrongAnswers: '',
     });
     if (questionNum > maxQuestions) {
       history.push('/feedback');
     }
+    dispatchScore(JSON.parse(localStorage.getItem('state')).player.score);
   }
 
   renderQuestions() {
@@ -203,7 +208,7 @@ class Game extends Component {
   }
 
   render() {
-    const { loading, score, assertions, buttonNext } = this.state;
+    const { loading, assertions, buttonNext } = this.state;
     return (
       <div>
         <div>
@@ -211,12 +216,6 @@ class Game extends Component {
           {
             loading ? <div>Carregando</div> : this.renderQuestions()
           }
-          {/* <div> // caso precise mais para frente, pois está dinamico.
-            <h2>Categoria da pergunta</h2>
-            <div>
-              Alternativas
-            </div>
-          </div> */}
         </div>
         {
           buttonNext && <input
@@ -231,10 +230,15 @@ class Game extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchScore: (state) => dispatch(score(state)),
+});
+
 Game.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Game;
+export default connect(null, mapDispatchToProps)(Game);
