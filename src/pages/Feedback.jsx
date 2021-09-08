@@ -9,14 +9,14 @@ class Feedback extends Component {
     const md5Email = md5(email).toString();
     const avatar = `https://www.gravatar.com/avatar/${md5Email}`;
     // const state = JSON.parse(localStorage.getItem('state'));
-    console.log(typeof(score));
+    console.log(typeof (score));
     return (
       <div data-testid="feedback-text">
         <header className="header-container">
           <div className="header-profile">
             <img data-testid="header-profile-picture" src={ avatar } alt="Avatar" />
             <span data-testid="header-player-name">
-              Jogador: 
+              Jogador:
               { nome }
             </span>
           </div>
@@ -41,6 +41,7 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   nome: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);

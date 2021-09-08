@@ -208,7 +208,7 @@ class Game extends Component {
   }
 
   render() {
-    const { loading, score, assertions, buttonNext } = this.state;
+    const { loading, assertions, buttonNext } = this.state;
     return (
       <div>
         <div>
@@ -216,12 +216,6 @@ class Game extends Component {
           {
             loading ? <div>Carregando</div> : this.renderQuestions()
           }
-          {/* <div> // caso precise mais para frente, pois está dinamico.
-            <h2>Categoria da pergunta</h2>
-            <div>
-              Alternativas
-            </div>
-          </div> */}
         </div>
         {
           buttonNext && <input
@@ -236,15 +230,15 @@ class Game extends Component {
   }
 }
 
-Game.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  score: PropTypes.number.isRequired,
-};
-
 const mapDispatchToProps = (dispatch) => ({
   dispatchScore: (state) => dispatch(score(state)),
 });
+
+Game.propTypes = {
+  dispatchScore: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default connect(null, mapDispatchToProps)(Game);
