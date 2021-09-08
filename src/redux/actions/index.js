@@ -2,8 +2,6 @@ import md5 from 'crypto-js/md5';
 import tokenApi from '../../services/tokenAPI';
 import fetch5Questions from '../../services/questionsAPI';
 
-export const UPDATE_SECONDS = 'UPDATE_SECONDS';
-export const RESET_SECONDS = 'RESET_SECONDS';
 export const GET_TOKEN_SUCCESS = 'GET_TOKEN_SUCCESS';
 export const GET_TOKEN_ERROR = 'GET_TOKEN_ERROR';
 export const ADD_USER = 'ADD_USER';
@@ -27,14 +25,6 @@ export const getQuestionError = ((error) => ({
   type: GET_QUESTIONS_ERROR,
   error,
 }));
-
-export const updateSeconds = () => ({
-  type: UPDATE_SECONDS,
-});
-
-export const resetSeconds = () => ({
-  type: RESET_SECONDS,
-});
 
 export const assertsAction = () => ({ type: ASSERT });
 

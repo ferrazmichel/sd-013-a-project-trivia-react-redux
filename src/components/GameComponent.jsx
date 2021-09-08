@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { decode } from 'html-entities';
 import PropTypes from 'prop-types';
-// import Cronometer from './Cronometer';
 
 const interval = 1000;
 
@@ -38,7 +37,6 @@ class GameComponent extends Component {
   }
 
   timer() {
-    // const { updateSec, resetSec } = this.props;
     this.interval = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
     }, interval);
@@ -104,7 +102,6 @@ class GameComponent extends Component {
             { decode(question) }
           </h4>
           { seconds }
-          {/* <Cronometer visibility={ this.buttonVisibility } /> */}
         </div>
         <div>
           { answersArray }
