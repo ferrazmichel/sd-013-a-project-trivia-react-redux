@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/Question';
@@ -48,10 +49,20 @@ class GamePage extends Component {
   }
 }
 
-GamePage.propTypes = {
-  question: PropTypes.array,
-  questionsIndex: PropTypes.number,
-  loading: PropTypes.bool,
-}.isRequire;
 
-export default GamePage;
+const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => ({
+  configs: {
+    difficulty,
+    cattegory,
+    type,
+  },
+});
+
+GamePage.propTypes = {
+  configs: propTypes.shape({
+    difficulty: PropTypes.string,
+  cattegory: PropTypes.string,
+  type: PropTypes.string,}),
+}.isRequired;
+
+export default connect(mapStateToProps)(GamePage);
