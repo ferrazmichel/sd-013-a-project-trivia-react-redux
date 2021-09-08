@@ -11,6 +11,7 @@ class Game extends React.Component {
     this.state = {
       currentQuestion: 0,
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +22,16 @@ class Game extends React.Component {
 
   getStorage() {
     return localStorage.getItem('token');
+  }
+
+  handleClick() {
+    const penultIndex = 3;
+    const { currentQuestion } = this.state;
+    if (currentQuestion <= penultIndex) {
+      this.setState({
+        currentQuestion: currentQuestion + 1,
+      });
+    }
   }
 
   render() {
@@ -35,7 +46,7 @@ class Game extends React.Component {
         Game
         <Header />
         <QuestionCard questionData={ questions[currentQuestion] } />
-        <button type="button">Próxima pergunta</button>
+        <button type="button" onClick={ this.handleClick }>Próxima pergunta</button>
       </div>
     );
   }
