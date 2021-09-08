@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 class FeedbackScore extends Component {
   constructor() {
     super();
-
     this.numberAsserts = this.numberAsserts.bind(this);
   }
 
@@ -13,25 +12,30 @@ class FeedbackScore extends Component {
     const { rightQuestions } = this.props;
     if (rightQuestions === 0) {
       return (
-        <div data-testid="feedback-total-question">
-
-          Não acertou nenhuma pergunta
+        <div>
+          <span>Acertos: </span>
+          <span data-testid="feedback-total-question">
+            { rightQuestions }
+          </span>
+          <p> Não acertou nenhuma pergunta </p>
         </div>
       );
     }
     return (
-      <div data-testid="feedback-total-question">
-        {rightQuestions === 1 ? `Acertou ${rightQuestions} pergunta`
-          : `Acertou ${rightQuestions} perguntas`}
-      </div>);
+      <div>
+        <span>Acertos: </span>
+        <span data-testid="feedback-total-question">
+          { rightQuestions }
+        </span>
+      </div>
+    );
   }
 
   render() {
-    const finalScore = 0;
+    const { finalScore } = this.props;
     return (
       <section>
         <div data-testid="feedback-total-score">
-          Placar final:
           { finalScore }
         </div>
         <div>
@@ -44,10 +48,12 @@ class FeedbackScore extends Component {
 
 const mapStateToProps = ({ game }) => ({
   rightQuestions: game.asserts,
+  finalScore: game.score,
 });
 
 FeedbackScore.propTypes = {
   rightQuestions: PropTypes.number.isRequired,
+  finalScore: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(FeedbackScore);
