@@ -8,14 +8,27 @@ class Pergunta extends React.Component {
     this.state = {
       contador: 0,
       correctAnswer: '',
+      countdown: 30,
     };
     this.correct = this.correct.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     this.correct();
+    this.timer();
+  }
+
+  timer() {
+    const secsToWait = 5000;
+    const oneSecond = 1000;
+    setTimeout(setInterval(() => {
+      this.setState((prevState) => ({
+        countdown:
+          prevState.countdown > 0 ? prevState.countdown - 1 : prevState.countdown }));
+    }, oneSecond), secsToWait);
   }
 
   correct() {
@@ -55,13 +68,14 @@ class Pergunta extends React.Component {
   }
 
   render() {
-    const { contador } = this.state;
+    const { contador, countdown } = this.state;
     const { perguntas } = this.props;
     return (
       <div>
         <span data-testid="question-category">{ perguntas[contador].category }</span>
         <p data-testid="question-text">{ perguntas[contador].question }</p>
         <div>{this.shuffleAnswers()}</div>
+        <span>{ countdown }</span>
       </div>
     );
   }
