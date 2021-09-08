@@ -12,16 +12,35 @@ export class Feedback extends Component {
   }
 
   feedbackMsg() {
-    const { score } = this.props;
-    const MIN_SCORE = 3;
-    return score < MIN_SCORE ? 'Podia ser melhor...' : 'Mandou bem!';
+    const { assertions } = this.props;
+    const MIN_ASSERT = 3;
+    return assertions < MIN_ASSERT ? 'Podia ser melhor...' : 'Mandou bem!';
   }
 
   render() {
+    const { score, assertions } = this.props;
     return (
       <div>
         <Header />
-        <p data-testid="feedback-text">{ this.feedbackMsg() }</p>
+        <p data-testid="feedback-text">{this.feedbackMsg()}</p>
+        <p>
+          Um total de
+          {' '}
+          <span data-testid="feedback-total-score">
+            {score}
+          </span>
+          {' '}
+          pontos
+        </p>
+        <p>
+          Você acertou
+          {' '}
+          <span data-testid="feedback-total-questions">
+            {assertions}
+          </span>
+          {' '}
+          questões
+        </p>
       </div>
     );
   }
@@ -31,8 +50,9 @@ Feedback.propTypes = {
   score: PropTypes.number,
 }.isRequired;
 
-const mapStateToProps = ({ player: { score } }) => ({
+const mapStateToProps = ({ player: { score, assertions } }) => ({
   score,
+  assertions,
 });
 
 export default connect(mapStateToProps)(Feedback);
