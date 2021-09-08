@@ -5,38 +5,36 @@ import Header from '../components/Header';
 import silvioSantos from '../images/silviosantos.gif';
 
 class TelaDeJogo extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      colorBorders: false,
+    };
+  }
+
   shuffleAnswers() {
     const { questions: { results } } = this.props;
     const {
+      type,
       incorrect_answers: incorrectAnswers,
       correct_answer: correctAnswer } = results[0];
-    const randomIndex = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+    const randomIndex = () => {
+      if (type === 'boolean') {
+        const randomNumber = Math.floor(Math.random() * (1 - 0 + 1) + 0);
+        return randomNumber;
+      }
+      const randomNumber = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+      return randomNumber;
+    };
     const answers = [...incorrectAnswers];
-    answers.splice(randomIndex, 0, correctAnswer);
+    answers.splice(randomIndex(), 0, correctAnswer);
     return answers;
   }
 
-  // shuffleAnswers() {
-  //   const { questions: { results } } = this.props;
-  //   const {
-  //     type,
-  //     incorrect_answers: incorrectAnswers,
-  //     correct_answer: correctAnswer } = results[0];
-  //   const randomIndex = () => {
-  //     if (type === 'boolean') {
-  //       const randomNumber = Math.floor(Math.random() * (1 - 0 + 1) + 0);
-  //       return randomNumber;
-  //     }
-  //     const randomNumber = Math.floor(Math.random() * (2 - 0 + 1) + 0);
-  //     return randomNumber;
-  //   };
-  //   const answers = [...incorrectAnswers];
-  //   answers.splice(randomIndex(), 0, correctAnswer);
-  //   return answers;
-  // }
-
   createButtons() {
     const answers = this.shuffleAnswers();
+    const { colorBorders } = this.state;
     const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[0];
     return (
@@ -45,8 +43,11 @@ class TelaDeJogo extends Component {
           return (
             <button
               data-testid="correct-answer"
+              className="correct-answer"
               type="button"
               key={ answer }
+              style={ colorBorders ? { border: '3px solid rgb(6, 240, 15)' } : null }
+              onClick={ () => this.setState({ colorBorders: true }) }
             >
               { answer }
             </button>
@@ -55,8 +56,11 @@ class TelaDeJogo extends Component {
         return (
           <button
             data-testid={ `wrong-answer-${index}` }
+            className="wrond-answer"
             type="button"
             key={ answer }
+            style={ colorBorders ? { border: '3px solid rgb(255, 0, 0)' } : null }
+            onClick={ () => this.setState({ colorBorders: true }) }
           >
             { answer }
           </button>
