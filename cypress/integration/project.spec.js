@@ -569,7 +569,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
   });
 
-  it('A pessoa deve ser redirecionada para tela de ranking', () => {
+  it.only('A pessoa deve ser redirecionada para tela de ranking', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
     cy.get(RANKING_TITLE_SELECTOR).should('exist');
   });

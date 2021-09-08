@@ -31,8 +31,11 @@ class Feedback extends React.Component {
         <h3 data-testid="feedback-text">
           {correctAnswer < ruim ? resultadoBaixo : resultadoBom }
         </h3>
-        <button type="button" data-testid="btn-play-again">
-          <Link to="/">Jogar Novamente</Link>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+        >
+          <Link to="/ranking">Ver Ranking</Link>
         </button>
       </div>
     );
