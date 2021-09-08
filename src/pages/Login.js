@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveLogin } from '../redux/actions';
+import { fetchQuestions, saveLogin } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -38,11 +39,6 @@ class Login extends Component {
     history.push('/config');
   }
 
-  goToGamePage() {
-    const { history } = this.props;
-    history.push('/tela-de-jogo');
-  }
-
   async saveToLocalStorage() {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const result = await response.json();
@@ -51,7 +47,7 @@ class Login extends Component {
 
   render() {
     const { btnDisable, name, email } = this.state;
-    const { sendLogin } = this.props;
+    const { sendLogin, getQuestions } = this.props;
     return (
       <form>
         <label htmlFor="name">
@@ -81,18 +77,20 @@ class Login extends Component {
         >
           Configurações
         </button>
-        <button
-          disabled={ btnDisable }
-          data-testid="btn-play"
-          type="button"
-          onClick={ () => {
-            this.saveToLocalStorage();
-            sendLogin(name, email);
-            this.goToGamePage();
-          } }
-        >
-          Jogar
-        </button>
+        <Link to="/tela-de-jogo">
+          <button
+            disabled={ btnDisable }
+            data-testid="btn-play"
+            type="button"
+            onClick={ async () => {
+              await this.saveToLocalStorage();
+              sendLogin(name, email);
+              await getQuestions(JSON.parse(localStorage.getItem('token')));
+            } }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
@@ -100,6 +98,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   sendLogin: (name, email) => dispatch(saveLogin(name, email)),
+  getQuestions: (userToken) => dispatch(fetchQuestions(userToken)),
 });
 
 Login.propTypes = {

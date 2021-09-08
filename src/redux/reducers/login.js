@@ -1,11 +1,11 @@
 import { SAVE_LOGIN } from '../actions';
 
-const INICIAL_STATE = {
+const INITIAL_STATE = {
   name: '',
   email: '',
 };
 
-const login = (state = INICIAL_STATE, action) => {
+const login = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SAVE_LOGIN:
     return {

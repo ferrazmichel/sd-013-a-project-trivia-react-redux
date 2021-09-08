@@ -1,36 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import silvioSantos from '../images/silviosantos.gif';
 
 class TelaDeJogo extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      loading: true,
-      questions: {
-        results: [{
-          category: '',
-          correct_answer: '',
-          incorrect_answers: [''],
-        }],
-      },
-    };
-  }
-
-  componentDidMount() {
-    this.getQuestions();
-  }
-
-  async getQuestions() {
-    const userToken = JSON.parse(localStorage.getItem('token'));
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`);
-    const questions = await response.json();
-    this.setState({ questions, loading: false });
-  }
-
   shuffleAnswers() {
-    const { questions: { results } } = this.state;
-    const { incorrect_answers: incorrectAnswers, correct_answer: correctAnswer } = results[0];
+    const { questions: { results } } = this.props;
+    const {
+      incorrect_answers: incorrectAnswers,
+      correct_answer: correctAnswer } = results[0];
     const randomIndex = Math.floor(Math.random() * (2 - 0 + 1) + 0);
     const answers = [...incorrectAnswers];
     answers.splice(randomIndex, 0, correctAnswer);
@@ -39,7 +18,7 @@ class TelaDeJogo extends Component {
 
   createButtons() {
     const answers = this.shuffleAnswers();
-    const { questions: { results } } = this.state;
+    const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[0];
     return (
       answers.map((answer, index) => {
@@ -68,7 +47,7 @@ class TelaDeJogo extends Component {
   }
 
   renderContent() {
-    const { questions: { results } } = this.state;
+    const { questions: { results } } = this.props;
     return (
       <>
         <Header />
@@ -84,13 +63,34 @@ class TelaDeJogo extends Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading } = this.props;
     return (
       <div>
-        { loading ? <p>Loading...</p> : this.renderContent() }
+        {
+          loading ? <img
+            src={ silvioSantos }
+            alt="silvio santos"
+          /> : this.renderContent()
+        }
       </div>
     );
   }
 }
 
-export default TelaDeJogo;
+const mapStateToProps = ({ questions }) => ({
+  questions: questions.questions,
+  loading: questions.loading,
+});
+
+TelaDeJogo.propTypes = {
+  results: PropTypes.arrayOf(PropTypes.shape({
+    category: PropTypes.string,
+    type: PropTypes.string,
+    difficulty: PropTypes.string,
+    question: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+  })),
+}.isRequired;
+
+export default connect(mapStateToProps)(TelaDeJogo);
