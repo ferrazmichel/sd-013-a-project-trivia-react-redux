@@ -13,25 +13,25 @@ class Pergunta extends React.Component {
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
     this.handleColor = this.handleColor.bind(this);
+    this.onClicAknswer = this.onClicAknswer.bind(this);
+    this.creatButton = this.creatButton.bind(this);
   }
 
   componentDidMount() {
     this.correct();
   }
 
-  correct() {
-    const { perguntas } = this.props;
-    const { contador } = this.state;
-    this.setState({
-      correctAnswer: perguntas[contador].correct_answer,
-    });
+  onClicAknswer() {
+    this.handleColor();
+    this.creatButton();
   }
 
-  shuffleArr(inputArr) {
-    const number = 0.5;
-    inputArr.sort(() => Math.random() - number);
-    console.log('shuffleAr', inputArr);
-    return inputArr;
+  creatButton() {
+    const botao = document.createElement('button');
+    botao.innerHTML = 'Próxima';
+    botao.setAttribute('data-testid', 'btn-next');
+    const div = document.querySelector('.pergunta');
+    div.appendChild(botao);
   }
 
   handleColor() {
@@ -44,6 +44,21 @@ class Pergunta extends React.Component {
     /* if (target.className === buttonCorrect) {
       target.style.border = bordaCerta;
     } target.style.border = bordaErrada; */
+  }
+
+  shuffleArr(inputArr) {
+    const number = 0.5;
+    inputArr.sort(() => Math.random() - number);
+    console.log('shuffleAr', inputArr);
+    return inputArr;
+  }
+
+  correct() {
+    const { perguntas } = this.props;
+    const { contador } = this.state;
+    this.setState({
+      correctAnswer: perguntas[contador].correct_answer,
+    });
   }
 
   shuffleAnswers() {
@@ -62,7 +77,7 @@ class Pergunta extends React.Component {
         data-testid={
           alternativa === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
         }
-        onClick={ this.handleColor }
+        onClick={ this.onClicAknswer }
       >
         { alternativa }
       </button>
@@ -76,7 +91,7 @@ class Pergunta extends React.Component {
       <div>
         <span data-testid="question-category">{ perguntas[contador].category }</span>
         <p data-testid="question-text">{ perguntas[contador].question }</p>
-        <div>{this.shuffleAnswers()}</div>
+        <div className="pergunta">{this.shuffleAnswers()}</div>
       </div>
     );
   }
