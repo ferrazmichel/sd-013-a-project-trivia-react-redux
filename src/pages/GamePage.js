@@ -37,9 +37,9 @@ class GamePage extends React.Component {
   }
 
   handleNextQuestion() {
-    const MAX_LIMIT = 4;
     const { index } = this.state;
-    if (index === MAX_LIMIT) {
+    const FOUR = 4;
+    if (index === FOUR) {
       this.setState({ index: 4 });
     } else {
       this.setState({ index: index + 1 });
@@ -48,8 +48,8 @@ class GamePage extends React.Component {
 
   render() {
     const { index } = this.state;
-    const { questions } = this.props;
-    console.log(questions);
+    const { questions, loading } = this.props;
+    if (loading === true) return <h1>Carregando as perguntas</h1>;
     return (
       <div>
         <Header />
@@ -59,7 +59,6 @@ class GamePage extends React.Component {
           onClick={ this.handleNextQuestion }
         >
           Próxima Pergunta
-
         </button>
       </div>
 
@@ -70,11 +69,13 @@ class GamePage extends React.Component {
 GamePage.propTypes = {
   getQuestionsThunk: PropTypes.func.isRequired,
   questions: PropTypes.shape({}).isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   loading: state.game.isLoading,
+  token: state.game.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({

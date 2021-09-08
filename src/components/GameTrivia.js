@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../Styles/Buttons.css';
+import { connect } from 'react-redux';
 
 class GameTrivia extends React.Component {
   constructor() {
@@ -66,7 +67,16 @@ class GameTrivia extends React.Component {
 }
 
 GameTrivia.propTypes = {
-  questions: PropTypes.arrayOf({}).isRequired,
+  questions: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    question: PropTypes.string.isRequired,
+    incorrect_answers: PropTypes.arrayOf({}).isRequired,
+    correct_answer: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default GameTrivia;
+const mapStateToProps = (state) => ({
+  loading: state.game.isLoading,
+});
+
+export default connect(mapStateToProps)(GameTrivia);
