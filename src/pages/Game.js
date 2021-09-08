@@ -13,7 +13,7 @@ class Game extends React.Component {
     this.state = {
       assertions: 0,
       index: 0, // lógica para aparecer cada pergunta
-      score: 0,
+      // score: 0,
       // point: 0,
       respondido: false,
       timer: 30,
@@ -40,7 +40,7 @@ class Game extends React.Component {
 
   setLocalStorage() {
     const { props: { user, emailUser },
-      state: { assertions, score } } = this;
+      state: { assertions, total: score } } = this;
 
     const obj = {
       player: {
@@ -50,7 +50,7 @@ class Game extends React.Component {
         gravatarEmail: emailUser,
       },
     };
-    localStorage.setItem('state', JSON.stringify(obj));
+    localStorage.state = JSON.stringify(obj);
   }
 
   passarTime() {
@@ -68,7 +68,7 @@ class Game extends React.Component {
       points = timer === 0 ? 0 : this.calculateScore();
       await this.setState((prevState) => ({
         assertions: prevState.assertions + 1,
-        score: points,
+        // score: points,
         total: prevState.total + points,
       }));
     }
@@ -77,7 +77,7 @@ class Game extends React.Component {
   async checkClick(e) { // a função precisa ser assincrona para a linha 78 ocorrer antes da 79 (setState é assincrono)
     clearInterval(this.cronometro);
     await this.checkAnswer(e);
-    this.setLocalStorage();
+    await this.setLocalStorage();
   }
 
   handleDificulty() {
@@ -127,7 +127,7 @@ class Game extends React.Component {
       index: prev.index + 1,
       timer: 30,
       respondido: false,
-      score: 0,
+      // score: 0,
     }));
   }
 

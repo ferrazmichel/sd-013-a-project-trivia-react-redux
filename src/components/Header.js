@@ -23,7 +23,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { state: { img }, props: { user, score, respondido } } = this;
+    const { state: { img }, props: { user, score /* , respondido */ } } = this;
     // const page1 = window.location('/game');
     // const page2 = window.location('/feedback');
     return (
@@ -37,7 +37,7 @@ class Header extends React.Component {
           {user}
         </h3>
         <p data-testid="header-score">
-          {respondido ? score : 0}
+          {score}
         </p>
       </div>
     );
