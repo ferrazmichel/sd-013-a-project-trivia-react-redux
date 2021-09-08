@@ -16,7 +16,7 @@ class Header extends Component {
           { `${name}` }
           {' '}
         </p>
-        <p data-testid="header-score">0</p>
+
       </header>
 
     );

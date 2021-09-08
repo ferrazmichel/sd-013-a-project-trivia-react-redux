@@ -1,11 +1,12 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS_ERROR,
-  UPDATE_SECONDS, RESET_SECONDS } from '../actions';
+  UPDATE_SECONDS, RESET_SECONDS, ASSERT } from '../actions';
 
 const INITIAL_STATE = {
   questions: [],
   error: '',
   index: 0,
   seconds: 30,
+  asserts: 0,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -29,6 +30,11 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       seconds: 30,
+    };
+  case ASSERT:
+    return {
+      ...state,
+      asserts: state.asserts + 1,
     };
   default:
     return state;
