@@ -9,8 +9,32 @@ class TelaDeJogo extends Component {
     super();
 
     this.state = {
+      buttonDisable: false,
       colorBorders: false,
+      time: 30,
     };
+
+    this.counter = this.counter.bind(this);
+  }
+
+  componentDidMount() {
+    this.counter();
+  }
+
+  checkCounter() {
+    const { time, intervalId } = this.state;
+    if (time <= 1) {
+      clearInterval(intervalId);
+      this.setState({ buttonDisable: true, colorBorders: true });
+    }
+  }
+
+  counter() {
+    const ONE_SECOND = 1000;
+    const count = () => this
+      .setState(({ time }) => ({ time: time - 1 }), this.checkCounter());
+    const intervalId = setInterval(count, ONE_SECOND);
+    this.setState({ intervalId });
   }
 
   shuffleAnswers() {
@@ -34,7 +58,7 @@ class TelaDeJogo extends Component {
 
   createButtons() {
     const answers = this.shuffleAnswers();
-    const { colorBorders } = this.state;
+    const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[0];
     return (
@@ -44,6 +68,7 @@ class TelaDeJogo extends Component {
             <button
               data-testid="correct-answer"
               className="correct-answer"
+              disabled={ buttonDisable }
               type="button"
               key={ answer }
               style={ colorBorders ? { border: '3px solid rgb(6, 240, 15)' } : null }
@@ -57,6 +82,7 @@ class TelaDeJogo extends Component {
           <button
             data-testid={ `wrong-answer-${index}` }
             className="wrond-answer"
+            disabled={ buttonDisable }
             type="button"
             key={ answer }
             style={ colorBorders ? { border: '3px solid rgb(255, 0, 0)' } : null }
@@ -70,6 +96,7 @@ class TelaDeJogo extends Component {
   }
 
   renderContent() {
+    const { time } = this.state;
     const { questions: { results } } = this.props;
     return (
       <>
@@ -78,7 +105,10 @@ class TelaDeJogo extends Component {
           <p data-testid="question-category">{ results[0].category }</p>
           <p data-testid="question-text">{ results[0].question }</p>
           <div>
-            { results[0].correct_answer && this.createButtons() }
+            { this.createButtons() }
+          </div>
+          <div>
+            {`Tempo: ${time}`}
           </div>
         </section>
       </>
