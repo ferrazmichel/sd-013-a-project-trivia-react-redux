@@ -12,6 +12,7 @@ class Pergunta extends React.Component {
     this.correct = this.correct.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
+    this.handleColor = this.handleColor.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +34,18 @@ class Pergunta extends React.Component {
     return inputArr;
   }
 
+  handleColor() {
+    const bordaCerta = '3px solid rgb(6, 240, 15)';
+    const bordaErrada = '3px solid rgb(255, 0, 0)';
+    const buttonCorrect = document.querySelector('.correct');
+    const buttonWrong = document.querySelectorAll('.wrong');
+    buttonCorrect.style.border = bordaCerta;
+    buttonWrong.forEach((btnWrong) => { btnWrong.style.border = bordaErrada; });
+    /* if (target.className === buttonCorrect) {
+      target.style.border = bordaCerta;
+    } target.style.border = bordaErrada; */
+  }
+
   shuffleAnswers() {
     const { perguntas } = this.props;
     const { contador, correctAnswer } = this.state;
@@ -43,11 +56,13 @@ class Pergunta extends React.Component {
     console.log('result', result);
     return result.map((alternativa, index) => (
       <button
-        type="button"
+        type="submit"
         key={ alternativa }
+        className={ alternativa === correctAnswer ? 'correct' : 'wrong' }
         data-testid={
           alternativa === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
         }
+        onClick={ this.handleColor }
       >
         { alternativa }
       </button>
