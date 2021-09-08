@@ -18,6 +18,7 @@ class QuestionCard extends React.Component {
     const correctButtons = (
       <button
         key={ correctAnswer }
+        className="correct-answer"
         type="button"
         data-testid="correct-answer"
       >
@@ -26,6 +27,7 @@ class QuestionCard extends React.Component {
     const wrongButtons = incorrectAnswers.map((answer, index) => (
       <button
         type="button"
+        className="wrong-answer"
         key={ index }
         data-testid={ `wrong-answer-${index}` }
       >
