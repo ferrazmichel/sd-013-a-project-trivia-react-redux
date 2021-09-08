@@ -99,12 +99,16 @@ class GameQuestion extends Component {
 
   render() {
     const { loading } = this.props;
+    const { disabled } = this.state;
+    const nextButton = !disabled ? null
+      : <button type="button" data-testid="btn-next">Próxima</button>;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
       <div>
         { this.handleQuestion() }
+        { nextButton }
       </div>
     );
   }
