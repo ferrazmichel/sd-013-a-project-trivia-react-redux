@@ -11,6 +11,7 @@ class Game extends Component {
     this.storeTokenOnLocalStorage = this.storeTokenOnLocalStorage.bind(this);
     this.responseTime = this.responseTime.bind(this);
     this.handleClickQuestion = this.handleClickQuestion.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
 
     this.state = {
       questions: [],
@@ -18,6 +19,7 @@ class Game extends Component {
       loading: true,
       timer: 30,
       disabled: false,
+      buttonNext: false,
     };
   }
 
@@ -102,6 +104,21 @@ class Game extends Component {
       getPlayer.player.assertions += 1;
       getPlayer.player.score += this.calcScore(timer, difficulty);
       localStorage.state = JSON.stringify(getPlayer);
+      this.setState({ buttonNext: true });
+    } else {
+      this.setState({ buttonNext: true });
+    }
+  }
+
+  /** Função do botão próxima pergunta  */
+  nextQuestion() {
+    this.setState({ buttonNext: false });
+    let { questionNum } = this.state;
+    const maxQuestions = 4;
+    if (questionNum < maxQuestions) {
+      this.setState({
+        questionNum: questionNum += 1,
+      });
     }
   }
 
@@ -165,19 +182,29 @@ class Game extends Component {
   }
 
   render() {
-    const { loading, score, assertions } = this.state;
+    const { loading, score, assertions, buttonNext } = this.state;
     return (
       <div>
-        <Header score={ score } assertions={ assertions } />
+        <div>
+          <Header score={ score } assertions={ assertions } />
+          {
+            loading ? <div>Carregando</div> : this.renderQuestions()
+          }
+          {/* <div> // caso precise mais para frente, pois está dinamico.
+            <h2>Categoria da pergunta</h2>
+            <div>
+              Alternativas
+            </div>
+          </div> */}
+        </div>
         {
-          loading ? <div>Carregando</div> : this.renderQuestions()
+          buttonNext && <input
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+            value="Próxima"
+          />
         }
-        {/* <div> // caso precise mais para frente, pois está dinamico.
-          <h2>Categoria da pergunta</h2>
-          <div>
-            Alternativas
-          </div>
-        </div> */}
       </div>
     );
   }
