@@ -16,15 +16,9 @@ class Ranking extends Component {
                 <img className="img-rank" src={ picture } alt={ name } />
                 <span data-testid={ `player-name-${index}` }>
                   {name}
-                  {' '}
-                  -
-                  {' '}
                 </span>
                 <span data-testid={ `player-score-${index}` }>
-                  {' '}
-                  -
                   {score}
-                  {' '}
                   Pontos
                 </span>
               </li>

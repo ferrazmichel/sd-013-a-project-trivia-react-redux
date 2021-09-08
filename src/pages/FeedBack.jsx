@@ -10,14 +10,15 @@ class FeedBack extends Component {
     return (
       <div>
         <Header />
-        <p data-testid="feedback-total-question">
-          Correct answers:
-          {assertions}
-        </p>
-        <p data-testid="feedback-total-score">
-          Total Score:
-          {score}
-        </p>
+        <span>Correct answers: </span>
+        <span data-testid="feedback-total-question">
+        {assertions}
+        </span>
+        <br />
+        <span>Total score: </span>
+        <span data-testid="feedback-total-score">
+        {score}
+        </span>
         <p data-testid="feedback-text">
           {assertions < three ? 'Podia ser melhor...' : 'Mandou bem!'}
         </p>
