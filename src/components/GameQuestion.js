@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
@@ -63,6 +64,7 @@ class GameQuestion extends Component {
                   data-testid="correct-answer"
                   disabled={ disabled }
                   onClick={ this.dispatchCorrectAnswer }
+                  key={ questionIndex }
                 >
                   {question}
                 </button>);
@@ -80,13 +82,13 @@ class GameQuestion extends Component {
               </button>);
           }) }
         </div>
-        <GameCounter counter={ 30 } />
+        <GameCounter />
       </div>
     );
   }
 
   render() {
-    const { loading, disabled, nextQ } = this.props;
+    const { loading, disabled, nextQ, renderIndex } = this.props;
     const nextButton = (
       <button
         type="button"
@@ -95,7 +97,19 @@ class GameQuestion extends Component {
       >
         Próxima
       </button>);
-    const renderNextButton = disabled ? nextButton : null;
+    const feedbackButton = (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+        >
+          Próxima
+        </button>
+      </Link>);
+    const howManyQuestions = 5;
+    const finalButton = renderIndex === howManyQuestions - 1 ? feedbackButton
+      : nextButton;
+    const renderNextButton = disabled ? finalButton : null;
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -125,6 +139,10 @@ GameQuestion.propTypes = {
   loading: PropTypes.bool.isRequired,
   questions: PropTypes.objectOf().isRequired,
   disabled: PropTypes.bool.isRequired,
+  correct: PropTypes.func.isRequired,
+  incorrect: PropTypes.func.isRequired,
+  renderIndex: PropTypes.number.isRequired,
+  nextQ: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);
