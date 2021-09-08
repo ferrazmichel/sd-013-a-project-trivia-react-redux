@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { decode } from 'html-entities';
 import PropTypes from 'prop-types';
-import Cronometer from './Cronometer';
+
+const interval = 1000;
 
 class GameComponent extends Component {
   constructor(props) {
@@ -9,25 +10,44 @@ class GameComponent extends Component {
     this.state = {
       answersArray: [],
       visible: false,
+      seconds: 30,
     };
 
     this.buttonsAnswers = this.buttonsAnswers.bind(this);
-    this.onUpdate = this.onUpdate.bind(this);
+    this.timer = this.timer.bind(this);
     this.buttonVisibility = this.buttonVisibility.bind(this);
   }
 
   componentDidMount() {
     this.buttonsAnswers();
+    this.timer();
   }
 
-  componentDidUpdate(prevProps, { seconds }) {
-    this.onUpdate(prevProps, seconds);
-  }
-
-  onUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.seconds === 1) {
+      this.clearSeconds();
+    }
     if (prevProps !== this.props) {
       this.buttonsAnswers();
     }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer());
+  }
+
+  timer() {
+    this.interval = setInterval(() => {
+      this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+    }, interval);
+  }
+
+  clearSeconds() {
+    document.querySelectorAll('.answer').forEach((answer) => {
+      answer.disabled = true;
+    });
+    this.buttonVisibility();
+    clearInterval(this.interval);
   }
 
   buttonsAnswers() {
@@ -70,7 +90,7 @@ class GameComponent extends Component {
   render() {
     const { atualQuestion, buttonNext } = this.props;
     const { category, question } = atualQuestion;
-    const { answersArray, visible } = this.state;
+    const { answersArray, visible, seconds } = this.state;
 
     return (
       <>
@@ -81,7 +101,7 @@ class GameComponent extends Component {
           <h4 data-testid="question-text">
             { decode(question) }
           </h4>
-          <Cronometer visibility={ this.buttonVisibility } />
+          { seconds }
         </div>
         <div>
           { answersArray }
@@ -90,6 +110,8 @@ class GameComponent extends Component {
             onClick={ () => {
               buttonNext();
               this.buttonVisibility();
+
+              this.setState(() => ({ seconds: 30 }));
             } }
             hidden={ !visible }
             data-testid="btn-next"
