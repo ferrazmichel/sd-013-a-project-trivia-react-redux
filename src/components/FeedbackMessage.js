@@ -22,6 +22,7 @@ class FeedbackMessage extends React.Component {
 
 FeedbackMessage.propTypes = {
   player: PropTypes.shape({}).isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default FeedbackMessage;
