@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
 
-const index = 0;
+import { correctAnswer, incorrectAnswer, nextQuestion } from '../redux/actions';
 let assertions = 0;
 
 class GameQuestion extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      disabled: false,
-    };
-
     this.handleQuestion = this.handleQuestion.bind(this);
     this.dispatchCorrectAnswer = this.dispatchCorrectAnswer.bind(this);
     this.dispatchIncorrectAnswer = this.dispatchIncorrectAnswer.bind(this);
   }
 
+
+  dispatchCorrectAnswer() {
+    const { correct } = this.props;
   async scoreCalculator(difficulty) {
     const { updateScore, userName, userEmail } = this.props;
     const counter = document.getElementById('counter').innerHTML;
@@ -63,35 +63,30 @@ class GameQuestion extends Component {
 
   dispatchCorrectAnswer(difficulty) {
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const onecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    onecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
 
     const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
-
-    this.setState({
-      disabled: true,
-    });
-
-    this.scoreCalculator(difficulty);
   }
 
   dispatchIncorrectAnswer() {
     // adiciona cores a borda das alternativas conforme resposta correta ou errada
-    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const OnecorrectAnswer = document.querySelector('[data-testid="correct-answer"]');
+    OnecorrectAnswer.style.border = '3px solid rgb(6, 240, 15)';
 
     const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
     wrongAnswers.forEach((wrongAnswer) => {
       wrongAnswer.style.border = '3px solid rgb(255, 0, 0)';
     });
+  }
 
-    this.setState({
-      disabled: true,
-    });
-    const { userName, userEmail, score } = this.props;
+  handleQuestion() {
+    const { questions, disabled, renderIndex, userName, userEmail, score } = this.props;
+    const currQuestion = questions[renderIndex];
+    const { difficulty } = questions[index];
     const player = {
       name: userName,
       assertions,
@@ -103,14 +98,6 @@ class GameQuestion extends Component {
     };
     localStorage.setItem('state', JSON.stringify(state));
   }
-
-  handleQuestion() {
-    const { questions } = this.props;
-    const { disabled } = this.state;
-    const { difficulty } = questions[index];
-
-    const currQuestion = questions[index];
-
     const currQuestionOptions = [currQuestion.correct_answer,
       ...currQuestion.incorrect_answers].sort();
     let wrongIndex = 0;
@@ -129,6 +116,7 @@ class GameQuestion extends Component {
                   data-testid="correct-answer"
                   disabled={ disabled }
                   onClick={ () => this.dispatchCorrectAnswer(difficulty) }
+                  key={ questionIndex }
                 >
                   {question}
                 </button>);
@@ -152,32 +140,55 @@ class GameQuestion extends Component {
   }
 
   render() {
-    const { loading } = this.props;
-    const { disabled } = this.state;
-    const nextButton = !disabled ? null
-      : <button type="button" data-testid="btn-next">Próxima</button>;
+    const { loading, disabled, nextQ, renderIndex } = this.props;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => nextQ() }
+      >
+        Próxima
+      </button>);
+    const feedbackButton = (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+        >
+          Próxima
+        </button>
+      </Link>);
+    const howManyQuestions = 5;
+    const finalButton = renderIndex === howManyQuestions - 1 ? feedbackButton
+      : nextButton;
+    const renderNextButton = disabled ? finalButton : null;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
       <div>
         { this.handleQuestion() }
-        { nextButton }
+        { renderNextButton }
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  nextQ: () => dispatch(nextQuestion()),
+  correct: () => dispatch(correctAnswer(1)),
+  incorrect: () => dispatch(incorrectAnswer()),
+  updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
+});
+
 const mapStateToProps = ({ userReducer, loginReducer, scoreReducer }) => ({
   loading: userReducer.loading,
   questions: userReducer.questions,
+  disabled: userReducer.disabled,
+  renderIndex: userReducer.renderIndex,
   userEmail: loginReducer.email,
   userName: loginReducer.name,
   score: scoreReducer.score,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
 });
 
 GameQuestion.propTypes = {
@@ -186,6 +197,11 @@ GameQuestion.propTypes = {
   userName: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
   questions: PropTypes.objectOf().isRequired,
+  disabled: PropTypes.bool.isRequired,
+  correct: PropTypes.func.isRequired,
+  incorrect: PropTypes.func.isRequired,
+  renderIndex: PropTypes.number.isRequired,
+  nextQ: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
 };
 

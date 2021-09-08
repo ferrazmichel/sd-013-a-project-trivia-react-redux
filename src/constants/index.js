@@ -3,6 +3,8 @@
 // initial state para os reducers
 export const scoreReducerInitialState = {
   score: 0,
+  disabled: false,
+  renderIndex: 0,
 };
 
 export const userReducerInitialState = {};
@@ -19,6 +21,7 @@ export const FINISH_FETCH = 'FINISH_FETCH';
 export const USER_LOGIN = 'USER_LOGIN';
 export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 export const INCORRECT_ANSWER = 'INCORRECT_ANSWER';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 // action creators da API
