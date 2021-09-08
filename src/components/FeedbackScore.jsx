@@ -14,6 +14,7 @@ class FeedbackScore extends Component {
     if (rightQuestions === 0) {
       return (
         <div data-testid="feedback-total-question">
+
           Não acertou nenhuma pergunta
         </div>
       );
