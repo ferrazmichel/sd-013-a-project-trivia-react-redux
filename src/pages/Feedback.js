@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import FeedbackMessage from '../components/FeedbackMessage';
 import FeedbackScore from '../components/FeedbackScore';
 
@@ -28,6 +29,20 @@ class Feedback extends React.Component {
         <main>
           <FeedbackMessage player={ mockedLocalStorage } />
           <FeedbackScore player={ mockedLocalStorage } />
+          <Link
+            to="/ranking"
+            data-testid="btn-ranking"
+            className="btn-ranking"
+          >
+            Ver ranking
+          </Link>
+          <Link
+            to="/"
+            data-testid="btn-play-again"
+            className="btn-play-again"
+          >
+            Jogar novamente
+          </Link>
         </main>
       </div>
     );
