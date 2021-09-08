@@ -5,6 +5,7 @@ import { func } from 'prop-types';
 import Input from '../components/Input';
 import Select from '../components/Select';
 import { actionAddSetting } from '../redux/actions/index';
+import '../styles/settings.css';
 
 class Settings extends Component {
   constructor(props) {
@@ -59,12 +60,12 @@ class Settings extends Component {
     const categories = categoriesData.map(({ name }) => name);
     if (loading) return <p>Loading</p>;
     return (
-      <div>
+      <main className="main-settings">
         <h1 data-testid="settings-title"> Configurações </h1>
         {error ? <p>error</p> : ''}
-        <form>
+        <form className="form-stg">
           <Select
-            labelText="Selecione uma categoria"
+            labelText="Selecione uma categoria:"
             id="category-input"
             name="category"
             value={ category }
@@ -77,7 +78,7 @@ class Settings extends Component {
             name="difficulty"
             value={ difficulty }
             change={ this.onHandlerChange }
-            options={ ['any difficulty', 'easy', 'medium', 'hard'] }
+            options={ ['Any difficulty', 'Easy', 'Medium', 'Hard'] }
           />
           <Select
             labelText="Selecione um tipo de questão:"
@@ -85,7 +86,7 @@ class Settings extends Component {
             name="type"
             value={ type }
             change={ this.onHandlerChange }
-            options={ ['any type', 'multiple choice', 'true/false'] }
+            options={ ['Any type', 'Multiple choice', 'True/False'] }
           />
           <Input
             labelText="Quantidade de perguntas:"
@@ -99,7 +100,7 @@ class Settings extends Component {
             <button type="button" onClick={ this.addSetting }>Aplicar</button>
           </Link>
         </form>
-      </div>
+      </main>
     );
   }
 }

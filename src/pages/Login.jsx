@@ -90,7 +90,7 @@ class Login extends Component {
         <img className="logo-trivia1" src="trybe.png" alt="" />
         <img className="logo-trivia2" src="trivia.png" alt="" />
         <br />
-        <form onSubmit={ this.onSubmit }>
+        <form className="login-form" onSubmit={ this.onSubmit }>
           <Input
             labelText="Jogador"
             testid="input-player-name"
@@ -110,6 +110,7 @@ class Login extends Component {
           <br />
           <br />
           <button
+            className="btn-login"
             data-testid="btn-play"
             type="submit"
             disabled={ validation }
@@ -117,7 +118,7 @@ class Login extends Component {
             Jogar
           </button>
           <Link to="/settings">
-            <button data-testid="btn-settings" type="button">
+            <button className="btn-stg" data-testid="btn-settings" type="button">
               Settings
             </button>
           </Link>

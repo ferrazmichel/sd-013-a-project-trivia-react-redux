@@ -63,12 +63,14 @@ class Question extends Component {
       // Pega também a questão correta e joga ela dentro do alternatives também
       { correct: true, alt: question.correct_answer, isCorrect: 'correct' }] : [];
     return (
-      <div className="question">
-        {/* Mostra a categoria da Questão. Ex: General Knowledge */}
-        <h1 data-testid="question-category">{question.category}</h1>
-        {/* Mostra a questão a ser perguntada, recebida pela props */}
-        { question.question
-        && <p data-testid="question-text">{question.question}</p> }
+      <>
+        <div className="question">
+          {/* Mostra a categoria da Questão. Ex: General Knowledge */}
+          <h2 className="tt-qt" data-testid="question-category">{question.category}</h2>
+          {/* Mostra a questão a ser perguntada, recebida pela props */}
+          { question.question
+        && <p className="quest" data-testid="question-text">{question.question}</p> }
+        </div>
         <div className="alternatives">
           {/* Percorre o array randomico para montar a questão e os botões */}
           {randomIndex.map((index) => {
@@ -94,7 +96,7 @@ class Question extends Component {
           { (button || timeout) && <Button onClick={ this.handleClickNext } /> }
         </div>
 
-      </div>
+      </>
     );
   }
 }
