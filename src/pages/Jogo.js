@@ -13,10 +13,10 @@ class Jogo extends React.Component {
       isLoading: true,
       seconds: 30,
       player: {
-        name: '',
+        name: props.name,
         assertions: 0,
         score: 0,
-        gravatarEmail: '',
+        gravatarEmail: props.email,
       },
     };
     this.renderQuestions = this.renderQuestions.bind(this);
@@ -31,11 +31,7 @@ class Jogo extends React.Component {
   componentDidMount() {
     this.getData();
     this.startClock();
-    const { player } = this.state;
-    const objectPlayer = {
-      player,
-    };
-    localStorage.setItem('state', JSON.stringify(objectPlayer));
+    this.setPlayerLocalStorage();
   }
 
   async getData() {
@@ -47,6 +43,14 @@ class Jogo extends React.Component {
       questions: data,
       isLoading: false,
     });
+  }
+
+  setPlayerLocalStorage() {
+    const { player } = this.state;
+    const objectPlayer = {
+      player,
+    };
+    localStorage.setItem('state', JSON.stringify(objectPlayer));
   }
 
   startClock() {
@@ -65,13 +69,14 @@ class Jogo extends React.Component {
       }));
     } else {
       clearInterval(this.intervalId);
+      const nextBtn = document.getElementById('next');
+      nextBtn.hidden = false;
     }
   }
 
   handleClickAnswer(event) {
     const { target } = event;
     const alternatives = [...target.parentElement.children];
-    console.log(alternatives);
     alternatives.forEach((alternative) => alternative.classList.add('selected'));
     if (target.classList.contains('correct')) {
       this.calculateScore();
@@ -92,6 +97,7 @@ class Jogo extends React.Component {
       alternatives.forEach((alternative) => alternative.classList.remove('selected'));
       const nextBtn = document.getElementById('next');
       nextBtn.hidden = true;
+      clearInterval(this.intervalId);
     } else {
       const { history } = this.props;
       history.push('/feedback');
@@ -107,19 +113,13 @@ class Jogo extends React.Component {
     const assertionScore = MINIMUN_SCORE + (seconds * difficultValue);
     const { name, email } = this.props;
     this.setState((prevState) => ({
-      player: ({
+      player: {
         name,
         assertions: prevState.player.assertions + 1,
         score: prevState.player.score + assertionScore,
         gravatarEmail: email,
-      }),
-    }), () => {
-      const { player } = this.state;
-      const objectPlayer = {
-        player,
-      };
-      localStorage.setItem('state', JSON.stringify(objectPlayer));
-    });
+      },
+    }), this.setPlayerLocalStorage);
   }
 
   switchDifficult(difficulty) {
@@ -204,11 +204,10 @@ class Jogo extends React.Component {
   }
 
   render() {
-    const { isLoading } = this.state;
-    const { player: { score } } = this.state;
+    const { player: { score }, isLoading } = this.state;
     return (
       <div>
-        <JogoHeader score={ score } />
+        { (!isLoading && <JogoHeader score={ score } />) }
         { (!isLoading && this.renderQuestions()) }
       </div>
     );

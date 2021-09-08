@@ -5,7 +5,7 @@ import { fetchAvatar } from '../utils/utils';
 
 class JogoHeader extends React.Component {
   render() {
-    const { email, name, score } = this.props;
+    const { score, email, name } = this.props;
     const gravatar = fetchAvatar(email);
     return (
       <header>
@@ -17,16 +17,20 @@ class JogoHeader extends React.Component {
           />
         </div>
         <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
+        <p>
+          Pontos:
+          { ' ' }
+          <span data-testid="header-score">{ score }</span>
+        </p>
       </header>
     );
   }
 }
 
 JogoHeader.propTypes = {
+  score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
