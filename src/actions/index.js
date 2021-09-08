@@ -2,6 +2,7 @@ export const LOGIN = 'LOGIN';
 export const REQUEST_API = 'REQUEST_API';
 export const SUCCESS_API = 'SUCCESS_API';
 export const SUCCESS_QUEST = 'SUCCESS_QUEST';
+export const FEEDBACK = 'FEEDBACK';
 
 const setLogin = (login, email) => ({
   type: LOGIN, login, email,
@@ -39,3 +40,10 @@ export function fetchQuestions(token) {
       .then((questions) => dispatch(questAPI(questions)));
   };
 }
+
+// Aqui é a parte nova, Envia informacoes para a pagina de feedBack
+
+export const feedBack = (feedback) => ({
+  type: FEEDBACK,
+  feedback,
+});

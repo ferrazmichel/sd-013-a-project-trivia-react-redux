@@ -5,6 +5,7 @@ import '../App.css';
 
 import Header from '../components/Header';
 import NextButton from '../components/nextButton';
+import { feedBack } from '../actions';
 
 class Game extends React.Component {
   constructor() {
@@ -110,6 +111,16 @@ class Game extends React.Component {
   }
 
   nextQuestionBtn() {
+    const { index } = this.state;
+    // Gustavo Jezini : Aqui estou preparando terreno para pagina de feedBack
+    const lastQuest = 4;
+    const { history, feedback } = this.props;
+    const { total } = this.state;
+    if (index === lastQuest) {
+      feedback(total);
+      history.push('/feedback');
+    }
+    // até aqui......  O codigo abaixo foi desenvolvido por voces
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
     this.setState((prev) => ({
@@ -121,7 +132,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { state: { index, respondido, timer, score }, props: { questions } } = this;
+    const { state: { index, respondido, timer, total }, props: { questions } } = this;
     const currentQuestion = questions[index];
 
     const { category, question,
@@ -131,7 +142,7 @@ class Game extends React.Component {
 
     return (
       <main>
-        <Header score={ score } respondido={ respondido } />
+        <Header score={ total } respondido={ respondido } />
         <h2>{ timer }</h2>
         <h2
           data-testid="question-category"
@@ -176,6 +187,8 @@ Game.propTypes = {
   questions: PropTypes.arrayOf({}).isRequired,
   user: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
+  history: PropTypes.objectOf({}).isRequired,
+  feedback: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -184,4 +197,8 @@ const mapStateToProps = (state) => ({
   user: state.login.login,
 });
 
-export default connect(mapStateToProps, null)(Game);
+const mapDispatchToState = (dispatch) => ({
+  feedback: (payload) => dispatch(feedBack(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToState)(Game);
