@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
+// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchURL, loadFromLocalStaorage } from '../services';
+import { fetchURL, loadFromLocalStaorage /* saveToLocalStorage */ } from '../services';
+// import { sendPlayerInfo } from '../actions';
+import Timer from '../components/Timer';
 
 const correctAnswer = 'correct-answer';
 const MAX_QUESTIONS = 5;
+const LAST_QUESTION_INDEX = MAX_QUESTIONS - 1;
+
 class Play extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questions: '',
       questionIndex: 0,
-      playerAnswers: [],
+      button: false,
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.handleStyle = this.handleButtonStyle.bind(this);
+    this.redirectTo = this.redirectTo.bind(this);
+    this.handleButton = this.handleButton.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +35,7 @@ class Play extends Component {
     // console.log(results);
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
+    const { button } = this.state;
     answers.sort(() => Math.random() - HALF);
     // https://javascript.info/array-methods#shuffle-an-array
     return (answers.map((answer, index) => (
@@ -38,6 +47,7 @@ class Play extends Component {
           : `wrong-answer-${index}` }
         data-testid={ answer === results.correct_answer ? correctAnswer
           : `wrong-answer-${index}` }
+        disabled={ button }
         onClick={ this.handleButtonStyle }
       >
         {answer}
@@ -61,12 +71,24 @@ class Play extends Component {
     this.setState({ questions: requestQuestions });
   }
 
+  redirectTo(path) {
+    const { history } = this.props;
+    history.push(path);
+  }
+
   nextQuestion() {
-    this.setState((prevState) => {
-      if (prevState.questionIndex < MAX_QUESTIONS - 1) {
-        return { ...prevState, questionIndex: prevState.questionIndex + 1 };
-      }
-    });
+    const { questionIndex } = this.state;
+    if (questionIndex === LAST_QUESTION_INDEX) {
+      this.redirectTo('/feedback');
+    } else {
+      this.setState({ questionIndex: questionIndex + 1 });
+    }
+  }
+
+  handleButton() {
+    this.setState((prevState) => ({
+      button: !prevState.button,
+    }));
   }
 
   render() {
@@ -93,13 +115,7 @@ class Play extends Component {
               <div className="playquestion-answers-options">
                 { this.handleAnswers(results[questionIndex]) }
               </div>
-              <button
-                className="nextButton"
-                type="button"
-                onClick={ this.nextQuestion }
-              >
-                Próxima
-              </button>
+              <Timer nextQuestion={ this.nextQuestion } onChange={ this.handleButton } />
             </div>
           </div>
         </div>
@@ -107,5 +123,15 @@ class Play extends Component {
     );
   }
 }
+
+Play.propTypes = {
+  history: PropTypes.arrayOf(PropTypes.object).isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string,
+  }).isRequired,
+};
 
 export default Play;
