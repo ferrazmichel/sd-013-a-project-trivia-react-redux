@@ -18,7 +18,7 @@ class Login extends React.Component {
   onSubmitForm() {
     const { onSubmit, history } = this.props;
     onSubmit(this.state);
-    history.push('/');
+    history.push('/game-page');
     console.log('enviou');
   }
 
