@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import fetchTriviaAPI from '../services/triviaAPI';
 import InputLogin from '../components/InputLogin';
 import Button from '../components/Button';
@@ -29,17 +30,19 @@ class Login extends Component {
     if (state !== null) {
       this.btnOn(false, state);
     }
-    console.log(state);
   }
 
   savePlayerData() {
     const { email, name } = this.state;
+    const hash = md5(email).toString();
+    const SRC = `https://www.gravatar.com/avatar/${hash}`;
     const state = {
       player: {
         name,
         assertions: 0,
         score: 0,
         gravatarEmail: email,
+        gravatarUrl: SRC,
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
@@ -64,7 +67,6 @@ class Login extends Component {
     this.savePlayerData();
     const response = await fetchTriviaAPI();
     const { token } = response;
-
     localStorage.setItem('token', token);
 
     this.setState({

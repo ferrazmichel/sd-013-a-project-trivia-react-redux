@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
-      email: '',
       name: '',
       score: '',
+      src: '',
     };
 
     this.mountHeader = this.mountHeader.bind(this);
@@ -18,27 +17,24 @@ class Header extends Component {
     if (state !== null) {
       this.mountHeader(state);
     }
-    console.log(state);
   }
 
   mountHeader(state) {
     const { player } = state;
     this.setState({
       name: player.name,
-      email: player.gravatarEmail,
       score: player.score,
+      src: player.gravatarUrl,
     });
   }
 
   render() {
-    const { email, name, score } = this.state;
-    const hash = md5(email).toString();
-    const SRC = `https://www.gravatar.com/avatar/${hash}`;
+    const { name, score, src } = this.state;
 
     return (
       <div>
         <header>
-          <img data-testid="header-profile-picture" src={ SRC } alt="imagem do avatar" />
+          <img data-testid="header-profile-picture" src={ src } alt="imagem do avatar" />
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">
             Score:
