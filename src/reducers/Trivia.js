@@ -2,12 +2,14 @@ import {
   GET_TRIVIA_LOADING,
   GET_TRIVIA_FAILED,
   GET_TRIVIA,
+  GET_INDEX_QUESTION,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   allQuestions: [],
   isLoading: true,
   erro: null,
+  indexQuestion: 0,
 };
 
 const reducerTrivia = (state = INITIAL_STATE, action) => {
@@ -27,6 +29,11 @@ const reducerTrivia = (state = INITIAL_STATE, action) => {
       ...state,
       allQuestions: action.payload,
       isLoading: false,
+    };
+  case GET_INDEX_QUESTION:
+    return {
+      ...state,
+      indexQuestion: state.indexQuestion + 1,
     };
   default:
     return {

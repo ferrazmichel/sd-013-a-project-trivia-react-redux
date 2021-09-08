@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Countdown from 'react-countdown';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { actionGetIndexQuestion } from '../actions';
 
 class Responses extends React.Component {
   constructor() {
@@ -14,6 +17,8 @@ class Responses extends React.Component {
       correctAnswerStyle: null,
       incorrectAnswerStyle: null,
       statusBtn: false,
+      timer: 30000,
+      redirect: false,
     };
   }
 
@@ -23,16 +28,27 @@ class Responses extends React.Component {
       correctAnswerStyle: 'correct',
       incorrectAnswerStyle: 'incorrect',
       statusBtn: true,
+      timer: 0,
     });
   }
 
   nextClick() {
+    const { nextQuestion, index } = this.props;
+    const number = 4;
     this.setState({
       displayBtn: 'none',
       correctAnswerStyle: null,
       incorrectAnswerStyle: null,
       statusBtn: false,
+      timer: 30000,
     });
+    if (index < number) nextQuestion();
+
+    if (index === number) {
+      this.setState({
+        redirect: true,
+      });
+    }
   }
 
   htmldecode(value) {
@@ -43,9 +59,9 @@ class Responses extends React.Component {
 
   render() {
     const { correctAnswer, incorrectAnswers } = this.props;
-    const { displayBtn, correctAnswerStyle, incorrectAnswerStyle, statusBtn,
+    const { displayBtn, correctAnswerStyle, incorrectAnswerStyle, statusBtn, timer,
+      redirect,
     } = this.state;
-    const TIMER = 30000;
     return (
       <div>
         <div className="game-answers">
@@ -81,15 +97,26 @@ class Responses extends React.Component {
             Next
           </button>
         </div>
-        <h4><Countdown date={ Date.now() + TIMER } onComplete={ this.handleClick } /></h4>
+        <h4><Countdown date={ Date.now() + timer } onComplete={ this.handleClick } /></h4>
+        { redirect && <Redirect to="/feedback" /> }
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  nextQuestion: () => dispatch(actionGetIndexQuestion()),
+});
+
+const mapStateToProps = (state) => ({
+  index: state.trivia.indexQuestion,
+});
+
 Responses.propTypes = {
   correctAnswer: PropTypes.string.isRequired,
   incorrectAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
-export default Responses;
+export default connect(mapStateToProps, mapDispatchToProps)(Responses);

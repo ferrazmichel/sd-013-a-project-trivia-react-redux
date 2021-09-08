@@ -5,6 +5,7 @@ import {
   GET_STATE_STORE,
   GET_TRIVIA_LOADING,
   GET_TRIVIA,
+  GET_INDEX_QUESTION,
 } from './actionTypes';
 import getCurrentToken from '../utilities/getCurrentToken';
 import getQuestions from '../utilities/getQuestions';
@@ -31,6 +32,8 @@ export const actionGetTokenWithThunk = () => (dispatch) => {
 export const actionTriviaLoading = () => ({ type: GET_TRIVIA_LOADING });
 
 export const actionGetTrivia = (payload) => ({ type: GET_TRIVIA, payload });
+
+export const actionGetIndexQuestion = () => ({ type: GET_INDEX_QUESTION });
 
 export const actionGetTriviaWithThunk = (token) => (
   async (dispatch) => {
