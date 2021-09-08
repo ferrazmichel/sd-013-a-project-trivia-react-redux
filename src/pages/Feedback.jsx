@@ -8,8 +8,9 @@ class Feedback extends Component {
     const { nome, email, score } = this.props;
     const md5Email = md5(email).toString();
     const avatar = `https://www.gravatar.com/avatar/${md5Email}`;
-    // const state = JSON.parse(localStorage.getItem('state'));
-    console.log(typeof (score));
+    const answers = 3;
+    const { assertions } = JSON.parse(localStorage.getItem('state'))
+      .player;
     return (
       <div data-testid="feedback-text">
         <header className="header-container">
@@ -27,6 +28,14 @@ class Feedback extends Component {
             </span>
           </div>
         </header>
+        <h1>Feedback</h1>
+        <p data-testid="feedback-text">
+          {assertions < answers ? (
+            <span>Podia ser melhor...</span>
+          ) : (
+            <span>Mandou bem!</span>
+          )}
+        </p>
       </div>
     );
   }
