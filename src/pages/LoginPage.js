@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 import { infoPlayer } from '../actions';
+import './pagesCSS/loginpage.css';
+import trivia from '../image/Trivia.jpg';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -56,45 +58,47 @@ class LoginPage extends Component {
       state: { buttonDisable }, props: { stateEmail } } = this;
     if (stateEmail) { return <Redirect to="/gamepage" />; }
     return (
-      <div className="login-container">
-        <form className="login-form">
-          <h2 className="login-heading">Login Page</h2>
-          <input
-            className="login-nickname"
-            type="text"
-            name="nickname"
-            onChange={ handleChange }
-            placeholder="Nickname"
-            data-testid="input-player-name"
-          />
-          <input
-            className="login-email"
-            type="text"
-            name="email"
-            onChange={ handleChange }
-            placeholder="Email"
-            data-testid="input-gravatar-email"
-          />
-          <button
-            data-testid="btn-play"
-            className="login-btn"
-            type="submit"
-            onClick={ handleClick }
-            disabled={ buttonDisable }
-          >
-            Play
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ () => {
-              const { history } = this.props;
-              history.push('/settingspage');
-            } }
-          >
-            Settings
-          </button>
-        </form>
+      <div className="login-container-main">
+        <div className="login-container-form">
+          <img className="login-heading" src={ trivia } alt="logo" />
+          <form className="login-form">
+            <input
+              className="login-nickname"
+              type="text"
+              name="nickname"
+              onChange={ handleChange }
+              placeholder="Nickname"
+              data-testid="input-player-name"
+            />
+            <input
+              className="login-email"
+              type="text"
+              name="email"
+              onChange={ handleChange }
+              placeholder="Email"
+              data-testid="input-gravatar-email"
+            />
+            <button
+              data-testid="btn-play"
+              className="login-btn"
+              type="submit"
+              onClick={ handleClick }
+              disabled={ buttonDisable }
+            >
+              Play
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ () => {
+                const { history } = this.props;
+                history.push('/settingspage');
+              } }
+            >
+              Settings
+            </button>
+          </form>
+        </div>
       </div>
     );
   }

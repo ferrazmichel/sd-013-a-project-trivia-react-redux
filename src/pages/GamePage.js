@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { showMilhaoAPI } from '../actions/index';
+import './pagesCSS/gamepage.css';
 
 class GamePage extends Component {
   constructor(props) {
@@ -124,7 +125,9 @@ class GamePage extends Component {
     const { numberOfQuestion, answersButtonsDisables, cronoTimeout } = this.state;
     return (
       <>
-        <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+        <div className="container-questions">
+          <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+        </div>
         <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
         { this.randomAnswer().map((answer, index) => {
           let testidButton;
@@ -160,21 +163,26 @@ class GamePage extends Component {
   render() {
     const { isLoading, questions } = this.props;
     const { counter, nextButtonAppear } = this.state;
-    const loading = (<span>Loading...</span>);
+    const loading = (<span className="loading">Loading...</span>);
     return (
-      <div>
+      <div className="container-main-gamepage">
         <Header />
-        <h1>Game Page</h1>
-        <span>{ counter }</span>
-        { (isLoading || !questions) ? loading : this.questionAndAnswers() }
-        <button
-          data-testid="btn-next"
-          onClick={ this.submitAnswer }
-          style={ { display: nextButtonAppear } }
-          type="button"
-        >
-          Next Question
-        </button>
+        <div className="container-son-gamepage">
+          { (isLoading || !questions) ? loading : this.questionAndAnswers() }
+          <div className="container-counter">
+            <span>{ counter }</span>
+          </div>
+          <div className="container-next">
+            <button
+              data-testid="btn-next"
+              onClick={ this.submitAnswer }
+              style={ { display: nextButtonAppear } }
+              type="button"
+            >
+              Next Question
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
