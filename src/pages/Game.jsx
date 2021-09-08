@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Game.css';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { assertsAction, fetchQuestions, resetSeconds } from '../redux/actions';
+import { assertsAction, fetchQuestions, saveScore } from '../redux/actions';
 import { GameComponent, Header } from '../components';
 
 class Game extends Component {
@@ -14,6 +14,7 @@ class Game extends Component {
 
     this.changeIndex = this.changeIndex.bind(this);
     this.optionSelect = this.optionSelect.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
   }
 
   async componentDidMount() {
@@ -23,7 +24,7 @@ class Game extends Component {
 
   changeIndex() {
     const { index } = this.state;
-    const { gameQuestions, resetSec, history } = this.props;
+    const { gameQuestions, history } = this.props;
     const two = 2000;
     setTimeout(this.setState((prevState) => ({ index: prevState.index + 1 })), two);
     if (index < gameQuestions.length - 1) {
@@ -31,24 +32,39 @@ class Game extends Component {
         answer.className = 'answer';
         answer.disabled = false;
       });
-      resetSec();
     } else {
       history.push('/feedBack');
     }
   }
 
+  calculateScore(difficulty, time) {
+    const { saveToStore } = this.props;
+    const TEN = 10;
+    const level = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    const score = TEN + (level[difficulty] * time);
+    const storageDate = JSON.parse(localStorage.getItem('state'));
+    storageDate.player.score += score;
+    storageDate.player.assertions += 1;
+    localStorage.setItem('state', JSON.stringify(storageDate));
+    saveToStore(storageDate.player.score);
+  }
+
   optionSelect(atualQt, seconds, value) {
-    const { correct_answer: correct } = atualQt;
+    const { correct_answer: correct, difficulty } = atualQt;
     document.querySelectorAll('.answer').forEach((answer) => {
       answer.disabled = true;
       const cName = answer.value === correct ? 'answer correct-answer'
         : 'answer incorrect-answer';
       answer.className = cName;
     });
-
     if (value === correct) {
       const { rightQuestion } = this.props;
       rightQuestion();
+      this.calculateScore(difficulty, seconds);
     }
   }
 
@@ -72,8 +88,8 @@ class Game extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: (payload) => dispatch(fetchQuestions(payload)),
-  resetSec: () => dispatch(resetSeconds()),
   rightQuestion: () => dispatch(assertsAction()),
+  saveToStore: (payload) => dispatch(saveScore(payload)),
 
 });
 const mapStateToProps = (state) => ({
@@ -86,7 +102,7 @@ Game.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  resetSec: PropTypes.func.isRequired,
+  saveToStore: PropTypes.func.isRequired,
   history: PropTypes.shape().isRequired,
   rightQuestion: PropTypes.func.isRequired,
 };

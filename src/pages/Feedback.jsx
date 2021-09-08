@@ -9,7 +9,6 @@ class Feedback extends Component {
       <section>
         <header>
           <Header />
-          <p data-testid="header-score">0</p>
         </header>
         <FeedBackMessenger />
         <FeedbackScore />

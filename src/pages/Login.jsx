@@ -25,12 +25,14 @@ class Login extends Component {
     const { valueToken } = this.props; // I had to call props here, because the async function
     localStorage.setItem('token', JSON.stringify(valueToken.token));
     const { name, email } = this.state;
-
-    const data = {
+    const player = {
       name,
-      email,
-    };
-    handleSubmit(data);
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email };
+    localStorage.setItem('state', JSON.stringify({ player }));
+
+    handleSubmit({ name, email });
     history.push('/gameScreen');
   }
 

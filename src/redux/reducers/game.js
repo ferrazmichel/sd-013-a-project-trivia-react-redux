@@ -1,5 +1,5 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS_ERROR,
-  UPDATE_SECONDS, RESET_SECONDS, ASSERT } from '../actions';
+  UPDATE_SECONDS, RESET_SECONDS, ASSERT, SAVE_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   questions: [],
@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   index: 0,
   seconds: 30,
   asserts: 0,
+  score: 0,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -35,6 +36,11 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       asserts: state.asserts + 1,
+    };
+  case SAVE_SCORE:
+    return {
+      ...state,
+      score: action.payload,
     };
   default:
     return state;

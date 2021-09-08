@@ -234,7 +234,7 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
   });
 });
 
-describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
+describe.only('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -355,7 +355,7 @@ describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga d
 
 // feedback
 
-describe.only('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
+describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
