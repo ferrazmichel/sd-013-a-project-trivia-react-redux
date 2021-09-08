@@ -6,7 +6,7 @@ import Login from './pages/Login';
 
 export default function App() {
   return (
-    <div>
+    <div className="main">
       <Switch>
         <Route exact path="/" component={ Login } />
       </Switch>

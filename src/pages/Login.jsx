@@ -34,7 +34,7 @@ class Login extends React.Component {
     const emailValid = () => (/\S+@\S+\.\S+/).test(email);
     return (
       <div>
-        <fieldset>
+        <fieldset className="login">
           <label htmlFor="input-gravatar-email">
             Email do Gravatar:
             <input
