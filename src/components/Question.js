@@ -35,6 +35,8 @@ class Question extends React.Component {
   }
 
   renderAnswer(answer, idx) {
+    const { answered } = this.props;
+
     return (
       <li key={ idx }>
         <button
@@ -42,6 +44,7 @@ class Question extends React.Component {
           type="button"
           onClick={ this.changeColor }
           id={ answer.id }
+          disabled={ answered }
         >
           {answer.text}
         </button>
@@ -86,10 +89,15 @@ Question.propTypes = {
     correct_answer: PropTypes.string.isRequired,
   }).isRequired,
   enable: PropTypes.func.isRequired,
+  answered: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
 });
 
-export default connect(null, mapDispatchToProps)(Question);
+const mapStateToProps = (store) => ({
+  answered: store.game.answered,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
