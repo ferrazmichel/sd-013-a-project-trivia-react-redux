@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Question from '../components/Question';
 import { toggleNextButton } from '../actions/index';
 import Header from '../components/Header';
+import Cronometer from '../components/Timer';
 
 class Game extends React.Component {
   constructor() {
@@ -48,6 +49,7 @@ class Game extends React.Component {
             Próxima pergunta
           </button>
         )}
+        <Cronometer />
       </div>
     );
   }
