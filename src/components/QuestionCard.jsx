@@ -11,6 +11,15 @@ class QuestionCard extends React.Component {
     }
   }
 
+  alteraCor() {
+    const correct = document.getElementsByClassName('correct-answer')[0];
+    const incorrects = document.getElementsByClassName('wrong-answer');
+    for (let i = 0; i < incorrects.length; i += 1) {
+      incorrects[i].classList.add('wrong-color');
+    }
+    correct.classList.add('correct-color');
+  }
+
   renderQuestionButton() {
     const { questionData } = this.props;
     const { correct_answer: correctAnswer,
@@ -21,6 +30,7 @@ class QuestionCard extends React.Component {
         className="correct-answer"
         type="button"
         data-testid="correct-answer"
+        onClick={ this.alteraCor }
       >
         {correctAnswer}
       </button>);
@@ -30,6 +40,7 @@ class QuestionCard extends React.Component {
         className="wrong-answer"
         key={ index }
         data-testid={ `wrong-answer-${index}` }
+        onClick={ this.alteraCor }
       >
         {answer}
       </button>));
