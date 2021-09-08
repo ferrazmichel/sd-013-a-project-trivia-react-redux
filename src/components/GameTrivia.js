@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class GameTrivia extends React.Component {
   render() {
     const { questions } = this.props;
-    console.log(questions);
     return (
       <form>
         <p
@@ -45,7 +45,16 @@ class GameTrivia extends React.Component {
 }
 
 GameTrivia.propTypes = {
-  questions: PropTypes.shape({}).isRequired,
+  questions: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    question: PropTypes.string.isRequired,
+    incorrect_answers: PropTypes.arrayOf({}).isRequired,
+    correct_answer: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default GameTrivia;
+const mapStateToProps = (state) => ({
+  loading: state.game.isLoading,
+});
+
+export default connect(mapStateToProps)(GameTrivia);

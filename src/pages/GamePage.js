@@ -38,7 +38,8 @@ class GamePage extends React.Component {
 
   handleNextQuestion() {
     const { index } = this.state;
-    if(index === 4) {
+    const FOUR = 4;
+    if (index === FOUR) {
       this.setState({ index: 4 });
     } else {
       this.setState({ index: index + 1 });
@@ -49,15 +50,19 @@ class GamePage extends React.Component {
     const { index } = this.state;
     const { questions, loading } = this.props;
     console.log(questions);
-    if(loading === true) return <h1>Carregando as perguntas...</h1>
+
+    if (loading === true) return <h1>Carregando as perguntas</h1>;
+
     return (
       <div>
         <Header />
         <GameTrivia questions={ questions[index] } />
-        <button 
-        type="button"
-        onClick={ this.handleNextQuestion }
-        >Próxima Pergunta</button>
+        <button
+          type="button"
+          onClick={ this.handleNextQuestion }
+        >
+          Próxima Pergunta
+        </button>
       </div>
 
     );
@@ -73,6 +78,7 @@ GamePage.propTypes = {
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   loading: state.game.isLoading,
+  token: state.game.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({

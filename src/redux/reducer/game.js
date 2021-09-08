@@ -1,10 +1,11 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
-  GET_QUESTIONS_FAIL } from '../actions/actionType';
+  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS } from '../actions/actionType';
 
 const INITIAL_STATE = {
   isLoading: true,
   erro: null,
   questions: '',
+  token: '',
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -20,6 +21,10 @@ const game = (state = INITIAL_STATE, action) => {
       isLoading: false,
       erro: 'Problema para carregar as perguntas',
     };
+
+  case GET_TOKEN_SUCCESS:
+    return { ...state,
+      token: action.payload };
 
   default:
     return state;

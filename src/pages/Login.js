@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getLogin } from '../redux/actions';
-import { getToken, getGravatar } from '../services/Api';
+import { fetchTokenThunk, getLogin } from '../redux/actions';
+import { getGravatar } from '../services/Api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,6 +18,11 @@ class Login extends React.Component {
     this.enableButton = this.enableButton.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
+    this.tokenThunk = this.tokenThunk.bind(this);
+  }
+
+  componentDidMount() {
+    this.tokenThunk();
   }
 
   handleChange({ target }) {
@@ -34,13 +39,18 @@ class Login extends React.Component {
     }
   }
 
-  async fetchToken() {
+  fetchToken() {
     const { email } = this.state;
-    const result = await getToken();
+    const { token } = this.props;
     const imagem = getGravatar(email);
-    console.log(imagem);
-    localStorage.setItem('token', result.token);
+    localStorage.setItem('token', token);
     localStorage.setItem('ranking', JSON.stringify([{ picture: imagem }]));
+  }
+
+  async tokenThunk() {
+    const { setTokenThunk, token } = this.props;
+    await setTokenThunk();
+    localStorage.setItem('token', token);
   }
 
   handleOnClick() {
@@ -102,10 +112,17 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setLogin: (payload) => dispatch(getLogin(payload)),
+  setTokenThunk: () => dispatch(fetchTokenThunk()),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.game.token,
 });
 
 Login.propTypes = {
   setLogin: PropTypes.func.isRequired,
+  setTokenThunk: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
