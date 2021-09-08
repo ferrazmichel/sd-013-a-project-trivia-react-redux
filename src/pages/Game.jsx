@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import Pergunta from '../components/Pergunta';
 
 class Game extends React.Component {
   constructor() {
@@ -30,8 +31,6 @@ class Game extends React.Component {
   render() {
     const { gravatar } = this.state;
     const { nameUser } = this.props;
-    console.log(this.props);
-    console.log(nameUser);
     return (
       <header>
         <img src={ gravatar } alt="imagemGravatar" data-testid="header-profile-picture" />
@@ -48,6 +47,7 @@ class Game extends React.Component {
           </span>
         </p>
         Tela de game
+        <Pergunta />
       </header>
     );
   }

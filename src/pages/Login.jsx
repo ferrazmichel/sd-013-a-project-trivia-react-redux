@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchDados, loginSubmit } from '../redux/actions';
+// import Loading from '../components/loading';
 
 class Login extends React.Component {
   constructor() {
@@ -15,6 +17,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleCLick = this.handleCLick.bind(this);
     this.handleCLickConfig = this.handleCLickConfig.bind(this);
+    // this.loadingBool = this.loadingBool.bind(this);
   }
 
   handleChange({ target }) {
@@ -34,13 +37,21 @@ class Login extends React.Component {
     });
   }
 
+  /* loadingBool() {
+    const { history, loadingPerguntas } = this.props;
+    if (!loadingPerguntas) {
+      return Loading;
+    }
+    history.push('/game');
+  } */
+
   handleCLick() {
     const { history, fetchDadosTrivia, loginSubmitTrivia } = this.props;
+    const segs = 5000;
     const { playerEmail, playerName } = this.state;
     loginSubmitTrivia({ playerEmail, playerName });
     fetchDadosTrivia();
-    history.push('/game');
-    // console.log(resultado);
+    setTimeout(() => history.push('/game'), segs);
   }
 
   handleCLickConfig() {
@@ -52,7 +63,8 @@ class Login extends React.Component {
 
   render() {
     const { playerName, playerEmail, validateLogin } = this.state;
-    return (
+    // const { loadingPerguntas } = this.props;
+    const loginPage = (
       <div>
         <label htmlFor="inputPlayerName">
           Nome:
@@ -93,8 +105,14 @@ class Login extends React.Component {
         </button>
       </div>
     );
+
+    return (loginPage);
   }
 }
+
+const mapStateToProps = (state) => ({
+  loading: state.apiTrivia.loadingPerguntas,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   fetchDadosTrivia: () => dispatch(fetchDados()),
@@ -103,6 +121,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   history: PropTypes.func,
+  loading: PropTypes.bool,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
