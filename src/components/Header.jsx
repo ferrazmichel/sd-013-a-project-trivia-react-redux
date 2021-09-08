@@ -19,15 +19,16 @@ class Header extends React.Component {
     const { nome, email } = this.props;
     const transformedEmail = md5(email).toString();
     const imgAvatar = `https://www.gravatar.com/avatar/${transformedEmail}`;
+
     console.log(nome);
     return (
       <div className="header">
-        <img src={ imgAvatar } alt="" />
-        <span>
+        <img src={ imgAvatar } alt="" data-testid="header-profile-picture" />
+        <span data-testid="header-player-name">
           jogador:
           { nome }
         </span>
-        <span>
+        <span data-testid="header-score">
           Pontos:
           { score }
         </span>
@@ -35,12 +36,6 @@ class Header extends React.Component {
     );
   }
 }
-
-// const mapDispatchToProps = (dispatch) => (
-//   { onSubmit: (payload) => dispatch(saveEmail(payload)) }
-// );
-
-// export default connect(null, mapDispatchToProps)(Login);
 
 const mapStateToProps = (state) => ({
   nome: state.userReducer.nome,
