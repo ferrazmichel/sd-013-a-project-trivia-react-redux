@@ -1,13 +1,14 @@
 import React from 'react';
 import './style.css';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Questions from '../components/Header';
 
-class Questions extends React.Component {
+class Trivia extends React.Component {
   constructor() {
     super();
     this.state = {
-      questionsArray: [],
       answered: false,
       id: 0,
       seconds: 30,
@@ -15,9 +16,8 @@ class Questions extends React.Component {
     };
     this.timer = 0;
     this.countDown = this.countDown.bind(this);
-    this.getQuestions = this.getQuestions.bind(this);
     this.changeState = this.changeState.bind(this);
-    this.isAnswered = this.isAnswered.bind(this);
+    // this.isAnswered = this.isAnswered.bind(this);
     this.next = this.next.bind(this);
     this.renderButton = this.renderButton.bind(this);
     this.timerMount = this.timerMount.bind(this);
@@ -26,17 +26,9 @@ class Questions extends React.Component {
   }
 
   componentDidMount() {
-    this.getQuestions();
     this.timerMount();
   }
 
-  async getQuestions() {
-    const getToken = JSON.parse(localStorage.getItem('token'));
-    const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${getToken}`);
-    const json = await fetchQuestions.json();
-    const { results } = json;
-    this.setState({ questionsArray: results });
-  }
 
   timerMount() {
     const { seconds } = this.state;
@@ -58,15 +50,15 @@ class Questions extends React.Component {
 
   changeState() { this.setState({ answered: true }); }
 
-  isAnswered(className) {
-    const { answered } = this.state;
-    return answered ? className : '';
-  }
+  // isAnswered(className) {
+  //   const { answered } = this.state;
+  //   return answered ? className : '';
+  // }
 
-  isCompleted() {
-    const { answered } = this.state;
-    return answered;
-  }
+  // isCompleted() {
+  //   const { answered } = this.state;
+  //   return answered;
+  // }
 
   next() {
     const maxId = 4;
@@ -95,9 +87,10 @@ class Questions extends React.Component {
 
   async sumScore() {
     this.changeState();
-    const { questionsArray, id, correct } = this.state;
+    const { trivia: { questions } } = this.props;
+    const { id, correct } = this.state;
     await this.setState({
-      difficulty: questionsArray[id].difficulty, correct: correct + 1,
+      difficulty: questions[id].difficulty, correct: correct + 1,
     });
     const { seconds, difficulty } = this.state;
     const state = JSON.parse(localStorage.getItem('state'));
@@ -134,47 +127,14 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { seconds } = this.state;
-    const { questionsArray, id, answered } = this.state;
-    if (questionsArray.length === 0) return <p>Loading...</p>;
+    const { trivia: { questions } } = this.props;
+    const { seconds, id, answered } = this.state;
+    if (questions.length === 0) return <p>Loading...</p>;
     return (
       <div>
         <div>
           <Header />
-          <p>
-            Category:
-            <span data-testid="question-category">{questionsArray[id].category}</span>
-          </p>
-          <p>
-            Question:
-            <span data-testid="question-text">{questionsArray[id].question}</span>
-          </p>
-          <ul>
-            <li>
-              <button
-                type="button"
-                data-testid="correct-answer"
-                onClick={ this.sumScore }
-                className={ this.isAnswered('correct') }
-                disabled={ this.isCompleted() }
-              >
-                {questionsArray[id].correct_answer}
-              </button>
-            </li>
-            {questionsArray[id].incorrect_answers.map((incorrect, i) => (
-              <li key={ i }>
-                <button
-                  type="button"
-                  data-testid={ `wrong-answer-${i}` }
-                  onClick={ this.changeState }
-                  className={ this.isAnswered('incorrect') }
-                  disabled={ this.isCompleted() }
-                >
-                  {incorrect}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <Questions id={ id } />
           <div>{ seconds }</div>
         </div>
         {answered && this.renderButton()}
@@ -183,10 +143,14 @@ class Questions extends React.Component {
   }
 }
 
-Questions.propTypes = {
+Trivia.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  ...state,
+})
+
+export default connect(mapStateToProps)(Trivia);
