@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
-import Game from './Game';
+import getToken from '../redux/actions/index';
 
 class Login extends Component {
   constructor() {
@@ -37,7 +37,7 @@ class Login extends Component {
 
   render() {
     const { name, email, redirectNow } = this.state;
-    if (redirectNow) return <Game />;
+    if (redirectNow) return <Redirect to="/game" />;
 
     return (
       <form onSubmit={ this.handleSubmit }>
@@ -64,16 +64,26 @@ class Login extends Component {
         >
           Jogar
         </button>
+
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
       </form>
     );
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//     tryLogin: (userData) => dispatch()
-// })
+const mapDispatchToProps = (dispatch) => ({
+  tryLogin: (userData) => dispatch(getToken(userData)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   tryLogin: PropTypes.func.isRequired,
 };
-export default Login;
