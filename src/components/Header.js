@@ -2,19 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { scorelocalStorage } from '../services/localstage';
+import '../pages/pagesCSS/header.css';
 
 class Header extends Component {
   render() {
     const { nickname, gravatarEmail } = this.props;
     return (
-      <header>
+      <header className="main-header">
         <img
           data-testid="header-profile-picture"
           src={ gravatarEmail }
+          className="profile-picture"
           alt="Gravatar Email Img"
         />
-        <h2 data-testid="header-player-name">{ nickname }</h2>
-        <h2 data-testid="header-score">{scorelocalStorage()}</h2>
+        <h2 data-testid="header-player-name" className="header-nickname">{ nickname }</h2>
+        <h2 data-testid="header-score" className="header-score">{scorelocalStorage()}</h2>
       </header>
     );
   }

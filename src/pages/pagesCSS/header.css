@@ -1,0 +1,28 @@
+.main-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgb(7, 44, 99);
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+  color: white;
+  border-radius: 5px;
+  width: 60%
+}
+
+.main-header .profile-picture {
+  border-radius: 50%;
+}
+
+.main-header .header-nickname {
+  color: aliceblue;
+  border-radius: 5px;
+  padding: 8px
+}
+
+.main-header .header-score {
+  color: aliceblue;
+  border-radius: 5px;
+  padding: 8px
+}
