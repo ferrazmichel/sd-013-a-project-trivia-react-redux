@@ -102,7 +102,16 @@ class Game extends Component {
       getPlayer.player.assertions += 1;
       getPlayer.player.score += this.calcScore(timer, difficulty);
       localStorage.state = JSON.stringify(getPlayer);
+      
     }
+  }
+
+  handleColorCorrect(event) {
+    event.target.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  handleColorWrong(event) {
+    event.target.style.border = '3px solid rgb(255, 0, 0)' ;
   }
 
   renderQuestions() {
@@ -131,7 +140,7 @@ class Game extends Component {
           data-testid={ `wrong-answer-${index}` }
           type="button"
           key={ index }
-          onClick={ this.handleClickQuestion }
+          onClick={ this.handleClickQuestion, this.handleColorWrong }
           disabled={ disabled }
         >
           { answer }
@@ -155,7 +164,7 @@ class Game extends Component {
         <button
           data-testid="correct-answer"
           type="button"
-          onClick={ this.handleClickQuestion }
+          onClick={ this.handleClickQuestion, this.handleColorCorrect }
           disabled={ disabled }
         >
           { question.correct_answer }
