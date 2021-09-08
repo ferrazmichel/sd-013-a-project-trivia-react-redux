@@ -94,7 +94,7 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe.only('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
@@ -134,7 +134,7 @@ describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações d
   });
 });
 
-describe.only('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
+describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

@@ -15,6 +15,24 @@ class TelaDeJogo extends Component {
     answers.splice(randomIndex, 0, correctAnswer);
     return answers;
   }
+  // shuffleAnswers() {
+  //   const { questions: { results } } = this.props;
+  //   const {
+  //     type,
+  //     incorrect_answers: incorrectAnswers,
+  //     correct_answer: correctAnswer } = results[0];
+  //   const randomIndex = () => {
+  //     if (type === 'boolean') {
+  //       const randomNumber = Math.floor(Math.random() * (1 - 0 + 1) + 0);
+  //       return randomNumber;
+  //     }
+  //     const randomNumber = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+  //     return randomNumber;
+  //   };
+  //   const answers = [...incorrectAnswers];
+  //   answers.splice(randomIndex(), 0, correctAnswer);
+  //   return answers;
+  // }
 
   // shuffleAnswers() {
   //   const { questions: { results } } = this.props;
