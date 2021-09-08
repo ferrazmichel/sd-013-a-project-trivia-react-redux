@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { decode } from 'html-entities';
 import PropTypes from 'prop-types';
 
-const interval = 1000;
+const ONE_SECOND = 1000;
 
 class GameComponent extends Component {
   constructor(props) {
@@ -33,13 +33,13 @@ class GameComponent extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer());
+    clearInterval(this.interval);
   }
 
   timer() {
     this.interval = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
-    }, interval);
+    }, ONE_SECOND);
   }
 
   clearSeconds() {
@@ -67,6 +67,7 @@ class GameComponent extends Component {
           const { seconds } = this.state;
           this.buttonVisibility();
           optionSelect(atualQuestion, seconds, target.value);
+          clearInterval(this.interval);
         } }
         type="button"
         key={ key }
@@ -112,6 +113,7 @@ class GameComponent extends Component {
               this.buttonVisibility();
 
               this.setState(() => ({ seconds: 30 }));
+              this.timer();
             } }
             hidden={ !visible }
             data-testid="btn-next"
