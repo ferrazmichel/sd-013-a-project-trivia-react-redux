@@ -86,7 +86,7 @@ class GameCounter extends Component {
     const { counter } = this.state;
     this.handleCounterChange();
     return (
-      <p>
+      <p id="counter">
         {counter}
       </p>
     );

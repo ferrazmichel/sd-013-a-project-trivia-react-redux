@@ -39,6 +39,14 @@ class Login extends Component {
     const { email, name } = this.state;
     await fetch();
     registry({ name, email });
+    const { score } = this.props;
+    const player = {
+      name,
+      assertions: 0,
+      score,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   render() {
@@ -90,10 +98,12 @@ class Login extends Component {
 Login.propTypes = {
   fetch: PropTypes.func.isRequired,
   registry: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state,
+  score: state.scoreReducer.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
