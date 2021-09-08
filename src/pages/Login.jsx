@@ -19,7 +19,7 @@ class Login extends React.Component {
   onSubmitForm() {
     const { onSubmit, history } = this.props;
     onSubmit(this.state);
-    history.push('/');
+    history.push('/game-page');
     console.log('enviou');
   }
 
@@ -35,7 +35,7 @@ class Login extends React.Component {
     const emailValid = () => (/\S+@\S+\.\S+/).test(email);
     return (
       <div>
-        <fieldset>
+        <fieldset className="login">
           <label htmlFor="input-gravatar-email">
             Email do Gravatar:
             <input
