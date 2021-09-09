@@ -1,6 +1,7 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
   GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS, SET_PLAYER, SET_SCORE,
 } from '../actions/actionType';
+import { setLocalStorage } from '../../services/localStoreService';
 
 const INITIAL_STATE = {
   isLoading: true,
@@ -34,11 +35,14 @@ const game = (state = INITIAL_STATE, action) => {
       token: action.payload };
 
   case SET_PLAYER:
-    localStorage.setItem('player',
-      JSON.stringify({ ...state.player, ...action.payload }));
+    setLocalStorage('player', { ...state.player, ...action.payload });
     return { ...state, player: { ...state.player, ...action.payload } };
 
   case SET_SCORE:
+    console.log('game');
+    setLocalStorage('player', {
+      ...state.player, score: state.player.score + action.payload,
+    });
     return { ...state,
       player: {
         ...state.player, score: state.player.score + action.payload,
