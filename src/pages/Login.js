@@ -40,6 +40,10 @@ class Login extends Component {
   }
 
   async saveToLocalStorage() {
+    const { name, email } = this.state;
+    const player = { player: { name, gravatarEmail: email, score: 0, assertions: 0 } };
+    localStorage.setItem('state', JSON.stringify(player));
+
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const result = await response.json();
     localStorage.setItem('token', JSON.stringify(result.token));

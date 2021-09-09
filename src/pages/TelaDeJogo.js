@@ -39,6 +39,7 @@ class TelaDeJogo extends Component {
 
   savePoints({ target: { id } }) {
     const { questions: { results } } = this.props;
+    const { time } = this.state;
     const { difficulty } = results[0];
 
     const difficultyPoints = () => {
@@ -63,11 +64,12 @@ class TelaDeJogo extends Component {
 
     if (id === 'correct') {
       const magicMike = 10;
-      const time = 1;
       const points = magicMike + (time * difficultyPoints());
 
-      const currentPoints = JSON.parse(localStorage.getItem('points'));
-      localStorage.setItem('points', JSON.stringify(points + currentPoints));
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      const updatePlayerScore = { player: { ...player, score: player.score + points } };
+      // const updatePlayerScore = { ...player, score: player.score + points };
+      localStorage.setItem('state', JSON.stringify(updatePlayerScore));
     }
   }
 
