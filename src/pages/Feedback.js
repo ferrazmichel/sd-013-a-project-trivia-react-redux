@@ -2,13 +2,33 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { MD5 } from 'crypto-js';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  componentDidMount() {
+    this.saveRanking();
+  }
+
   feedbackMessage(assertions) {
     const MINIMUM = 3;
     if (assertions < MINIMUM) return 'Podia ser melhor...';
     return 'Mandou bem!';
+  }
+
+  saveRanking() {
+    const { email, name, scoreState } = this.props;
+    const picture = `https://www.gravatar.com/avatar/${MD5(email)}`;
+    const storage = localStorage.getItem('ranking');
+    const playerRanking = { name, score: scoreState, picture };
+    if (storage) {
+      let arrayRanking = JSON.parse(storage);
+      arrayRanking = [...arrayRanking, playerRanking];
+      localStorage.setItem('ranking', JSON.stringify(arrayRanking));
+    } else {
+      const ranking = [playerRanking];
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
   }
 
   render() {
@@ -48,11 +68,15 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   scoreState: state.user.score,
   assertionsState: state.user.assertions,
+  email: state.user.email,
+  name: state.user.name,
 });
 
 Feedback.propTypes = {
   scoreState: PropTypes.number.isRequired,
   assertionsState: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

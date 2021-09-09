@@ -18,7 +18,13 @@ const INITIAL_STATE = {
 const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SAVE_USER:
-    return { ...state, name: action.name, email: action.email };
+    return {
+      ...state,
+      name: action.name,
+      email: action.email,
+      score: 0,
+      assertions: 0 };
+
   case REQUEST_API:
     return { ...state, isLoading: true };
   case FAILED_REQUEST:
