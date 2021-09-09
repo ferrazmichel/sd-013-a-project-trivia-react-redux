@@ -6,7 +6,6 @@ import {
 
 // Esse reducer será responsável por tratar as informações da pessoa usuária
 const INITIAL_STATE = {
-  response_code: 0,
   results: [],
   error: '',
 };
@@ -21,10 +20,7 @@ function userReducer(state = INITIAL_STATE, action) {
   case SUCESS_TRIVIA:
     return {
       ...state,
-      response_code: action.payload.response_code,
-      results: [
-        ...action.payload.results,
-      ],
+      results: action.payload,
     };
 
   case FAIL_TRIVIA:

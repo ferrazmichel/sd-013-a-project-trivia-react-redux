@@ -1,4 +1,5 @@
 import fetchQuestions from '../services/fetchQuestions';
+import getTokenApi from '../services/fetchToken';
 
 export const USER_INFO = 'SEND_USER_EMAIL';
 // export const QUESTIONS_TRIVIA = 'QUESTIONS_TRIVIA';
@@ -30,14 +31,22 @@ export const sucessQuestions = (payload) => ({
 //   payload,
 // });
 
-export const fetchApiQuestions = () => (dispatch) => {
+export const fetchApiQuestions = () => async (dispatch) => {
+  let token = localStorage.getItem('token');
+  if (!localStorage[token]) {
+    token = await getTokenApi();
+  }
   dispatch(loadQuestions());
   return fetchQuestions()
     .then(
       (data) => {
-        dispatch(sucessQuestions(data));
+        const failCode = 3;
+        if (data.response_code === 0) {
+          return dispatch(sucessQuestions(data.results));
+        } if (data.response_code === failCode) {
+          fetchApiQuestions();
+        }
       },
-
       (error) => dispatch(failQuestions(error)),
     );
 };

@@ -19,6 +19,12 @@ class Trivia extends Component {
     fetchApi();
   }
 
+  // async fetchBug() {
+  //   const { fetchApi } = this.props;
+  //   const api = await fetchApi();
+  //   return api;
+  // }
+
   fetchGravater() {
     const { userEmail } = this.props;
     const LowCaseEmail = userEmail.toLowerCase().trim();
@@ -38,13 +44,13 @@ class Trivia extends Component {
         {
           questions.map((question, index) => (
             <div key={ index }>
-              <p>
+              <p data-testid="question-category">
                 Category:
-                <span data-testid="question-category">{question.category}</span>
+                <span>{question.category}</span>
               </p>
-              <p>
+              <p data-testid="question-text">
                 Question:
-                <span data-testid="question-text">{question.question}</span>
+                <span>{question.question}</span>
               </p>
               <ul>
                 <li key={ index }>
