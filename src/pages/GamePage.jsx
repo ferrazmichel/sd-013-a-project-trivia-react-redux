@@ -5,9 +5,9 @@ class GamePage extends React.Component {
   constructor() {
     super();
     this.state = {
-      buttonClass: 'testClass',
+      buttonClass: 'alternativas',
       results: [],
-      shouldFetch: true,
+      // shouldFetch: true,
       numeroDaPergunta: 0,
     };
     this.fetchApi = this.fetchApi.bind(this);
@@ -26,16 +26,18 @@ class GamePage extends React.Component {
       .then((resp) => resp.json())
       .then((data) => this.setState({ results: data.results }));
 
-    this.setState({ shouldFetch: false });
+    // this.setState({ shouldFetch: false });
   }
 
   handleClick({ target }) {
-    // this.setState({ selectedClass: 'selected' });
-    if (target.getAttribute('data-testid') === 'correct-answer') {
-      target.className = 'alternativas selectedCerta';
-    } else {
-      target.className = 'alternativas selectedErrada';
-    }
+    const buttons = document.querySelectorAll('.alternativas');
+    buttons.forEach((button) => {
+      button.className = 'alternativas selectedErrada';
+      if (button.getAttribute('data-testid') === 'correct-answer') {
+        button.className = 'alternativas selectedCerta';
+      }
+    });
+    // }
     console.log(target);
   }
 
@@ -88,8 +90,9 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { shouldFetch } = this.state;
-    if (shouldFetch) this.fetchApi();
+    // const { shouldFetch } = this.state;
+    // if (shouldFetch) this.fetchApi();
+    this.fetchApi();
 
     return (
       <div>
