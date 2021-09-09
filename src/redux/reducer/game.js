@@ -10,12 +10,12 @@ const INITIAL_STATE = {
   questions: '',
   token: '',
   disabledButton: false,
-  player: {
+  player: [{
     name: '',
     assertions: '',
     score: 0,
     gravatarEmail: '',
-  },
+  }],
 };
 
 const game = (state = INITIAL_STATE, action) => {
