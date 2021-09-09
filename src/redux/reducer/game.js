@@ -35,14 +35,13 @@ const game = (state = INITIAL_STATE, action) => {
       token: action.payload };
 
   case SET_PLAYER:
-    setLocalStorage('player', { ...state.player, ...action.payload });
+    setLocalStorage('state', { player: { ...state.player, ...action.payload } });
     return { ...state, player: { ...state.player, ...action.payload } };
 
   case SET_SCORE:
-    console.log('game');
-    setLocalStorage('player', {
+    setLocalStorage('state', { player: {
       ...state.player, score: state.player.score + action.payload,
-    });
+    } });
     return { ...state,
       player: {
         ...state.player, score: state.player.score + action.payload,
