@@ -14,6 +14,7 @@ const dificulties = {
   b: 2,
   c: 3,
 };
+
 function mapDifficulty(string) {
   switch (string) {
   case 'hard':
@@ -74,22 +75,20 @@ class DisplayQuestion extends Component {
     }));
   }
 
-  calculateScore(idTarget) {
+  calculateScore() {
     console.log('calculate');
     const { questions } = this.props;
     const { id, finalTime } = this.state;
     const question = questions[id];
     const { difficulty } = question;
-    if (idTarget === 'correct-answer') {
-      this.setState({
-        score: TEN + (finalTime * mapDifficulty(difficulty)),
-      }, async () => {
-        const { updateScore } = this.props;
-        const { score } = this.state;
-        await updateScore(score);
-        this.saveScore();
-      });
-    }
+    this.setState({
+      score: TEN + (finalTime * mapDifficulty(difficulty)),
+    }, async () => {
+      const { updateScore } = this.props;
+      const { score } = this.state;
+      await updateScore(score);
+      this.saveScore();
+    });
   }
 
   handleAnswer() {
@@ -102,10 +101,10 @@ class DisplayQuestion extends Component {
     }));
   }
 
-  auxScore({ target }) {
-    const { id } = target;
-    this.calculateScore(id);
-  }
+  // auxScore({ target }) {
+  //   const { id } = target;
+  //   this.calculateScore(id);
+  // }
 
   timer(t) {
     const { isAnswered } = this.state;
@@ -165,12 +164,24 @@ class DisplayQuestion extends Component {
           isAnswered={ isAnswered }
           questions={ questions }
           handleAnswer={ this.handleAnswer }
+          calculateScore={ this.calculateScore }
         />
         <ButtonNext classBtn={ btnNext } handleId={ this.buttonNext } />
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  gravatarEmail: state.user.email,
+  name: state.user.name,
+  assertions: state.user.assertions,
+  score: state.user.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (score) => dispatch(handleScore(score)),
+});
 
 DisplayQuestion.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -183,16 +194,5 @@ DisplayQuestion.propTypes = {
     push: PropTypes.func,
   }).isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  gravatarEmail: state.user.email,
-  name: state.user.name,
-  assertions: state.user.assertions,
-  score: state.user.score,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  updateScore: (score) => dispatch(handleScore(score)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayQuestion);

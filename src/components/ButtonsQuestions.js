@@ -11,22 +11,25 @@ class ButtonsQuestions extends Component {
       isAnswered,
       questions,
       handleAnswer,
+      calculateScore,
     } = this.props;
-
     const question = questions[id];
     const INDEX_NUM = -1;
     let index = INDEX_NUM;
-
     return (
       <div>
         {readyQuestions.map((alternative) => {
           if (alternative === question.correct_answer) {
             return (
               <button
+                key={ 999 }
                 type="button"
                 data-testid="correct-answer"
                 id="correct-answer"
-                onClick={ handleAnswer }
+                onClick={ () => {
+                  handleAnswer();
+                  calculateScore();
+                } }
                 className={ classCorrect }
                 disabled={ isAnswered }
               >
