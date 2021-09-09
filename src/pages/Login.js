@@ -14,9 +14,12 @@ class Login extends Component {
       email: '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    // this.checkLogin = this.checkLogin.bind(this);
+    this.checkLogin = this.checkLogin.bind(this);
     this.goToConfig = this.goToConfig.bind(this);
+    this.goToGamePage = this.goToGamePage.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.renderForm = this.renderForm.bind(this);
+    this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
   }
 
   handleChange({ target }) {

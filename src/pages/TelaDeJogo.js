@@ -11,12 +11,20 @@ class TelaDeJogo extends Component {
       answers: [],
       buttonDisable: false,
       colorBorders: false,
-      questionNumber: 0,
       nextButton: false,
+      questionNumber: 0,
       time: 30,
     };
 
+    this.checkCounter = this.checkCounter.bind(this);
     this.counter = this.counter.bind(this);
+    this.createButtons = this.createButtons.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
+    this.renderContent = this.renderContent.bind(this);
+    this.savePoints = this.savePoints.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.shuffleAnswers = this.shuffleAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -114,6 +122,7 @@ class TelaDeJogo extends Component {
     const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[questionNumber];
+
     return (
       answers.map((answer, index) => {
         if (answer === correctAnswer) {
@@ -136,6 +145,7 @@ class TelaDeJogo extends Component {
             </button>
           );
         }
+
         return (
           <button
             data-testid={ `wrong-answer-${index}` }
