@@ -1,48 +1,84 @@
+.feedback-general {
+  background-color: rgb(190, 185, 185);
+  min-height: 100vh;
+  padding: 10px;
+}
+
 .container-feedback-main {
   display: flex;
   color: aliceblue;
-  border: 2px solid;
   border-radius: 10px;
   align-items: center;
   flex-direction: column;
   padding: 50px;
-  background-color: rgb(7, 44, 99);
+  background-color: rgb(19, 194, 235);
   width: 50%;
-  margin: auto;
+  margin: 150px auto;
 }
 
-.container-feedback-main .container-feedback-phrase {
-  color: aliceblue;
-  font-size: 40px;
+.container-feedback-main .container-feedback-body {
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-.container-feedback-main .container-feedback-assertions {
+.container-feedback-main .container-feedback-body .container-feedback-assertions {
+  background-color: rgb(7, 44, 99);
+  border-radius: 10px;
   color: aliceblue;
-  font-size: 40px;
+  font-size: 30px;
+  margin-top: 20px;
+  padding: 20px;
+  min-width: 80%;
+  text-align: center;
 }
 
-.container-feedback-main .container-feedback-score {
+.container-feedback-main .container-feedback-body .container-feedback-score {
+  background-color: rgb(7, 44, 99);
+  border-radius: 10px;
   color: aliceblue;
-  font-size: 40px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin-top: 20px;
+  padding: 20px;
+  min-width: 80%;
+  text-align: center;
+}
+
+.container-feedback-main .container-feedback-body .container-feedback-phrase {
+  background-color: rgb(7, 44, 99);
+  border-radius: 10px;
+  color: aliceblue;
+  display: flex;
+  font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  padding: 20px;
+  min-width: 80%;
+  justify-content: center;
+  align-items: center;
+  max-height: 25px;
 }
 
 .container-feedback-main .container-feedback-buttons :nth-child(1){
   color: aliceblue;
   text-decoration: none;
-  border: 2px solid aliceblue;
+  border: 1px solid aliceblue;
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px;
   margin-right: 8px;
-  background-color: #333333;
+  background-color: rgb(7, 44, 99);
+  margin-top: 20px;
 }
 
 .container-feedback-main .container-feedback-buttons :nth-child(2){
   color: aliceblue;
   text-decoration: none;
-  border: 2px solid aliceblue;
+  border: 1px solid aliceblue;
   border-radius: 5px;
-  padding: 5px;
+  padding: 10px;
   margin-left: 8px;
-  background-color: #333333;
+  background-color: rgb(7, 44, 99);
+  margin-top: 20px;
 }
