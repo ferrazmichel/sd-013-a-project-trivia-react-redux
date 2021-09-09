@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
@@ -28,6 +29,14 @@ class Feedback extends Component {
           <span>Número de pontos: </span>
           <span data-testid="feedback-total-score">{scoreState}</span>
         </div>
+        <Link to="/">
+          <button
+            type="submit"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
+        </Link>
       </div>
     );
   }
