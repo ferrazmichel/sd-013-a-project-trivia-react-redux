@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
 
 class Feedbacks extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    this.state = {
+      assertions: 0,
+      score: 0,
+    };
 
     this.handleClick = this.handleClick.bind(this);
+    this.getAssertionsAndScore = this.getAssertionsAndScore.bind(this);
+  }
+
+  componentDidMount() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { assertions, score } = player;
+    this.getAssertionsAndScore(assertions, score);
+    player.assertions = 0;
+    player.score = 0; // zera e salva no localStorage chave player.score
+    localStorage.setItem('state', JSON.stringify({ Player: { ...player } }));
+  }
+
+  getAssertionsAndScore(assertions, score) {
+    this.setState({
+      assertions,
+      score,
+    });
   }
 
   handleClick({ target: { textContent } }) {
@@ -24,19 +44,19 @@ class Feedbacks extends Component {
   }
 
   render() {
-    const { correctAnswers, score } = this.props; // Vem do estado do Redux
+    const { assertions, score } = this.state; // Vem do estado do componente, e antes, do localStorage
     const WELL_PLAYED = 3;
-    const questionX = (correctAnswers === 1 ? 'questão' : 'questões');
+    const questionX = (assertions === 1 ? 'questão' : 'questões');
 
     return (
       <div>
         <Header />
         <section>
           <p data-testid="feedback-text">
-            {correctAnswers >= WELL_PLAYED ? 'Mandou bem!' : 'Poderia ser melhor...'}
+            {assertions >= WELL_PLAYED ? 'Mandou bem!' : 'Poderia ser melhor...'}
           </p>
           <p data-testid="feedback-total-question">
-            {`Você acertou ${correctAnswers} ${questionX} de 5`}
+            {`Você acertou ${assertions} ${questionX} de 5`}
           </p>
           <p data-testid="feedback-total-score">
             {`Você marcou ${score} pontos no total!`}
@@ -63,19 +83,6 @@ Feedbacks.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  score: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
-  correctAnswers: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  score: state.results.score,
-  correctAnswers: state.results.correctAnswers,
-});
-
-export default connect(mapStateToProps, null)(Feedbacks);
+export default Feedbacks;

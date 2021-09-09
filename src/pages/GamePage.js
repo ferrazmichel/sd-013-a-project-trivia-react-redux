@@ -60,23 +60,20 @@ class GamePage extends Component {
         <Header />
 
         {
-          loading ? <p>Loading...</p>
-            : (
-              <>
-                <Question
-                  hide={ this.hideNextQuestionButton }
-                  question={ questions[questionsIndex] }
-                  show={ this.showNextQuestionButton }
-                />
-                <Button
-                  className=""
-                  data-testid="btn-next"
-                  disabled={ hidden }
-                  name="Próxima"
-                  onClick={ this.nextQuestion }
-                />
-              </>
-            )
+          loading ? <p>Loading...</p> : <Question
+            hide={ this.hideNextQuestionButton }
+            question={ questions[questionsIndex] }
+            show={ this.showNextQuestionButton }
+          />
+        }
+        {
+          !hidden && <Button
+            className=""
+            data-testid="btn-next"
+            disabled={ hidden }
+            name="Próxima"
+            onClick={ this.nextQuestion }
+          />
         }
       </>
     );
