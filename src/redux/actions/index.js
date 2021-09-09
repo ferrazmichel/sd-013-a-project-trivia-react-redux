@@ -1,7 +1,8 @@
 import { getQuestionsFetch, getToken } from '../../services/Api';
 import { GET_LOGIN, GET_QUESTIONS, GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL, GET_TOKEN, GET_TOKEN_SUCCESS,
-  GET_TOKEN_FAIL } from './actionType';
+  GET_TOKEN_FAIL,
+  CHANGE_DISABLED } from './actionType';
 
 export const getLogin = (payload) => ({
   type: GET_LOGIN, payload,
@@ -29,6 +30,10 @@ const getTokenSuccess = (payload) => ({
 
 const getTokenFail = () => ({
   type: GET_TOKEN_FAIL,
+});
+
+export const changeDisabled = (payload) => ({
+  type: CHANGE_DISABLED, payload,
 });
 
 export const fetchTokenThunk = () => (dispatch) => {
