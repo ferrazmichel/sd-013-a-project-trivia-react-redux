@@ -22,7 +22,11 @@ class Question extends React.Component {
         <p data-testid="question-text">{question.question}</p>
         <p>{question.correct_answer}</p>
         <div>
-          <Answers answers={ answers } correctAnswer={ question.correct_answer }/>
+          <Answers
+            answers={ answers }
+            correctAnswer={ question.correct_answer }
+            difficulty={ question.difficulty }
+          />
         </div>
       </div>
     );
