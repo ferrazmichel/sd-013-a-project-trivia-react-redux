@@ -5,3 +5,7 @@
 .buttonCorrect {
   border: 3px solid rgb(6, 240, 15);
 }
+
+.nextbtn {
+  display: none;
+}
