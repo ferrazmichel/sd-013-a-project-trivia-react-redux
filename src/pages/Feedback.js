@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class Feedback extends Component {
@@ -16,6 +17,9 @@ class Feedback extends Component {
       <div>
         <Header />
         <h2 data-testid="feedback-text">{message}</h2>
+        <Link to="/ranking" data-testid="btn-ranking">
+          Ver Ranking
+        </Link>
       </div>
     );
   }
