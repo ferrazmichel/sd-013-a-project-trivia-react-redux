@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -19,10 +20,10 @@ class Clock extends Component {
 
   timer() {
     const { currentCount } = this.state;
-    const { verifyClock } = this.props;
-    if (currentCount < 1) {
+    const { shoudStop, verifyClock } = this.props;
+    if (currentCount < 1 || shoudStop) {
       clearInterval(this.intervalId);
-      verifyClock()
+      verifyClock();
     } else {
       this.setState({
         currentCount: currentCount - 1,
@@ -35,11 +36,16 @@ class Clock extends Component {
 
     return (
       <p>
-      {currentCount}
+        {currentCount}
       </p>
     );
   }
 }
+
+Clock.propTypes = {
+  shoudStop: PropTypes.bool,
+  verifyClock: PropTypes.func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   clearInterval: (payload) => dispatch(clearInterval(payload)),

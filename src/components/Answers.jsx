@@ -11,7 +11,7 @@ class Answers extends React.Component {
   constructor() {
     super();
     this.state = {
-      score: 0,
+      // score: 0,
       disable: false,
       correctColor: 'defaultColor',
       wrongColor: 'defaultColor',
@@ -20,21 +20,19 @@ class Answers extends React.Component {
     this.addScoreOnClick = this.addScoreOnClick.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.verifyClock = this.verifyClock.bind(this);
-
   }
 
   disableButtom() {
-   this.setState({
-    disable: true,
-    correctColor: 'correctColor',
-    wrongColor: 'wrongColor',
+    this.setState({
+      disable: true,
+      correctColor: 'correctColor',
+      wrongColor: 'wrongColor',
     });
   }
 
-  
   async addScoreOnClick(clock, difficulty) {
-    console.log(clock)
-    const result = 10 + (clock * 2)
+    console.log(clock);
+    const result = 10 + (clock * 2);
     const { addScoreOnStore } = this.props;
     addScoreOnStore(result);
   }
@@ -43,11 +41,11 @@ class Answers extends React.Component {
     if (target.value === correctAnswer) {
       this.addScoreOnClick(target.clock, target.difficulty);
     }
-    this.disableButtom()
+    this.disableButtom();
   }
 
   verifyClock() {
-    this.disableButtom()
+    this.disableButtom();
   }
 
   render() {
@@ -56,24 +54,23 @@ class Answers extends React.Component {
     return (
       <div>
         {answers.map((answer, index) => (
-        <button
-          type="button"
-          disabled={ disable }
-          key={ answer }
-          value={ answer }
-
-          data-testid={ correctAnswer === answers[index]
-            ? 'correct-answer' : `wrong-answer-${index}` }
-
-          onClick={ (e) => this.handleClick(e, correctAnswer) }
-          className={ correctAnswer === answers[index] ? correctColor : wrongColor }
-
-          difficulty={answer.difficulty}
-        >
-          {answer}
-        </button>))}
-        <Clock verifyClock={ this.verifyClock }/>
-        </div>
+          <button
+            type="button"
+            disabled={ disable }
+            key={ answer }
+            value={ answer }
+            data-testid={
+              correctAnswer === answers[index]
+                ? 'correct-answer' : `wrong-answer-${index}`
+            }
+            onClick={ (e) => this.handleClick(e, correctAnswer) }
+            className={ correctAnswer === answers[index] ? correctColor : wrongColor }
+            difficulty={ answer.difficulty }
+          >
+            {answer}
+          </button>))}
+        <Clock verifyClock={ this.verifyClock } shoudStop={ disable } />
+      </div>
     );
   }
 }
