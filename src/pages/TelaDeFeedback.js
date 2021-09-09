@@ -7,6 +7,12 @@ class TelaDeFeedback extends Component {
     super();
 
     this.goToHome = this.goToHome.bind(this);
+    this.goToRanking = this.goToRanking.bind(this);
+  }
+
+  goToRanking() {
+    const { history } = this.props;
+    history.push('/tela-de-ranking');
   }
 
   goToHome() {
@@ -43,6 +49,13 @@ class TelaDeFeedback extends Component {
           onClick={ this.goToHome }
         >
           Jogar Novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.goToRanking }
+        >
+          Ver Ranking
         </button>
         <p data-testid="feedback-text">{ this.feedbackMessage() }</p>
       </div>
