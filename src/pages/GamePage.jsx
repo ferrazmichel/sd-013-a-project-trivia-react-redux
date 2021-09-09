@@ -5,10 +5,14 @@ class GamePage extends React.Component {
   constructor() {
     super();
     this.state = {
+      buttonClass: 'testClass',
       results: [],
+      shouldFetch: true,
       numeroDaPergunta: 0,
     };
     this.fetchApi = this.fetchApi.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.renderButtons = this.renderButtons.bind(this);
   }
 
   fetchApi() {
@@ -21,28 +25,76 @@ class GamePage extends React.Component {
     fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
       .then((resp) => resp.json())
       .then((data) => this.setState({ results: data.results }));
+
+    this.setState({ shouldFetch: false });
+  }
+
+  handleClick({ target }) {
+    // this.setState({ selectedClass: 'selected' });
+    if (target.getAttribute('data-testid') === 'correct-answer') {
+      target.className = 'alternativas selectedCerta';
+    } else {
+      target.className = 'alternativas selectedErrada';
+    }
+    console.log(target);
+  }
+
+  renderButtons() {
+    const { results, numeroDaPergunta, buttonClass } = this.state;
+    const pergunta = results.filter((result, index) => (index === numeroDaPergunta));
+
+    return (
+      <div>
+        { pergunta.map((result, index) => (
+          <div key={ index }>
+            <div data-testid="question-category">{result.category}</div>
+            <div data-testid="question-text">{result.question}</div>
+            <button
+              className={ buttonClass }
+              onClick={ this.handleClick }
+              type="button"
+              data-testid="correct-answer"
+            >
+              {result.correct_answer}
+            </button>
+            <button
+              className={ buttonClass }
+              onClick={ this.handleClick }
+              type="button"
+              data-testid="wrong-answer-0"
+            >
+              {result.incorrect_answers[0]}
+            </button>
+            <button
+              className={ buttonClass }
+              onClick={ this.handleClick }
+              type="button"
+              data-testid="wrong-answer-1"
+            >
+              {result.incorrect_answers[1]}
+            </button>
+            <button
+              className={ buttonClass }
+              onClick={ this.handleClick }
+              type="button"
+              data-testid="wrong-answer-2"
+            >
+              {result.incorrect_answers[2]}
+            </button>
+          </div>
+        )) }
+      </div>
+    );
   }
 
   render() {
-    this.fetchApi();
-    const { results, numeroDaPergunta } = this.state;
-    const pergunta = results.filter((result, index) => (index === numeroDaPergunta));
-    console.log(pergunta);
+    const { shouldFetch } = this.state;
+    if (shouldFetch) this.fetchApi();
+
     return (
       <div>
         <Header />
-        <div>
-          { pergunta.map((result, index) => (
-            <div key={ index }>
-              <div data-testid="question-category">{result.category}</div>
-              <div data-testid="question-text">{result.question}</div>
-              <div data-testid="correct-answer">{result.correct_answer}</div>
-              <div data-testid="wrong-answer-0">{result.incorrect_answers[0]}</div>
-              <div data-testid="wrong-answer-1">{result.incorrect_answers[1]}</div>
-              <div data-testid="wrong-answer-2">{result.incorrect_answers[2]}</div>
-            </div>
-          )) }
-        </div>
+        { this.renderButtons() }
       </div>
     );
   }
