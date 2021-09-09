@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions, saveLogin } from '../redux/actions';
 import silvioSantos from '../images/silviosantos.gif';
+import themeSong from '../sound_fx/theme-song.mp3';
 
 class Login extends Component {
   constructor() {
@@ -20,6 +21,8 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.renderForm = this.renderForm.bind(this);
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
+
+    this.startTheme = new Audio(themeSong);
   }
 
   handleChange({ target }) {
@@ -98,6 +101,7 @@ class Login extends Component {
             await this.saveToLocalStorage();
             sendLogin(name, email);
             await getQuestions(JSON.parse(localStorage.getItem('token')));
+            this.startTheme.play();
             this.goToGamePage();
           } }
         >

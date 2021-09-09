@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import losingSound from '../sound_fx/losing-sound.mp3';
+import winningSound from '../sound_fx/winning-sound.mp3';
 
 class TelaDeFeedback extends Component {
   constructor() {
@@ -8,6 +10,9 @@ class TelaDeFeedback extends Component {
 
     this.goToHome = this.goToHome.bind(this);
     this.goToRanking = this.goToRanking.bind(this);
+
+    this.winning = new Audio(winningSound);
+    this.losing = new Audio(losingSound);
   }
 
   goToRanking() {
@@ -23,8 +28,14 @@ class TelaDeFeedback extends Component {
   feedbackMessage() {
     const { assertions } = JSON.parse(localStorage.getItem('state')).player;
     const IT_COULD_BE_BETTER = 3;
-    if (assertions < IT_COULD_BE_BETTER) return 'Podia ser melhor...';
-    if (assertions >= IT_COULD_BE_BETTER) return 'Mandou bem!';
+    if (assertions < IT_COULD_BE_BETTER) {
+      this.losing.play();
+      return 'Podia ser melhor...';
+    }
+    if (assertions >= IT_COULD_BE_BETTER) {
+      this.winning.play();
+      return 'Mandou bem!';
+    }
   }
 
   render() {
