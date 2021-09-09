@@ -5,8 +5,8 @@ import md5 from 'crypto-js/md5';
 
 class Header extends Component {
   getScore() {
-    const currentScore = JSON.parse(localStorage.getItem('score'));
-    return currentScore;
+    const { score } = JSON.parse(localStorage.getItem('state')).player;
+    return { score };
   }
 
   render() {
