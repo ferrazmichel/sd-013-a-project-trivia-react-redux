@@ -2,7 +2,6 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { sendImg } from '../actions/index';
 
 class Header extends React.Component {
   constructor() {
@@ -14,10 +13,9 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { emailUser, sendImage } = this.props;
+    const { emailUser } = this.props;
     const img = md5(emailUser).toString();
     this.trocaState(img);
-    sendImage(img);
   }
 
   // componentWillUnmount() {
@@ -68,13 +66,9 @@ Header.propTypes = {
   score: PropTypes.number,
 }.isRequired;
 
-const mapDispatchToState = (dispatch) => ({
-  sendImage: (payload) => dispatch(sendImg(payload)),
-});
-
 const mapStateToProps = (state) => ({
   emailUser: state.login.email,
   user: state.login.login,
 });
 
-export default connect(mapStateToProps, mapDispatchToState)(Header);
+export default connect(mapStateToProps)(Header);

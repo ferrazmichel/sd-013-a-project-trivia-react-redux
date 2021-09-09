@@ -5,3 +5,52 @@
 .wrong {
   border: 3px solid red;
 }
+
+body {
+  background-image: url('./imagemcss/799069.jpg');
+  background-size: cover;
+  color: white;
+}
+
+.login-main {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.login-main h2 {
+  color: white;
+  display: flex;
+  font-family: 'Press Start 2P' , sans-serif;
+  justify-content: center;
+}
+
+.login-main h2:hover {
+  cursor: crosshair;
+  font-size: 30px;
+  transition: 1s;
+}
+
+.login-main input {
+  border-radius: 5px;
+  height: 20px;
+  width: 77%;
+}
+
+.login-buttons button {
+  border-radius: 10rem;
+  height: auto;
+  margin: 5px;
+  padding: 5px;
+  text-transform: uppercase;
+  transition: 2s;
+  width: 100%;
+}
+
+.material-icons {
+  color: white;
+}
