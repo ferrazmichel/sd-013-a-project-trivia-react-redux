@@ -105,8 +105,13 @@ class TelaDeJogo extends Component {
       const points = magicMike + (time * difficultyPoints());
 
       const { player } = JSON.parse(localStorage.getItem('state'));
-      const updatePlayerScore = { player: { ...player, score: player.score + points } };
-      localStorage.setItem('state', JSON.stringify(updatePlayerScore));
+      const updatePlayer = {
+        player: { ...player,
+          assertions: player.assertions + 1,
+          score: player.score + points,
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(updatePlayer));
     }
   }
 
