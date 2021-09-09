@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class GamePage extends React.Component {
@@ -6,30 +8,13 @@ class GamePage extends React.Component {
     super();
     this.state = {
       buttonClass: 'alternativas',
-      results: [],
-      shouldFetch: true,
       showNextButton: false,
       numeroDaPergunta: 0,
     };
-    this.fetchApi = this.fetchApi.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
-  }
-
-  fetchApi() {
-    const url = 'https://opentdb.com/api_token.php?command=request';
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((data) => localStorage.setItem('token', (data.token)));
-
-    const token = localStorage.getItem('token');
-    fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
-      .then((resp) => resp.json())
-      .then((data) => this.setState({ results: data.results }));
-
-    this.setState({ shouldFetch: false });
   }
 
   handleClick() {
@@ -46,6 +31,7 @@ class GamePage extends React.Component {
   handleNext() {
     const { numeroDaPergunta } = this.state;
     const perguntaAtual = numeroDaPergunta + 1;
+
     const buttons = document.querySelectorAll('.alternativas');
 
     this.setState({ numeroDaPergunta: perguntaAtual });
@@ -59,7 +45,6 @@ class GamePage extends React.Component {
     return (
       <button
         data-testid="btn-next"
-        // disabled={ nameAllowed) }
         className="button"
         type="submit"
         onClick={ this.handleNext }
@@ -70,7 +55,8 @@ class GamePage extends React.Component {
   }
 
   renderButtons() {
-    const { results, numeroDaPergunta, buttonClass } = this.state;
+    const { numeroDaPergunta, buttonClass } = this.state;
+    const { results } = this.props;
     const pergunta = results.filter((result, index) => (index === numeroDaPergunta));
 
     return (
@@ -118,10 +104,7 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { shouldFetch, showNextButton } = this.state;
-    if (shouldFetch) this.fetchApi();
-    // this.fetchApi();
-
+    const { showNextButton } = this.state;
     return (
       <div>
         <Header />
@@ -129,11 +112,19 @@ class GamePage extends React.Component {
         {
           showNextButton
             ? this.renderNextButton()
-            : console.log(`pergunta respondida: ${shouldFetch}`)
+            : console.log('')
         }
       </div>
     );
   }
 }
 
-export default GamePage;
+const mapStateToProps = (state) => ({
+  results: state.questionReducer.results,
+});
+
+GamePage.propTypes = {
+  results: PropTypes.arrayOf.isRequired,
+};
+
+export default connect(mapStateToProps, null)(GamePage);
