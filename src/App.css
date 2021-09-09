@@ -10,3 +10,11 @@ body {
   place-items: center;
   width: 100vw;
 }
+
+.red-border{
+  border: 3px solid rgb(255, 0, 0);
+}
+
+.green-border{
+  border: 3px solid rgb(6, 240, 15);
+}

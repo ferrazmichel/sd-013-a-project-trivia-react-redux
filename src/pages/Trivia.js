@@ -7,14 +7,22 @@ class Trivia extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // teste
+      rigthBoarder: '',
+      wrongBoarder: '',
+      disable: false,
+      countdown: 30,
     };
     this.fetchGravater = this.fetchGravater.bind(this);
     this.gameInfo = this.gameInfo.bind(this);
+    this.changeColor = this.changeColor.bind(this);
+    this.timerDisable = this.timerDisable.bind(this);
+    this.countdown = this.countdown.bind(this);
   }
 
   componentDidMount() {
     this.fetchGravater();
+    this.timerDisable();
+    this.countdown();
   }
 
   fetchGravater() {
@@ -28,8 +36,32 @@ class Trivia extends Component {
     />);
   }
 
+  changeColor() {
+    this.setState({
+      rigthBoarder: 'green-border',
+      wrongBoarder: 'red-border',
+    });
+  }
+
+  timerDisable() {
+    const TIMER = 30000;
+
+    setTimeout(() => {
+      this.setState({ disable: true });
+    }, TIMER);
+  }
+
+  countdown() {
+    const TIME_RELOAD = 1000;
+    this.timeout = setInterval(() => {
+      const { countdown } = this.state;
+      this.setState({ countdown: countdown - 1 });
+    }, TIME_RELOAD);
+  }
+
   gameInfo() {
     const { questions } = this.props;
+    const { rigthBoarder, wrongBoarder, disable } = this.state;
 
     return (
       <div>
@@ -46,13 +78,25 @@ class Trivia extends Component {
               </p>
               <ul>
                 <li key={ index }>
-                  <button type="button" data-testid="correct-answer">
+                  <button
+                    disabled={ disable }
+                    className={ rigthBoarder }
+                    data-testid="correct-answer"
+                    onClick={ this.ChangeColor }
+                    type="button"
+                  >
                     {question.correct_answer}
                   </button>
                 </li>
                 {question.incorrect_answers.map((incorrect, i) => (
                   <li key={ i }>
-                    <button type="button" data-testid={ `wrong-answer-${i}` }>
+                    <button
+                      disabled={ disable }
+                      className={ wrongBoarder }
+                      data-testid={ `wrong-answer-${i}` }
+                      onClick={ this.ChangeColor }
+                      type="button"
+                    >
                       {incorrect}
                     </button>
                   </li>
@@ -67,6 +111,7 @@ class Trivia extends Component {
 
   render() {
     const { userPlayer } = this.props;
+    const { disable, countdown } = this.state;
     return (
       <main>
         <header>
@@ -74,6 +119,8 @@ class Trivia extends Component {
           <p data-testid="header-player-name">{userPlayer}</p>
           <p data-testid="header-score">Placar: 0</p>
         </header>
+        <h3>{ countdown }</h3>
+        { disable && clearInterval(this.timeout)}
         {this.gameInfo()}
       </main>
     );
@@ -96,4 +143,4 @@ const mapStateToProps = (state) => ({
   userPlayer: state.user.player,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
+export default connect(mapStateToProps, null)(Trivia);
