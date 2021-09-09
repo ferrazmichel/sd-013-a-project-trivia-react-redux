@@ -88,3 +88,8 @@
 .wrong {
   border: 3px solid red;
 }
+
+.btn-ranking {
+  margin: 0 auto;
+  max-width: 300px;
+}

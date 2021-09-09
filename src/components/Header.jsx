@@ -6,12 +6,12 @@ import md5 from 'crypto-js/md5';
 import '../css/Header.css';
 
 class Header extends Component {
-  playerScore(name, email) {
+  playerScore(name, email, score, assertions) {
     const player = {
       player: {
         name,
-        assertions: 0,
-        score: 0,
+        assertions,
+        score,
         gravatarEmail: email,
       },
     };
@@ -19,10 +19,10 @@ class Header extends Component {
   }
 
   render() {
-    const { nome, email } = this.props;
+    const { nome, email, score, assertions } = this.props;
     const md5Email = md5(email).toString();
     const avatar = `https://www.gravatar.com/avatar/${md5Email}`;
-    this.playerScore(nome, email);
+    this.playerScore(nome, email, score, assertions);
     return (
       <header className="header-container">
         <div className="header-profile">
@@ -33,8 +33,9 @@ class Header extends Component {
           </span>
         </div>
         <div className="header-score-container">
+          <span>Pontos: </span>
           <span className="header-score" data-testid="header-score">
-            Pontos: 0
+            { score }
           </span>
         </div>
       </header>
@@ -45,11 +46,15 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   nome: state.user.nome,
   email: state.user.email,
+  score: state.game.score,
+  assertions: state.game.assertions,
 });
 
 Header.propTypes = {
   nome: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Header);
