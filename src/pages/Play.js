@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchURL, loadFromLocalStaorage /* saveToLocalStorage */ } from '../services';
-// import { sendPlayerInfo } from '../actions';
+import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services';
+import { sendPlayerInfo } from '../actions';
 import Timer from '../components/Timer';
 
 const correctAnswer = 'correct-answer';
 const MAX_QUESTIONS = 5;
 const LAST_QUESTION_INDEX = MAX_QUESTIONS - 1;
-
 class Play extends Component {
   constructor(props) {
     super(props);
@@ -27,12 +26,20 @@ class Play extends Component {
   }
 
   componentDidMount() {
-    // console.log('MONTOU');
     this.handleQuestions();
   }
 
+  componentWillUnmount() {
+    const { player: { name, gravatarEmail }, submitPlayer } = this.props;
+    const TESTE = { name,
+      gravatarEmail,
+      score: 44,
+      assertions: 3 };
+    submitPlayer((TESTE));
+    saveToLocalStorage('state', TESTE);
+  }
+
   handleAnswers(results) {
-    // console.log(results);
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
     const { button } = this.state;
@@ -97,7 +104,6 @@ class Play extends Component {
       return <div>Loading...</div>;
     }
     const { results } = questions;
-    // console.log('L50', questionIndex, results);
     return (
       <div className="play-main">
         <Header />
@@ -124,8 +130,17 @@ class Play extends Component {
   }
 }
 
+const mapStateToProps = ({ play: { player } }) => ({
+  player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  submitPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
+});
+
 Play.propTypes = {
   history: PropTypes.arrayOf(PropTypes.object).isRequired,
+  submitPlayer: PropTypes.func.isRequired,
   player: PropTypes.shape({
     name: PropTypes.string,
     assertions: PropTypes.number,
@@ -133,5 +148,4 @@ Play.propTypes = {
     gravatarEmail: PropTypes.string,
   }).isRequired,
 };
-
-export default Play;
+export default connect(mapStateToProps, mapDispatchToProps)(Play);

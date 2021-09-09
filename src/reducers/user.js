@@ -3,8 +3,6 @@ import { USER_INFO } from '../actions';
 const INITIAL_STATE = {
   player: {
     name: '',
-    assertions: 0,
-    score: 0,
     gravatarEmail: '',
   },
 };
