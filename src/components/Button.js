@@ -1,31 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const INITIAL_TIME = {
-  time: 30,
-};
-
 class Button extends Component {
-  constructor(props) {
-    super(props);
-
-    this.resetTime = this.resetTime.bind(this);
-  }
-
-  resetTime() {
-    const { nextQuestion } = this.props;
-
-    this.setState(INITIAL_TIME);
-    nextQuestion();
-  }
-
   render() {
+    const { resetTime } = this.props;
     return (
       <button
         type="button"
         data-testid="btn-next"
-        onClick={ this.resetTime }
+        onClick={ resetTime }
       >
         Próxima
       </button>
@@ -34,15 +17,7 @@ class Button extends Component {
 }
 
 Button.propTypes = {
-  nextQuestion: PropTypes.func.isRequired,
+  resetTime: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ play: { player } }) => ({
-  player,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  submitPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Button);
+export default Button;

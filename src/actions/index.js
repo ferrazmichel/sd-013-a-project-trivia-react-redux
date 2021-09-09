@@ -11,8 +11,3 @@ export const sendPlayerInfo = (payload) => ({
   type: PLAYER_INFO,
   payload,
 });
-
-export const resetTimer = (payload) => ({
-  type: TIME_INFO,
-  payload,
-});

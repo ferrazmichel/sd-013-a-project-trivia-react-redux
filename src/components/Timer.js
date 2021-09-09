@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 
 const TIME = 30;
-// const INITIAL_TIME = {
-//   time: 30,
-// };
+const INITIAL_TIME = {
+  time: 30,
+};
 
 // https://www.youtube.com/watch?v=NAx76xx40jM
 class Timer extends Component {
@@ -14,7 +14,7 @@ class Timer extends Component {
     this.state = {
       time: 30,
     };
-    // this.resetTime = this.resetTime.bind(this);
+    this.resetTime = this.resetTime.bind(this);
     this.clearTimer = this.clearTimer.bind(this);
     this.startTimer = this.startTimer.bind(this);
   }
@@ -52,21 +52,21 @@ class Timer extends Component {
     clearInterval(this.interval);
   }
 
-  // resetTime() {
-  //   const { nextQuestion } = this.props;
+  resetTime() {
+    const { nextQuestion } = this.props;
 
-  //   this.setState(INITIAL_TIME);
-  //   nextQuestion();
-  // }
+    this.setState(INITIAL_TIME);
+    nextQuestion();
+  }
 
   render() {
     const { time } = this.state;
-    const { nextQuestion } = this.props;
     return (
       <div>
         { time }
         {time === 0 && (
-          <Button nextQuestion={ nextQuestion } />)}
+          <Button resetTime={ this.resetTime } />
+        )}
       </div>
     );
   }
