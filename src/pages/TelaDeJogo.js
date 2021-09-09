@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import silvioSantos from '../images/silviosantos.gif';
 
 class TelaDeJogo extends Component {
   constructor() {
     super();
 
     this.state = {
+      answers: [],
       buttonDisable: false,
       colorBorders: false,
       time: 30,
@@ -18,14 +18,20 @@ class TelaDeJogo extends Component {
   }
 
   componentDidMount() {
+    this.shuffleAnswers();
     this.counter();
   }
 
+  stopTimer() {
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
+    this.setState({ buttonDisable: true, colorBorders: true });
+  }
+
   checkCounter() {
-    const { time, intervalId } = this.state;
+    const { time } = this.state;
     if (time <= 1) {
-      clearInterval(intervalId);
-      this.setState({ buttonDisable: true, colorBorders: true });
+      this.stopTimer();
     }
   }
 
@@ -39,6 +45,7 @@ class TelaDeJogo extends Component {
 
   savePoints({ target: { id } }) {
     const { questions: { results } } = this.props;
+    const { time } = this.state;
     const { difficulty } = results[0];
 
     const difficultyPoints = () => {
@@ -63,11 +70,11 @@ class TelaDeJogo extends Component {
 
     if (id === 'correct') {
       const magicMike = 10;
-      const time = 1;
       const points = magicMike + (time * difficultyPoints());
 
-      const currentPoints = JSON.parse(localStorage.getItem('points'));
-      localStorage.setItem('points', JSON.stringify(points + currentPoints));
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      const updatePlayerScore = { player: { ...player, score: player.score + points } };
+      localStorage.setItem('state', JSON.stringify(updatePlayerScore));
     }
   }
 
@@ -87,11 +94,11 @@ class TelaDeJogo extends Component {
     };
     const answers = [...incorrectAnswers];
     answers.splice(randomIndex(), 0, correctAnswer);
-    return answers;
+    this.setState({ answers });
   }
 
   createButtons() {
-    const answers = this.shuffleAnswers();
+    const { answers } = this.state;
     const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[0];
@@ -110,6 +117,7 @@ class TelaDeJogo extends Component {
               onClick={ (event) => {
                 this.setState({ colorBorders: true });
                 this.savePoints(event);
+                this.stopTimer();
               } }
             >
               { answer }
@@ -124,9 +132,9 @@ class TelaDeJogo extends Component {
             type="button"
             key={ answer }
             style={ colorBorders ? { border: '3px solid rgb(255, 0, 0)' } : null }
-            onClick={ (event) => {
+            onClick={ () => {
               this.setState({ colorBorders: true });
-              this.savePoints(event);
+              this.stopTimer();
             } }
           >
             { answer }
@@ -157,15 +165,9 @@ class TelaDeJogo extends Component {
   }
 
   render() {
-    const { loading } = this.props;
     return (
       <div>
-        {
-          loading ? <img
-            src={ silvioSantos }
-            alt="silvio santos"
-          /> : this.renderContent()
-        }
+        {this.renderContent()}
       </div>
     );
   }
@@ -173,7 +175,6 @@ class TelaDeJogo extends Component {
 
 const mapStateToProps = ({ questions }) => ({
   questions: questions.questions,
-  loading: questions.loading,
 });
 
 TelaDeJogo.propTypes = {
