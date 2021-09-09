@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getTriviaApi } from '../utils/utils';
+import { getTriviaApi, fetchAvatar } from '../utils/utils';
 import JogoHeader from '../components/JogoHeader';
 
 class Jogo extends React.Component {
@@ -26,6 +26,7 @@ class Jogo extends React.Component {
     this.handleClickNext = this.handleClickNext.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
     this.startClock = this.startClock.bind(this);
+    this.setRanking = this.setRanking.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +52,24 @@ class Jogo extends React.Component {
       player,
     };
     localStorage.setItem('state', JSON.stringify(objectPlayer));
+  }
+
+  setRanking() {
+    const { player: { name, gravatarEmail, score } } = this.state;
+    const rankingStore = localStorage.getItem('ranking');
+    const ranking = JSON.parse(rankingStore);
+    const currentPlayer = {
+      name,
+      score,
+      picture: fetchAvatar(gravatarEmail),
+    };
+    if (ranking) {
+      const rankingArray = [...ranking, currentPlayer];
+      localStorage.setItem('ranking', JSON.stringify(rankingArray));
+    } else {
+      const rankingArray = [currentPlayer];
+      localStorage.setItem('ranking', JSON.stringify(rankingArray));
+    }
   }
 
   startClock() {
@@ -99,6 +118,7 @@ class Jogo extends React.Component {
       nextBtn.hidden = true;
       clearInterval(this.intervalId);
     } else {
+      this.setRanking();
       const { history } = this.props;
       history.push('/feedback');
     }
@@ -213,7 +233,6 @@ class Jogo extends React.Component {
     );
   }
 }
-
 Jogo.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -222,11 +241,9 @@ Jogo.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-
 const mapStateToProps = (state) => ({
   email: state.game.player.gravatarEmail,
   name: state.game.player.name,
   token: state.game.token,
 });
-
 export default connect(mapStateToProps, null)(Jogo);
