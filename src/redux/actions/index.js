@@ -35,7 +35,6 @@ export const fetchApiQuestions = () => (dispatch) => {
   return fetchQuestions()
     .then(
       (data) => {
-        console.log(data);
         dispatch(sucessQuestions(data));
       },
 

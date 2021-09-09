@@ -1,29 +1,22 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
-import { connect } from 'react-redux';
-import { fetchApiQuestions } from '../redux/actions';
-// import md5 from 'crypto-js/md5';
-
-class Trivia extends Component {
-  componentDidMount() {
-    const { fetchApi } = this.props;
-    fetchApi();
-=======
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
+import { fetchApiQuestions } from '../redux/actions';
 
 class Trivia extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
     };
     this.fetchGravater = this.fetchGravater.bind(this);
+    this.gameInfo = this.gameInfo.bind(this);
   }
 
   componentDidMount() {
+    const { fetchApi } = this.props;
     this.fetchGravater();
+    fetchApi();
   }
 
   fetchGravater() {
@@ -37,33 +30,63 @@ class Trivia extends Component {
     />);
   }
 
+  gameInfo() {
+    const { questions } = this.props;
+
+    return (
+      <div>
+        {
+          questions.map((question, index) => (
+            <div key={ index }>
+              <p>
+                Category:
+                <span data-testid="question-category">{question.category}</span>
+              </p>
+              <p>
+                Question:
+                <span data-testid="question-text">{question.question}</span>
+              </p>
+              <ul>
+                <li key={ index }>
+                  <button type="button" data-testid="correct-answer">
+                    {question.correct_answer}
+                  </button>
+                </li>
+                {question.incorrect_answers.map((incorrect, i) => (
+                  <li key={ i }>
+                    <button type="button" data-testid={ `wrong-answer-${i}` }>
+                      {incorrect}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    );
+  }
+
   render() {
     const { userPlayer } = this.props;
     return (
-      <header>
-        { this.fetchGravater() }
-        <p data-testid="header-player-name">{userPlayer}</p>
-        <p data-testid="header-score">Placar: 0</p>
-
-      </header>
+      <main>
+        <header>
+          { this.fetchGravater() }
+          <p data-testid="header-player-name">{userPlayer}</p>
+          <p data-testid="header-score">Placar: 0</p>
+        </header>
+        {this.gameInfo()}
+      </main>
     );
   }
 }
 
 Trivia.propTypes = {
   fetchApi: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  info: state.trivia.results,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchApi: () => dispatch(fetchApiQuestions()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
-=======
+  questions: PropTypes.shape({
+    map: PropTypes.func,
+  }).isRequired,
   userEmail: PropTypes.shape({
     toLowerCase: PropTypes.func,
   }).isRequired,
@@ -71,8 +94,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
 };
 
 const mapStateToProps = (state) => ({
+  questions: state.trivia.results,
   userEmail: state.user.email,
   userPlayer: state.user.player,
 });
 
-export default connect(mapStateToProps, null)(Trivia);
+const mapDispatchToProps = (dispatch) => ({
+  fetchApi: () => dispatch(fetchApiQuestions()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
