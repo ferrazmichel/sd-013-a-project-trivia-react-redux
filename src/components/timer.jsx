@@ -19,8 +19,10 @@ class Clock extends Component {
 
   timer() {
     const { currentCount } = this.state;
+    const { verifyClock } = this.props;
     if (currentCount < 1) {
       clearInterval(this.intervalId);
+      verifyClock()
     } else {
       this.setState({
         currentCount: currentCount - 1,
@@ -32,7 +34,9 @@ class Clock extends Component {
     const { currentCount } = this.state;
 
     return (
-      <div>{currentCount}</div>
+      <p>
+      {currentCount}
+      </p>
     );
   }
 }
