@@ -7,6 +7,7 @@ export const SAVE_PERGUNTAS = 'SAVE_PERGUNTAS';
 export const REQUEST_FAIL = 'REQUEST_FAIL';
 export const REQUEST_PERGUNTAS = 'REQUEST_PERGUNTAS';
 export const TIME_FINISHED = 'TIME_FINISHED';
+export const REGISTER_GRAVATAR = 'REGISTER_GRAVATAR';
 
 export const loginSubmit = (object) => ({ type: LOGIN_SUBMIT, payload: object });
 export const requestApi = () => ({ type: REQUEST_API });
@@ -18,6 +19,10 @@ export const requestPerguntas = () => ({
 });
 export const timeFinished = (booleano) => ({ type: TIME_FINISHED, payload: booleano });
 
+export const registerGravatar = (gravatar) => ({
+  type: REGISTER_GRAVATAR,
+  gravatar,
+});
 // Encadeamento de actions de forma assíncrona
 export const fetchDados = () => async (dispatch) => {
   dispatch(requestApi());

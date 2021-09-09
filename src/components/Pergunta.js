@@ -9,7 +9,9 @@ class Pergunta extends React.Component {
     this.state = {
       contador: 0,
       correctAnswer: '',
-      // countdown: 5,
+      boolClickAnswer: false,
+      assertions: 0,
+      score: 0,
     };
     this.correct = this.correct.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
@@ -18,30 +20,56 @@ class Pergunta extends React.Component {
     this.handleColor = this.handleColor.bind(this);
     this.onClicAknswer = this.onClicAknswer.bind(this);
     this.creatButton = this.creatButton.bind(this);
+    this.calcScore = this.calcScore.bind(this);
+    this.updateScore = this.updateScore.bind(this);
     // this.disableButtons = this.disableButtons.bind(this);
   }
 
   componentDidMount() {
+    const { nameUser, gravatar } = this.props;
+    const { assertions, score } = this.state;
+    const localData = JSON.stringify(
+      { player: { name: nameUser, assertions, score, gravatarEmail: gravatar } },
+    );
+    localStorage.setItem('state', localData);
     this.correct();
   }
 
-  onClicAknswer() {
+  onClicAknswer({ target }) {
+    const { assertions, score } = this.state;
+    let acertos = assertions;
+    let pontuacao = score;
     this.handleColor();
     this.creatButton();
+    if (target.className === 'correct') {
+      pontuacao = this.calcScore();
+      acertos += 1;
+    }
+    pontuacao += pontuacao;
+    this.updateScore(acertos, pontuacao);
   }
 
-  // disableButtons() {
-  //   const { boolTimeout } = this.props;
-  //   const answersBtns = document.querySelectorAll('.wrong');
-  //   console.log(answersBtns);
-  //   answersBtns.forEach((btn) => { btn.disabled = boolTimeout; });
-  // }
+  updateScore(acertos, pontuacao) {
+    this.setState({
+      boolClickAnswer: true,
+      assertions: acertos,
+      score: pontuacao,
+    }, () => {
+      const { assertions, score } = this.state;
+      console.log('clickAnswer - ', assertions, '-', score);
+      const { nameUser, gravatar } = this.props;
+      const localData = JSON.stringify(
+        { player: { name: nameUser, assertions, score, gravatarEmail: gravatar } },
+      );
+      localStorage.setItem('state', localData);
+    });
+  }
 
   creatButton() {
     const botao = document.createElement('button');
     botao.innerHTML = 'Próxima';
     botao.setAttribute('data-testid', 'btn-next');
-    const div = document.querySelector('.pergunta');
+    const div = document.querySelector('.question');
     div.appendChild(botao);
   }
 
@@ -100,18 +128,47 @@ class Pergunta extends React.Component {
     ));
   }
 
+  calcScore() {
+    const { contador } = this.state;
+    const timeRunned = Number(document.querySelector('#timerId').innerHTML);
+    console.log(timeRunned);
+    const { perguntas } = this.props;
+    const level = perguntas[contador].difficulty;
+    let pontuacao = 0;
+    const dez = 10;
+    const dois = 2;
+    const tres = 3;
+    switch (level) {
+    case 'easy':
+      pontuacao = dez + timeRunned;
+      break;
+    case 'medium':
+      pontuacao = dez + (timeRunned * dois);
+      break;
+    default:
+      pontuacao = dez + (timeRunned * tres);
+      break;
+    }
+    console.log(pontuacao);
+    return pontuacao;
+  }
+
   render() {
-    const { contador } = this.state; // countdown
+    const { contador, boolClickAnswer } = this.state; // countdown
     const { perguntas, boolTimeout } = this.props;
     console.log('boolTimeout', boolTimeout);
-    if (boolTimeout === true) this.onClicAknswer(); // Antes this.disabledButtons
+    // if (boolTimeout === true) this.onClicAknswer(); // Antes this.disabledButtons
     return (
-      <div>
+      <div className="question">
         <span data-testid="question-category">{ perguntas[contador].category }</span>
         <p data-testid="question-text">{ perguntas[contador].question }</p>
-        <div className="pergunta">{this.shuffleAnswers()}</div>
+        <div className="pergunta">{ this.shuffleAnswers() }</div>
         {/* <span>{ countdown }</span> */}
-        <Countdown handleTimeout={ this.onClicAknswer } />
+        <Countdown
+          boolClickAnswer={ boolClickAnswer }
+          createButton={ this.creatButton }
+          handleColor={ this.handleColor }
+        />
       </div>
     );
   }
@@ -120,6 +177,8 @@ class Pergunta extends React.Component {
 const mapStateToProps = (state) => ({
   perguntas: state.apiTrivia.resultFrases,
   boolTimeout: state.player.boolTimeout,
+  gravatar: state.player.gravatar,
+  nameUser: state.player.playerName,
 });
 
 Pergunta.propTypes = {
