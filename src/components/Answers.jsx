@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
+import Clock from './timer';
+
 import './Button.css';
 // import NextButton from './NextButton';
 
@@ -16,51 +18,62 @@ class Answers extends React.Component {
     };
 
     this.addScoreOnClick = this.addScoreOnClick.bind(this);
-    this.addScoreInThisComponent = this.addScoreInThisComponent.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.verifyClock = this.verifyClock.bind(this);
+
   }
 
-  addScoreInThisComponent() {
-    this.setState((prevState) => ({
-      score: prevState.score + 1,
-    }));
+  disableButtom() {
+   this.setState({
+    disable: true,
+    correctColor: 'correctColor',
+    wrongColor: 'wrongColor',
+    });
   }
 
-  async addScoreOnClick() {
-    await this.addScoreInThisComponent();
+  
+  async addScoreOnClick(clock, difficulty) {
+    console.log(clock)
+    const result = 10 + (clock * 2)
     const { addScoreOnStore } = this.props;
-    const { score } = this.state;
-    addScoreOnStore(score);
+    addScoreOnStore(result);
   }
 
   handleClick({ target }, correctAnswer) {
     if (target.value === correctAnswer) {
-      this.addScoreOnClick();
+      this.addScoreOnClick(target.clock, target.difficulty);
     }
-    this.setState({
-      disable: true,
-      correctColor: 'correctColor',
-      wrongColor: 'wrongColor',
-    });
+    this.disableButtom()
+  }
+
+  verifyClock() {
+    this.disableButtom()
   }
 
   render() {
     const { answers, correctAnswer } = this.props;
     const { correctColor, wrongColor, disable } = this.state;
     return (
-      answers.map((answer, index) => (
+      <div>
+        {answers.map((answer, index) => (
         <button
           type="button"
           disabled={ disable }
           key={ answer }
           value={ answer }
+
           data-testid={ correctAnswer === answers[index]
             ? 'correct-answer' : `wrong-answer-${index}` }
+
           onClick={ (e) => this.handleClick(e, correctAnswer) }
           className={ correctAnswer === answers[index] ? correctColor : wrongColor }
+
+          difficulty={answer.difficulty}
         >
           {answer}
-        </button>))
+        </button>))}
+        <Clock verifyClock={ this.verifyClock }/>
+        </div>
     );
   }
 }
