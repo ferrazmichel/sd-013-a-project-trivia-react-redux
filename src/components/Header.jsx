@@ -6,7 +6,7 @@ class Header extends Component {
   render() {
     const { gravatarEmail, name, scoreStore } = this.props;
     return (
-      <header>
+      <header className="App-header">
         <img
           src={ gravatarEmail }
           data-testid="header-profile-picture"
