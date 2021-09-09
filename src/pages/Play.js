@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services';
 import { sendPlayerInfo } from '../actions';
+import Timer from '../components/Timer';
 
 const correctAnswer = 'correct-answer';
 const MAX_QUESTIONS = 5;
@@ -14,12 +15,14 @@ class Play extends Component {
     this.state = {
       questions: '',
       questionIndex: 0,
+      button: false,
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.handleStyle = this.handleButtonStyle.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
+    this.handleButton = this.handleButton.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +42,7 @@ class Play extends Component {
   handleAnswers(results) {
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
+    const { button } = this.state;
     answers.sort(() => Math.random() - HALF);
     // https://javascript.info/array-methods#shuffle-an-array
     return (answers.map((answer, index) => (
@@ -50,6 +54,7 @@ class Play extends Component {
           : `wrong-answer-${index}` }
         data-testid={ answer === results.correct_answer ? correctAnswer
           : `wrong-answer-${index}` }
+        disabled={ button }
         onClick={ this.handleButtonStyle }
       >
         {answer}
@@ -87,6 +92,12 @@ class Play extends Component {
     }
   }
 
+  handleButton() {
+    this.setState((prevState) => ({
+      button: !prevState.button,
+    }));
+  }
+
   render() {
     const { questions, questionIndex } = this.state;
     if (!questions) {
@@ -110,13 +121,7 @@ class Play extends Component {
               <div className="playquestion-answers-options">
                 { this.handleAnswers(results[questionIndex]) }
               </div>
-              <button
-                data-testid="btn-next"
-                type="button"
-                onClick={ this.nextQuestion }
-              >
-                Próxima
-              </button>
+              <Timer nextQuestion={ this.nextQuestion } onChange={ this.handleButton } />
             </div>
           </div>
         </div>
