@@ -22,9 +22,21 @@ class TelaDeFeedback extends Component {
   }
 
   render() {
+    const { assertions, score } = JSON.parse(localStorage.getItem('state')).player;
     return (
       <div>
         <Header />
+        <p data-testid="feedback-text">{ this.feedbackMessage() }</p>
+        <p>
+          Você acertou
+          {' '}
+          <span data-testid="feedback-total-question">{ assertions }</span>
+        </p>
+        <p>
+          Um total de
+          {' '}
+          <span data-testid="feedback-total-score">{ score }</span>
+        </p>
         <button
           type="button"
           data-testid="btn-play-again"
