@@ -7,12 +7,15 @@ class GamePage extends React.Component {
     this.state = {
       buttonClass: 'alternativas',
       results: [],
-      // shouldFetch: true,
+      shouldFetch: true,
+      showNextButton: false,
       numeroDaPergunta: 0,
     };
     this.fetchApi = this.fetchApi.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
   }
 
   fetchApi() {
@@ -26,10 +29,10 @@ class GamePage extends React.Component {
       .then((resp) => resp.json())
       .then((data) => this.setState({ results: data.results }));
 
-    // this.setState({ shouldFetch: false });
+    this.setState({ shouldFetch: false });
   }
 
-  handleClick({ target }) {
+  handleClick() {
     const buttons = document.querySelectorAll('.alternativas');
     buttons.forEach((button) => {
       button.className = 'alternativas selectedErrada';
@@ -37,8 +40,33 @@ class GamePage extends React.Component {
         button.className = 'alternativas selectedCerta';
       }
     });
-    // }
-    console.log(target);
+    this.setState({ showNextButton: true });
+  }
+
+  handleNext() {
+    const { numeroDaPergunta } = this.state;
+    const perguntaAtual = numeroDaPergunta + 1;
+    const buttons = document.querySelectorAll('.alternativas');
+
+    this.setState({ numeroDaPergunta: perguntaAtual });
+    buttons.forEach((button) => {
+      button.className = 'alternativas';
+    });
+    this.setState({ showNextButton: false });
+  }
+
+  renderNextButton() {
+    return (
+      <button
+        data-testid="btn-next"
+        // disabled={ nameAllowed) }
+        className="button"
+        type="submit"
+        onClick={ this.handleNext }
+      >
+        Proxima
+      </button>
+    );
   }
 
   renderButtons() {
@@ -90,14 +118,19 @@ class GamePage extends React.Component {
   }
 
   render() {
-    // const { shouldFetch } = this.state;
-    // if (shouldFetch) this.fetchApi();
-    this.fetchApi();
+    const { shouldFetch, showNextButton } = this.state;
+    if (shouldFetch) this.fetchApi();
+    // this.fetchApi();
 
     return (
       <div>
         <Header />
         { this.renderButtons() }
+        {
+          showNextButton
+            ? this.renderNextButton()
+            : console.log(`pergunta respondida: ${shouldFetch}`)
+        }
       </div>
     );
   }
