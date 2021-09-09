@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { validLogin, fetchToken } from '../redux/actions';
+import './login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -15,6 +16,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.renderForm = this.renderForm.bind(this);
   }
 
   async onSubmitForm(event) {
@@ -32,49 +34,60 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  render() {
+  renderForm() {
     const { email, name } = this.state;
     const isDisabled = !email || !name;
     return (
-      <div>
-        <form>
-          <label htmlFor="email">
-            Email do Gravatar:
-            <input
-              type="email"
-              name="email"
-              id="email"
-              value={ email }
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="name">
-            Nome do Jogador:
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={ name }
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            type="submit"
-            disabled={ isDisabled }
-            onClick={ this.onSubmitForm }
-            data-testid="btn-play"
-          >
-            Jogar
-          </button>
-          <Link
-            to="/configuracoes"
-            data-testid="btn-settings"
-          >
-            Configurações
-          </Link>
-        </form>
+      <form className="d-flex flex-column justify-content-center rounded form">
+        <h3 className="mb-5 text-white fw-bold">TRIVIA GAME</h3>
+        <label className="form-label text-start mb-3 text-white fw-bold" htmlFor="email">
+          Email do Gravatar
+          <input
+            className="form-control input removeMargin"
+            type="email"
+            name="email"
+            id="email"
+            value={ email }
+            data-testid="input-gravatar-email"
+            onChange={ this.handleChange }
+          />
+        </label>
+        <label className="form-label text-start mb-3 text-white fw-bold" htmlFor="name">
+          Nome do Jogador
+          <input
+            className="form-control input"
+            type="text"
+            name="name"
+            id="name"
+            value={ name }
+            data-testid="input-player-name"
+            onChange={ this.handleChange }
+          />
+        </label>
+        <button
+          className="text-uppercase btn btn-play fw-bold mb-3"
+          type="submit"
+          disabled={ isDisabled }
+          onClick={ this.onSubmitForm }
+          data-testid="btn-play"
+        >
+          Vamos Jogar!
+        </button>
+        <Link
+          className="text-uppercase btn btn-config fw-bold"
+          to="/configuracoes"
+          data-testid="btn-settings"
+        >
+          Configurações
+        </Link>
+      </form>
+    );
+  }
+
+  render() {
+    return (
+      <div className="d-flex align-items-center text-center form-container">
+        { this.renderForm() }
       </div>
     );
   }

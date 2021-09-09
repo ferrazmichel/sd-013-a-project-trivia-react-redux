@@ -1,0 +1,35 @@
+.input {
+  max-width: 100%;
+  background-color: #5E5BE1;
+  color: white;
+  border: 1px solid white;
+}
+
+.input:focus {
+  background-color: #5E5BE1;
+  color: white;
+} 
+
+.btn-play {
+  background-color: #98E8B3;
+  color: #5E5BE1;
+}
+
+.btn-config{
+  background-color: white;
+  color:#5E5BE1
+}
+
+.form {
+  background-color: #5E5BE1;
+  margin: 0 auto;
+  max-width: 300px;
+  padding: 50px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+}
+
+
+.form-container {
+  background-color: #98E8B3;
+  height: 100vh;
+}
