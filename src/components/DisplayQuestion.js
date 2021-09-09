@@ -4,9 +4,29 @@ import { connect } from 'react-redux';
 import ButtonNext from './ButtonNext';
 import ButtonsQuestions from './ButtonsQuestions';
 import '../App.css';
+import { handleScore } from '../redux/actions';
 
 const ONE_SECOND = 1000;
 const THIRTY = 30;
+const TEN = 10;
+const dificulties = {
+  a: 1,
+  b: 2,
+  c: 3,
+};
+
+function mapDifficulty(string) {
+  switch (string) {
+  case 'hard':
+    return dificulties.c;
+  case 'medium':
+    return dificulties.b;
+  case 'easy':
+    return dificulties.a;
+  default:
+    return null;
+  }
+}
 
 class DisplayQuestion extends Component {
   constructor(props) {
@@ -24,6 +44,7 @@ class DisplayQuestion extends Component {
     this.timer = this.timer.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
     this.shuffleQuestions = this.shuffleQuestions.bind(this);
+    this.calculateScore = this.calculateScore.bind(this);
     this.buttonNext = this.buttonNext.bind(this);
   }
 
@@ -42,6 +63,34 @@ class DisplayQuestion extends Component {
     this.setState({ readyQuestions: alternatives });
   }
 
+  saveScore() {
+    const { gravatarEmail, name, assertions, score } = this.props;
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    }));
+  }
+
+  calculateScore() {
+    console.log('calculate');
+    const { questions } = this.props;
+    const { id, finalTime } = this.state;
+    const question = questions[id];
+    const { difficulty } = question;
+    this.setState({
+      score: TEN + (finalTime * mapDifficulty(difficulty)),
+    }, async () => {
+      const { updateScore } = this.props;
+      const { score } = this.state;
+      await updateScore(score);
+      this.saveScore();
+    });
+  }
+
   handleAnswer() {
     this.setState((prevState) => ({
       classCorrect: 'correct-answer',
@@ -51,6 +100,11 @@ class DisplayQuestion extends Component {
       btnNext: 'btn-next-visible',
     }));
   }
+
+  // auxScore({ target }) {
+  //   const { id } = target;
+  //   this.calculateScore(id);
+  // }
 
   timer(t) {
     const { isAnswered } = this.state;
@@ -110,6 +164,7 @@ class DisplayQuestion extends Component {
           isAnswered={ isAnswered }
           questions={ questions }
           handleAnswer={ this.handleAnswer }
+          calculateScore={ this.calculateScore }
         />
         <ButtonNext classBtn={ btnNext } handleId={ this.buttonNext } />
       </div>
@@ -117,11 +172,27 @@ class DisplayQuestion extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  gravatarEmail: state.user.email,
+  name: state.user.name,
+  assertions: state.user.assertions,
+  score: state.user.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (score) => dispatch(handleScore(score)),
+});
+
 DisplayQuestion.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  updateScore: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default connect()(DisplayQuestion);
+export default connect(mapStateToProps, mapDispatchToProps)(DisplayQuestion);

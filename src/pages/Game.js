@@ -18,6 +18,19 @@ class Game extends Component {
 
   componentDidMount() {
     this.questionsFetch();
+    this.saveScore();
+  }
+
+  saveScore() {
+    const { gravatarEmail, name, assertions, score } = this.props;
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail,
+      },
+    }));
   }
 
   questionsFetch() {
@@ -44,10 +57,18 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.user.token,
+  gravatarEmail: state.user.email,
+  name: state.user.name,
+  assertions: state.user.assertions,
+  score: state.user.score,
 });
 
 Game.propTypes = {
   token: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({}).isRequired,
 };
 

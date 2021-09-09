@@ -9,7 +9,8 @@ class Feedback extends Component {
   }
 
   render() {
-    const { assertions } = JSON.parse(localStorage.getItem('player'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { assertions } = player;
     const message = this.feedbackMessage(assertions);
     return (
       <div>
