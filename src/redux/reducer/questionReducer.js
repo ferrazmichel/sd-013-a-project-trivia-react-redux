@@ -9,7 +9,7 @@ const questionReducer = (state = INITIAL_STATE, action) => {
   case SAVE_QUESTION:
     return {
       ...state,
-      results: [...state.results, ...action.payload.results],
+      results: [...action.payload],
     };
   default:
     return state;

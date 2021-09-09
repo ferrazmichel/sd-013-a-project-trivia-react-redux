@@ -9,7 +9,6 @@ class Login extends React.Component {
     super();
 
     this.state = {
-      results: [],
       email: '',
       nome: '',
     };
@@ -18,30 +17,25 @@ class Login extends React.Component {
     this.fetchApi = this.fetchApi.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchApi();
-  }
-
   onSubmitForm() {
-    const { onSubmit, submitQuestion, history } = this.props;
-    const { email, nome, results } = this.state;
-    onSubmit({ email, nome });
-    submitQuestion({ results });
+    const { onSubmit, history } = this.props;
+    onSubmit(this.state);
+    this.fetchApi();
     history.push('/game-page');
-    console.log('enviou');
   }
 
-  fetchApi() {
+  async fetchApi() {
+    const { submitQuestion } = this.props;
     const url = 'https://opentdb.com/api_token.php?command=request';
-    fetch(url)
-      .then((resp) => resp.json())
-      .then((data) => localStorage.setItem('token', (data.token)));
+    const fetchResponse = await fetch(url);
+    const user = await fetchResponse.json();
+    localStorage.setItem('token', user.token);
 
     const token = localStorage.getItem('token');
-    fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
-      .then((resp) => resp.json())
-      .then((data) => this.setState({ results: data.results }));
-    // this.setState({ shouldFetch: false });
+    const url2 = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const response = await fetch(url2);
+    const question = await response.json();
+    submitQuestion(question.results);
   }
 
   handleChange({ target }) {
