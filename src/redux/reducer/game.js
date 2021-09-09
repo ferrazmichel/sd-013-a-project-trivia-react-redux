@@ -35,7 +35,7 @@ const game = (state = INITIAL_STATE, action) => {
   case SET_PLAYER:
     localStorage.setItem('player',
       JSON.stringify({ ...state.player, ...action.payload }));
-    return { ...state, player: action.payload };
+    return { ...state, player: { ...state.player, ...action.payload } };
 
   default:
     return state;

@@ -25,9 +25,12 @@ class Login extends React.Component {
     this.tokenThunk();
   }
 
-  handleChange({ target }) {
-    this.setState({ [target.name]: target.value });
-    this.enableButton();
+  handleChange(event) {
+    const { name, value } = event.target;
+
+    this.setState({ [name]: value }, () => {
+      this.enableButton();
+    });
   }
 
   enableButton() {
@@ -40,14 +43,14 @@ class Login extends React.Component {
   }
 
   fetchToken() {
-    const { email } = this.state;
-    const { token } = this.props;
+    const { email, name } = this.state;
+    const { token, score } = this.props;
     const imagem = getGravatar(email);
     localStorage.setItem('token', token);
     localStorage.setItem('ranking', JSON.stringify([{
       picture: imagem,
-      name: '',
-      score: '',
+      name,
+      score,
     }]));
   }
 
@@ -59,11 +62,12 @@ class Login extends React.Component {
 
   handleOnClick() {
     const { email, name } = this.state;
+    const { score } = this.props;
     const imagem = getGravatar(email);
     const { setLogin, setPlayerGame } = this.props;
     this.fetchToken();
     setLogin({ ...this.state, picture: imagem });
-    setPlayerGame({ name, gravatarEmail: email });
+    setPlayerGame({ name, gravatarEmail: email, score });
   }
 
   render() {
@@ -123,6 +127,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   token: state.game.token,
+  score: state.user.score,
 });
 
 Login.propTypes = {
@@ -130,6 +135,7 @@ Login.propTypes = {
   setTokenThunk: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   setPlayerGame: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
