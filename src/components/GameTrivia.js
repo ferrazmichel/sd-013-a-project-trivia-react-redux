@@ -13,8 +13,9 @@ class GameTrivia extends React.Component {
 
   handleclick(event) {
     if (event.target.id === 'correct') {
-      console.log('acertou');
-      this.calculationOfPoints(30, 2);
+      // Esperando os dados do temporizado para calcular corretamente.
+      const NUMBER = 30;
+      this.calculationOfPoints(NUMBER, 2);
     }
     const correct = document.querySelector('#correct');
     correct.classList.add('buttonCorrect');
@@ -25,11 +26,11 @@ class GameTrivia extends React.Component {
     });
   }
 
+  // Função recebe o tempo restante e o dificuldade.
   calculationOfPoints(timer, dificuldade) {
     const { setPointsClink } = this.props;
     const TEN = 10;
     const points = TEN + (timer * dificuldade);
-    console.log(points);
     setPointsClink(points);
   }
 
