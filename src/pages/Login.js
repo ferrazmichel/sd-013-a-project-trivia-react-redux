@@ -40,38 +40,36 @@ class Login extends React.Component {
     const { login, email } = this.state;
     const validadeButton = login && email; // retorna true caso os campos estejam preenchidos
     return (
-      <main>
-        <div
-          className="login"
-        >
-          <label htmlFor="login">
-            <input
-              data-testid="input-player-name"
-              id="login"
-              name="login"
-              value={ login }
-              onChange={ this.handleChange }
-            />
-          </label>
-        </div>
-        <div
-          className="email"
-        >
-          <label htmlFor="email">
-            <input
-              data-testid="input-gravatar-email"
-              id="email"
-              name="email"
-              value={ email }
-              onChange={ this.handleChange }
-            />
-          </label>
-        </div>
-        <div
-          className="btn"
-        >
-          <Buttons validadeButton={ validadeButton } handleClick={ this.handleClick } />
-        </div>
+      <main className="login-main">
+        <h2>Trivia</h2>
+        <label htmlFor="login">
+          <i className="material-icons">
+            perm_identity
+          </i>
+          <input
+            data-testid="input-player-name"
+            id="login"
+            name="login"
+            value={ login }
+            onChange={ this.handleChange }
+            placeholder=" Nome"
+          />
+        </label>
+        <label htmlFor="email">
+          <i className="material-icons">
+            alternate_email
+          </i>
+          <input
+            data-testid="input-gravatar-email"
+            id="email"
+            name="email"
+            value={ email }
+            onChange={ this.handleChange }
+            placeholder=" Email"
+          />
+        </label>
+        <br />
+        <Buttons validadeButton={ validadeButton } handleClick={ this.handleClick } />
       </main>
     );
   }
