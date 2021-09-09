@@ -18,6 +18,22 @@ class Header extends React.Component {
     this.trocaState(img);
   }
 
+  // componentWillUnmount() {
+  //   this.setRanking();
+  // }
+
+  async setRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+    const { state: { img }, props: { user, score } } = this;
+    const info = {
+      name: user,
+      score,
+      picture: `https://www.gravatar.com/avatar/${img}`,
+    };
+    const arrayInfo = [...ranking, info];
+    localStorage.setItem('ranking', JSON.stringify(arrayInfo));
+  }
+
   trocaState(valor) {
     this.setState({ img: valor });
   }
@@ -44,10 +60,12 @@ class Header extends React.Component {
   }
 }
 Header.propTypes = {
+  sendImage: PropTypes.func,
   emailUser: PropTypes.string,
   user: PropTypes.string,
   score: PropTypes.number,
 }.isRequired;
+
 const mapStateToProps = (state) => ({
   emailUser: state.login.email,
   user: state.login.login,

@@ -4,6 +4,10 @@ import fetchToken from './fetchToken';
 import fetchQuestions from './fetchQuestions';
 import sendFeedback from './sendFeedbakc';
 
-const rootReducer = combineReducers({ login, fetchToken, fetchQuestions, sendFeedback });
+const rootReducer = combineReducers({ login,
+  fetchToken,
+  fetchQuestions,
+  sendFeedback,
+});
 
 export default rootReducer;
