@@ -22,7 +22,7 @@ class Clock extends Component {
     const { verifyClock } = this.props;
     if (currentCount < 1) {
       clearInterval(this.intervalId);
-      verifyClock()
+      verifyClock();
     } else {
       this.setState({
         currentCount: currentCount - 1,
@@ -35,11 +35,17 @@ class Clock extends Component {
 
     return (
       <p>
-      {currentCount}
+        {currentCount}
       </p>
     );
   }
 }
+
+const { func } = PropTypes;
+
+Clock.propTypes = {
+  verifyClock: func,
+}.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   clearInterval: (payload) => dispatch(clearInterval(payload)),
