@@ -6,6 +6,7 @@ export const SAVE_TOKEN = 'SAVE_TOKEN';
 export const SAVE_PERGUNTAS = 'SAVE_PERGUNTAS';
 export const REQUEST_FAIL = 'REQUEST_FAIL';
 export const REQUEST_PERGUNTAS = 'REQUEST_PERGUNTAS';
+export const TIME_FINISHED = 'TIME_FINISHED';
 
 export const loginSubmit = (object) => ({ type: LOGIN_SUBMIT, payload: object });
 export const requestApi = () => ({ type: REQUEST_API });
@@ -15,6 +16,7 @@ export const failedRequest = (msg) => ({ type: REQUEST_FAIL, error: msg });
 export const requestPerguntas = () => ({
   type: REQUEST_PERGUNTAS,
 });
+export const timeFinished = (booleano) => ({ type: TIME_FINISHED, payload: booleano });
 
 // Encadeamento de actions de forma assíncrona
 export const fetchDados = () => async (dispatch) => {

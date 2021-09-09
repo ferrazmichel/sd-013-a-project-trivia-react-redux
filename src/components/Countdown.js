@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-// import { timeFinished } from '../redux/actions';
+import { timeFinished } from '../redux/actions';
 
 class Countdown extends React.Component {
   constructor(props) {

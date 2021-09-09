@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Countdown from './Countdown';
 
 class Pergunta extends React.Component {
   constructor() {
@@ -8,20 +9,20 @@ class Pergunta extends React.Component {
     this.state = {
       contador: 0,
       correctAnswer: '',
-      countdown: 30,
+      // countdown: 5,
     };
     this.correct = this.correct.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
-    this.timer = this.timer.bind(this);
+    // this.timer = this.timer.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.onClicAknswer = this.onClicAknswer.bind(this);
     this.creatButton = this.creatButton.bind(this);
+    // this.disableButtons = this.disableButtons.bind(this);
   }
 
   componentDidMount() {
     this.correct();
-    this.timer();
   }
 
   onClicAknswer() {
@@ -29,15 +30,12 @@ class Pergunta extends React.Component {
     this.creatButton();
   }
 
-  timer() {
-    const secsToWait = 5000;
-    const oneSecond = 1000;
-    setTimeout(setInterval(() => {
-      this.setState((prevState) => ({
-        countdown:
-          prevState.countdown > 0 ? prevState.countdown - 1 : prevState.countdown }));
-    }, oneSecond), secsToWait);
-  }
+  // disableButtons() {
+  //   const { boolTimeout } = this.props;
+  //   const answersBtns = document.querySelectorAll('.wrong');
+  //   console.log(answersBtns);
+  //   answersBtns.forEach((btn) => { btn.disabled = boolTimeout; });
+  // }
 
   creatButton() {
     const botao = document.createElement('button');
@@ -53,7 +51,11 @@ class Pergunta extends React.Component {
     const buttonCorrect = document.querySelector('.correct');
     const buttonWrong = document.querySelectorAll('.wrong');
     buttonCorrect.style.border = bordaCerta;
-    buttonWrong.forEach((btnWrong) => { btnWrong.style.border = bordaErrada; });
+    buttonCorrect.disabled = true;
+    buttonWrong.forEach((btnWrong) => {
+      btnWrong.style.border = bordaErrada;
+      btnWrong.disabled = true;
+    });
     /* if (target.className === buttonCorrect) {
       target.style.border = bordaCerta;
     } target.style.border = bordaErrada; */
@@ -75,7 +77,7 @@ class Pergunta extends React.Component {
   }
 
   shuffleAnswers() {
-    const { perguntas } = this.props;
+    const { perguntas, boolTimeout } = this.props;
     const { contador, correctAnswer } = this.state;
     const arrAlternativas = [...perguntas[contador].incorrect_answers,
       perguntas[contador].correct_answer,
@@ -91,6 +93,7 @@ class Pergunta extends React.Component {
           alternativa === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
         }
         onClick={ this.onClicAknswer }
+        disabled={ boolTimeout }
       >
         { alternativa }
       </button>
@@ -98,15 +101,17 @@ class Pergunta extends React.Component {
   }
 
   render() {
-    const { contador, countdown } = this.state;
-    const { perguntas } = this.props;
+    const { contador } = this.state; // countdown
+    const { perguntas, boolTimeout } = this.props;
+    console.log('boolTimeout', boolTimeout);
+    if (boolTimeout === true) this.onClicAknswer(); // Antes this.disabledButtons
     return (
       <div>
         <span data-testid="question-category">{ perguntas[contador].category }</span>
         <p data-testid="question-text">{ perguntas[contador].question }</p>
-        <div>{this.shuffleAnswers()}</div>
-        <span>{ countdown }</span>
         <div className="pergunta">{this.shuffleAnswers()}</div>
+        {/* <span>{ countdown }</span> */}
+        <Countdown handleTimeout={ this.onClicAknswer } />
       </div>
     );
   }
@@ -114,6 +119,7 @@ class Pergunta extends React.Component {
 
 const mapStateToProps = (state) => ({
   perguntas: state.apiTrivia.resultFrases,
+  boolTimeout: state.player.boolTimeout,
 });
 
 Pergunta.propTypes = {
