@@ -8,9 +8,10 @@ class GamePage extends React.Component {
       results: [],
       numeroDaPergunta: 0,
     };
+    this.fetchApi = this.fetchApi.bind(this);
   }
 
-  componentDidMount() {
+  fetchApi() {
     const url = 'https://opentdb.com/api_token.php?command=request';
     fetch(url)
       .then((resp) => resp.json())
@@ -23,6 +24,7 @@ class GamePage extends React.Component {
   }
 
   render() {
+    this.fetchApi();
     const { results, numeroDaPergunta } = this.state;
     const pergunta = results.filter((result, index) => (index === numeroDaPergunta));
     console.log(pergunta);
@@ -30,7 +32,6 @@ class GamePage extends React.Component {
       <div>
         <Header />
         <div>
-          alguma coisa
           { pergunta.map((result, index) => (
             <div key={ index }>
               <div data-testid="question-category">{result.category}</div>
