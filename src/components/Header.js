@@ -8,11 +8,15 @@ class Header extends Component {
     const { name, email } = this.props;
     const { score } = JSON.parse(localStorage.getItem('state')).player;
     return (
-      <header>
-        <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" />
-        <span data-testid="header-player-name">{`Jogador: ${name}`}</span>
-        <span data-testid="header-score">{`Placar: ${score}`}</span>
-      </header>
+      <>
+        <header>
+          <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" />
+          <span data-testid="header-player-name">{`Jogador: ${name}`}</span>
+          <span>Placar: </span>
+          <span data-testid="header-score">{score}</span>
+        </header>
+        <p data-testid="feedback-text">Parabéns!</p>
+      </>
     );
   }
 }
