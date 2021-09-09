@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { fetchApiQuestions } from '../redux/actions';
 
 class Trivia extends Component {
   constructor(props) {
@@ -15,16 +14,8 @@ class Trivia extends Component {
   }
 
   componentDidMount() {
-    const { fetchApi } = this.props;
     this.fetchGravater();
-    fetchApi();
   }
-
-  // async fetchBug() {
-  //   const { fetchApi } = this.props;
-  //   const api = await fetchApi();
-  //   return api;
-  // }
 
   fetchGravater() {
     const { userEmail } = this.props;
@@ -90,7 +81,6 @@ class Trivia extends Component {
 }
 
 Trivia.propTypes = {
-  fetchApi: PropTypes.func.isRequired,
   questions: PropTypes.shape({
     map: PropTypes.func,
   }).isRequired,
@@ -104,10 +94,6 @@ const mapStateToProps = (state) => ({
   questions: state.trivia.results,
   userEmail: state.user.email,
   userPlayer: state.user.player,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchApi: () => dispatch(fetchApiQuestions()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);

@@ -29,12 +29,13 @@ class Login extends Component {
     }, () => this.activateButton());
   }
 
-  handleonClick() {
+  async handleonClick() {
     const { email, player } = this.state;
-    const { userLogin } = this.props;
-    this.setState({ redirect: true });
+    const { userLogin, fetchApi } = this.props;
     userLogin(({ email, player }));
-    getTokenApi();
+    await getTokenApi();
+    await fetchApi();
+    this.setState({ redirect: true });
   }
 
   activateButton() {
@@ -98,6 +99,7 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   userLogin: (payload) => dispatch(sendUserInfo(payload)),
+  fetchApi: () => dispatch(fetchApiQuestions()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
