@@ -35,7 +35,7 @@ export const fetchQuestions = (userToken) => async (dispatch) => {
   try {
     dispatch(requestQuestions());
 
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`);
+    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}&encode=base64`);
     const questions = await response.json();
 
     dispatch(getQuestions(questions));

@@ -153,7 +153,7 @@ class TelaDeJogo extends Component {
                 this.stopTimer();
               } }
             >
-              { answer }
+              { atob(answer) }
             </button>
           );
         }
@@ -171,7 +171,7 @@ class TelaDeJogo extends Component {
               this.stopTimer();
             } }
           >
-            { answer }
+            { atob(answer) }
           </button>
         );
       })
@@ -201,8 +201,12 @@ class TelaDeJogo extends Component {
       <>
         <Header score={ score } />
         <section>
-          <p data-testid="question-category">{ results[questionNumber].category }</p>
-          <p data-testid="question-text">{ results[questionNumber].question }</p>
+          <p
+            data-testid="question-category"
+          >
+            { atob(results[questionNumber].category) }
+          </p>
+          <p data-testid="question-text">{ atob(results[questionNumber].question) }</p>
           <div>
             { this.createButtons() }
           </div>
