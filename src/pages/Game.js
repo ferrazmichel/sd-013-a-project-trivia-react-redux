@@ -6,6 +6,8 @@ import Header from '../components/Header';
 import { getQuestions, updateScore } from '../redux/actions';
 import GameBoard from '../components/GameBoard';
 
+import './Game.css';
+
 const basePoints = 10;
 
 class Game extends Component {
