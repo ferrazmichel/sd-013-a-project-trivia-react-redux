@@ -1,4 +1,4 @@
-import { SAVE_USER_INFO } from '../actions';
+import { SAVE_SCORE, SAVE_USER_INFO } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -7,13 +7,19 @@ const INITIAL_STATE = {
   gravatarEmail: '',
 };
 
-const player = (state = INITIAL_STATE, { type, payload }) => {
+const player = (state = INITIAL_STATE, { type, payload, points }) => {
   switch (type) {
   case SAVE_USER_INFO:
     return {
       ...state,
       name: payload.name,
       gravatarEmail: payload.email,
+    };
+  case SAVE_SCORE:
+    return {
+      ...state,
+      score: state.score + points,
+      assertions: state.assertions + 1,
     };
   default: {
     return state;

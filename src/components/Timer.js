@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { disableButtons } from '../redux/actions';
+import { disableButtons, recordTime, restartTimer } from '../redux/actions';
 
 class Timer extends React.Component {
   constructor(props) {
@@ -13,10 +13,15 @@ class Timer extends React.Component {
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.countDown = this.countDown.bind(this);
+    this.verifyTimer = this.verifyTimer.bind(this);
   }
 
   componentDidMount() {
     this.startTimer();
+  }
+
+  componentDidUpdate() {
+    this.verifyTimer();
   }
 
   startTimer() {
@@ -32,8 +37,26 @@ class Timer extends React.Component {
         timerStart: timerStart - 1,
       });
     } else {
-      clearInterval(this.timer);
-      disable();
+      clearInterval(this.timer); // para o set interval
+      disable(true); // desabilita as alternativas ao fim do tempo
+    }
+  }
+
+  verifyTimer() {
+    const { restart, handleRestart, pause, sendTime } = this.props;
+    const { timerStart } = this.state;
+    if (restart) {
+      this.setState({
+        timerEnd: 0,
+        timerStart: 30,
+      });
+      clearInterval(this.timer); // para o set interval
+      this.startTimer(); // inicia o timer
+      handleRestart(false); // set o timer para não reiniciar
+    }
+    if (pause) {
+      clearInterval(this.timer); // para o set interval
+      sendTime(timerStart); // manda time em que parou após responder
     }
   }
 
@@ -48,11 +71,22 @@ class Timer extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  disable: () => dispatch(disableButtons()),
+  disable: (response) => dispatch(disableButtons(response)),
+  handleRestart: (response) => dispatch(restartTimer(response)),
+  sendTime: (time) => dispatch(recordTime(time)),
+});
+
+const mapStateToProps = ({ questionsReducer }) => ({
+  restart: questionsReducer.restartTimer,
+  pause: questionsReducer.pauseTimer,
 });
 
 Timer.propTypes = {
   disable: PropTypes.func.isRequired,
+  handleRestart: PropTypes.func.isRequired,
+  sendTime: PropTypes.func.isRequired,
+  restart: PropTypes.bool.isRequired,
+  pause: PropTypes.bool.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);
