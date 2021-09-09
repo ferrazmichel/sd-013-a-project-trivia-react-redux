@@ -53,32 +53,30 @@ class GamePage extends Component {
   }
 
   render() {
-    const { hidden, question, questionsIndex, loading } = this.state;
-    const { nextQuestion } = this;
+    const { hidden, questions, questionsIndex, loading } = this.state;
     return (
       <>
         <Header />
 
         {
           loading ? <p>Loading...</p>
-            : <>
-              (
-              <Question
-                hide={ this.hideNextQuestionButton }
-                question={ question[questionsIndex] }
-                show={ this.showNextQuestionButton }
-              />
-              <Button
-                className=""
-                data-testid="btn-next"
-                disabled={ hidden }
-                name="Próxima"
-                onClick={ nextQuestion }
-              />
-              )
+            : (
+              <>
+                <Question
+                  hide={ this.hideNextQuestionButton }
+                  question={ questions[questionsIndex] }
+                  show={ this.showNextQuestionButton }
+                />
+                <Button
+                  className=""
+                  data-testid="btn-next"
+                  disabled={ hidden }
+                  name="Próxima"
+                  onClick={ this.nextQuestion }
+                />
               </>
+            )
         }
-
       </>
     );
   }
