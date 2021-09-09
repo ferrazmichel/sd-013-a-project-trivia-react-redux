@@ -11,6 +11,8 @@ class TelaDeJogo extends Component {
       answers: [],
       buttonDisable: false,
       colorBorders: false,
+      questionNumber: 0,
+      nextButton: false,
       time: 30,
     };
 
@@ -25,7 +27,7 @@ class TelaDeJogo extends Component {
   stopTimer() {
     const { intervalId } = this.state;
     clearInterval(intervalId);
-    this.setState({ buttonDisable: true, colorBorders: true });
+    this.setState({ buttonDisable: true, colorBorders: true, nextButton: true });
   }
 
   checkCounter() {
@@ -43,10 +45,19 @@ class TelaDeJogo extends Component {
     this.setState({ intervalId });
   }
 
+  nextQuestion() {
+    this.setState(({ questionNumber }) => (
+      { questionNumber: questionNumber + 1 }
+    ), () => {
+      this.shuffleAnswers();
+    });
+  }
+
   savePoints({ target: { id } }) {
+    const { questionNumber } = this.state;
     const { questions: { results } } = this.props;
     const { time } = this.state;
-    const { difficulty } = results[0];
+    const { difficulty } = results[questionNumber];
 
     const difficultyPoints = () => {
       const hardPoints = 3;
@@ -79,11 +90,12 @@ class TelaDeJogo extends Component {
   }
 
   shuffleAnswers() {
+    const { questionNumber } = this.state;
     const { questions: { results } } = this.props;
     const {
       type,
       incorrect_answers: incorrectAnswers,
-      correct_answer: correctAnswer } = results[0];
+      correct_answer: correctAnswer } = results[questionNumber];
     const randomIndex = () => {
       if (type === 'boolean') {
         const randomNumber = Math.floor(Math.random() * (1 - 0 + 1) + 0);
@@ -98,10 +110,10 @@ class TelaDeJogo extends Component {
   }
 
   createButtons() {
-    const { answers } = this.state;
+    const { answers, questionNumber } = this.state;
     const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
-    const { correct_answer: correctAnswer } = results[0];
+    const { correct_answer: correctAnswer } = results[questionNumber];
     return (
       answers.map((answer, index) => {
         if (answer === correctAnswer) {
@@ -144,20 +156,37 @@ class TelaDeJogo extends Component {
     );
   }
 
+  renderNextButton() {
+    return (
+      <button
+        type="button"
+        onClick={ () => {
+          this.nextQuestion();
+        } }
+        data-testid="btn-next"
+      >
+        Próxima
+      </button>
+    );
+  }
+
   renderContent() {
-    const { time } = this.state;
+    const { time, questionNumber, nextButton } = this.state;
     const { questions: { results } } = this.props;
     return (
       <>
         <Header />
         <section>
-          <p data-testid="question-category">{ results[0].category }</p>
-          <p data-testid="question-text">{ results[0].question }</p>
+          <p data-testid="question-category">{ results[questionNumber].category }</p>
+          <p data-testid="question-text">{ results[questionNumber].question }</p>
           <div>
             { this.createButtons() }
           </div>
           <div>
             {`Tempo: ${time}`}
+          </div>
+          <div>
+            {nextButton && this.renderNextButton() }
           </div>
         </section>
       </>
