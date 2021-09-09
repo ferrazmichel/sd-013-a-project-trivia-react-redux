@@ -15,10 +15,12 @@ class Login extends Component {
       name: '',
       redirectToGamePage: false,
       redirectToSettings: false,
+      redirectToRankingPage: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClickPlay = this.handleClickPlay.bind(this);
+    this.handleClickRanking = this.handleClickRanking.bind(this);
     this.handleClickSettings = this.handleClickSettings.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
     this.playBtnOn = this.playBtnOn.bind(this);
@@ -72,6 +74,14 @@ class Login extends Component {
     });
   }
 
+  async handleClickRanking() {
+    this.savePlayerData();
+
+    this.setState({
+      redirectToRankingPage: true,
+    });
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
@@ -96,7 +106,7 @@ class Login extends Component {
 
   render() {
     const { btnDisabledStatus, email, name,
-      redirectToGamePage, redirectToSettings } = this.state;
+      redirectToGamePage, redirectToSettings, redirectToRankingPage } = this.state;
 
     return (
       <div>
@@ -123,6 +133,12 @@ class Login extends Component {
             onClick={ this.handleClickPlay }
           />
           <Button
+            name="Ranking"
+            classe="btn-ranking"
+            disabled={ btnDisabledStatus }
+            onClick={ this.handleClickRanking }
+          />
+          <Button
             dataTestId="btn-settings"
             name="Configurações"
             classe="btn-config"
@@ -131,6 +147,7 @@ class Login extends Component {
         </form>
         { redirectToGamePage && <Redirect to="/gamepage" /> }
         { redirectToSettings && <Redirect to="/settings" /> }
+        { redirectToRankingPage && <Redirect to="/ranking" />}
       </div>
     );
   }
