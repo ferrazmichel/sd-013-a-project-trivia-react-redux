@@ -48,6 +48,9 @@ class Game extends React.Component {
       this.setState({
         currentQuestion: currentQuestion + 1,
       });
+    } else {
+      const { history } = this.props;
+      history.push('/feedback');
     }
     this.handleDisable();
   }
