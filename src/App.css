@@ -30,3 +30,11 @@
   display: flex;
   justify-content: space-between;
 } */
+
+.selectedCerta {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.selectedErrada {
+  border: 3px solid red;
+}

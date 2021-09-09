@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveEmail } from '../redux/action';
+import { saveEmail, saveQuestion } from '../redux/action';
 
 class Login extends React.Component {
   constructor() {
@@ -14,13 +14,28 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.fetchApi = this.fetchApi.bind(this);
   }
 
   onSubmitForm() {
     const { onSubmit, history } = this.props;
     onSubmit(this.state);
+    this.fetchApi();
     history.push('/game-page');
-    console.log('enviou');
+  }
+
+  async fetchApi() {
+    const { submitQuestion } = this.props;
+    const url = 'https://opentdb.com/api_token.php?command=request';
+    const fetchResponse = await fetch(url);
+    const user = await fetchResponse.json();
+    localStorage.setItem('token', user.token);
+
+    const token = localStorage.getItem('token');
+    const url2 = `https://opentdb.com/api.php?amount=5&token=${token}`;
+    const response = await fetch(url2);
+    const question = await response.json();
+    submitQuestion(question.results);
   }
 
   handleChange({ target }) {
@@ -81,13 +96,17 @@ class Login extends React.Component {
 
 Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  submitQuestion: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => (
-  { onSubmit: (payload) => dispatch(saveEmail(payload)) }
+  {
+    onSubmit: (payload) => dispatch(saveEmail(payload)),
+    submitQuestion: (payload) => dispatch(saveQuestion(payload)),
+  }
 );
 
 export default connect(null, mapDispatchToProps)(Login);
