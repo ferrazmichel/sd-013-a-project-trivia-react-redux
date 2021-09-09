@@ -12,10 +12,10 @@ class GameTrivia extends React.Component {
       seconds: 30,
     };
 
-    this.handleclick = this.handleclick.bind(this);
+    // this.handleclick = this.handleclick.bind(this);
     this.cronometerInterval = this.cronometerInterval.bind(this);
     this.disabledButtons = this.disabledButtons.bind(this);
-    this.calculationOfPoints = this.calculationOfPoints.bind(this);
+    // this.calculationOfPoints = this.calculationOfPoints.bind(this);
   }
 
   componentDidMount() {
@@ -29,32 +29,29 @@ class GameTrivia extends React.Component {
     this.disabledButtons();
   }
 
-  handleclick(event) {
-    if (event.target.id === 'correct') {
-      // Esperando os dados do temporizado para calcular corretamente.
-      const NUMBER = 30;
-      this.calculationOfPoints(NUMBER, 2);
-    }
-    const correct = document.querySelector('#correct');
-    correct.classList.add('buttonCorrect');
-    const incorrect = document.querySelectorAll('#incorrect');
-    incorrect.forEach((e) => {
-      e.classList.add('buttonIncorrect');
-      e.disabled = true;
-    });
-    const next = document.querySelector('#next');
-    next.disabled = false;
-    next.classList.remove('nextbtn');
-    clearInterval(this.interval);
-  }
+  // handleclick(event) {
+  //   if (event.target.id === 'correct') {
+  //     // Esperando os dados do temporizado para calcular corretamente.
+  //     const NUMBER = 30;
+  //     this.calculationOfPoints(NUMBER, 2);
+  //   }
+  //   const correct = document.querySelector('#correct');
+  //   correct.classList.add('buttonCorrect');
+  //   const incorrect = document.querySelectorAll('#incorrect');
+  //   incorrect.forEach((e) => {
+  //     e.classList.add('buttonIncorrect');
+  //     e.disabled = true;
+  //   });
+  //   clearInterval(this.interval);
+  // }
 
   // Função recebe o tempo restante e o dificuldade.
-  calculationOfPoints(timer, dificuldade) {
-    const { setPointsClink } = this.props;
-    const TEN = 10;
-    const points = TEN + (timer * dificuldade);
-    setPointsClink(points);
-  }
+  // calculationOfPoints(timer, dificuldade) {
+  //   const { setPointsClink } = this.props;
+  //   const TEN = 10;
+  //   const points = TEN + (timer * dificuldade);
+  //   setPointsClink(points);
+  // }
 
   cronometerInterval() {
     const { seconds } = this.state;
@@ -83,7 +80,7 @@ class GameTrivia extends React.Component {
   }
 
   render() {
-    const { questions, disabledButton } = this.props;
+    const { questions, disabledButton, handleclick } = this.props;
     const { seconds } = this.state;
     return (
       <form>
@@ -110,7 +107,7 @@ class GameTrivia extends React.Component {
             data-testid={ `wrong-answer-${index}` }
             id="incorrect"
             disabled={ disabledButton }
-            onClick={ this.handleclick }
+            onClick={ handleclick }
             // className="buttonIncorrect"
           >
             { answer }
@@ -121,7 +118,7 @@ class GameTrivia extends React.Component {
           data-testid="correct-answer"
           id="correct"
           disabled={ disabledButton }
-          onClick={ this.handleclick }
+          onClick={ handleclick }
           // className="buttonCorrect"
         >
           { questions.correct_answer }
@@ -143,7 +140,8 @@ GameTrivia.propTypes = {
   }).isRequired,
   change: PropTypes.func.isRequired,
   disabledButton: PropTypes.bool.isRequired,
-  setPointsClink: PropTypes.func.isRequired,
+  handleclick: PropTypes.func.isRequired,
+  // setPointsClink: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
