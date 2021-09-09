@@ -1,4 +1,9 @@
-import { FAILED_REQUEST, GET_TOKEN, REQUEST_API, SAVE_USER } from './actionTypes';
+import {
+  FAILED_REQUEST,
+  GET_TOKEN,
+  REQUEST_API,
+  SAVE_USER,
+  HANDLE_SCORE } from './actionTypes';
 
 export const saveUser = (email, name) => ({
   type: SAVE_USER,
@@ -31,3 +36,8 @@ export function fetchTrivia() {
         ));
   };
 }
+
+export const handleScore = (score) => ({
+  type: HANDLE_SCORE,
+  score,
+});
