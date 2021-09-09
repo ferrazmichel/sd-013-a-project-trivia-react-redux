@@ -8,13 +8,16 @@ class GamePage extends React.Component {
     super();
     this.state = {
       buttonClass: 'alternativas',
+      showNextButton: false,
       numeroDaPergunta: 0,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
   }
 
-  handleClick({ target }) {
+  handleClick() {
     const buttons = document.querySelectorAll('.alternativas');
     buttons.forEach((button) => {
       button.className = 'alternativas selectedErrada';
@@ -22,7 +25,33 @@ class GamePage extends React.Component {
         button.className = 'alternativas selectedCerta';
       }
     });
-    console.log(target);
+    this.setState({ showNextButton: true });
+  }
+
+  handleNext() {
+    const { numeroDaPergunta } = this.state;
+    const perguntaAtual = numeroDaPergunta + 1;
+
+    const buttons = document.querySelectorAll('.alternativas');
+
+    this.setState({ numeroDaPergunta: perguntaAtual });
+    buttons.forEach((button) => {
+      button.className = 'alternativas';
+    });
+    this.setState({ showNextButton: false });
+  }
+
+  renderNextButton() {
+    return (
+      <button
+        data-testid="btn-next"
+        className="button"
+        type="submit"
+        onClick={ this.handleNext }
+      >
+        Proxima
+      </button>
+    );
   }
 
   renderButtons() {
@@ -75,10 +104,16 @@ class GamePage extends React.Component {
   }
 
   render() {
+    const { showNextButton } = this.state;
     return (
       <div>
         <Header />
         { this.renderButtons() }
+        {
+          showNextButton
+            ? this.renderNextButton()
+            : console.log('')
+        }
       </div>
     );
   }
