@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import mountQuestions from '../services';
 import Button from './Button';
 
 class Question extends Component {
@@ -80,47 +79,57 @@ class Question extends Component {
         timerValue: prevState.timerValue - 1,
       }));
       if (timerValue === ZERO) {
-            clearInterval(this.interval)
-            this.setState({
-              disabled: true,
-            })
-            show()
-      }, ONE_SECOND)}
-
-    }
+        clearInterval(this.interval);
+        this.setState({
+          disabled: true,
+        });
+      }
+      show();
+    }, ONE_SECOND);
+  }
 
   render() {
+    const { disabled, options, question, correctAnswer } = this.state;
     return (
-      <div>
-        <h2 data-testid="question.category">{question.category}</h2>
-        <h3 data-testid="question.text">{question.question}</h3>
+      <>
+        <h2
+          data-testid="question.category"
+        >
+          { question.category }
+        </h2>
+        <h3
+          data-testid="question.text"
+        >
+          { question.question }
+        </h3>
         {options.map((option) => {
-	        const correctAnswer = option === correct;
-	        return (
+          const correct = option === correctAnswer;
+          return (
             <Button
-    classe="optionButton"
-    key={ option }
-    dataTestId={
-			    correctAnswer
-			    ? 'correct-answer'
-			    : `wrong-answer-${question.incorrect_answer.indexOf(option)}`
-		      }
-    id={
-			    correctAnswer
-			    ? 'correct'
-			    : 'incorrect'
+              classe="optionButton"
+              key={ option }
+              dataTestId={
+                correct
+                  ? 'correct-answer'
+                  : `ẁrong-answer-${question.incorrect_answer.indexOf(option)}`
               }
-    name={ option.question }
-    onClick={ this.clickedOption }
-    disabled={ disabled }
-  />
+              id={ correct ? 'correct' : 'incorrect' }
+              name={ option.question }
+              onClick={ this.clickedOption }
+              disabled={ disabled }
+            />
           );
         })}
         ;
         <span>{ timerValue }</span>
-      </div>
+      </>
     );
   }
 }
+
+Question.propTypes = {
+  show: PropTypes.func,
+  hide: PropTypes.func,
+}.isRequired;
 
 export default Question;
