@@ -15,20 +15,22 @@ class Login extends Component {
       name: '',
       redirectToGamePage: false,
       redirectToSettings: false,
+      redirectToRankingPage: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClickPlay = this.handleClickPlay.bind(this);
+    this.handleClickRanking = this.handleClickRanking.bind(this);
     this.handleClickSettings = this.handleClickSettings.bind(this);
     this.verifyInputs = this.verifyInputs.bind(this);
-    this.btnOn = this.btnOn.bind(this);
+    this.playBtnOn = this.playBtnOn.bind(this);
     this.savePlayerData = this.savePlayerData.bind(this);
   }
 
   componentDidMount() {
     const state = JSON.parse(localStorage.getItem('state'));
     if (state !== null) {
-      this.btnOn(false, state);
+      this.playBtnOn(false, state);
     }
   }
 
@@ -48,7 +50,7 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  btnOn(on, state) {
+  playBtnOn(on, state) {
     const { player } = state;
     this.setState({
       name: player.name,
@@ -69,6 +71,14 @@ class Login extends Component {
 
     this.setState({
       redirectToGamePage: true,
+    });
+  }
+
+  async handleClickRanking() {
+    this.savePlayerData();
+
+    this.setState({
+      redirectToRankingPage: true,
     });
   }
 
@@ -96,7 +106,7 @@ class Login extends Component {
 
   render() {
     const { btnDisabledStatus, email, name,
-      redirectToGamePage, redirectToSettings } = this.state;
+      redirectToGamePage, redirectToSettings, redirectToRankingPage } = this.state;
 
     return (
       <div>
@@ -123,6 +133,12 @@ class Login extends Component {
             onClick={ this.handleClickPlay }
           />
           <Button
+            name="Ranking"
+            classe="btn-ranking"
+            disabled={ btnDisabledStatus }
+            onClick={ this.handleClickRanking }
+          />
+          <Button
             dataTestId="btn-settings"
             name="Configurações"
             classe="btn-config"
@@ -131,6 +147,7 @@ class Login extends Component {
         </form>
         { redirectToGamePage && <Redirect to="/gamepage" /> }
         { redirectToSettings && <Redirect to="/settings" /> }
+        { redirectToRankingPage && <Redirect to="/ranking" />}
       </div>
     );
   }

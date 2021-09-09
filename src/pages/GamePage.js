@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import Button from '../components/Button';
+import mountQuestions from '../services/fetchGame';
 
 class GamePage extends Component {
   constructor() {
@@ -59,23 +60,20 @@ class GamePage extends Component {
         <Header />
 
         {
-          loading ? <p>Loading...</p>
-            : (
-              <>
-                <Question
-                  hide={ this.hideNextQuestionButton }
-                  question={ questions[questionsIndex] }
-                  show={ this.showNextQuestionButton }
-                />
-                <Button
-                  className=""
-                  data-testid="btn-next"
-                  disabled={ hidden }
-                  name="Próxima"
-                  onClick={ this.nextQuestion }
-                />
-              </>
-            )
+          loading ? <p>Loading...</p> : <Question
+            hide={ this.hideNextQuestionButton }
+            question={ questions[questionsIndex] }
+            show={ this.showNextQuestionButton }
+          />
+        }
+        {
+          !hidden && <Button
+            className=""
+            data-testid="btn-next"
+            disabled={ hidden }
+            name="Próxima"
+            onClick={ this.nextQuestion }
+          />
         }
       </>
     );
@@ -91,7 +89,7 @@ const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => (
 });
 
 GamePage.propTypes = {
-  configs: propTypes.shape({
+  configs: PropTypes.shape({
     difficulty: PropTypes.string,
     cattegory: PropTypes.string,
     type: PropTypes.string }),
