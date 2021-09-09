@@ -14,11 +14,19 @@ class Pergunta extends React.Component {
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
     this.timer = this.timer.bind(this);
+    this.handleColor = this.handleColor.bind(this);
+    this.onClicAknswer = this.onClicAknswer.bind(this);
+    this.creatButton = this.creatButton.bind(this);
   }
 
   componentDidMount() {
     this.correct();
     this.timer();
+  }
+
+  onClicAknswer() {
+    this.handleColor();
+    this.creatButton();
   }
 
   timer() {
@@ -31,12 +39,24 @@ class Pergunta extends React.Component {
     }, oneSecond), secsToWait);
   }
 
-  correct() {
-    const { perguntas } = this.props;
-    const { contador } = this.state;
-    this.setState({
-      correctAnswer: perguntas[contador].correct_answer,
-    });
+  creatButton() {
+    const botao = document.createElement('button');
+    botao.innerHTML = 'Próxima';
+    botao.setAttribute('data-testid', 'btn-next');
+    const div = document.querySelector('.pergunta');
+    div.appendChild(botao);
+  }
+
+  handleColor() {
+    const bordaCerta = '3px solid rgb(6, 240, 15)';
+    const bordaErrada = '3px solid rgb(255, 0, 0)';
+    const buttonCorrect = document.querySelector('.correct');
+    const buttonWrong = document.querySelectorAll('.wrong');
+    buttonCorrect.style.border = bordaCerta;
+    buttonWrong.forEach((btnWrong) => { btnWrong.style.border = bordaErrada; });
+    /* if (target.className === buttonCorrect) {
+      target.style.border = bordaCerta;
+    } target.style.border = bordaErrada; */
   }
 
   shuffleArr(inputArr) {
@@ -44,6 +64,14 @@ class Pergunta extends React.Component {
     inputArr.sort(() => Math.random() - number);
     console.log('shuffleAr', inputArr);
     return inputArr;
+  }
+
+  correct() {
+    const { perguntas } = this.props;
+    const { contador } = this.state;
+    this.setState({
+      correctAnswer: perguntas[contador].correct_answer,
+    });
   }
 
   shuffleAnswers() {
@@ -56,11 +84,13 @@ class Pergunta extends React.Component {
     console.log('result', result);
     return result.map((alternativa, index) => (
       <button
-        type="button"
+        type="submit"
         key={ alternativa }
+        className={ alternativa === correctAnswer ? 'correct' : 'wrong' }
         data-testid={
           alternativa === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
         }
+        onClick={ this.onClicAknswer }
       >
         { alternativa }
       </button>
@@ -76,6 +106,7 @@ class Pergunta extends React.Component {
         <p data-testid="question-text">{ perguntas[contador].question }</p>
         <div>{this.shuffleAnswers()}</div>
         <span>{ countdown }</span>
+        <div className="pergunta">{this.shuffleAnswers()}</div>
       </div>
     );
   }
