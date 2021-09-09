@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { nextQuestion } from '../redux/actions';
 
 class GameCounter extends Component {
   constructor() {
     super();
-
     this.state = {
       counter: 30,
     };
@@ -13,38 +14,29 @@ class GameCounter extends Component {
     this.handleCounterChange = this.handleCounterChange.bind(this);
     this.dispatchIncorrectAnswer = this.dispatchIncorrectAnswer.bind(this);
     this.scoreCalculator = this.scoreCalculator.bind(this);
+    this.handleState = this.handleState.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleTimer = this.handleTimer.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('Mountou');
+    this.handleState();
+  }
+
+  handleState() {
+    const { counter } = this.props;
+    this.setState({
+      counter: 30,
+    });
   }
 
   scoreCalculator() {
-    const { updateScore, difficulty } = this.props;
     const { counter } = this.state;
-    const ten = 10;
-    const hard = 3;
-    const medium = 2;
-    const easy = 1;
-    let diffMultiplier = 0;
-
-    switch (difficulty) {
-    case 'hard':
-      diffMultiplier = hard;
-      break;
-
-    case 'medium':
-      diffMultiplier = medium;
-      break;
-
-    case 'easy':
-      diffMultiplier = easy;
-      break;
-
-    default:
-      break;
-    }
+    const { updateScore } = this.props;
     if (counter === 0) {
       return updateScore(0);
     }
-    const score = ten + (counter * diffMultiplier);
-    return updateScore(score);
   }
 
   dispatchIncorrectAnswer(timeout) {
@@ -66,29 +58,68 @@ class GameCounter extends Component {
     handleTimeout();
   }
 
-  async handleCounterChange() {
-    const { counter } = this.state;
+  async handleTimer() {
     const second = 1000;
-
+    const { counter } = this.state;
     const timeout = setTimeout(() => {
       this.setState({
         counter: counter - 1,
       });
     }, second);
+    return timeout;
+  }
 
-    if (counter === 0) {
-      window.clearTimeout(timeout);
-      this.dispatchIncorrectAnswer(timeout);
+  async handleCounterChange() {
+    const { counter } = this.state;
+    this.handleTimer();
+
+    if (counter <= 0) {
+      window.clearTimeout(this.handleTimer());
+      this.dispatchIncorrectAnswer(this.handleTimer());
     }
+  }
+
+  handleButtonClick() {
+    const { nextQ } = this.props;
+    nextQ();
+    this.setState({
+      counter: 30,
+    });
+    window.clearTimeout(this.handleTimer());
   }
 
   render() {
     const { counter } = this.state;
+    const { disabled, renderIndex } = this.props;
+    const nextButton = (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => this.handleButtonClick() }
+      >
+        Próxima
+      </button>);
+    const feedbackButton = (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+        >
+          Próxima
+        </button>
+      </Link>);
+    const howManyQuestions = 5;
+    const finalButton = renderIndex === howManyQuestions - 1 ? feedbackButton
+      : nextButton;
+    const renderNextButton = disabled ? finalButton : null;
     this.handleCounterChange();
     return (
-      <p id="counter">
-        {counter}
-      </p>
+      <div>
+        <p id="counter">
+          {counter}
+        </p>
+        { renderNextButton }
+      </div>
     );
   }
 }
@@ -96,6 +127,17 @@ class GameCounter extends Component {
 const mapDispatchToProps = (dispatch) => ({
   updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
   handleTimeout: () => dispatch({ type: 'INCORRECT_ANSWER' }),
+  nextQ: () => dispatch(nextQuestion()),
+});
+
+const mapStateToProps = ({ userReducer, loginReducer, scoreReducer }) => ({
+  loading: userReducer.loading,
+  questions: userReducer.questions,
+  disabled: userReducer.disabled,
+  renderIndex: userReducer.renderIndex,
+  userEmail: loginReducer.email,
+  userName: loginReducer.name,
+  score: scoreReducer.score,
 });
 
 GameCounter.propTypes = {
@@ -104,4 +146,4 @@ GameCounter.propTypes = {
   updateScore: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(GameCounter);
+export default connect(mapStateToProps, mapDispatchToProps)(GameCounter);

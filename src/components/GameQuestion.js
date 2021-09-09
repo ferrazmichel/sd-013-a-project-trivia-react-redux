@@ -8,6 +8,7 @@ import {
   nextQuestion } from '../redux/actions';
 
 let assertions = 0;
+const countdown = 30;
 
 class GameQuestion extends Component {
   constructor(props) {
@@ -121,6 +122,7 @@ class GameQuestion extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
+                  className="btn btn-secondary"
                   disabled={ disabled }
                   onClick={ () => this.dispatchCorrectAnswer(difficulty) }
                   key={ questionIndex }
@@ -132,6 +134,7 @@ class GameQuestion extends Component {
             return (
               <button
                 type="button"
+                className="btn btn-secondary"
                 key={ questionIndex }
                 disabled={ disabled }
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
@@ -141,41 +144,19 @@ class GameQuestion extends Component {
               </button>);
           }) }
         </div>
-        <GameCounter difficulty={ difficulty } />
       </div>
     );
   }
 
   render() {
     const { loading, disabled, nextQ, renderIndex } = this.props;
-    const nextButton = (
-      <button
-        type="button"
-        data-testid="btn-next"
-        onClick={ () => nextQ() }
-      >
-        Próxima
-      </button>);
-    const feedbackButton = (
-      <Link to="/feedback">
-        <button
-          type="button"
-          data-testid="btn-next"
-        >
-          Próxima
-        </button>
-      </Link>);
-    const howManyQuestions = 5;
-    const finalButton = renderIndex === howManyQuestions - 1 ? feedbackButton
-      : nextButton;
-    const renderNextButton = disabled ? finalButton : null;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
       <div>
         { this.handleQuestion() }
-        { renderNextButton }
+        <GameCounter counter={ countdown } />
       </div>
     );
   }

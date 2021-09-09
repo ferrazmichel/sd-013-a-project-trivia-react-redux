@@ -55,3 +55,31 @@
     transform: translate3d(4px, 0, 0);
   }
 }
+
+.header-container {
+  align-items: center;
+  background-color: #61dafb;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.575);
+  display: flex;
+  flex-flow: column wrap;
+  height: 320px;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  margin-top: 12px;
+  max-width: 450px;
+}
+
+.question-n-category {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.question-options {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

@@ -31,10 +31,16 @@ class GameHeader extends Component {
   render() {
     const { state: { gravatarHash }, props: { userName, score } } = this;
     return (
-      <header>
-        <img alt="user-gravatar" src={ `https://www.gravatar.com/avatar/${gravatarHash}` } data-testid="header-profile-picture" />
-        <h3 data-testid="header-player-name">{userName}</h3>
-        <h3 data-testid="header-score">{score}</h3>
+      <header className="header-container">
+        <div>
+          <h3 data-testid="header-player-name">{userName}</h3>
+        </div>
+        <div>
+          <img className="img-thumbnail" alt="user-gravatar" src={ `https://www.gravatar.com/avatar/${gravatarHash}` } data-testid="header-profile-picture" />
+        </div>
+        <div>
+          <h3 data-testid="header-score">{score}</h3>
+        </div>
       </header>
     );
   }
