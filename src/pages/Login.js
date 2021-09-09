@@ -44,7 +44,7 @@ class Login extends Component {
 
   goToGamePage() {
     const { history } = this.props;
-    history.push('/tela-de-jogo');
+    if (localStorage.getItem('token')) history.push('/tela-de-jogo');
   }
 
   async saveToLocalStorage() {
