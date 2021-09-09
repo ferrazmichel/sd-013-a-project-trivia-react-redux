@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class FeedbackScore extends Component {
   constructor() {
@@ -41,6 +42,22 @@ class FeedbackScore extends Component {
         <div>
           {this.numberAsserts()}
         </div>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
+        </Link>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </section>
     );
   }
