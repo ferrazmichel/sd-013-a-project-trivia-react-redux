@@ -31,7 +31,7 @@ class TelaDeFeedback extends Component {
     const { assertions, score } = JSON.parse(localStorage.getItem('state')).player;
     return (
       <div>
-        <Header />
+        <Header score={ score } />
         <p data-testid="feedback-text">{ this.feedbackMessage() }</p>
         <p>
           Você acertou
