@@ -1,7 +1,7 @@
 import { LOADING_TRUE, REQUEST_COMPLETE, REQUEST_FAIL } from '../actions';
 
 const INITIAL_STATE = {
-  loading: true,
+  loading: false,
   questions: {},
 };
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions, saveLogin } from '../redux/actions';
+import silvioSantos from '../images/silviosantos.gif';
 
 class Login extends Component {
   constructor() {
@@ -39,6 +39,11 @@ class Login extends Component {
     history.push('/config');
   }
 
+  goToGamePage() {
+    const { history } = this.props;
+    history.push('/tela-de-jogo');
+  }
+
   async saveToLocalStorage() {
     const { name, email } = this.state;
     const player = { player: { name, gravatarEmail: email, score: 0, assertions: 0 } };
@@ -49,9 +54,10 @@ class Login extends Component {
     localStorage.setItem('token', JSON.stringify(result.token));
   }
 
-  render() {
+  renderForm() {
     const { btnDisable, name, email } = this.state;
     const { sendLogin, getQuestions } = this.props;
+
     return (
       <form>
         <label htmlFor="name">
@@ -81,24 +87,35 @@ class Login extends Component {
         >
           Configurações
         </button>
-        <Link to="/tela-de-jogo">
-          <button
-            disabled={ btnDisable }
-            data-testid="btn-play"
-            type="button"
-            onClick={ async () => {
-              await this.saveToLocalStorage();
-              sendLogin(name, email);
-              await getQuestions(JSON.parse(localStorage.getItem('token')));
-            } }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          disabled={ btnDisable }
+          data-testid="btn-play"
+          type="button"
+          onClick={ async () => {
+            await this.saveToLocalStorage();
+            sendLogin(name, email);
+            await getQuestions(JSON.parse(localStorage.getItem('token')));
+            this.goToGamePage();
+          } }
+        >
+          Jogar
+        </button>
       </form>
     );
   }
+
+  render() {
+    const { loading } = this.props;
+    return (loading ? <img
+      src={ silvioSantos }
+      alt="silvio santos"
+    /> : this.renderForm());
+  }
 }
+
+const mapStateToProps = ({ questions }) => ({
+  loading: questions.loading,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   sendLogin: (name, email) => dispatch(saveLogin(name, email)),
@@ -109,4 +126,4 @@ Login.propTypes = {
   history: PropTypes.object,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
