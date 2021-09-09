@@ -22,7 +22,6 @@ class GamePage extends React.Component {
         button.className = 'alternativas selectedCerta';
       }
     });
-    // }
     console.log(target);
   }
 
