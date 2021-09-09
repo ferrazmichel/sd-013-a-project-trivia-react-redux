@@ -6,11 +6,12 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   render() {
     const { name, email } = this.props;
+    const { score } = JSON.parse(localStorage.getItem('state')).player;
     return (
       <header>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" />
         <span data-testid="header-player-name">{`Jogador: ${name}`}</span>
-        <span data-testid="header-score">Placar: 0</span>
+        <span data-testid="header-score">{`Placar: ${score}`}</span>
       </header>
     );
   }
@@ -27,6 +28,3 @@ Header.propTypes = {
 }.isRequired;
 
 export default connect(mapStateToProps)(Header);
-
-// import md5
-// <img src="https://www.gravatar.com/avatar/${emailhash}" />
