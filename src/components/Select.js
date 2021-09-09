@@ -15,6 +15,7 @@ class Select extends Component {
           name={ name }
           onChange={ onChange }
         >
+          <option value="">Qualquer</option>
           {options}
         </select>
       </label>
