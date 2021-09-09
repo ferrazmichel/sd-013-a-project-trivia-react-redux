@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { changeDisabled, fetchQuestionsThunk } from '../redux/actions/index';
 import GameTrivia from '../components/GameTrivia';
+import '../Styles/Buttons.css';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -14,12 +15,38 @@ class GamePage extends React.Component {
 
     this.fetchThunk = this.fetchThunk.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.disableBtn = this.disableBtn.bind(this);
+    // this.createBtnNext = this.createBtnNext.bind(this);
   }
 
   componentDidMount() {
     this.fetchThunk();
   }
 
+  componentDidUpdate() {
+    this.disableBtn();
+  }
+  /* async fetchQuestions() {
+
+    const questionsFetch =  await getQuestionsFetch();
+    this.setState({
+      questions: questionsFetch.results,
+      loading: false,
+    });
+  } */
+
+  disableBtn() {
+    const next = document.querySelector('#next');
+    next.disabled = true;
+    next.classList.add('nextbtn');
+    const correct = document.querySelector('#correct');
+    correct.classList.remove('buttonCorrect');
+    const incorrect = document.querySelectorAll('#incorrect');
+    incorrect.forEach((e) => {
+      e.classList.remove('buttonIncorrect');
+      e.disabled = false;
+    });
+  }
   async fetchThunk() {
     const { getQuestionsThunk } = this.props;
     await getQuestionsThunk();
@@ -46,10 +73,13 @@ class GamePage extends React.Component {
     return (
       <div>
         <Header />
-        <GameTrivia questions={ questions[index] } />
+        <GameTrivia questions={ questions[index] } create={ this.createBtnNext } />
         <button
           type="button"
           onClick={ this.handleNextQuestion }
+          id="next"
+          className="nextbtn"
+          data-testid="btn-next"
         >
           Próxima Pergunta
         </button>
