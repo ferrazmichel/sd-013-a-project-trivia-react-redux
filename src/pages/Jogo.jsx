@@ -1,24 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Header from './Header';
+// import Pergunta from '../components/Pergunta';
 
 class Jogo extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      i: 0,
+    };
+  }
+
   render() {
     const { questions } = this.props;
-    console.log(questions[0]);
+    const { i } = this.state;
     return (
       <div>
         <Header />
-        { questions.map((item, index) => (
-          <ol key={ index }>
-            <li data-testid="question-text">{ item.question }</li>
-            <li data-testid="question-category ">
-              <b>Categoria:</b>
-              { item.category}
-            </li>
-            <li data-testid="correct-answer">{ item.correct_answer }</li>
-          </ol>))}
+        <div>
+          <h1 data-testid="question-text">{questions[i].question}</h1>
+          <h2 data-testid="question-category">{questions[i].category}</h2>
+          <button type="button" data-testid="correct-answer">
+            {questions[i].correct_answer}
+          </button>
+          {questions[0].incorrect_answers.map((incorrect, index) => (
+            <p key={ index }>
+              <button type="button" data-testid={ `wrong-answer-${index}` }>
+                {incorrect}
+              </button>
+            </p>
+          ))}
+        </div>
+        <Link to="/feedback">
+          <button type="button">feedback</button>
+        </Link>
       </div>
     );
   }
