@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchTokenThunk, getLogin } from '../redux/actions';
+import { fetchTokenThunk, getLogin, setPlayer } from '../redux/actions';
 import { getGravatar } from '../services/Api';
 
 class Login extends React.Component {
@@ -44,7 +44,11 @@ class Login extends React.Component {
     const { token } = this.props;
     const imagem = getGravatar(email);
     localStorage.setItem('token', token);
-    localStorage.setItem('ranking', JSON.stringify([{ picture: imagem }]));
+    localStorage.setItem('ranking', JSON.stringify([{
+      picture: imagem,
+      name: '',
+      score: '',
+    }]));
   }
 
   async tokenThunk() {
@@ -54,11 +58,12 @@ class Login extends React.Component {
   }
 
   handleOnClick() {
-    const { email } = this.state;
+    const { email, name } = this.state;
     const imagem = getGravatar(email);
-    const { setLogin } = this.props;
+    const { setLogin, setPlayerGame } = this.props;
     this.fetchToken();
     setLogin({ ...this.state, picture: imagem });
+    setPlayerGame({ name, gravatarEmail: email });
   }
 
   render() {
@@ -112,6 +117,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setLogin: (payload) => dispatch(getLogin(payload)),
+  setPlayerGame: (payload) => dispatch(setPlayer(payload)),
   setTokenThunk: () => dispatch(fetchTokenThunk()),
 });
 
@@ -123,6 +129,7 @@ Login.propTypes = {
   setLogin: PropTypes.func.isRequired,
   setTokenThunk: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  setPlayerGame: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
