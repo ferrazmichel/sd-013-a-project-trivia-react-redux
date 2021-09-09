@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { showMilhaoAPI } from '../actions/index';
+import { decode } from '../services/localstage';
 import './pagesCSS/gamepage.css';
 
 class GamePage extends Component {
@@ -126,9 +127,13 @@ class GamePage extends Component {
     return (
       <>
         <div className="container-questions">
-          <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+          <h3 data-testid="question-text">
+            { decode(questions[numberOfQuestion].question) }
+          </h3>
         </div>
-        <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
+        <h4 data-testid="question-category">
+          { decode(questions[numberOfQuestion].type) }
+        </h4>
         { this.randomAnswer().map((answer, index) => {
           let testidButton;
           let nameButton;

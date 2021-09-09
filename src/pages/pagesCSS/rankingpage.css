@@ -4,6 +4,7 @@ h1 {
   background-color: rgb(7, 44, 99);
   justify-content: center;
   border-radius: 10px;
+  padding: 10px;
 }
 
 .main-container-ranking {
