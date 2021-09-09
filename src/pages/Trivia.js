@@ -8,6 +8,7 @@ class Trivia extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // teste
     };
     this.fetchGravater = this.fetchGravater.bind(this);
     this.gameInfo = this.gameInfo.bind(this);
