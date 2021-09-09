@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import PlayAgainButton from '../components/PlayAgainButton';
+import Performance from '../components/Performance';
 
 class Feedback extends React.Component {
   render() {
@@ -9,6 +10,7 @@ class Feedback extends React.Component {
       <div>
         <h1 data-testid="feedback-text">Feedback</h1>
         <Header />
+        <Performance />
         <PlayAgainButton testid="btn-play-again" />
         <Link to="/ranking">
           <button data-testid="btn-ranking" type="button">
