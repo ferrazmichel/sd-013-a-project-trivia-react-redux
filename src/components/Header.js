@@ -11,7 +11,12 @@ class Header extends Component {
       <div>
         <img src={ src } alt="Profile" data-testid="header-profile-picture" />
         <span data-testid="header-player-name">{`Player: ${name}`}</span>
-        <span data-testid="header-score">{`Score: ${score}`}</span>
+        <p>
+          {'Score: '}
+          <span data-testid="header-score">
+            {score}
+          </span>
+        </p>
       </div>
     );
   }
