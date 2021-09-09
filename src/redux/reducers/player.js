@@ -1,3 +1,5 @@
+// Este reducer foi depreciado
+
 import { ADD_USER } from '../actions';
 
 const initialState = {
@@ -16,3 +18,5 @@ function player(state = initialState, action) {
 }
 
 export default player;
+
+// Este reducer foi depreciado
