@@ -4,6 +4,7 @@ import {
   Game,
   Login,
   Settings,
+  Feedback,
 } from './pages';
 
 const Routes = () => (
@@ -22,6 +23,11 @@ const Routes = () => (
       exact
       path="/game"
       component={ Game }
+    />
+    <Route
+      exact
+      path="/feedback"
+      component={ Feedback }
     />
   </Switch>
 );

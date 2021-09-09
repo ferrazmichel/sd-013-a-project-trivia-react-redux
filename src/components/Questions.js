@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { updateScore } from '../redux/actions';
 
 class Questions extends Component {
@@ -129,11 +130,16 @@ class Questions extends Component {
   }
 
   handleNextQuestion() {
+    const QUESTIONS_FOUR = 4;
+    const { currentQuestion } = this.state;
     this.setState((prevState) => ({
       currentQuestion: prevState.currentQuestion + 1,
       buttonDisabled: false,
       timer: 30,
     }));
+    if (currentQuestion === QUESTIONS_FOUR) {
+      return <Redirect to="/feedback" />;
+    }
   }
 
   nextButton() {
