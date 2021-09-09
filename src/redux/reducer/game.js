@@ -1,5 +1,6 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
-  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS, SET_PLAYER } from '../actions/actionType';
+  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS, SET_PLAYER, SET_SCORE,
+} from '../actions/actionType';
 
 const INITIAL_STATE = {
   isLoading: true,
@@ -9,7 +10,7 @@ const INITIAL_STATE = {
   player: {
     name: '',
     assertions: '',
-    score: '',
+    score: 0,
     gravatarEmail: '',
   },
 };
@@ -36,6 +37,12 @@ const game = (state = INITIAL_STATE, action) => {
     localStorage.setItem('player',
       JSON.stringify({ ...state.player, ...action.payload }));
     return { ...state, player: { ...state.player, ...action.payload } };
+
+  case SET_SCORE:
+    return { ...state,
+      player: {
+        ...state.player, score: state.player.score + action.payload,
+      } };
 
   default:
     return state;
