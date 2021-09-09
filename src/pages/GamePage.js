@@ -47,6 +47,7 @@ class GamePage extends React.Component {
       e.disabled = false;
     });
   }
+
   async fetchThunk() {
     const { getQuestionsThunk } = this.props;
     await getQuestionsThunk();

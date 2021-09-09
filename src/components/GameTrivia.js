@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { changeDisabled } from '../redux/actions/index';
-import { setPoints } from '../redux/actions';
+import { changeDisabled, setPoints } from '../redux/actions/index';
+
 import '../Styles/Buttons.css';
 
 class GameTrivia extends React.Component {
@@ -15,7 +15,7 @@ class GameTrivia extends React.Component {
     this.handleclick = this.handleclick.bind(this);
     this.cronometerInterval = this.cronometerInterval.bind(this);
     this.disabledButtons = this.disabledButtons.bind(this);
-        this.calculationOfPoints = this.calculationOfPoints.bind(this);
+    this.calculationOfPoints = this.calculationOfPoints.bind(this);
   }
 
   componentDidMount() {
@@ -45,7 +45,7 @@ class GameTrivia extends React.Component {
     const next = document.querySelector('#next');
     next.disabled = false;
     next.classList.remove('nextbtn');
-     clearInterval(this.interval);
+    clearInterval(this.interval);
   }
 
   // Função recebe o tempo restante e o dificuldade.

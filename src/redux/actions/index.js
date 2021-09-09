@@ -1,8 +1,7 @@
 import { getQuestionsFetch, getToken } from '../../services/Api';
 import { GET_LOGIN, GET_QUESTIONS, GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL, GET_TOKEN, GET_TOKEN_SUCCESS,
-  GET_TOKEN_FAIL, CHANGE_DISABLED, 
-  GET_TOKEN_FAIL, SET_PLAYER,
+  GET_TOKEN_FAIL, CHANGE_DISABLED, SET_PLAYER,
   SET_SCORE } from './actionType';
 
 export const getLogin = (payload) => ({
