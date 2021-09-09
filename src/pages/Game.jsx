@@ -104,6 +104,7 @@ class Game extends Component {
     const { target } = event;
     const { questions, questionNum, timer } = this.state;
     const { difficulty } = questions[questionNum];
+    const { dispatchScore } = this.props;
     const dataAtribute = target.getAttribute('data-testid');
     const getPlayer = JSON.parse(localStorage.getItem('state'));
 
@@ -118,12 +119,13 @@ class Game extends Component {
       // target.className = wrongAnswers
     }
     this.renderShowAnswers();
+    dispatchScore(JSON.parse(localStorage.getItem('state')).player);
   }
 
   /** Função do botão próxima pergunta  */
   nextQuestion() {
     let { questionNum } = this.state;
-    const { history, dispatchScore } = this.props;
+    const { history } = this.props;
     const maxQuestions = 4;
     this.setState({
       buttonNext: false,
@@ -135,7 +137,6 @@ class Game extends Component {
     if (questionNum > maxQuestions) {
       history.push('/feedback');
     }
-    dispatchScore(JSON.parse(localStorage.getItem('state')).player.score);
   }
 
   renderQuestions() {
@@ -208,11 +209,11 @@ class Game extends Component {
   }
 
   render() {
-    const { loading, assertions, buttonNext } = this.state;
+    const { loading, buttonNext } = this.state;
     return (
       <div>
         <div>
-          <Header score={ score } assertions={ assertions } />
+          <Header />
           {
             loading ? <div>Carregando</div> : this.renderQuestions()
           }
