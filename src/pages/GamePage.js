@@ -22,10 +22,11 @@ class GamePage extends Component {
     this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
   }
 
-  componentDidMount() {
-    const { configs } = this.props;
-    const questions = mountQuestions(configs);
+  async componentDidMount() {
+    // const { configs } = this.props;
+    const questions = await mountQuestions();
     this.getQuestions(questions);
+    console.log(questions);
   }
 
   getQuestions(questions) {

@@ -34,7 +34,7 @@ class Question extends Component {
       options: allAlternatives,
       correctAnswer,
       disabled: false,
-      timerValue,
+      timerValue: 30,
     });
   }
 
@@ -89,16 +89,18 @@ class Question extends Component {
   }
 
   render() {
-    const { disabled, options, question, correctAnswer } = this.state;
+    const { disabled, options, correctAnswer, timerValue } = this.state;
+    const { question } = this.props;
+
     return (
       <>
         <h2
-          data-testid="question.category"
+          data-testid="question-category"
         >
           { question.category }
         </h2>
         <h3
-          data-testid="question.text"
+          data-testid="question-text"
         >
           { question.question }
         </h3>
@@ -111,10 +113,10 @@ class Question extends Component {
               dataTestId={
                 correct
                   ? 'correct-answer'
-                  : `ẁrong-answer-${question.incorrect_answer.indexOf(option)}`
+                  : `ẁrong-answer-${question.incorrect_answers.indexOf(option)}`
               }
               id={ correct ? 'correct' : 'incorrect' }
-              name={ option.question }
+              name={ option }
               onClick={ this.clickedOption }
               disabled={ disabled }
             />

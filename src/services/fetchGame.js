@@ -1,6 +1,6 @@
 import fetchTriviaAPI from './triviaAPI';
 
-const fetchQuestions = async (token, configs) => {
+const fetchQuestions = async (token, configs = { category: '', difficulty: '', type: '' }) => {
   const EXPIRED_CODE = 3; // Se for um token inválido é retornado código 3 na resposta
   const { category, difficulty, type } = configs;
   const END_POINT = `https://opentdb.com/api.php?amount=5&token=${token}&category=${category}&difficulty=${difficulty}&type=${type}`;
