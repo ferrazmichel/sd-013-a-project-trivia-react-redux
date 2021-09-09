@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { sendImg } from '../actions/index';
 
 class Header extends React.Component {
   constructor() {
@@ -13,9 +14,26 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { emailUser } = this.props;
+    const { emailUser, sendImage } = this.props;
     const img = md5(emailUser).toString();
     this.trocaState(img);
+    sendImage(img);
+  }
+
+  // componentWillUnmount() {
+  //   this.setRanking();
+  // }
+
+  async setRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+    const { state: { img }, props: { user, score } } = this;
+    const info = {
+      name: user,
+      score,
+      picture: `https://www.gravatar.com/avatar/${img}`,
+    };
+    const arrayInfo = [...ranking, info];
+    localStorage.setItem('ranking', JSON.stringify(arrayInfo));
   }
 
   trocaState(valor) {
@@ -44,13 +62,19 @@ class Header extends React.Component {
   }
 }
 Header.propTypes = {
+  sendImage: PropTypes.func,
   emailUser: PropTypes.string,
   user: PropTypes.string,
   score: PropTypes.number,
 }.isRequired;
+
+const mapDispatchToState = (dispatch) => ({
+  sendImage: (payload) => dispatch(sendImg(payload)),
+});
+
 const mapStateToProps = (state) => ({
   emailUser: state.login.email,
   user: state.login.login,
 });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToState)(Header);
