@@ -9,7 +9,7 @@ class GamePage extends Component {
   constructor() {
     super();
     this.state = {
-      questions: [],
+      question: [],
       questionsIndex: 0,
       hidden: true,
       loading: true,
@@ -23,13 +23,13 @@ class GamePage extends Component {
 
   componentDidMount() {
     const { configs } = this.props;
-    const questions = mountQuestions(configs);
-    this.getQuestions(questions);
+    const question = mountQuestions(configs);
+    this.getQuestions(question);
   }
 
-  getQuestions(questions) {
+  getQuestions(question) {
     this.setState({
-      questions,
+      question,
       loading: false,
     });
   }
