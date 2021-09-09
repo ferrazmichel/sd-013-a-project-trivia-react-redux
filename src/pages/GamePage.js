@@ -37,18 +37,19 @@ class GamePage extends Component {
   }
 
   render() {
-    const { question, questionsIndex, loading } = this.state;
+    const { questions, questionsIndex, loading } = this.state;
     return (
       <>
         <Header />
         {
-          loading ? <p>Loading...</p> : <Question question={ question[questionsIndex] } />
+          loading
+            ? <p>Loading...</p>
+            : <Question question={ questions[questionsIndex] } />
         }
       </>
     );
   }
 }
-
 
 const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => ({
   configs: {
@@ -61,8 +62,9 @@ const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => (
 GamePage.propTypes = {
   configs: propTypes.shape({
     difficulty: PropTypes.string,
-  cattegory: PropTypes.string,
-  type: PropTypes.string,}),
+    cattegory: PropTypes.string,
+    type: PropTypes.string,
+  }),
 }.isRequired;
 
 export default connect(mapStateToProps)(GamePage);
