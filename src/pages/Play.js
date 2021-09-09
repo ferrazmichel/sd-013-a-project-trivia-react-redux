@@ -16,6 +16,7 @@ class Play extends Component {
       questions: '',
       questionIndex: 0,
       button: false,
+      answerButton: false,
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -23,6 +24,7 @@ class Play extends Component {
     this.handleStyle = this.handleButtonStyle.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.handleButton = this.handleButton.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +57,12 @@ class Play extends Component {
         data-testid={ answer === results.correct_answer ? correctAnswer
           : `wrong-answer-${index}` }
         disabled={ button }
-        onClick={ this.handleButtonStyle }
+        // onClick={ this.handleButtonStyle }
+        // onClick={() => {
+        //   this.handleButtonStyle,
+        //   this.setState({ answerButton: true }),
+        // }}
+        onClick={ this.handleClick }
       >
         {answer}
       </button>))
@@ -98,8 +105,13 @@ class Play extends Component {
     }));
   }
 
+  handleClick() {
+    this.handleButtonStyle();
+    this.setState({ answerButton: true });
+  }
+
   render() {
-    const { questions, questionIndex } = this.state;
+    const { questions, questionIndex, answerButton } = this.state;
     if (!questions) {
       return <div>Loading...</div>;
     }
@@ -121,7 +133,11 @@ class Play extends Component {
               <div className="playquestion-answers-options">
                 { this.handleAnswers(results[questionIndex]) }
               </div>
-              <Timer nextQuestion={ this.nextQuestion } onChange={ this.handleButton } />
+              <Timer
+                nextQuestion={ this.nextQuestion }
+                onChange={ this.handleButton }
+                answerButton={ answerButton }
+              />
             </div>
           </div>
         </div>

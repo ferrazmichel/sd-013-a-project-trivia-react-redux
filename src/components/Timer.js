@@ -40,7 +40,7 @@ class Timer extends Component {
   }
 
   startTimer() {
-    const seg = 100;
+    const seg = 1000;
     this.interval = setInterval(() => {
       this.setState((prevState) => ({
         time: prevState.time - 1,
@@ -61,10 +61,11 @@ class Timer extends Component {
 
   render() {
     const { time } = this.state;
+    const { answerButton } = this.props;
     return (
       <div>
         { time }
-        {time === 0 && (
+        {(time === 0 || answerButton === true) && (
           <Button resetTime={ this.resetTime } />
         )}
       </div>
@@ -73,8 +74,9 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  answerButton: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Timer;
