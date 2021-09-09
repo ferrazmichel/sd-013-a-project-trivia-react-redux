@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ButtonNext from './ButtonNext';
+import ButtonsQuestions from './ButtonsQuestions';
 import '../App.css';
 import { handleScore } from '../redux/actions';
 
@@ -35,11 +37,14 @@ class DisplayQuestion extends Component {
       finalTime: 30,
       isAnswered: false,
       readyQuestions: [],
+      btnNext: 'btn-next-invisible',
     };
+
     this.timer = this.timer.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
     this.shuffleQuestions = this.shuffleQuestions.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.buttonNext = this.buttonNext.bind(this);
   }
 
   componentDidMount() {
@@ -93,6 +98,7 @@ class DisplayQuestion extends Component {
       classWrong: 'wrong-answer',
       isAnswered: true,
       finalTime: prevState.finalTime - 1,
+      btnNext: 'btn-next-visible',
     }));
   }
 
@@ -111,6 +117,28 @@ class DisplayQuestion extends Component {
     setTimeout(() => this.timer(t - 1), ONE_SECOND);
   }
 
+  buttonNext() {
+    const { id } = this.state;
+    const { history } = this.props;
+    const FOUR = 4;
+
+    if (id < FOUR) {
+      this.setState((previousState) => ({
+        id: previousState.id + 1,
+        classCorrect: '',
+        classWrong: '',
+        isAnswered: false,
+        finalTime: 30,
+      }), () => {
+        this.shuffleQuestions();
+        this.timer(THIRTY);
+      });
+    } else {
+      console.log('oi');
+      history.push('/feedback');
+    }
+  }
+
   render() {
     const { questions } = this.props;
     const {
@@ -119,50 +147,26 @@ class DisplayQuestion extends Component {
       classCorrect,
       classWrong,
       isAnswered,
-      finalTime } = this.state;
+      finalTime,
+      btnNext,
+    } = this.state;
     const question = questions[id];
-    const INDEX_NUM = -1;
-    let index = INDEX_NUM;
+
     return (
       <div>
         <p>{finalTime}</p>
         <h3 data-testid="question-category">{question.category}</h3>
         <h2 data-testid="question-text">{question.question}</h2>
-        <div>
-          {readyQuestions.map((alternative) => {
-            if (alternative === question.correct_answer) {
-              return (
-                <button
-                  type="button"
-                  data-testid="correct-answer"
-                  id="correct-answer"
-                  onClick={ (event) => {
-                    this.handleAnswer();
-                    this.auxScore(event);
-                  } }
-                  className={ classCorrect }
-                  disabled={ isAnswered }
-                >
-                  {alternative}
-                </button>);
-            }
-            index += 1;
-            return (
-              <button
-                key={ index }
-                type="button"
-                data-testid={ `wrong-answer-${index}` }
-                onClick={ (event) => {
-                  this.handleAnswer();
-                  this.auxScore(event);
-                } }
-                className={ classWrong }
-                disabled={ isAnswered }
-              >
-                {alternative}
-              </button>);
-          })}
-        </div>
+        <ButtonsQuestions
+          id={ id }
+          readyQuestions={ readyQuestions }
+          classCorrect={ classCorrect }
+          classWrong={ classWrong }
+          isAnswered={ isAnswered }
+          questions={ questions }
+          handleAnswer={ this.handleAnswer }
+        />
+        <ButtonNext classBtn={ btnNext } handleId={ this.buttonNext } />
       </div>
     );
   }
@@ -175,6 +179,9 @@ DisplayQuestion.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   updateScore: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
