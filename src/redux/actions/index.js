@@ -1,7 +1,11 @@
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const SUCCESS_REQUEST = 'SUCCESS_REQUEST';
 export const SAVE_USER_INFO = 'SAVE_USER_INFO';
-export const DISABLE_BUTTONS = 'DISABLE_BUTTONS';
+export const ENABLE_DISABLE_BUTTON = 'ENABLE_DISABLE_BUTTONS';
+export const RESTART_TIMER = 'RESTART_TIMER';
+export const PAUSE_TIMER = 'PAUSE_TIMER';
+export const RECORD_TIME = 'RECORD_TIME';
+export const SAVE_SCORE = 'SAVE_SCORE';
 
 export const saveUserInfo = (payload) => ({
   type: SAVE_USER_INFO,
@@ -24,6 +28,27 @@ export const fetchQuestions = (numberQuestions, token) => async (dispatch) => {
   dispatch(successRequestQuestions(resultJson.results));
 };
 
-export const disableButtons = () => ({
-  type: DISABLE_BUTTONS,
+export const disableButtons = (response) => ({
+  type: ENABLE_DISABLE_BUTTON,
+  response,
+});
+
+export const restartTimer = (response) => ({
+  type: RESTART_TIMER,
+  response,
+});
+
+export const pauseTimer = (response) => ({
+  type: PAUSE_TIMER,
+  response,
+});
+
+export const recordTime = (time) => ({
+  type: RECORD_TIME,
+  time,
+});
+
+export const saveScore = (points) => ({
+  type: SAVE_SCORE,
+  points,
 });
