@@ -98,7 +98,6 @@ class TelaDeJogo extends Component {
   }
 
   createButtons() {
-    // const answers = this.shuffleAnswers();
     const { answers } = this.state;
     const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
