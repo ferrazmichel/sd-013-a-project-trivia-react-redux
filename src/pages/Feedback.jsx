@@ -6,7 +6,7 @@ import Header from '../components/Header';
 class Feedback extends Component {
   render() {
     const answers = 3;
-    const { assertions } = JSON.parse(localStorage.getItem('state'))
+    const { assertions, score } = JSON.parse(localStorage.getItem('state'))
       .player;
     return (
       <div data-testid="feedback-text">
@@ -19,6 +19,14 @@ class Feedback extends Component {
             <span>Mandou bem!</span>
           )}
         </p>
+        <div>
+          Pontuação total:
+          <span data-testid="feedback-total-score">{ score }</span>
+        </div>
+        <div>
+          Total de acertos:
+          <span data-testid="feedback-total-question">{ assertions }</span>
+        </div>
         <Link
           to="/ranking"
           className="ui-button btn-play btn-ranking"
