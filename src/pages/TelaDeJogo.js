@@ -37,6 +37,40 @@ class TelaDeJogo extends Component {
     this.setState({ intervalId });
   }
 
+  savePoints({ target: { id } }) {
+    const { questions: { results } } = this.props;
+    const { difficulty } = results[0];
+
+    const difficultyPoints = () => {
+      const hardPoints = 3;
+      const mediumPoints = 2;
+      const easyPoints = 1;
+
+      switch (difficulty) {
+      case 'hard':
+        return hardPoints;
+
+      case 'medium':
+        return mediumPoints;
+
+      case 'easy':
+        return easyPoints;
+
+      default:
+        return 0;
+      }
+    };
+
+    if (id === 'correct') {
+      const magicMike = 10;
+      const time = 1;
+      const points = magicMike + (time * difficultyPoints());
+
+      const currentPoints = JSON.parse(localStorage.getItem('points'));
+      localStorage.setItem('points', JSON.stringify(points + currentPoints));
+    }
+  }
+
   shuffleAnswers() {
     const { questions: { results } } = this.props;
     const {
@@ -66,13 +100,17 @@ class TelaDeJogo extends Component {
         if (answer === correctAnswer) {
           return (
             <button
+              id="correct"
               data-testid="correct-answer"
               className="correct-answer"
               disabled={ buttonDisable }
               type="button"
               key={ answer }
               style={ colorBorders ? { border: '3px solid rgb(6, 240, 15)' } : null }
-              onClick={ () => this.setState({ colorBorders: true }) }
+              onClick={ (event) => {
+                this.setState({ colorBorders: true });
+                this.savePoints(event);
+              } }
             >
               { answer }
             </button>
@@ -81,12 +119,15 @@ class TelaDeJogo extends Component {
         return (
           <button
             data-testid={ `wrong-answer-${index}` }
-            className="wrond-answer"
+            className="wrong-answer"
             disabled={ buttonDisable }
             type="button"
             key={ answer }
             style={ colorBorders ? { border: '3px solid rgb(255, 0, 0)' } : null }
-            onClick={ () => this.setState({ colorBorders: true }) }
+            onClick={ (event) => {
+              this.setState({ colorBorders: true });
+              this.savePoints(event);
+            } }
           >
             { answer }
           </button>
