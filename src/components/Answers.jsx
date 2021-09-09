@@ -5,6 +5,7 @@ import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
 import Clock from './timer';
 
 import './Button.css';
+import NextButton from './NextButton';
 
 class Answers extends React.Component {
   constructor() {
