@@ -172,16 +172,15 @@ class GamePage extends Component {
           <div className="container-counter">
             <span>{ counter }</span>
           </div>
-          <div className="container-next">
-            <button
-              data-testid="btn-next"
-              onClick={ this.submitAnswer }
-              style={ { display: nextButtonAppear } }
-              type="button"
-            >
-              Next Question
-            </button>
-          </div>
+          <button
+            data-testid="btn-next"
+            className="button-next"
+            onClick={ this.submitAnswer }
+            style={ { display: nextButtonAppear } }
+            type="button"
+          >
+            Next Question
+          </button>
         </div>
       </div>
     );
