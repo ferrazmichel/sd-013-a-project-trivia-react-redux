@@ -1,95 +1,88 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import setLogin, { fetchAPI } from '../redux/actions';
+import { connect } from 'react-redux';
+import { Redirect, Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
+import { getToken } from '../redux/actions';
 
-class Login extends React.Component {
-  constructor() {
-    super();
+class Login extends Component {
+  constructor(props) {
+    super(props);
+
     this.state = {
-      login: '',
+      name: '',
       email: '',
+      shouldRedirect: false,
     };
+
     this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange({ target }) {
-    const { name, value } = target;
+  async handleSubmit(event) {
+    const { dispatchLogin } = this.props;
+    const { name, email } = this.state;
+    event.preventDefault();
+    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
+    await dispatchLogin(({ name, email, gravatar }));
+    this.setState({
+      shouldRedirect: true,
+    });
+  }
+
+  handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
   }
 
-  async handleClick() {
-    const { loginSet, fetchQuest, history } = this.props;
-    await fetchQuest();
-    const { login, email } = this.state;
-    loginSet(login, email);
-    const { token } = this.props;
-    localStorage.setItem('token', JSON.stringify(token));
-    history.push('/game');
-  }
-
   render() {
-    const { login, email } = this.state;
-    const validadeButton = login && email; // retorna true caso os campos estejam preenchidos
+    const { name, email, shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/game" />;
+
     return (
-      <main>
-        <div
-          className="login"
+      <form onSubmit={ this.handleSubmit }>
+        <input
+          data-testid="input-player-name"
+          type="text"
+          name="name"
+          placeholder="Nome"
+          value={ name }
+          onChange={ this.handleChange }
+        />
+        <input
+          data-testid="input-gravatar-email"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={ email }
+          onChange={ this.handleChange }
+        />
+        <button
+          type="submit"
+          data-testid="btn-play"
+          disabled={ name.length < 1 || email.length < 1 }
         >
-          <label htmlFor="login">
-            <input
-              data-testid="input-player-name"
-              id="login"
-              name="login"
-              value={ login }
-              onChange={ this.handleChange }
-            />
-          </label>
-        </div>
-        <div
-          className="email"
-        >
-          <label htmlFor="email">
-            <input
-              data-testid="input-gravatar-email"
-              id="email"
-              name="email"
-              value={ email }
-              onChange={ this.handleChange }
-            />
-          </label>
-        </div>
-        <div
-          className="btn"
-        >
+          Jogar
+        </button>
+
+        <Link to="/settings">
           <button
-            disabled={ !validadeButton } // retorna false caso ambos os campos estejam preenchidos
             type="button"
-            data-testid="btn-play"
-            onClick={ this.handleClick }
+            data-testid="btn-settings"
           >
-            Jogar
+            Configurações
           </button>
-        </div>
-      </main>
+        </Link>
+      </form>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  token: state.fetchToken.token,
+const mapDispatchToProps = (dispatch) => ({
+  dispatchLogin: (userInfo) => dispatch(getToken(userInfo)),
 });
 
-const mapDispatchToState = (dispatch) => ({
-  loginSet: (login, email) => dispatch(setLogin(login, email)),
-  fetchQuest: () => dispatch(fetchAPI()),
-});
+export default connect(null, mapDispatchToProps)(Login);
+
 Login.propTypes = {
-  fetchQuest: PropTypes.func.isRequired,
-  loginSet: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-  history: PropTypes.objectOf({}).isRequired,
+  dispatchLogin: PropTypes.func.isRequired,
 };
-
-export default connect(mapStateToProps, mapDispatchToState)(Login);
