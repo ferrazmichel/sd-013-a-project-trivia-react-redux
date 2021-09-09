@@ -16,6 +16,7 @@ class Game extends React.Component {
       // point: 0,
       respondido: false,
       timer: 30,
+      shuffleredQuestions: [], // criei esse array vazio para armazenar as questões ja embaralhadas
       total: 0,
     };
     this.checkClick = this.checkClick.bind(this);
@@ -23,9 +24,12 @@ class Game extends React.Component {
     this.calculateScore = this.calculateScore.bind(this);
     this.setLocalStorage = this.setLocalStorage.bind(this);
     this.nextQuestionBtn = this.nextQuestionBtn.bind(this);
+    this.shuffeQuestions = this.shuffeQuestions.bind(this);
+    this.shuffleToState = this.shuffleToState.bind(this);
   }
 
   componentDidMount() {
+    this.shuffleToState(); // a qestão é chamada aqui para já atualizar a chave shuffleredQuestions logo que o com é criado
     this.setLocalStorage(); // chamando a função assim que o componente é montado
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
@@ -111,7 +115,7 @@ class Game extends React.Component {
     return score;
   }
 
-  nextQuestionBtn() {
+  async nextQuestionBtn() {
     const { index } = this.state;
     // Gustavo Jezini : Aqui estou preparando terreno para pagina de feedBack
     const lastQuest = 4;
@@ -124,30 +128,58 @@ class Game extends React.Component {
     // até aqui......  O codigo abaixo foi desenvolvido por voces
     const number = 1000;
     this.cronometro = setInterval(this.passarTime, number);
-    this.setState((prev) => ({
+    await this.setState((prev) => ({ // o setState precisa de um await para atualizar o index antesa da linha 137
       index: prev.index + 1,
       timer: 30,
       respondido: false,
       // score: 0,
     }));
+    this.shuffleToState(); // atualiza o estado com a proxima questão embaralhada
+  }
+
+  shuffeQuestions() { // essa função retorna um array com as questoes atuais já embaralhadas
+    const { state: { index }, props: { questions } } = this;
+    const currentQuestion = questions[index];
+
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers, // destructuring das respostas corretas e incorretas
+    } = currentQuestion;
+
+    const magicNumber = 0.5;
+    const arrayNumbers = [];
+    const answers = [...incorrectAnswers, correctAnswer]; // cria um array com todas as respostas
+
+    answers.forEach((el, i) => arrayNumbers.push(i)); // popula o arrayNumbers com length do array de respostas (ex: [ 0,1,2,3 ])
+    const shuffedArray = arrayNumbers.sort(() => Math.random() - magicNumber); // embaralha o arrayNumbers ( ex: [2, 3, 1, 0])
+
+    const shuffedAnswers = []; // cria a variável para armazenar as respostas
+
+    shuffedArray.forEach((number) => {
+      shuffedAnswers.push(answers[number]); // popula shuffedAnswers com as respostas aleatorias
+    });
+    return shuffedAnswers;
+  }
+
+  shuffleToState() { // o estado é atualizado com as questões
+    const questions = this.shuffeQuestions();
+    this.setState({
+      shuffleredQuestions: questions,
+    });
   }
 
   render() {
-    const { state: { index, respondido, timer, total }, props: { questions } } = this;
+    const { state: { index, respondido, timer, total, shuffleredQuestions },
+      props: { questions } } = this;
     const currentQuestion = questions[index];
-
     const { category, question,
       correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
     } = currentQuestion;
-
     return (
       <main>
         <Header score={ total } respondido={ respondido } />
         <h2>{ timer }</h2>
-        <h2
-          data-testid="question-category"
-        >
+        <h2 data-testid="question-category">
           {category}
         </h2>
         <h3
@@ -156,7 +188,7 @@ class Game extends React.Component {
         >
           {question}
         </h3>
-        <button
+        {/* <button
           id="correct"
           type="button"
           disabled={ timer === 0 || respondido }
@@ -165,20 +197,23 @@ class Game extends React.Component {
           onClick={ this.checkClick }
         >
           {correctAnswer}
-        </button>
-        {incorrectAnswers.map((answer, i) => (
+        </button> */}
+        {shuffleredQuestions.map((answer, i) => (
           <button
+            id={ answer === correctAnswer ? 'correct' : null }
             type="button"
             key={ i }
             onClick={ (e) => this.checkClick(e) }
-            className={ respondido ? 'wrong' : '' }
+            className={ respondido && (answer === correctAnswer ? 'correct' : 'wrong') }
             disabled={ timer === 0 || respondido }
-            data-testid={ `wrong-answer-${i}` }
+            data-testid={ answer === correctAnswer
+              ? 'correct-answer' : `wrong-answer-${i}` }
           >
             {answer}
           </button>
         ))}
-        {respondido ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
+        {(respondido || timer === 0)
+          ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
       </main>
     );
   }
