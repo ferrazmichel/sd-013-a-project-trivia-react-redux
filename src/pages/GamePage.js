@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import Button from '../components/Button';
+import mountQuestions from '../services/fetchGame';
 
 class GamePage extends Component {
   constructor() {
@@ -91,7 +92,7 @@ const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => (
 });
 
 GamePage.propTypes = {
-  configs: propTypes.shape({
+  configs: PropTypes.shape({
     difficulty: PropTypes.string,
     cattegory: PropTypes.string,
     type: PropTypes.string }),

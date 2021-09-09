@@ -28,7 +28,7 @@ class Login extends Component {
   componentDidMount() {
     const state = JSON.parse(localStorage.getItem('state'));
     if (state !== null) {
-      this.btnOn(false, state);
+      this.playBtnOn(false, state);
     }
   }
 
