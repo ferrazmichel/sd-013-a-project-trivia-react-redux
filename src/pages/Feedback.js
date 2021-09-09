@@ -32,6 +32,14 @@ class Feedback extends Component {
           <span>Número de pontos: </span>
           <span data-testid="feedback-total-score">{scoreState}</span>
         </div>
+        <Link to="/">
+          <button
+            type="submit"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
+        </Link>
       </div>
     );
   }
