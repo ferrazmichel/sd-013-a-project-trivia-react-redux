@@ -2,25 +2,46 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveEmail } from '../redux/action';
+import { saveEmail, saveQuestion } from '../redux/action';
 
 class Login extends React.Component {
   constructor() {
     super();
 
     this.state = {
+      results: [],
       email: '',
       nome: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.fetchApi = this.fetchApi.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchApi();
   }
 
   onSubmitForm() {
-    const { onSubmit, history } = this.props;
-    onSubmit(this.state);
+    const { onSubmit, submitQuestion, history } = this.props;
+    const { email, nome, results } = this.state;
+    onSubmit({ email, nome });
+    submitQuestion({ results });
     history.push('/game-page');
     console.log('enviou');
+  }
+
+  fetchApi() {
+    const url = 'https://opentdb.com/api_token.php?command=request';
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => localStorage.setItem('token', (data.token)));
+
+    const token = localStorage.getItem('token');
+    fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+      .then((resp) => resp.json())
+      .then((data) => this.setState({ results: data.results }));
+    // this.setState({ shouldFetch: false });
   }
 
   handleChange({ target }) {
@@ -81,13 +102,17 @@ class Login extends React.Component {
 
 Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  submitQuestion: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => (
-  { onSubmit: (payload) => dispatch(saveEmail(payload)) }
+  {
+    onSubmit: (payload) => dispatch(saveEmail(payload)),
+    submitQuestion: (payload) => dispatch(saveQuestion(payload)),
+  }
 );
 
 export default connect(null, mapDispatchToProps)(Login);
