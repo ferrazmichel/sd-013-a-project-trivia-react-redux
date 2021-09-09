@@ -2,11 +2,13 @@
 import {
   LOGIN_SUBMIT,
   TIME_FINISHED,
+  REGISTER_GRAVATAR,
 } from '../actions';
 // declarar o estado inicial
 const initialState = {
   playerName: '',
   playerEmail: '',
+  gravatar: '',
   boolTimeout: false,
 };
 
@@ -23,6 +25,11 @@ function playerReducer(state = initialState, action) {
     return {
       ...state,
       boolTimeout: action.payload,
+    };
+  case REGISTER_GRAVATAR:
+    return {
+      ...state,
+      gravatar: action.gravatar,
     };
   default:
     return state;
