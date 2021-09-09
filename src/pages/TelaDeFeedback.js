@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import HeaderFeedback from '../components/HeaderFeedback';
+import Header from '../components/Header';
 
-export class TelaDeFeedback extends Component {
+class TelaDeFeedback extends Component {
   render() {
     return (
       <div>
-        <HeaderFeedback />
+        <Header />
       </div>
     );
   }
