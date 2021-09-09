@@ -24,6 +24,9 @@ class GameTrivia extends React.Component {
       e.classList.add('buttonIncorrect');
       e.disabled = true;
     });
+    const next = document.querySelector('#next');
+    next.disabled = false;
+    next.classList.remove('nextbtn');
   }
 
   // Função recebe o tempo restante e o dificuldade.
@@ -75,7 +78,6 @@ class GameTrivia extends React.Component {
         >
           { questions.correct_answer }
         </button>
-
       </form>
     );
   }
