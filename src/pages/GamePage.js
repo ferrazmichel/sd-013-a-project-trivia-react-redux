@@ -97,6 +97,7 @@ GamePage.propTypes = {
   loading: PropTypes.bool.isRequired,
   change: PropTypes.func.isRequired,
   disabledButton: PropTypes.bool.isRequired,
+  history: PropTypes.arrayOf({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
