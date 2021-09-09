@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import QuestionCard from '../components/QuestionCard';
-import Header from '../components/Header';
+import { Header, QuestionCard } from '../components';
 import {
   disableButtons,
   fetchQuestions,

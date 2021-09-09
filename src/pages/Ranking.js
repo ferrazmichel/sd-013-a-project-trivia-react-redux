@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayAgainButton from '../components/PlayAgainButton';
+import { PlayAgainButton } from '../components';
 
 class Ranking extends React.Component {
   render() {
