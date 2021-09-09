@@ -1,0 +1,47 @@
+.main {
+  align-items: center;
+  background-color: var(--primary);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100vh;
+  justify-items: center;
+  width: 100vw;
+}
+
+.main > article {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.main > article > img {
+  width: 50%;
+}
+
+.form {
+  display: grid;
+  grid-template-rows: 1fr 1fr 2fr 1fr;
+  height: 50%;
+}
+
+.input {
+  border: 0;
+  height: 50%;
+}
+
+.input::placeholder {
+  text-align: center;
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+}
