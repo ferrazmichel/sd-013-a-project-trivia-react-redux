@@ -35,5 +35,3 @@ Header.propTypes = {
 
 export default connect(mapStateToProps)(Header);
 
-// import md5
-// <img src="https://www.gravatar.com/avatar/${emailhash}" />
