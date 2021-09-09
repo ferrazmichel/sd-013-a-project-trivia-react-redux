@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-// import { getQuestionsFetch } from '../services/Api';
-import { fetchQuestionsThunk } from '../redux/actions/index';
+import { changeDisabled, fetchQuestionsThunk } from '../redux/actions/index';
 import GameTrivia from '../components/GameTrivia';
 import '../Styles/Buttons.css';
 
@@ -14,7 +13,6 @@ class GamePage extends React.Component {
       index: 0,
     };
 
-    // this.fetchQuestions = this.fetchQuestions.bind(this);
     this.fetchThunk = this.fetchThunk.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.disableBtn = this.disableBtn.bind(this);
@@ -56,6 +54,8 @@ class GamePage extends React.Component {
   }
 
   handleNextQuestion() {
+    const { change } = this.props;
+    let { disabledButton } = this.props;
     const { index } = this.state;
     const FOUR = 4;
     if (index === FOUR) {
@@ -63,6 +63,8 @@ class GamePage extends React.Component {
     } else {
       this.setState({ index: index + 1 });
     }
+    disabledButton = false;
+    change(disabledButton);
   }
 
   render() {
@@ -92,16 +94,20 @@ GamePage.propTypes = {
   getQuestionsThunk: PropTypes.func.isRequired,
   questions: PropTypes.shape({}).isRequired,
   loading: PropTypes.bool.isRequired,
+  change: PropTypes.func.isRequired,
+  disabledButton: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   loading: state.game.isLoading,
   token: state.game.token,
+  disabledButton: state.game.disabledButton,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestionsThunk: () => dispatch(fetchQuestionsThunk()),
+  change: (payload) => dispatch(changeDisabled(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

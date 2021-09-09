@@ -1,5 +1,6 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
-  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS, SET_PLAYER, SET_SCORE,
+  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS,
+  CHANGE_DISABLED, SET_PLAYER, SET_SCORE,
 } from '../actions/actionType';
 import { setLocalStorage } from '../../services/localStoreService';
 
@@ -8,6 +9,7 @@ const INITIAL_STATE = {
   erro: null,
   questions: '',
   token: '',
+  disabledButton: false,
   player: {
     name: '',
     assertions: '',
@@ -33,6 +35,10 @@ const game = (state = INITIAL_STATE, action) => {
   case GET_TOKEN_SUCCESS:
     return { ...state,
       token: action.payload };
+
+  case CHANGE_DISABLED:
+    return { ...state,
+      disabledButton: action.payload };
 
   case SET_PLAYER:
     setLocalStorage('state', { player: { ...state.player, ...action.payload } });
