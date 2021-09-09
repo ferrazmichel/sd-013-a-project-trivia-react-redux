@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getLogin } from '../redux/actions';
-import { getToken, getGravatar } from '../services/Api';
+import { fetchTokenThunk, getLogin, setPlayer } from '../redux/actions';
+import { getGravatar } from '../services/Api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,11 +18,19 @@ class Login extends React.Component {
     this.enableButton = this.enableButton.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
+    this.tokenThunk = this.tokenThunk.bind(this);
   }
 
-  handleChange({ target }) {
-    this.setState({ [target.name]: target.value });
-    this.enableButton();
+  componentDidMount() {
+    this.tokenThunk();
+  }
+
+  handleChange(event) {
+    const { name, value } = event.target;
+
+    this.setState({ [name]: value }, () => {
+      this.enableButton();
+    });
   }
 
   enableButton() {
@@ -34,21 +42,32 @@ class Login extends React.Component {
     }
   }
 
-  async fetchToken() {
-    const { email } = this.state;
-    const result = await getToken();
+  fetchToken() {
+    const { email, name } = this.state;
+    const { token, score } = this.props;
     const imagem = getGravatar(email);
-    console.log(imagem);
-    localStorage.setItem('token', result.token);
-    localStorage.setItem('ranking', JSON.stringify([{ picture: imagem }]));
+    localStorage.setItem('token', token);
+    localStorage.setItem('ranking', JSON.stringify([{
+      picture: imagem,
+      name,
+      score,
+    }]));
+  }
+
+  async tokenThunk() {
+    const { setTokenThunk, token } = this.props;
+    await setTokenThunk();
+    localStorage.setItem('token', token);
   }
 
   handleOnClick() {
-    const { email } = this.state;
+    const { email, name } = this.state;
+    const { score } = this.props;
     const imagem = getGravatar(email);
-    const { setLogin } = this.props;
+    const { setLogin, setPlayerGame } = this.props;
     this.fetchToken();
     setLogin({ ...this.state, picture: imagem });
+    setPlayerGame({ name, gravatarEmail: email, score });
   }
 
   render() {
@@ -102,10 +121,21 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   setLogin: (payload) => dispatch(getLogin(payload)),
+  setPlayerGame: (payload) => dispatch(setPlayer(payload)),
+  setTokenThunk: () => dispatch(fetchTokenThunk()),
+});
+
+const mapStateToProps = (state) => ({
+  token: state.game.token,
+  score: state.user.score,
 });
 
 Login.propTypes = {
   setLogin: PropTypes.func.isRequired,
+  setTokenThunk: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  setPlayerGame: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

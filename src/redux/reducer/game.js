@@ -1,10 +1,21 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS,
-  GET_QUESTIONS_FAIL } from '../actions/actionType';
+  GET_QUESTIONS_FAIL, GET_TOKEN_SUCCESS,
+  CHANGE_DISABLED, SET_PLAYER, SET_SCORE,
+} from '../actions/actionType';
+import { setLocalStorage } from '../../services/localStoreService';
 
 const INITIAL_STATE = {
   isLoading: true,
   erro: null,
   questions: '',
+  token: '',
+  disabledButton: false,
+  player: [{
+    name: '',
+    assertions: '',
+    score: 0,
+    gravatarEmail: '',
+  }],
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -20,6 +31,27 @@ const game = (state = INITIAL_STATE, action) => {
       isLoading: false,
       erro: 'Problema para carregar as perguntas',
     };
+
+  case GET_TOKEN_SUCCESS:
+    return { ...state,
+      token: action.payload };
+
+  case CHANGE_DISABLED:
+    return { ...state,
+      disabledButton: action.payload };
+
+  case SET_PLAYER:
+    setLocalStorage('state', { player: { ...state.player, ...action.payload } });
+    return { ...state, player: { ...state.player, ...action.payload } };
+
+  case SET_SCORE:
+    setLocalStorage('state', { player: {
+      ...state.player, score: state.player.score + action.payload,
+    } });
+    return { ...state,
+      player: {
+        ...state.player, score: state.player.score + action.payload,
+      } };
 
   default:
     return state;
