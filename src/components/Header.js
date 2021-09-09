@@ -5,8 +5,8 @@ import md5 from 'crypto-js/md5';
 
 class Header extends Component {
   render() {
-    const { name, email } = this.props;
-    const { score } = JSON.parse(localStorage.getItem('state')).player;
+    const { name, email, score } = this.props;
+    // const { score } = JSON.parse(localStorage.getItem('state')).player;
     return (
       <header>
         <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` } alt="profile" />

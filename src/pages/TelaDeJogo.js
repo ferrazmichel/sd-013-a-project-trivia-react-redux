@@ -75,9 +75,8 @@ class TelaDeJogo extends Component {
   }
 
   savePoints({ target: { id } }) {
-    const { questionNumber } = this.state;
+    const { questionNumber, time } = this.state;
     const { questions: { results } } = this.props;
-    const { time } = this.state;
     const { difficulty } = results[questionNumber];
 
     const difficultyPoints = () => {
@@ -88,13 +87,10 @@ class TelaDeJogo extends Component {
       switch (difficulty) {
       case 'hard':
         return hardPoints;
-
       case 'medium':
         return mediumPoints;
-
       case 'easy':
         return easyPoints;
-
       default:
         return 0;
       }
@@ -103,7 +99,6 @@ class TelaDeJogo extends Component {
     if (id === 'correct') {
       const magicMike = 10;
       const points = magicMike + (time * difficultyPoints());
-
       const { player } = JSON.parse(localStorage.getItem('state'));
       const updatePlayer = {
         player: { ...player,
@@ -140,7 +135,6 @@ class TelaDeJogo extends Component {
     const { buttonDisable, colorBorders } = this.state;
     const { questions: { results } } = this.props;
     const { correct_answer: correctAnswer } = results[questionNumber];
-
     return (
       answers.map((answer, index) => {
         if (answer === correctAnswer) {
@@ -200,11 +194,12 @@ class TelaDeJogo extends Component {
   }
 
   renderContent() {
+    const { score } = JSON.parse(localStorage.getItem('state')).player;
     const { time, questionNumber, nextButton } = this.state;
     const { questions: { results } } = this.props;
     return (
       <>
-        <Header />
+        <Header score={ score } />
         <section>
           <p data-testid="question-category">{ results[questionNumber].category }</p>
           <p data-testid="question-text">{ results[questionNumber].question }</p>
