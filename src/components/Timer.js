@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Button from './Button';
 
 const TIME = 30;
 const INITIAL_TIME = {
@@ -60,25 +61,22 @@ class Timer extends Component {
 
   render() {
     const { time } = this.state;
+    const { answerButton } = this.props;
     return (
       <div>
         { time }
-        {time === 0 && (
-          <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ this.resetTime }
-          >
-            Próxima
-          </button>)}
+        {(time === 0 || answerButton === true) && (
+          <Button resetTime={ this.resetTime } />
+        )}
       </div>
     );
   }
 }
 
 Timer.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  answerButton: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Timer;
