@@ -26,6 +26,7 @@
   border-radius: 10px;
   color: aliceblue;
   display: flex;
+  font-size: 22px;
   flex-direction: row;
   flex-wrap: wrap;
   height: 100%;
@@ -39,6 +40,7 @@
   color: aliceblue;
   display: flex;
   font-weight: 500;
+  font-size: 19px;
   margin: 10px auto;
   padding: 30px;
   width: 45%;
