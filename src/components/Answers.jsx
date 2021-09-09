@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
 import './Button.css';
-import NextButton from './NextButton';
+// import NextButton from './NextButton';
 
 class Answers extends React.Component {
   constructor() {
