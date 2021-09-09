@@ -24,12 +24,11 @@ class FeedbackMessage extends React.Component {
 }
 
 const mapStateToProps = ({ player }) => ({
-  score: player.score,
   assertions: player.assertions,
 });
 
 FeedbackMessage.propTypes = {
-  assertions: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(FeedbackMessage);
