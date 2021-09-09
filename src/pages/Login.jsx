@@ -23,7 +23,8 @@ class Login extends React.Component {
     this.state = {
       disable: true,
       email: '',
-      username: '',
+      name: '',
+      score: '',
       redirect: false,
     };
 
@@ -40,8 +41,8 @@ class Login extends React.Component {
   }
 
   verifyUserLogin() {
-    const { username, email } = this.state;
-    const shoudRedirectBollean = !validateLoginFactory(email, username);
+    const { name, email } = this.state;
+    const shoudRedirectBollean = !validateLoginFactory(email, name);
     this.disableAndAbleButton(shoudRedirectBollean);
   }
 
@@ -74,7 +75,7 @@ class Login extends React.Component {
         <form>
           <Input
             type="text"
-            name="username"
+            name="name"
             id="player-name"
             labelText="Usuário: "
             testID="input-player-name"
@@ -97,8 +98,8 @@ class Login extends React.Component {
             disabled={ disable }
             onClick={ this.handleClick }
           />
-          <Link to="/settings">
-            <button type="button" data-testid="btn-settings">Configurações</button>
+          <Link to="/settings" data-testid="btn-settings">
+            Configurações
           </Link>
         </form>
       </header>

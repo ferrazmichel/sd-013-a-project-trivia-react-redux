@@ -15,14 +15,14 @@ export const fetchTokenApi = async () => {
 
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-const validateUsername = (username) => username.length > 1;
+const validateUsername = (name) => name.length > 1;
 
 export const savePlayerDataOnLocalStorage = (state) => {
-  const { username, email } = state;
-  const user = { username, email };
+  const { name, email, score } = state;
+  const user = { name, email, score };
   localStorage.setItem('player', JSON.stringify(user));
 };
 
-export const validateLoginFactory = (email, username) => (
-  validateEmail(email) && validateUsername(username)
+export const validateLoginFactory = (email, name) => (
+  validateEmail(email) && validateUsername(name)
 );
