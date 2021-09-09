@@ -20,7 +20,7 @@ class Header extends React.Component {
     const hash = MD5(gravatarPicture).toString();
 
     const getStorage = JSON.parse(localStorage.getItem('state'));
-    const valor = getStorage.player.score;
+    const value = getStorage.player.score;
 
     return (
       <header className="game-header">
@@ -40,7 +40,7 @@ class Header extends React.Component {
           Pontos:
           {' '}
           <span id="value" data-testid={ testid }>
-            { valor }
+            { value }
           </span>
         </label>
       </header>

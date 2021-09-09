@@ -73,9 +73,9 @@ class Responses extends React.Component {
   sumAssertions() {
     const storage = (JSON.parse(localStorage.getItem('state')));
 
-    const acertos = storage.player.assertions + 1;
+    const rightAnswers = storage.player.assertions + 1;
 
-    JSON.stringify((storage.player.assertions) = acertos);
+    JSON.stringify((storage.player.assertions) = rightAnswers);
     localStorage.setItem('state', JSON.stringify(storage));
   }
 

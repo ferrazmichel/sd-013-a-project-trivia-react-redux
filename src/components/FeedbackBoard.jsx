@@ -12,9 +12,34 @@ class FeedbackBoard extends React.Component {
   }
 
   render() {
+    const getStorage = JSON.parse(localStorage.getItem('state'));
+    const value = getStorage.player.score;
+    const assert = getStorage.player.assertions;
     return (
       <div>
-        {this.handleResponse()}
+        <div>
+          {this.handleResponse()}
+        </div>
+        <div>
+          <label htmlFor="value">
+            Pontuação:
+            <span id="value" data-testid="feedback-total-score">
+              {' '}
+              { value }
+            </span>
+          </label>
+        </div>
+        <div>
+          <label htmlFor="assert">
+            Você acertou:
+            {' '}
+            <span id="assert" data-testid="feedback-total-question">
+              { assert }
+              {' '}
+            </span>
+            Questões
+          </label>
+        </div>
       </div>
     );
   }
