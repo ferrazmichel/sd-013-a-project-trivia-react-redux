@@ -86,7 +86,7 @@ class GamePage extends Component {
         element.style.border = '1px solid black';
       });
     const INTERVAL = 1000;
-    const TIMEOUT = 30000;
+    const TIMEOUT = 31000;
     const cronoTimeout = setTimeout(this.handleColorChange, TIMEOUT);
     const cronoInterval = setInterval(() => {
       this.setState(({ counter }) => ({ counter: counter - 1 }));

@@ -71,9 +71,10 @@
 
 h4 {
   display: flex;
-  margin: auto;
+  margin: 0 auto 0;
   opacity: 10%;
   width: 45%;
+  visibility: hidden;
 }
 
 
