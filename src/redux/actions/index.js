@@ -1,33 +1,24 @@
-import { fetchToken } from '../../API/api';
+export const LOGIN = 'LOGIN';
+export const REQUEST_API = 'REQUEST_API';
+export const SUCCESS_API = 'SUCCESS_API';
+const setLogin = (login, email) => ({
+  type: LOGIN, login, email,
+});
+export default setLogin;
 
-export const SAVE_TOKEN = 'SAVE_TOKEN';
-export const SAVE_ERROR_TOKEN = 'SAVE_ERROR_TOKEN';
+export const requestApi = () => ({ type: REQUEST_API });
 
-export const saveToken = (payload) => ({
-  type: SAVE_TOKEN,
-  payload,
+export const finishAPI = (token) => ({
+  type: SUCCESS_API,
+  token,
 });
 
-export const saveErrorToken = (payload) => ({
-  type: SAVE_ERROR_TOKEN,
-  payload,
-});
-
-const getToken = (userInfo) => (
-  async (dispatch) => {
-    // dispatch(resetGameState());
-    // dispatch(registerUser(userInfo));
-    const lsData = JSON.stringify({ player: { ...userInfo, assertions: 0, score: 0 } });
-    localStorage.state = lsData;
-    // dispatch(isFetchingToken());
-    try {
-      const json = await fetchToken();
-      localStorage.token = json.token;
-      return dispatch(saveToken(json.token));
-    } catch ({ message }) {
-      return dispatch(saveErrorToken(message));
-    }
-  }
-);
-
-export default getToken;
+export function fetchAPI() {
+  return (dispatch) => {
+    dispatch(requestApi);
+    return fetch('https://opentdb.com/api_token.php?command=request')
+      .then((response) => response.json())
+      .then((data) => data.token)
+      .then((token) => dispatch(finishAPI(token)));
+  };
+}
