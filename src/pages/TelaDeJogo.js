@@ -38,6 +38,12 @@ class TelaDeJogo extends Component {
     this.setState({ buttonDisable: true, colorBorders: true, nextButton: true });
   }
 
+  resetTimer() {
+    this.setState({
+      buttonDisable: false, colorBorders: false, time: 30, nextButton: false });
+    this.counter();
+  }
+
   checkCounter() {
     const { time } = this.state;
     if (time <= 1) {
@@ -54,11 +60,18 @@ class TelaDeJogo extends Component {
   }
 
   nextQuestion() {
-    this.setState(({ questionNumber }) => (
-      { questionNumber: questionNumber + 1 }
-    ), () => {
-      this.shuffleAnswers();
-    });
+    const { questionNumber } = this.state;
+    const { history } = this.props;
+    const LAST_QUESTION = 4;
+    if (questionNumber < LAST_QUESTION) {
+      this.setState((prevState) => (
+        { questionNumber: prevState.questionNumber + 1 }
+      ), () => {
+        this.shuffleAnswers();
+      });
+    } else {
+      history.push('/tela-de-feedback');
+    }
   }
 
   savePoints({ target: { id } }) {
@@ -172,6 +185,7 @@ class TelaDeJogo extends Component {
         type="button"
         onClick={ () => {
           this.nextQuestion();
+          this.resetTimer();
         } }
         data-testid="btn-next"
       >
