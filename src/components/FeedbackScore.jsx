@@ -50,7 +50,6 @@ class FeedbackScore extends Component {
             Jogar novamente
           </button>
         </Link>
-        {/* Confirmar o Link to e acrescentar o nome da página */}
         <Link to="/ranking">
           <button
             type="button"
