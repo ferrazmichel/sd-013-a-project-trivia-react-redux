@@ -84,12 +84,13 @@ class GamePage extends React.Component {
   }
 
   handleNextQuestion() {
-    const { change } = this.props;
+    const { change, history } = this.props;
     let { disabledButton } = this.props;
     const { index } = this.state;
     const FOUR = 4;
     if (index === FOUR) {
       this.setState({ index: 4 });
+      history.push('/feedback');
     } else {
       this.setState({ index: index + 1 });
     }
@@ -129,6 +130,7 @@ GamePage.propTypes = {
   loading: PropTypes.bool.isRequired,
   change: PropTypes.func.isRequired,
   disabledButton: PropTypes.bool.isRequired,
+  history: PropTypes.arrayOf({}).isRequired,
   setPointsClink: PropTypes.func.isRequired,
 };
 
