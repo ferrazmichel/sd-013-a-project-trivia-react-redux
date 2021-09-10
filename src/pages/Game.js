@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { Header, QuestionCard } from '../components';
 import {
@@ -8,16 +9,18 @@ import {
   pauseTimer,
   restartTimer,
 } from '../redux/actions';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentQuestion: 0,
-      disabledButton: 'none',
+      isHidden: true,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleDisable = this.handleDisable.bind(this);
+    this.setButtonVisibility = this.setButtonVisibility.bind(this);
+    this.saveRanking = this.saveRanking.bind(this);
   }
 
   componentDidMount() {
@@ -30,9 +33,10 @@ class Game extends React.Component {
     return localStorage.getItem('token');
   }
 
-  handleDisable() {
+  setButtonVisibility() {
+    const { isHidden } = this.state;
     this.setState({
-      disabledButton: 'inline-block',
+      isHidden: !isHidden,
     });
   }
 
@@ -41,7 +45,7 @@ class Game extends React.Component {
     const { currentQuestion } = this.state;
     const { disable, handleRestart, handlePause } = this.props;
     if (currentQuestion <= penultIndex) {
-      disable(false);
+      disable(false); // habilita as alternativas ao clicar em prox
       handleRestart(true);
       handlePause(false);
       this.setState({
@@ -49,14 +53,32 @@ class Game extends React.Component {
       });
     } else {
       const { history } = this.props;
+      this.saveRanking();
       history.push('/feedback');
     }
-    this.handleDisable();
+    this.setButtonVisibility(); // desabilita o botão de prox após clicar em prox
+  }
+
+  saveRanking() {
+    const { email, name, score } = this.props;
+    const hash = md5(email).toString();
+    const picture = `https://www.gravatar.com/avatar/${hash}`;
+    const rankObj = {
+      name,
+      score,
+      picture,
+    };
+    const previousRanking = JSON.parse(localStorage.getItem('ranking'));
+    if (previousRanking !== null) {
+      localStorage.ranking = JSON.stringify([...previousRanking, rankObj]);
+    } else {
+      localStorage.ranking = JSON.stringify([rankObj]);
+    }
   }
 
   render() {
     const { questions } = this.props;
-    const { currentQuestion, disabledButton } = this.state;
+    const { currentQuestion, isHidden } = this.state;
     if (questions.length === 0) {
       return <p>Loading</p>;
     }
@@ -67,12 +89,15 @@ class Game extends React.Component {
         <Header />
         <QuestionCard
           questionData={ questions[currentQuestion] }
-          nextQuestion={ this.handleDisable }
+          qstIndex={ currentQuestion }
+          setButtonVisibility={ this.setButtonVisibility }
+
         />
+        <Timer setButtonVisibility={ this.setButtonVisibility } />
         <button
           type="button"
           data-testid="btn-next"
-          style={ { display: `${disabledButton}` } }
+          hidden={ isHidden }
           onClick={ this.handleClick }
         >
           Próxima pergunta
@@ -91,8 +116,11 @@ const mapDispatchToProps = (dispatch) => ({
   handlePause: (response) => dispatch(pauseTimer(response)),
 });
 
-const mapStateToProps = ({ questionsReducer }) => ({
+const mapStateToProps = ({ questionsReducer, player }) => ({
   questions: questionsReducer.questions,
+  email: player.gravatarEmail,
+  name: player.name,
+  score: player.score,
 });
 
 Game.propTypes = {
@@ -104,6 +132,9 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

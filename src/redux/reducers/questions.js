@@ -5,6 +5,7 @@ import {
   RESTART_TIMER,
   PAUSE_TIMER,
   RECORD_TIME,
+  CLEAR_STORE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -47,6 +48,10 @@ const questionsReducer = (state = INITIAL_STATE, { type, payload, response, time
     return {
       ...state,
       timer: time,
+    };
+  case CLEAR_STORE:
+    return {
+      ...INITIAL_STATE,
     };
   default:
     return state;

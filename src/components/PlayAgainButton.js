@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { returnInitialState } from '../redux/actions';
 
-export default class PlayAgainButton extends Component {
+class PlayAgainButton extends Component {
   render() {
-    const { testid } = this.props;
+    const { testid, clearStore } = this.props;
     return (
       <Link to="/">
-        <button data-testid={ testid } type="button">
+        <button onClick={ clearStore } data-testid={ testid } type="button">
           Jogar novamente
         </button>
       </Link>
@@ -17,4 +19,11 @@ export default class PlayAgainButton extends Component {
 
 PlayAgainButton.propTypes = {
   testid: PropTypes.string.isRequired,
+  clearStore: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  clearStore: () => dispatch(returnInitialState()),
+});
+
+export default connect(null, mapDispatchToProps)(PlayAgainButton);

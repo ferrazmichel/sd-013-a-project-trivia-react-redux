@@ -27,7 +27,7 @@ const mapStateToProps = ({ player }) => ({
 
 Performance.propTypes = {
   score: PropTypes.number.isRequired,
-  assertions: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Performance);
