@@ -2,89 +2,173 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
+import { savePlayerDataOnLocalStorage } from '../pages/pageFunctions/loginFuncs';
+
 import './Button.css';
-/* import NextButton from './NextButton'; */
+
+const answersScore = {
+  easy: 1,
+  medium: 2,
+  hard: 3,
+};
 
 class Answers extends React.Component {
   constructor() {
     super();
     this.state = {
       score: 0,
+      assertions: 0,
       disable: false,
       correctColor: 'defaultColor',
       wrongColor: 'defaultColor',
       currentCount: 30,
+      hide: false,
     };
 
     this.addScoreOnClick = this.addScoreOnClick.bind(this);
-    this.addScoreInThisComponent = this.addScoreInThisComponent.bind(this);
+    this.disableButtom = this.disableButtom.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.verifyClock = this.verifyClock.bind(this);
+    this.Timer = this.Timer.bind(this);
+    this.setTimer = this.setTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.clearIntervalTimer = this.clearIntervalTimer.bind(this);
+    this.nextQuestionOnClick = this.nextQuestionOnClick.bind(this);
+    this.showNextButton = this.showNextButton.bind(this);
     this.resetTimeNext = this.resetTimeNext.bind(this);
   }
 
   componentDidMount() {
-    const SECOND_1 = 1000;
-    this.intervalId = setInterval(this.timer.bind(this), SECOND_1);
+    this.Timer();
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
-  addScoreInThisComponent() {
+  setTimer(callback) {
     this.setState((prevState) => ({
-      score: prevState.score + 1,
-    }));
+      currentCount: prevState.currentCount - 1,
+    }), callback);
   }
 
-  async addScoreOnClick() {
-    await this.addScoreInThisComponent();
-    const { addScoreOnStore } = this.props;
-    const { score } = this.state;
-    addScoreOnStore(score);
-  }
-
-  timer() {
+  clearIntervalTimer() {
     const { currentCount } = this.state;
     if (currentCount < 1) {
-      this.setState({ disable: true });
-      clearInterval(this.intervalId);
-    } else {
-      this.setState({
-        currentCount: currentCount - 1,
-      });
+      clearInterval(this.gameTimer);
+      this.disableButtom();
     }
+  }
+
+  nextQuestionOnClick() {
+    const { nextQuestion } = this.props;
+    nextQuestion();
+    this.setState({
+      disable: false,
+      correctColor: 'defaultColor',
+      wrongColor: 'defaultColor',
+      hide: false,
+    });
+    this.resetTimeNext();
   }
 
   resetTimeNext() {
     this.setState({
       currentCount: 30,
     });
+    this.Timer();
   }
 
-  pauseTime() {
-    clearInterval(this.intervalId);
+  stopTimer() {
+    return clearInterval(this.gameTimer);
   }
 
-  handleClick({ target }, correctAnswer) {
-    const { funcDisable } = this.props;
-    if (target.value === correctAnswer) {
-      this.addScoreOnClick();
-    }
+  Timer() {
+    const INTERVAL_SECOND = 1000;
+    this.gameTimer = setInterval(() => {
+      this.setTimer(this.clearIntervalTimer);
+    }, INTERVAL_SECOND);
+  }
 
+  disableButtom() {
     this.setState({
       disable: true,
       correctColor: 'correctColor',
       wrongColor: 'wrongColor',
     });
+  }
 
-    this.pauseTime();
-    funcDisable();
+  verifyClock() {
+    this.disableButtom();
+  }
+
+  addScoreOnClick(clock, difficulty) {
+    const { score } = this.state;
+    const { easy, medium, hard } = answersScore;
+    const difficulties = Object.keys(answersScore).find((key) => key === difficulty);
+    let scoreValue;
+    switch (difficulties) {
+    case 'easy':
+      scoreValue = easy;
+      break;
+    case 'medium':
+      scoreValue = medium;
+      break;
+    case 'hard':
+      scoreValue = hard;
+      break;
+    default:
+      break;
+    }
+    const tenScore = 10;
+    const result = score + (tenScore + (clock * scoreValue));
+    const getPlayer = JSON.parse(localStorage.getItem('state')).player;
+    console.log(getPlayer);
+    this.setState((prevState) => (
+      {
+        score: result,
+        assertions: prevState.assertions + 1,
+      }
+    ), () => {
+      const { assertions } = this.state;
+      const newPlayer = {
+        ...getPlayer,
+        score: result,
+        assertions,
+      };
+      savePlayerDataOnLocalStorage(newPlayer);
+    });
+    const { addScoreOnStore } = this.props;
+    addScoreOnStore(result);
+  }
+
+  showNextButton() {
+    this.setState({
+      hide: true,
+    });
+  }
+
+  handleClick({ target }, correctAnswer, count) {
+    const { difficulty } = this.props;
+    if (target.value === correctAnswer) {
+      this.addScoreOnClick(count, difficulty);
+    }
+    this.stopTimer();
+    this.disableButtom();
+    this.showNextButton();
+  }
+
+  renderButton() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => this.nextQuestionOnClick() }
+      >
+        Próxima
+      </button>
+    );
   }
 
   render() {
     const { answers, correctAnswer } = this.props;
-    const { correctColor, wrongColor, disable, currentCount } = this.state;
+    const { correctColor, wrongColor, disable, currentCount, hide } = this.state;
     return (
       <div>
         {answers.map((answer, index) => (
@@ -93,27 +177,40 @@ class Answers extends React.Component {
             disabled={ disable }
             key={ answer }
             value={ answer }
-            data-testid={ correctAnswer === answers[index]
-              ? 'correct-answer' : `wrong-answer-${index}` }
-            onClick={ (e) => this.handleClick(e, correctAnswer) }
+            data-testid={
+              correctAnswer === answers[index]
+                ? 'correct-answer' : `wrong-answer-${index}`
+            }
+            onClick={ (e) => this.handleClick(e, correctAnswer, currentCount) }
             className={ correctAnswer === answers[index] ? correctColor : wrongColor }
+            difficulty={ answer.difficulty }
           >
             {answer}
           </button>))}
-        { Number(currentCount) }
-        {/* <NextButton /> */}
+        <p>
+          { currentCount }
+        </p>
+        { hide ? this.renderButton() : null }
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  count: state.ScoreReducer.count,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   addScoreOnStore: (payload) => dispatch(saveScoreOnStore(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(Answers);
+export default connect(mapStateToProps, mapDispatchToProps)(Answers);
+
+const { array, string, number } = PropTypes;
 
 Answers.propTypes = {
-  answers: PropTypes.array,
-  correctAnswer: PropTypes.array,
+  answers: array,
+  correctAnswer: array,
+  difficulty: string,
+  count: number,
 }.isRequired;

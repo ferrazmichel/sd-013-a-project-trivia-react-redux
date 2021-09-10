@@ -22,9 +22,10 @@ class Login extends React.Component {
 
     this.state = {
       disable: true,
-      email: '',
+      gravatarEmail: '',
       name: '',
-      score: '',
+      score: 0,
+      assertions: 0,
       redirect: false,
     };
 
@@ -41,8 +42,8 @@ class Login extends React.Component {
   }
 
   verifyUserLogin() {
-    const { name, email } = this.state;
-    const shoudRedirectBollean = !validateLoginFactory(email, name);
+    const { name, gravatarEmail } = this.state;
+    const shoudRedirectBollean = !validateLoginFactory(gravatarEmail, name);
     this.disableAndAbleButton(shoudRedirectBollean);
   }
 
@@ -65,7 +66,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { username, email, disable, redirect } = this.state;
+    const { username, gravatarEmail, disable, redirect } = this.state;
     if (redirect) return <Redirect to="/game" />;
 
     return (
@@ -84,12 +85,12 @@ class Login extends React.Component {
           />
           <Input
             type="email"
-            name="email"
+            name="gravatarEmail"
             id="player-email"
             labelText="E-mail: "
             testID="input-gravatar-email"
             onChange={ this.handleChange }
-            value={ email }
+            value={ gravatarEmail }
           />
           <Button
             id="login-submit"

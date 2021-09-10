@@ -1,8 +1,7 @@
-/* eslint-disable react/jsx-closing-tag-location */
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import {} from '../redux/actions/saveCurPlayerScore';
 import { fetchQuestions } from '../redux/actions/fetchActions';
 import Answers from './Answers';
 
@@ -10,10 +9,12 @@ class Question extends React.Component {
   constructor() {
     super();
 
-    this.state = { id: 0, activateOn: true, hide: false };
+    this.state = {
+      id: 0,
+    };
 
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.disableButton = this.disableButton.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
   }
 
   componentDidMount() {
@@ -22,23 +23,15 @@ class Question extends React.Component {
     getQuestions(token);
   }
 
-  disableButton() {
-    // essa função habilita o botão próximo quando a questão é selecionada
-    this.setState({ activateOn: false, hide: true });
-  }
-
   nextQuestion() {
-    // vai incrementando até a quantidade de perguntas, falta fazer a
-    // lógica de manda para a página de feedback
-    // e reseta o time de volta para 30 segundos
     this.setState((id) => ({
       id: id.id + 1,
-      activateOn: true,
     }));
   }
 
   renderQuestions(question) {
-    const answers = [question.correct_answer, ...question.incorrect_answers].sort();
+    const answers = [question.correct_answer, ...question.incorrect_answers];
+    answers.sort();
     return (
       <div>
         <p data-testid="question-category">{question.category}</p>
@@ -46,44 +39,26 @@ class Question extends React.Component {
         <p>{question.correct_answer}</p>
         <div>
           <Answers
+            nextQuestion={ this.nextQuestion }
             answers={ answers }
             correctAnswer={ question.correct_answer }
-            // a função foi enviada como prop
-            funcDisable={ this.disableButton }
+            difficulty={ question.difficulty }
           />
         </div>
       </div>
     );
   }
 
-  renderButton() {
-    const { activateOn } = this.state;
-    return (
-      <button
-        type="button"
-        disabled={ activateOn }
-        data-testid="btn-next"
-        onClick={ this.nextQuestion }
-      >
-        Próxima
-      </button>
-    );
-  }
-
-  // FALTA REMOVER O BUG DAS CORES E RESETAR O TIME QUANDO CLICAR EM PRÓXIMO
-
   render() {
     const { questions } = this.props;
-    const { id, hide } = this.state;
-    const questionMap = questions.map((question) => this.renderQuestions(question));
-
+    const { id } = this.state;
+    const questionsLimit = 5;
     if (questions.length === 0) return <p>Loading...</p>;
+    if (id === questionsLimit) return <Redirect to="/feedback" />;
+    const questionMap = questions.map((question) => this.renderQuestions(question));
     return (
       <div>
-        <div>
-          {questionMap[id]}
-        </div>
-        { hide ? this.renderButton() : null }
+        {questionMap[id]}
       </div>
     );
   }

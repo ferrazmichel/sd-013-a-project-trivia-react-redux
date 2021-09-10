@@ -13,13 +13,17 @@ const answers = {
 
 const { lowScore, highScore } = answers;
 
-function renderAnswer(score) {
+function renderAnswer(score = 0) {
   if (score <= lowScore.score) {
-    return (<p>{lowScore.answer}</p>);
+    return (
+      <p data-testid="feedback-text">{lowScore.answer}</p>
+    );
   }
-  if (score >= highScore.score) {
-    return highScore.answer;
-  }
+  return (
+    <p data-testid="feedback-text">
+      { highScore.answer }
+    </p>
+  );
 }
 
 export default renderAnswer;

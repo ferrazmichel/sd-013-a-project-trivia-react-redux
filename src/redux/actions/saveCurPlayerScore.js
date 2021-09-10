@@ -2,7 +2,7 @@ import {
   ADD_QUESTIONS_ON_STORE,
 } from './actionTypes';
 
-const saveScore = (currScore) => ({
+const saveScoreOnStore = (currScore) => ({
   type: 'SAVE_SCORE',
   score: currScore,
 });
@@ -12,10 +12,10 @@ export const addQuestionsOnStore = (payload) => ({
   payload,
 });
 
-function saveScoreOnStore(currScore) {
-  return (dispatch) => {
-    dispatch(saveScore(currScore));
-  };
-}
+// function saveScoreOnStore(currScore) {
+//   return (dispatch) => {
+//     dispatch(saveScore(currScore));
+//   };
+// }
 
 export default saveScoreOnStore;

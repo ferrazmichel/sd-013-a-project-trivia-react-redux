@@ -6,40 +6,39 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   constructor(props) {
     super(props);
-
-    this.gravatar = this.gravatar.bind(this);
+    this.Gravatar = this.Gravatar.bind(this);
   }
 
   getPlayerDataFromLocalStorage() {
-    const getPlayerData = JSON.parse(localStorage.getItem('player'));
+    const getPlayerData = JSON.parse(localStorage.getItem('state')).player;
     return getPlayerData;
   }
 
-  gravatar() {
-    const { username, email } = this.getPlayerDataFromLocalStorage();
+  Gravatar() {
+    const { name, gravatarEmail } = this.getPlayerDataFromLocalStorage();
 
-    const hashGerada = md5(email).toString();
+    const hashGerada = md5(gravatarEmail).toString();
     const imgemPerfil = `https://www.gravatar.com/avatar/${hashGerada}`;
-    const perfil = { username, imgemPerfil, email };
+    const perfil = { name, imgemPerfil, gravatarEmail };
 
     return perfil;
   }
 
   render() {
-    const { username, imgemPerfil } = this.gravatar();
+    const { name, imgemPerfil } = this.Gravatar();
     const { score, testID } = this.props;
     return (
       <div>
         <img
           src={ imgemPerfil }
-          alt={ username }
+          alt={ name }
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">
-          { username }
+          { name }
         </p>
         <h3 data-testid={ testID }>
-          {score}
+          <p data-testid="header-score">{score}</p>
         </h3>
       </div>
     );

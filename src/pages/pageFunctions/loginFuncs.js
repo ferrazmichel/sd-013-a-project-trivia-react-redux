@@ -18,9 +18,9 @@ const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validateUsername = (name) => name.length > 1;
 
 export const savePlayerDataOnLocalStorage = (state) => {
-  const { name, email, score } = state;
-  const user = { name, email, score };
-  localStorage.setItem('player', JSON.stringify(user));
+  const { name, gravatarEmail, score, assertions } = state;
+  const user = { player: { name, gravatarEmail, score, assertions } };
+  localStorage.setItem('state', JSON.stringify(user));
 };
 
 export const validateLoginFactory = (email, name) => (

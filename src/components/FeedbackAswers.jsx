@@ -1,21 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import renderAnswer from './componentsFunctions/FeedbackAnswerfuncs';
 
 class FeedbackAnswers extends React.Component {
+  constructor() {
+    super();
+
+    this.assertionsFeedback = this.assertionsFeedback.bind(this);
+  }
+
+  assertionsFeedback(assertions) {
+    return (
+      <p data-testid="feedback-total-question">{assertions}</p>
+    );
+  }
+
   render() {
-    const { score } = this.props;
+    const { assertions } = JSON.parse(localStorage.getItem('state')).player;
 
     return (
       <div>
-        <h3 data-testid="feedback-text">{renderAnswer(score)}</h3>
-        <h3 data-testid="feedback-total-question">{0}</h3>
+        {renderAnswer(assertions)}
+        {this.assertionsFeedback(assertions)}
       </div>);
   }
 }
-
-FeedbackAnswers.propTypes = {
-  score: PropTypes.number.isRequired,
-};
 
 export default FeedbackAnswers;
