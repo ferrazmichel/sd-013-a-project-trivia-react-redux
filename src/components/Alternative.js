@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { timerToggle, toggleNextButton, updateScore } from '../actions';
 
+
 const STARTING_POINTS = 10;
 
 class Alternative extends React.Component {
@@ -28,16 +29,13 @@ class Alternative extends React.Component {
   }
 
   calculatePoints() {
-    const { alternative, updatePlayerScore, toggleTimer } = this.props;
+    const { alternative, updatePlayerScore } = this.props;
 
     if (alternative.textId === 'correct-answer') {
       // Atualiza o localStorage com a nova pontuação.
-      toggleTimer(true);
-      const timer = JSON.parse(localStorage.getItem('time'));
       const localState = JSON.parse(localStorage.getItem('state'));
       const { score, assertions } = localState.player;
-      /* const timer = 10; // Precisa vir do redux */
-      console.log(timer);
+      const timer = 10; // Precisa vir do redux
       const newScore = score + (STARTING_POINTS + (timer * alternative.difficulty));
       localState.player.score = newScore;
       localState.player.assertions = Number(assertions) + 1;
@@ -97,6 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
   updatePlayerScore: (score) => dispatch(updateScore(score)),
   toggleTimer: (bool) => dispatch(timerToggle(bool)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alternative);
