@@ -25,16 +25,16 @@ class Timer extends Component {
 
   componentDidUpdate(qlqr, prevState) {
     const { time } = this.state;
-    const { onChange } = this.props;
+    const { handleButton } = this.props;
     console.log(prevState.time);
 
     if (time === 0 && prevState.time === 1) {
-      onChange();
+      handleButton();
       this.clearTimer();
     }
 
     if (time === TIME && prevState.time === 0) {
-      onChange();
+      handleButton();
       this.startTimer();
     }
   }
@@ -76,7 +76,7 @@ class Timer extends Component {
 Timer.propTypes = {
   answerButton: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
+  handleButton: PropTypes.func.isRequired,
 };
 
 export default Timer;
