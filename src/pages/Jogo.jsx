@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from './Header';
-// import Pergunta from '../components/Pergunta';
 
 class Jogo extends React.Component {
   constructor() {
@@ -11,6 +10,27 @@ class Jogo extends React.Component {
     this.state = {
       i: 0,
     };
+    this.colorGreen = this.colorGreen.bind(this);
+    this.colorRed = this.colorRed.bind(this);
+  }
+
+  colorGreen(e) {
+    e.target.style.border = '3px solid rgb(6, 240, 15)';
+    const wrong = document.querySelectorAll('.wrong');
+    const NUM = 3;
+    const styleWrong = '3px solid rgb(255, 0, 0)';
+    if (wrong.length === NUM) {
+      wrong[0].style.border = styleWrong;
+      wrong[1].style.border = styleWrong;
+      wrong[2].style.border = styleWrong;
+    }
+    wrong[0].style.border = styleWrong;
+  }
+
+  colorRed(e) {
+    e.target.style.border = '3px solid rgb(255, 0, 0)';
+    const correct = document.querySelector('.correct');
+    correct.style.border = '3px solid rgb(6, 240, 15)';
   }
 
   render() {
@@ -22,12 +42,22 @@ class Jogo extends React.Component {
         <div>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
-          <button type="button" data-testid="correct-answer">
+          <button
+            className="correct"
+            onClick={ this.colorGreen }
+            type="button"
+            data-testid="correct-answer"
+          >
             {questions[i].correct_answer}
           </button>
-          {questions[0].incorrect_answers.map((incorrect, index) => (
+          {questions[i].incorrect_answers.map((incorrect, index) => (
             <p key={ index }>
-              <button type="button" data-testid={ `wrong-answer-${index}` }>
+              <button
+                className="wrong"
+                onClick={ this.colorRed }
+                type="button"
+                data-testid={ `wrong-answer-${index}` }
+              >
                 {incorrect}
               </button>
             </p>
