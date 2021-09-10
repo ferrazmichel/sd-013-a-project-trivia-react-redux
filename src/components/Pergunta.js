@@ -38,9 +38,8 @@ class Pergunta extends React.Component {
   }
 
   onClicAknswer({ target }) {
-    const { assertions, score, contador } = this.state;
+    const { assertions, score } = this.state;
     this.handleColor();
-    if (contador === 0) this.creatButton();
     let acertos = assertions;
     let pontuacao = score;
     if (target.className === 'correct') {
@@ -49,6 +48,7 @@ class Pergunta extends React.Component {
     }
     pontuacao += pontuacao;
     this.updateScore(acertos, pontuacao);
+    this.creatButton();
   }
 
   updateScore(acertos, pontuacao) {
@@ -90,6 +90,8 @@ class Pergunta extends React.Component {
       this.incrementContador();
       this.resetButtons();
       timerFinished(false);
+      const butonNext = document.querySelector('#btnNextId');
+      butonNext.parentNode.removeChild(butonNext);
     }
   }
 
@@ -147,10 +149,10 @@ class Pergunta extends React.Component {
   shuffleAnswers() {
     const { perguntas, boolTimeout } = this.props;
     const { contador } = this.state; // correctAnswer
-    const arrAlternativas = [...perguntas[contador].incorrect_answers,
-      perguntas[contador].correct_answer,
-    ];
-    console.log('arrAlternativas', arrAlternativas);
+    // const arrAlternativas = [...perguntas[contador].incorrect_answers,
+    //   perguntas[contador].correct_answer,
+    // ];
+    // console.log('arrAlternativas', arrAlternativas);
     // ====================================================
     // Trabalhando com objeto:
     const objAlternativas = {
@@ -160,12 +162,11 @@ class Pergunta extends React.Component {
       objAlternativas[answer] = 'wrong';
     });
     // ====================================================
-    console.log('objAlternativas', objAlternativas);
-    console.log('Entries - objAlternativas', Object.entries(objAlternativas));
+    // console.log('objAlternativas', objAlternativas);
+    // console.log('Entries - objAlternativas', Object.entries(objAlternativas));
     // console.log('Shuffle Entries objAlternativas', this.shuffleArr(Object.entries(objAlternativas)));
     // const result = this.shuffleArr(arrAlternativas); // Versão anterior (apenas os values do array)
     const result = this.shuffleArr(Object.entries(objAlternativas));
-    console.log('result', result);
     return result.map((alternativa, index) => (
       <button
         type="submit"
@@ -210,7 +211,8 @@ class Pergunta extends React.Component {
   render() {
     const { contador, boolClickAnswer } = this.state; // countdown
     const { perguntas, boolTimeout } = this.props;
-    console.log('boolTimeout', boolTimeout);
+    // console.log('boolTimeout', boolTimeout);
+    console.log('boolClickAnswer', boolClickAnswer);
     // if (boolTimeout === true) this.onClicAknswer(); // Antes this.disabledButtons
     return (
       <div className="question">
@@ -218,11 +220,11 @@ class Pergunta extends React.Component {
         <p data-testid="question-text">{ perguntas[contador].question }</p>
         <div className="pergunta">{ this.shuffleAnswers() }</div>
         {/* <span>{ countdown }</span> */}
-        <Countdown
+        { boolClickAnswer === false && boolTimeout === false ? <Countdown
           boolClickAnswer={ boolClickAnswer }
           createButton={ this.creatButton }
           handleColor={ this.handleColor }
-        />
+        /> : null }
       </div>
     );
   }
