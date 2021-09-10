@@ -11,14 +11,16 @@ class GamePage extends React.Component {
       buttonClass: 'alternativas',
       showNextButton: false,
       numeroDaPergunta: 0,
+      stopCount: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
+    this.handleScore = this.handleScore.bind(this);
   }
 
-  handleClick() {
+  handleClick({ target }) {
     const buttons = document.querySelectorAll('.alternativas');
     buttons.forEach((button) => {
       button.className = 'alternativas selectedErrada';
@@ -26,18 +28,39 @@ class GamePage extends React.Component {
         button.className = 'alternativas selectedCerta';
       }
     });
+
+    this.handleScore(target);
+    this.setState({ stopCount: true });
     this.setState({ showNextButton: true });
+  }
+
+  handleScore(target) {
+    const { numeroDaPergunta } = this.state;
+    const { remainingTime, results } = this.props;
+    const { difficulty } = results[numeroDaPergunta];
+    const difficultyPoints = { hard: 3, medium: 2, easy: 1 };
+    const TEN = 10;
+    const scoreFormula = TEN + (remainingTime * difficultyPoints[difficulty]);
+    const player = JSON.parse(localStorage.getItem('state'));
+
+    if (target.getAttribute('data-testid') === 'correct-answer') {
+      const assertion = player.player.assertions + 1;
+      player.player.assertions = assertion;
+      player.player.score += scoreFormula;
+      localStorage.setItem('state', JSON.stringify(player));
+    } else {
+      player.player.score += 0;
+    }
   }
 
   handleNext() {
     const { numeroDaPergunta } = this.state;
     const perguntaAtual = numeroDaPergunta + 1;
-
     const buttons = document.querySelectorAll('.alternativas');
-
     this.setState({ numeroDaPergunta: perguntaAtual });
     buttons.forEach((button) => {
       button.className = 'alternativas';
+      button.disabled = false;
     });
     this.setState({ showNextButton: false });
   }
@@ -58,7 +81,7 @@ class GamePage extends React.Component {
   renderButtons() {
     const { numeroDaPergunta, buttonClass } = this.state;
     const { results } = this.props;
-    const pergunta = results.filter((result, index) => (index === numeroDaPergunta));
+    const pergunta = results.filter((_result, index) => (index === numeroDaPergunta));
 
     return (
       <div>
@@ -105,7 +128,7 @@ class GamePage extends React.Component {
   }
 
   render() {
-    const { showNextButton } = this.state;
+    const { showNextButton, stopCount } = this.state;
     return (
       <div>
         <Header />
@@ -115,7 +138,7 @@ class GamePage extends React.Component {
             ? this.renderNextButton()
             : console.log('')
         }
-        <Timer />
+        <Timer stopCount={ stopCount } />
       </div>
     );
   }
@@ -123,10 +146,12 @@ class GamePage extends React.Component {
 
 const mapStateToProps = (state) => ({
   results: state.questionReducer.results,
+  remainingTime: state.questionReducer.time,
 });
 
 GamePage.propTypes = {
   results: PropTypes.arrayOf.isRequired,
+  remainingTime: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(GamePage);

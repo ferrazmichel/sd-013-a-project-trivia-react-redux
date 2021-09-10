@@ -17,10 +17,22 @@ class Login extends React.Component {
     this.fetchApi = this.fetchApi.bind(this);
   }
 
+  componentDidMount() {
+    this.fetchApi();
+  }
+
   onSubmitForm() {
     const { onSubmit, history } = this.props;
+    const { nome, email } = this.state;
     onSubmit(this.state);
-    this.fetchApi();
+    const player = { player: {
+      name: nome,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    },
+    };
+    localStorage.setItem('state', JSON.stringify(player));
     history.push('/game-page');
   }
 

@@ -2,7 +2,7 @@ import { SAVE_QUESTION, UPDATE_COUNTDOWN } from '../action';
 
 const INITIAL_STATE = {
   results: [],
-  time: 2,
+  time: 30,
 };
 
 const questionReducer = (state = INITIAL_STATE, action) => {
