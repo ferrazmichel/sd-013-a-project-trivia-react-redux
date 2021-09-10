@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-closing-tag-location */
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Redirect } from 'react-router';
@@ -31,7 +30,8 @@ class Question extends React.Component {
   }
 
   renderQuestions(question) {
-    const answers = [question.correct_answer, ...question.incorrect_answers].sort();
+    const answers = [question.correct_answer, ...question.incorrect_answers];
+    answers.sort();
     return (
       <div>
         <p data-testid="question-category">{question.category}</p>
@@ -49,20 +49,6 @@ class Question extends React.Component {
     );
   }
 
-  renderButton() {
-    const { activateOn } = this.state;
-    return (
-      <button
-        type="button"
-        disabled={ activateOn }
-        data-testid="btn-next"
-        onClick={ this.nextQuestion }
-      >
-        Próxima
-      </button>
-    );
-  }
-
   render() {
     const { questions } = this.props;
     const { id } = this.state;
@@ -70,8 +56,6 @@ class Question extends React.Component {
     if (questions.length === 0) return <p>Loading...</p>;
     if (id === questionsLimit) return <Redirect to="/feedback" />;
     const questionMap = questions.map((question) => this.renderQuestions(question));
-
-    if (questions.length === 0) return <p>Loading...</p>;
     return (
       <div>
         {questionMap[id]}
