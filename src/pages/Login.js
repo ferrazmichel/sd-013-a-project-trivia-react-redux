@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import { fetchQuestions, saveLogin } from '../redux/actions';
 import silvioSantos from '../images/silviosantos.gif';
 import themeSong from '../sound_fx/theme-song.mp3';
+import nextQuestionSound from '../sound_fx/proxima-pergunta.mp3';
+import '../styles/login.css';
+import logo from '../images/show-do-milhao.png';
 
 class Login extends Component {
   constructor() {
@@ -13,6 +16,7 @@ class Login extends Component {
       btnDisable: true,
       name: '',
       email: '',
+      startGame: false,
     };
 
     this.checkLogin = this.checkLogin.bind(this);
@@ -23,6 +27,7 @@ class Login extends Component {
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
 
     this.startTheme = new Audio(themeSong);
+    this.nextSound = new Audio(nextQuestionSound);
   }
 
   handleChange({ target }) {
@@ -60,15 +65,34 @@ class Login extends Component {
     localStorage.setItem('token', JSON.stringify(result.token));
   }
 
+  renderPlayButton() {
+    return (
+      <div className="page-logo">
+        <img className="image" src={ logo } alt="logo" />
+        <button
+          className="play-button"
+          type="button"
+          onClick={ () => {
+            this.setState({ startGame: true });
+            this.startTheme.play();
+          } }
+        >
+          Jogar
+        </button>
+      </div>
+    );
+  }
+
   renderForm() {
     const { btnDisable, name, email } = this.state;
     const { sendLogin, getQuestions } = this.props;
 
     return (
-      <form>
-        <label htmlFor="name">
+      <form className="home-form">
+        <label htmlFor="name" className="form-label">
           Nome:
           <input
+            className="form-control"
             data-testid="input-player-name"
             type="text"
             id="name"
@@ -76,9 +100,10 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <label htmlFor="email">
+        <label htmlFor="email" className="form-label">
           Email:
           <input
+            className="form-control"
             data-testid="input-gravatar-email"
             type="email"
             id="email"
@@ -86,37 +111,48 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          data-testid="btn-settings"
-          type="button"
-          onClick={ this.goToConfig }
-        >
-          Configurações
-        </button>
-        <button
-          disabled={ btnDisable }
-          data-testid="btn-play"
-          type="button"
-          onClick={ async () => {
-            await this.saveToLocalStorage();
-            sendLogin(name, email);
-            await getQuestions(JSON.parse(localStorage.getItem('token')));
-            this.startTheme.play();
-            this.goToGamePage();
-          } }
-        >
-          Jogar
-        </button>
+        <div className="button-section">
+          <button
+            className="btn btn-light start-button"
+            disabled={ btnDisable }
+            data-testid="btn-play"
+            type="button"
+            onClick={ async () => {
+              await this.saveToLocalStorage();
+              sendLogin(name, email);
+              await getQuestions(JSON.parse(localStorage.getItem('token')));
+              this.startTheme.pause();
+              this.nextSound.play();
+              this.goToGamePage();
+            } }
+          >
+            Iniciar
+          </button>
+          <button
+            className="config-button"
+            data-testid="btn-settings"
+            type="button"
+            onClick={ this.goToConfig }
+          >
+            <i className="fas fa-cog" />
+          </button>
+        </div>
       </form>
     );
   }
 
   render() {
     const { loading } = this.props;
-    return (loading ? <img
-      src={ silvioSantos }
-      alt="silvio santos"
-    /> : this.renderForm());
+    const { startGame } = this.state;
+    if (loading) {
+      return (<img
+        className="loading-img"
+        src={ silvioSantos }
+        alt="silvio santos"
+      />);
+    }
+    if (!startGame) return (this.renderPlayButton());
+    if (startGame) return (this.renderForm());
   }
 }
 

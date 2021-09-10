@@ -1,0 +1,21 @@
+.header-player {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .header-player {
+    flex-flow: column;
+    font-size: 0.9em;
+  }
+  .profile-picture {
+    display: none;
+  }
+}
