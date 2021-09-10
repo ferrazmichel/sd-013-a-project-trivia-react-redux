@@ -71,39 +71,50 @@ class Login extends React.Component {
   render() {
     const { valid, name } = this.state;
     return (
-      <div className="login-panel">
-        <label htmlFor="email">
-          Email:
-          <input
-            id="email"
-            name="email"
-            type="email"
-            data-testid="input-gravatar-email"
-            onChange={ this.handleForm }
-          />
-        </label>
-        <label htmlFor="password">
-          Name:
-          <input
-            id="name"
-            name="name"
-            type="text"
-            data-testid="input-player-name"
-            onChange={ this.handleForm }
-          />
-        </label>
-        <Link to={ { pathname: '/game', state: { name } } }>
-          {valid ? <input
-            type="Button"
-            onClick={ this.requestToken }
-            value="Jogar"
-            data-testid="btn-play"
-          />
-            : <input type="Button" value="Jogar" data-testid="btn-play" disabled />}
-        </Link>
-        <Link to="/settings">
-          <input type="Button" defaultValue="Configuracao" data-testid="btn-settings" />
-        </Link>
+      <div className="login-screen">
+        <div className="login-title">
+          <h1>Trivia Time!</h1>
+        </div>
+        <div className="login-panel">
+          <label htmlFor="email">
+            Email:
+            <input
+              id="email"
+              name="email"
+              type="email"
+              data-testid="input-gravatar-email"
+              onChange={ this.handleForm }
+            />
+          </label>
+          <label htmlFor="password">
+            Name:
+            <input
+              id="name"
+              name="name"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ this.handleForm }
+            />
+          </label>
+          <Link to={ { pathname: '/game', state: { name } } }>
+            {valid ? <input
+              type="Button"
+              onClick={ this.requestToken }
+              value="Jogar"
+              data-testid="btn-play"
+              className="btn-login-screen play"
+            />
+              : <input type="Button" value="Jogar" data-testid="btn-play" disabled />}
+          </Link>
+          <Link to="/settings">
+            <input
+              type="Button"
+              defaultValue="Configuracao"
+              className="btn-login-screen"
+              data-testid="btn-settings"
+            />
+          </Link>
+        </div>
       </div>
     );
   }
