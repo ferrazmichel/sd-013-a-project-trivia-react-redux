@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import nextQuestionSound from '../sound_fx/proxima-pergunta.mp3';
 import wrongQuestionSound from '../sound_fx/que-pena.mp3';
+import rightQuestionSound from '../sound_fx/certa-resposta.mp3';
+import '../styles/telaDeJogo.css';
 
 class TelaDeJogo extends Component {
   constructor() {
@@ -29,6 +31,7 @@ class TelaDeJogo extends Component {
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.nextSound = new Audio(nextQuestionSound);
     this.wrongSound = new Audio(wrongQuestionSound);
+    this.rightSound = new Audio(rightQuestionSound);
   }
 
   componentDidMount() {
@@ -147,15 +150,16 @@ class TelaDeJogo extends Component {
             <button
               id="correct"
               data-testid="correct-answer"
-              className="correct-answer"
+              className="answer correct-answer"
               disabled={ buttonDisable }
               type="button"
               key={ answer }
-              style={ colorBorders ? { border: '3px solid rgb(6, 240, 15)' } : null }
+              style={ colorBorders ? { backgroundColor: '#13814A ' } : null }
               onClick={ (event) => {
                 this.setState({ colorBorders: true });
                 this.savePoints(event);
                 this.stopTimer();
+                this.rightSound.play();
               } }
             >
               { atob(answer) }
@@ -166,11 +170,11 @@ class TelaDeJogo extends Component {
         return (
           <button
             data-testid={ `wrong-answer-${index}` }
-            className="wrong-answer"
+            className="answer wrong-answer"
             disabled={ buttonDisable }
             type="button"
             key={ answer }
-            style={ colorBorders ? { border: '3px solid rgb(255, 0, 0)' } : null }
+            style={ colorBorders ? { backgroundColor: '#000000 ' } : null }
             onClick={ () => {
               this.setState({ colorBorders: true });
               this.stopTimer();
@@ -187,6 +191,7 @@ class TelaDeJogo extends Component {
   renderNextButton() {
     return (
       <button
+        className="next-button"
         type="button"
         onClick={ () => {
           this.nextQuestion();
@@ -204,7 +209,7 @@ class TelaDeJogo extends Component {
     const { time, questionNumber, nextButton } = this.state;
     const { questions: { results } } = this.props;
     return (
-      <>
+      <main className="main-content">
         <Header score={ score } />
         <section>
           <p
@@ -213,17 +218,17 @@ class TelaDeJogo extends Component {
             { atob(results[questionNumber].category) }
           </p>
           <p data-testid="question-text">{ atob(results[questionNumber].question) }</p>
-          <div>
+          <div className="answers-section">
             { this.createButtons() }
-          </div>
-          <div>
-            {`Tempo: ${time}`}
           </div>
           <div>
             {nextButton && this.renderNextButton() }
           </div>
+          <div className="question-timer">
+            {`Tempo: ${time}`}
+          </div>
         </section>
-      </>
+      </main>
     );
   }
 

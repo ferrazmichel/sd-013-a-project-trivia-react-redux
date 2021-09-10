@@ -86,10 +86,11 @@ class Login extends Component {
     const { sendLogin, getQuestions } = this.props;
 
     return (
-      <form>
-        <label htmlFor="name">
+      <form className="home-form">
+        <label htmlFor="name" className="form-label">
           Nome:
           <input
+            className="form-control"
             data-testid="input-player-name"
             type="text"
             id="name"
@@ -97,9 +98,10 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <label htmlFor="email">
+        <label htmlFor="email" className="form-label">
           Email:
           <input
+            className="form-control"
             data-testid="input-gravatar-email"
             type="email"
             id="email"
@@ -107,27 +109,31 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <button
-          data-testid="btn-settings"
-          type="button"
-          onClick={ this.goToConfig }
-        >
-          Configurações
-        </button>
-        <button
-          disabled={ btnDisable }
-          data-testid="btn-play"
-          type="button"
-          onClick={ async () => {
-            await this.saveToLocalStorage();
-            sendLogin(name, email);
-            await getQuestions(JSON.parse(localStorage.getItem('token')));
-            this.startTheme.pause();
-            this.goToGamePage();
-          } }
-        >
-          Iniciar
-        </button>
+        <div className="button-section">
+          <button
+            className="btn btn-light start-button"
+            disabled={ btnDisable }
+            data-testid="btn-play"
+            type="button"
+            onClick={ async () => {
+              await this.saveToLocalStorage();
+              sendLogin(name, email);
+              await getQuestions(JSON.parse(localStorage.getItem('token')));
+              this.startTheme.pause();
+              this.goToGamePage();
+            } }
+          >
+            Iniciar
+          </button>
+          <button
+            className="config-button"
+            data-testid="btn-settings"
+            type="button"
+            onClick={ this.goToConfig }
+          >
+            <i className="fas fa-cog" />
+          </button>
+        </div>
       </form>
     );
   }
@@ -135,7 +141,13 @@ class Login extends Component {
   render() {
     const { loading } = this.props;
     const { startGame } = this.state;
-    if (loading) { return (<img src={ silvioSantos } alt="silvio santos" />); }
+    if (loading) {
+      return (<img
+        className="loading-img"
+        src={ silvioSantos }
+        alt="silvio santos"
+      />);
+    }
     if (!startGame) return (this.renderPlayButton());
     if (startGame) return (this.renderForm());
   }
