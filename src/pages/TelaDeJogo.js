@@ -92,7 +92,7 @@ class TelaDeJogo extends Component {
       const mediumPoints = 2;
       const easyPoints = 1;
 
-      switch (difficulty) {
+      switch (atob(difficulty)) {
       case 'hard':
         return hardPoints;
       case 'medium':
@@ -209,7 +209,7 @@ class TelaDeJogo extends Component {
     const { time, questionNumber, nextButton } = this.state;
     const { questions: { results } } = this.props;
     return (
-      <main className="main-content">
+      <main className="gamepage-content">
         <Header score={ score } />
         <section>
           <p

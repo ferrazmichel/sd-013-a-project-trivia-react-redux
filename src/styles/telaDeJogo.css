@@ -1,4 +1,4 @@
-.main-content{
+.gamepage-content{
   background-color: #1f216e;
   border-radius: 10px;
   color: #fff;
@@ -11,7 +11,7 @@
   max-width: 700px;
 }
 
-.main-content section {
+.gamepage-content section {
   align-items: center;
   display: flex;
   flex-flow: column nowrap;

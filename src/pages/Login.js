@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchQuestions, saveLogin } from '../redux/actions';
 import silvioSantos from '../images/silviosantos.gif';
 import themeSong from '../sound_fx/theme-song.mp3';
+import nextQuestionSound from '../sound_fx/proxima-pergunta.mp3';
 import '../styles/login.css';
 import logo from '../images/show-do-milhao.png';
 
@@ -26,6 +27,7 @@ class Login extends Component {
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
 
     this.startTheme = new Audio(themeSong);
+    this.nextSound = new Audio(nextQuestionSound);
   }
 
   handleChange({ target }) {
@@ -120,6 +122,7 @@ class Login extends Component {
               sendLogin(name, email);
               await getQuestions(JSON.parse(localStorage.getItem('token')));
               this.startTheme.pause();
+              this.nextSound.play();
               this.goToGamePage();
             } }
           >
