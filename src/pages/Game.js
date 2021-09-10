@@ -85,10 +85,6 @@ class Game extends React.Component {
       return <h3>loading...</h3>;
     }
 
-    /*     if (index > FOUR) {
-      return <Redirect to="/feedback" />;
-    } */
-
     return (
       <div>
         <Header />
