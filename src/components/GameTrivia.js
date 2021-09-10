@@ -6,8 +6,59 @@ import { setPoints } from '../redux/actions/index';
 import '../Styles/Buttons.css';
 
 class GameTrivia extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
+
+    this.randOrd = this.randOrd.bind(this);
+    this.renderRandomQuestions = this.renderRandomQuestions.bind(this);
+  }
+
+  // https://leocaseiro.com.br/shuffle-do-php-no-javascript/
+  randOrd() {
+    const ZERO_FIVE = 0.5;
+    return (Math.round(Math.random()) - ZERO_FIVE);
+  }
+
+  renderRandomQuestions() {
     const { questions, disabledButton, handleclick } = this.props;
+    const questionsAnswers = [questions.correct_answer, ...questions.incorrect_answers];
+    const randomAnswers = questionsAnswers.sort(this.randOrd);
+    return (
+      <div>
+        { randomAnswers.map((answer, index) => {
+          if (answer === questions.correct_answer) {
+            return (
+              <button
+                key={ questions.correct_answer }
+                type="button"
+                data-testid="correct-answer"
+                id="correct"
+                disabled={ disabledButton }
+                onClick={ handleclick }
+              // className="buttonCorrect"
+              >
+                { answer }
+              </button>);
+          }
+          return (
+            <button
+              key={ index }
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+              id="incorrect"
+              disabled={ disabledButton }
+              onClick={ handleclick }
+            >
+              { answer }
+            </button>);
+        })}
+      </div>
+    );
+  }
+
+  render() {
+    const { questions } = this.props;
+    console.log(questions);
     return (
       <form>
         <p
@@ -26,29 +77,7 @@ class GameTrivia extends React.Component {
           {' '}
           { questions.question }
         </p>
-        { questions.incorrect_answers.map((answer, index) => (
-          <button
-            key={ index }
-            type="button"
-            data-testid={ `wrong-answer-${index}` }
-            id="incorrect"
-            disabled={ disabledButton }
-            onClick={ handleclick }
-            // className="buttonIncorrect"
-          >
-            { answer }
-          </button>))}
-        <button
-          key={ questions.correct_answer }
-          type="button"
-          data-testid="correct-answer"
-          id="correct"
-          disabled={ disabledButton }
-          onClick={ handleclick }
-          // className="buttonCorrect"
-        >
-          { questions.correct_answer }
-        </button>
+        { this.renderRandomQuestions() }
         <section />
       </form>
     );
