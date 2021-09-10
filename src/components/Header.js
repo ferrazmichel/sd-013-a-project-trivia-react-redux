@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './components-css/Header.css';
 
 class Header extends Component {
   constructor() {
@@ -33,10 +34,22 @@ class Header extends Component {
 
     return (
       <div>
-        <header>
-          <img data-testid="header-profile-picture" src={ src } alt="imagem do avatar" />
-          <h2 data-testid="header-player-name">{ name }</h2>
-          <h3 data-testid="header-score">
+        <header className="header">
+          <section className="header-profile">
+            <img
+              data-testid="header-profile-picture"
+              src={ src }
+              alt="imagem do avatar"
+              className="header-profile-picture"
+            />
+            <h2
+              data-testid="header-player-name"
+              className="header-player-name"
+            >
+              { name }
+            </h2>
+          </section>
+          <h3 data-testid="header-score" className="header-score">
             { thisScore }
           </h3>
         </header>
