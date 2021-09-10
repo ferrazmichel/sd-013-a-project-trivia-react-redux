@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import Question from '../components/Question';
 import Button from '../components/Button';
 import mountQuestions from '../services/fetchGame';
+import { getScore } from '../redux/actions/index';
 
 class GamePage extends Component {
   constructor() {
@@ -35,7 +36,12 @@ class GamePage extends Component {
     const { configs } = this.props;
     const questions = await mountQuestions(configs);
     this.getQuestions(questions);
-    console.log(questions);
+    const { storeScore } = this.props;
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    player.assertions = 0;
+    player.score = 0; // zera e salva no localStorage chave player.score
+    storeScore(player.score);
+    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   getQuestions(questions) {
@@ -170,7 +176,7 @@ class GamePage extends Component {
         {
           !hidden && <Button
             className=""
-            data-testid="btn-next"
+            dataTestId="btn-next"
             disabled={ hidden }
             name="Próxima"
             onClick={ this.nextQuestion }
@@ -181,6 +187,14 @@ class GamePage extends Component {
   }
 }
 
+GamePage.propTypes = {
+  configs: PropTypes.shape({
+    difficulty: PropTypes.string,
+    cattegory: PropTypes.string,
+    type: PropTypes.string }),
+  storeScore: PropTypes.func,
+}.isRequired;
+
 const mapStateToProps = ({ gameSettings: { difficulty, category, type } }) => ({
   configs: {
     difficulty,
@@ -189,11 +203,8 @@ const mapStateToProps = ({ gameSettings: { difficulty, category, type } }) => ({
   },
 });
 
-GamePage.propTypes = {
-  configs: PropTypes.shape({
-    difficulty: PropTypes.string,
-    cattegory: PropTypes.string,
-    type: PropTypes.string }),
-}.isRequired;
+const mapDispatchToProps = (dispatch) => ({
+  storeScore: (score) => dispatch(getScore(score)),
+});
 
-export default connect(mapStateToProps)(GamePage);
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

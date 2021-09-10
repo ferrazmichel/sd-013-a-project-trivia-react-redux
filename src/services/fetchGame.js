@@ -30,14 +30,14 @@ const mountQuestions = async (configs) => {
   let token = localStorage.getItem('token');
 
   if (!token) {
-    fetchTriviaAPI();
+    await fetchTriviaAPI();
     token = localStorage.getItem('token');
   }
 
   let mountedQuestions = await fetchQuestions(token, configs);
 
   if (mountedQuestions === 'token failure') {
-    fetchTriviaAPI();
+    await fetchTriviaAPI();
     token = localStorage.getItem('token');
     mountedQuestions = await fetchQuestions(token, configs);
   }

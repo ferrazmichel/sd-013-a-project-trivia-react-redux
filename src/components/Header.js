@@ -37,7 +37,6 @@ class Header extends Component {
           <img data-testid="header-profile-picture" src={ src } alt="imagem do avatar" />
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">
-            Score:
             { thisScore }
           </h3>
         </header>

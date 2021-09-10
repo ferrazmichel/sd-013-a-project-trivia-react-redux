@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
-import { getScore } from '../redux/actions/index';
 
 class Feedbacks extends Component {
   constructor() {
@@ -18,14 +16,9 @@ class Feedbacks extends Component {
   }
 
   componentDidMount() {
-    const { storeScore } = this.props;
     const { player } = JSON.parse(localStorage.getItem('state'));
     const { assertions, score } = player;
     this.getAssertionsAndScore(assertions, score);
-    player.assertions = 0;
-    player.score = 0; // zera e salva no localStorage chave player.score
-    storeScore(player.score);
-    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   getAssertionsAndScore(assertions, score) {
@@ -43,7 +36,7 @@ class Feedbacks extends Component {
     }
 
     if (textContent === 'Jogar Novamente') {
-      history.push('/gamepage');
+      history.push('/');
     }
   }
 
@@ -57,13 +50,20 @@ class Feedbacks extends Component {
         <Header />
         <section>
           <p data-testid="feedback-text">
-            {assertions >= WELL_PLAYED ? 'Mandou bem!' : 'Poderia ser melhor...'}
+            {assertions >= WELL_PLAYED ? 'Mandou bem!' : 'Podia ser melhor...'}
           </p>
-          <p data-testid="feedback-total-question">
-            {`Você acertou ${assertions} ${questionX} de 5`}
+          <p>
+            Você acertou
+            <span data-testid="feedback-total-question">{assertions}</span>
+            {questionX}
+            de 5;
           </p>
-          <p data-testid="feedback-total-score">
-            {`Você marcou ${score} pontos no total!`}
+          <p>
+            Você marcou
+            <span data-testid="feedback-total-score">
+              {score}
+            </span>
+            pontos no total!
           </p>
           <div className="button-container">
             <Button
@@ -87,11 +87,6 @@ Feedbacks.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }),
-  storeScore: PropTypes.func,
 }.isRequired;
 
-const mapDispatchToProps = (dispatch) => ({
-  storeScore: (score) => dispatch(getScore(score)),
-});
-
-export default connect(null, mapDispatchToProps)(Feedbacks);
+export default Feedbacks;

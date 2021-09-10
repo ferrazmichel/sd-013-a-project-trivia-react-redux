@@ -98,7 +98,7 @@ class Question extends Component {
               dataTestId={
                 correct
                   ? 'correct-answer'
-                  : `ẁrong-answer-${question.incorrect_answers.indexOf(option)}`
+                  : `wrong-answer-${question.incorrect_answers.indexOf(option)}`
               }
               id={ correct ? 'correct' : 'incorrect' }
               name={ option }
