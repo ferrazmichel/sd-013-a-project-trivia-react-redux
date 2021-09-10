@@ -11,11 +11,19 @@ class FeedbackMSG extends React.Component {
         <h2 data-testid="feedback-text">
           {(assertions >= AVERAGE ? 'Mandou bem! 🤙' : 'Podia ser melhor... 😉')}
         </h2>
-        <h3 data-testid="feedback-total-score">
-          {`Você ganhou ${score} 🪙 pontos!`}
+        <h3>
+          Você ganhou
+          <h3 data-testid="feedback-total-score">
+            {score}
+          </h3>
+          pontos !!
         </h3>
-        <h3 data-testid="feedback-total-question">
-          {`Você acertou ${assertions} ⍰ perguntas! `}
+        <h3>
+          Você acertou
+          <h3 data-testid="feedback-total-question">
+            {assertions}
+          </h3>
+          perguntas !!
         </h3>
 
       </div>

@@ -30,12 +30,18 @@ class Play extends Component {
   }
 
   componentDidMount() {
+    console.log('MONTOU');
     this.handleQuestions();
-    const { player: { name, gravatarEmail, score, assertions } } = this.props;
+    const {
+      name,
+      gravatarEmail,
+      player: { score, assertions },
+      submitPlayer } = this.props;
     const TESTE = { name,
       gravatarEmail,
       score,
       assertions };
+    submitPlayer({ player: TESTE });
     saveToLocalStorage('state', { player: TESTE });
   }
 
@@ -52,7 +58,7 @@ class Play extends Component {
       gravatarEmail,
       score,
       assertions };
-    submitPlayer((TESTE));
+    submitPlayer({ player: TESTE });
     saveToLocalStorage('state', { player: TESTE });
   }
 
@@ -151,7 +157,7 @@ class Play extends Component {
         gravatarEmail,
         score: score + 1,
         assertions: assertions + 1 };
-      submitPlayer((TESTE));
+      submitPlayer({ player: TESTE });
       saveToLocalStorage('state', { player: TESTE });
     }
   }
@@ -159,7 +165,11 @@ class Play extends Component {
   render() {
     const { questions, questionIndex, answerButton, answers } = this.state;
     if (!questions) {
-      return <div>Loading...</div>;
+      return (
+        <div className="play-main">
+          <Header />
+          <div>Loading...</div>
+        </div>);
     }
     const { results } = questions;
     return (
@@ -193,8 +203,10 @@ class Play extends Component {
   }
 }
 
-const mapStateToProps = ({ play: { player } }) => ({
+const mapStateToProps = ({ user: { name, gravatarEmail }, play: { player } }) => ({
   player,
+  name,
+  gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -204,6 +216,10 @@ const mapDispatchToProps = (dispatch) => ({
 Play.propTypes = {
   history: PropTypes.arrayOf(PropTypes.object).isRequired,
   submitPlayer: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.shape({
+    trim: PropTypes.func,
+  }).isRequired,
   player: PropTypes.shape({
     name: PropTypes.string,
     assertions: PropTypes.number,

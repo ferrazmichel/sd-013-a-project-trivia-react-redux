@@ -25,7 +25,7 @@ class Login extends React.Component {
     const { gravatarEmail, name } = this.state;
     const { submitUser, submitPlayer } = this.props;
     submitUser(({ gravatarEmail, name }));
-    submitPlayer(({ gravatarEmail, name, score: 0, assertions: 0 }));
+    submitPlayer(({ player: { gravatarEmail, name, score: 0, assertions: 0 } }));
     const response = await TokenApi();
     this.setState({ shouldRedirect: response });
   }

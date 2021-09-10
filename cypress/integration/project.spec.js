@@ -390,6 +390,7 @@ describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve con
   it('O placar com o valor atual está presente no header', () => {
     cy.get(HEADER_SCORE_SELECTOR).should(($el) => {
       const state = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
+      console.log($el.text());
       expect(parseInt($el.text())).to.be.eq(state.player.score);
     });
   });
