@@ -1,7 +1,8 @@
-import { SAVE_QUESTION } from '../action';
+import { SAVE_QUESTION, UPDATE_COUNTDOWN } from '../action';
 
 const INITIAL_STATE = {
   results: [],
+  time: 2,
 };
 
 const questionReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,11 @@ const questionReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       results: [...action.payload],
+    };
+  case UPDATE_COUNTDOWN:
+    return {
+      ...state,
+      time: action.payload.time,
     };
   default:
     return state;

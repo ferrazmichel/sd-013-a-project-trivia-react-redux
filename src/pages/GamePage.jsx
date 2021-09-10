@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
 class GamePage extends React.Component {
   constructor() {
@@ -114,6 +115,7 @@ class GamePage extends React.Component {
             ? this.renderNextButton()
             : console.log('')
         }
+        <Timer />
       </div>
     );
   }
