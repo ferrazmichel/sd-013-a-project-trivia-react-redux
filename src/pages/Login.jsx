@@ -84,7 +84,7 @@ class Login extends React.Component {
           />
           <Input
             type="email"
-            name="email"
+            name="gravatarEmail"
             id="player-email"
             labelText="E-mail: "
             testID="input-gravatar-email"

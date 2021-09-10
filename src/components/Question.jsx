@@ -7,10 +7,27 @@ import { fetchQuestions } from '../redux/actions/fetchActions';
 import Answers from './Answers';
 
 class Question extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      id: 0,
+    };
+
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
+  }
+
   componentDidMount() {
     const { getQuestions, token } = this.props;
 
     getQuestions(token);
+  }
+
+  nextQuestion() {
+    this.setState((id) => ({
+      id: id.id + 1,
+    }));
   }
 
   renderQuestions(question) {
@@ -23,6 +40,7 @@ class Question extends React.Component {
         <p>{question.correct_answer}</p>
         <div>
           <Answers
+            nextQuestion={ this.nextQuestion }
             answers={ answers }
             correctAnswer={ question.correct_answer }
             difficulty={ question.difficulty }
@@ -34,11 +52,12 @@ class Question extends React.Component {
 
   render() {
     const { questions } = this.props;
+    const { id } = this.state;
     if (questions.length === 0) return <p>Loading...</p>;
     const questionMap = questions.map((question) => this.renderQuestions(question));
     return (
       <div>
-        {questionMap[2]}
+        {questionMap[id]}
       </div>
     );
   }

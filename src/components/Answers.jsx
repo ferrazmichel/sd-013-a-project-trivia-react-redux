@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
+import { savePlayerDataOnLocalStorage } from '../pages/pageFunctions/loginFuncs';
 
 import './Button.css';
 
@@ -15,10 +16,13 @@ class Answers extends React.Component {
   constructor() {
     super();
     this.state = {
+      score: 0,
+      assertions: 0,
       disable: false,
       correctColor: 'defaultColor',
       wrongColor: 'defaultColor',
       currentCount: 30,
+      hide: false,
     };
 
     this.addScoreOnClick = this.addScoreOnClick.bind(this);
@@ -29,6 +33,9 @@ class Answers extends React.Component {
     this.setTimer = this.setTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.clearIntervalTimer = this.clearIntervalTimer.bind(this);
+    this.nextQuestionOnClick = this.nextQuestionOnClick.bind(this);
+    this.showNextButton = this.showNextButton.bind(this);
+    this.resetTimeNext = this.resetTimeNext.bind(this);
   }
 
   componentDidMount() {
@@ -47,6 +54,25 @@ class Answers extends React.Component {
       clearInterval(this.gameTimer);
       this.disableButtom();
     }
+  }
+
+  nextQuestionOnClick() {
+    const { nextQuestion } = this.props;
+    nextQuestion();
+    this.setState({
+      disable: false,
+      correctColor: 'defaultColor',
+      wrongColor: 'defaultColor',
+      hide: false,
+    });
+    this.resetTimeNext();
+  }
+
+  resetTimeNext() {
+    this.setState({
+      currentCount: 30,
+    });
+    this.Timer();
   }
 
   stopTimer() {
@@ -73,6 +99,7 @@ class Answers extends React.Component {
   }
 
   addScoreOnClick(clock, difficulty) {
+    const { score, assertions } = this.state;
     const { easy, medium, hard } = answersScore;
     const difficulties = Object.keys(answersScore).find((key) => key === difficulty);
     let scoreValue;
@@ -89,11 +116,30 @@ class Answers extends React.Component {
     default:
       break;
     }
-    console.log(scoreValue);
     const tenScore = 10;
-    const result = tenScore + (clock * scoreValue);
+    const result = score + (tenScore + (clock * scoreValue));
+    const getPlayer = JSON.parse(localStorage.getItem('player'));
+    this.setState(() => (
+      {
+        score: result,
+        assertions: assertions + 1,
+      }
+    ), () => {
+      const newPlayer = {
+        ...getPlayer,
+        score: result,
+        assertions,
+      };
+      savePlayerDataOnLocalStorage(newPlayer);
+    });
     const { addScoreOnStore } = this.props;
     addScoreOnStore(result);
+  }
+
+  showNextButton() {
+    this.setState({
+      hide: true,
+    });
   }
 
   handleClick({ target }, correctAnswer, count) {
@@ -103,11 +149,24 @@ class Answers extends React.Component {
     }
     this.stopTimer();
     this.disableButtom();
+    this.showNextButton();
+  }
+
+  renderButton() {
+    return (
+      <button
+        type="button"
+        data-testid="btn-next"
+        onClick={ () => this.nextQuestionOnClick() }
+      >
+        Próxima
+      </button>
+    );
   }
 
   render() {
     const { answers, correctAnswer } = this.props;
-    const { correctColor, wrongColor, disable, currentCount } = this.state;
+    const { correctColor, wrongColor, disable, currentCount, hide } = this.state;
     return (
       <div>
         {answers.map((answer, index) => (
@@ -129,6 +188,7 @@ class Answers extends React.Component {
         <p>
           { currentCount }
         </p>
+        { hide ? this.renderButton() : null }
       </div>
     );
   }
