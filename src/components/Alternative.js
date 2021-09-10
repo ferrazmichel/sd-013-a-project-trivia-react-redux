@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { timerToggle, toggleNextButton, updateScore } from '../actions';
 
+
 const STARTING_POINTS = 10;
 
 class Alternative extends React.Component {
