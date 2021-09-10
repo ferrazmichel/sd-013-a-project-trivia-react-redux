@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -9,27 +10,30 @@ class Ranking extends React.Component {
       rankingPlayers: [],
     };
     this.returnRanking = this.returnRanking.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     this.returnRanking();
   }
 
-  handleClick(e) {
+  handleClick() {
     const { history } = this.props;
-    e.preventDefault();
+    // e.preventDefault();
     history.push('/');
   }
   // Essa requisito foi feito consultando o projeto do grupo 9 da turma 13-A link: https://github.com/tryber/sd-013-a-project-trivia-react-redux/blob/main-group-9/src/pages/Ranking.jsx
 
   returnRanking() {
+    const json = JSON.parse(localStorage.state).player;
     const { name, score, assertion,
-      gravatar } = JSON.parse(localStorage.getItem('state')).player;
+      gravatar } = JSON.parse(localStorage.state).player;
+    console.log(json);
     const newPlayer = { name, score, assertion, gravatar };
-    if (localStorage.getItem('ranking')) {
-      const ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (localStorage.ranking) {
+      const ranking = JSON.parse(localStorage.ranking);
       const newRanking = [...ranking, newPlayer];
-      newRaking.sort((a, b) => b.score - a.score);
+      newRanking.sort((a, b) => a.score - b.score);
       localStorage.ranking = JSON.stringify(newRanking);
       this.setState({
         rankingPlayers: newRanking,
@@ -75,4 +79,4 @@ Ranking.propTypes = {
   history: PropTypes.func,
 }.isRequired;
 
-export default Ranking;
+export default connect(null, null)(Ranking);

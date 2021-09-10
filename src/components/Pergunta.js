@@ -73,9 +73,8 @@ class Pergunta extends React.Component {
     }));
   }
 
-  pushToFeedbackPage(e) {
+  pushToFeedbackPage() {
     const { history } = this.props;
-    e.preventDefault();
     history.push('/feedback');
   }
 
@@ -153,7 +152,6 @@ class Pergunta extends React.Component {
     // const arrAlternativas = [...perguntas[contador].incorrect_answers,
     //   perguntas[contador].correct_answer,
     // ];
-    // console.log('arrAlternativas', arrAlternativas);
     // ====================================================
     // Trabalhando com objeto:
     const objAlternativas = {
@@ -163,9 +161,6 @@ class Pergunta extends React.Component {
       objAlternativas[answer] = 'wrong';
     });
     // ====================================================
-    // console.log('objAlternativas', objAlternativas);
-    // console.log('Entries - objAlternativas', Object.entries(objAlternativas));
-    // console.log('Shuffle Entries objAlternativas', this.shuffleArr(Object.entries(objAlternativas)));
     // const result = this.shuffleArr(arrAlternativas); // Versão anterior (apenas os values do array)
     const result = this.shuffleArr(Object.entries(objAlternativas));
     return result.map((alternativa, index) => (
@@ -212,9 +207,7 @@ class Pergunta extends React.Component {
   render() {
     const { contador, boolClickAnswer } = this.state; // countdown
     const { perguntas, boolTimeout } = this.props;
-    // console.log('boolTimeout', boolTimeout);
     console.log('boolClickAnswer', boolClickAnswer);
-    // if (boolTimeout === true) this.onClicAknswer(); // Antes this.disabledButtons
     return (
       <div className="question">
         <span data-testid="question-category">{ perguntas[contador].category }</span>

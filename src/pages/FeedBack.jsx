@@ -11,41 +11,42 @@ class FeedBack extends React.Component {
     this.returnPlacarFinalQuestions = this.returnPlacarFinalQuestions.bind(this);
   }
 
-  handleClick(e) {
+  handleClick() {
     const { history } = this.props;
-    e.preventDefault();
+    // e.preventDefault();
     history.push('/');
   }
 
-  handleRanking(e) {
+  handleRanking() {
     const { history } = this.props;
-    e.preventDefault();
+    // e.preventDefault();
     history.push('/ranking');
   }
 
-  returnMessageFeedBack(assertions) {
+  returnMessageFeedBack() {
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { assertions } = localJson;
     const tres = 3;
-    switch (assertions) {
-    case assertions < tres:
-      return 'Podia ser melhor...';
-    case assertions >= tres:
-      return 'Mandou bem!';
-    default:
+    if (assertions < tres) {
       return 'Podia ser melhor...';
     }
+    return 'Mandou bem!';
   }
 
-  returnPlacarFinalQuestions(assertions) {
+  returnPlacarFinalQuestions() {
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { assertions } = localJson;
     if (assertions === 0) {
-      return 'Não acertou nenhuma pergunta';
+      return 0;
     }
-    return `Acertou ${assertions} perguntas`;
+    return assertions;
   }
 
   render() {
     const { grav, nameUser } = this.props;
-    const localJson = JSON.parse(localStorage.getItem('state'));
-    const { player: { score, assertions } } = localJson;
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { score } = localJson;
+    console.log(typeof score);
     return (
       <div>
         <header>
@@ -60,24 +61,31 @@ class FeedBack extends React.Component {
             { nameUser }
           </p>
           <p data-testid="header-score">
-            Score:
             { score }
           </p>
-          <button type="submit" data-testid="btn-ranking" onClick={ this.handleRanking }>
+          <button
+            type="submit"
+            data-testid="btn-ranking"
+            onClick={ () => this.handleRanking() }
+          >
             Ver Ranking
           </button>
-          <button type="submit" data-testid="btn-play-again" onClick={ this.handleClick }>
+          <button
+            type="submit"
+            data-testid="btn-play-again"
+            onClick={ () => this.handleClick() }
+          >
             Jogar novamente
           </button>
         </header>
         <p data-testid="feedback-text">
-          { this.returnMessageFeedBack(assertions)}
+          { this.returnMessageFeedBack()}
         </p>
         <span data-testid="feedback-total-score">
           { score }
         </span>
         <p data-testid="feedback-total-question">
-          { this.returnPlacarFinalQuestions(assertions)}
+          { this.returnPlacarFinalQuestions()}
         </p>
       </div>
     );
