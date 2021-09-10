@@ -12,6 +12,16 @@ class Jogo extends React.Component {
     };
     this.colorGreen = this.colorGreen.bind(this);
     this.colorRed = this.colorRed.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const buttonNext = document.querySelector('#button-next');
+    const NUMBER_OF_QUESTIONS = 4;
+    if (nextState.i === NUMBER_OF_QUESTIONS) {
+      buttonNext.style.display = 'none';
+    }
+    return true;
   }
 
   colorGreen(e) {
@@ -31,6 +41,10 @@ class Jogo extends React.Component {
     e.target.style.border = '3px solid rgb(255, 0, 0)';
     const correct = document.querySelector('.correct');
     correct.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  nextQuestion() {
+    this.setState((state) => ({ i: state.i + 1 }));
   }
 
   render() {
@@ -66,6 +80,13 @@ class Jogo extends React.Component {
         <Link to="/feedback">
           <button type="button">feedback</button>
         </Link>
+        <button
+          type="button"
+          id="button-next"
+          onClick={ this.nextQuestion }
+        >
+          Próximo
+        </button>
       </div>
     );
   }
