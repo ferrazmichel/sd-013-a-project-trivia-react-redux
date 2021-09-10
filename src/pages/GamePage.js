@@ -83,14 +83,28 @@ class GamePage extends Component {
   }
 
   saveRanking() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
     const { player } = JSON.parse(localStorage.getItem('state'));
     const { gravatarUrl } = player;
-    const finalScore = [{
-      img: gravatarUrl,
+    const finalScore = {
+      picture: gravatarUrl,
       name: player.name,
       score: player.score,
-    }];
-    localStorage.setItem('ranking', JSON.stringify(finalScore));
+    };
+    if (!ranking) {
+      localStorage.setItem('ranking', JSON.stringify([finalScore]));
+    }
+    if (ranking) {
+      const thisUser = ranking.find((playerScore) => playerScore.picture === gravatarUrl);
+
+      if (thisUser) {
+        thisUser.score = player.score;
+        localStorage.setItem('ranking', JSON.stringify(ranking));
+      } else {
+        ranking.push(finalScore);
+        localStorage.setItem('ranking', JSON.stringify(ranking));
+      }
+    }
   }
 
   stopTimer() {
