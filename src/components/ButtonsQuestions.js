@@ -1,5 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import '../styles/Game.css';
+
+const decode = (str) => {
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = str;
+  return textArea.value;
+};
 
 class ButtonsQuestions extends Component {
   render() {
@@ -17,7 +24,7 @@ class ButtonsQuestions extends Component {
     const INDEX_NUM = -1;
     let index = INDEX_NUM;
     return (
-      <div>
+      <div className="container-answers">
         {readyQuestions.map((alternative) => {
           if (alternative === question.correct_answer) {
             return (
@@ -33,7 +40,7 @@ class ButtonsQuestions extends Component {
                 className={ classCorrect }
                 disabled={ isAnswered }
               >
-                {alternative}
+                {decode(alternative)}
               </button>);
           }
           index += 1;
@@ -46,7 +53,7 @@ class ButtonsQuestions extends Component {
               className={ classWrong }
               disabled={ isAnswered }
             >
-              {alternative}
+              {decode(alternative)}
             </button>);
         })}
       </div>

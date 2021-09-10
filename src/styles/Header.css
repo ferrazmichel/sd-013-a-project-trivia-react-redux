@@ -1,0 +1,26 @@
+.header {
+  background-color: #0c2d5a;
+  display: flex;
+  height: 12vh;
+  justify-content: space-between;
+  padding: 10px 100px;
+  width: 100%;
+}
+
+.header img {
+  height: 70px;
+  width: auto;
+}
+
+.header-infos {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-basis: 400px;
+  font-size: 1.2em;
+  justify-content: space-around;
+}
+
+.header-infos > img {
+  border-radius: 3px;
+}

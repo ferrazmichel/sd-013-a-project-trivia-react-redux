@@ -10,7 +10,8 @@ class ButtonNext extends Component {
         <button
           type="submit"
           data-testid="btn-next"
-          className={ classBtn }
+          id="next-btn"
+          className={ `${classBtn} next-btn` }
           onClick={ handleId }
         >
           Próxima
