@@ -10,9 +10,11 @@ class Countdown extends React.Component {
       countdown: 30,
     };
     this.stopTimer = this.stopTimer.bind(this);
+    this.zerarCronometro = this.zerarCronometro.bind(this);
   }
 
   componentDidMount() {
+    console.log('criou cronometro');
     const timeout = 5000;
     const interval = 1000;
     this.timer = setTimeout(() => {
@@ -25,11 +27,19 @@ class Countdown extends React.Component {
     }, timeout);
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   const { choiceSelection } = this.props;
+  //   // console.log('nextProps in shouldComponentUpdate at Countdown', nextProps[choiceSelection]);
+  //   console.log('nextProps in shouldComponentUpdate at Countdown', nextProps.choiceSelection);
+  //   return choiceSelection === nextProps[choiceSelection];
+  // }
+
   componentDidUpdate() {
     const { countdown } = this.state;
     const { boolClickAnswer, handleColor, createButton } = this.props; // handleTimeout estava sendo desestruturado aqui...
     console.log('Booleano no Countdown DidUpdate', boolClickAnswer);
     if (boolClickAnswer === true) {
+      console.log('Chamou stopTimer');
       this.stopTimer();
       // clearTimeout(this.timer);
       // clearInterval(this.intervalId);
@@ -42,11 +52,17 @@ class Countdown extends React.Component {
     }
   }
 
+  zerarCronometro() {
+    this.setState({
+      countdown: 30,
+    });
+  }
+
   stopTimer() {
     const { timerFinished } = this.props;
     clearTimeout(this.timer); // Para o Set Time out
     clearInterval(this.intervalId); // para o set interval
-    timerFinished(true);
+    timerFinished(true); // Esse booleano vai para as propriedades disabled dos botoes de resposta
   }
 
   render() {
@@ -59,16 +75,21 @@ class Countdown extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  timeFinished: state.player.boolTimeout,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   timerFinished: (booleano) => dispatch(timeFinished(booleano)),
 });
 
 Countdown.propTypes = {
   // handleTimeout: propTypes.func.isRequired,
-  timerFinished: propTypes.func.isRequired,
-  handleColor: propTypes.func.isRequired,
-  createButton: propTypes.func.isRequired,
-  boolClickAnswer: propTypes.bool.isRequired,
-};
+  timerFinished: propTypes.func,
+  handleColor: propTypes.func,
+  createButton: propTypes.func,
+  boolClickAnswer: propTypes.bool,
+  choiceSelection: propTypes.bool,
+}.isRequired;
 
-export default connect(null, mapDispatchToProps)(Countdown);
+export default connect(mapStateToProps, mapDispatchToProps)(Countdown);

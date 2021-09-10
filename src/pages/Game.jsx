@@ -32,7 +32,7 @@ class Game extends React.Component {
 
   render() {
     const { gravatar } = this.state;
-    const { nameUser } = this.props;
+    const { nameUser, history } = this.props;
     return (
       <header>
         <img src={ gravatar } alt="imagemGravatar" data-testid="header-profile-picture" />
@@ -49,7 +49,7 @@ class Game extends React.Component {
           </span>
         </p>
         Tela de game
-        <Pergunta />
+        <Pergunta history={ history } />
       </header>
     );
   }
