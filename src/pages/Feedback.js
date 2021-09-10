@@ -58,7 +58,7 @@ class Feedback extends React.Component {
   handleButtRanking() {
     return (
       <Link to="/ranking">
-        <button type="button" data-testid="btn-ranking">Jogar Novamente</button>
+        <button type="button" data-testid="btn-ranking">Ranking</button>
       </Link>
     );
   }
