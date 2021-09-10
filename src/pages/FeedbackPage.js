@@ -1,29 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Header from '../components/Header';
 
-import PropTypes from 'prop-types';
-
 class FeedbackPage extends Component {
-    render() {
-      const { feedback } = this.props;
-      const number = 3;
-      return (
-        <div>
-          <Header />
-          {(feedback < number) ? <p data-testid="feedback-text">Podia ser melhor...</p>
+  render() {
+    const number = 3;
+
+    const localState = JSON.parse(localStorage.getItem('state'));
+    const { assertions } = localState.player;
+
+    return (
+      <div>
+        <Header />
+        {(assertions < number) ? <p data-testid="feedback-text">Podia ser melhor...</p>
           : <p data-testid="feedback-text">Mandou bem!</p>}
-        </div>
-      );
-    }
+      </div>
+    );
   }
-  
-  FeedbackPage.propTypes = {
-    feedback: PropTypes.func,
-  }.isRequired;
-  
-  const mapStateToProps = (state) => ({
-    feedback: state.questions.results,
-  });
-  
-  export default connect(mapStateToProps)(FeedbackPage);
+}
+
+export default FeedbackPage;

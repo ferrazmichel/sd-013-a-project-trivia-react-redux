@@ -1,7 +1,10 @@
 export const PLAYER_LOGGED_IN = 'player/login';
+export const SCORE_UPDATED = 'player/score_updated';
 export const REQUEST_QUESTIONS = 'match/request_questions';
 export const GET_QUESTIONS = 'match/get_questions';
 export const ENABLE_NEXT_QUESTION = 'match/enable_button';
+export const UPDATE_TIME = 'UPDATE_TIME';
+export const TIMER_TOGLE = 'TIMER_TOGLE';
 
 // Action disparada no momento do login. Após os dados terem sido validados.
 export const userLoggedIn = (playerInfo) => (
@@ -26,5 +29,20 @@ export const getQuestionsFromResponse = (questions) => ({
 
 export const toggleNextButton = (bool) => ({
   type: ENABLE_NEXT_QUESTION,
+  payload: bool,
+});
+
+export const updateScore = (score) => ({
+  type: SCORE_UPDATED,
+  payload: score,
+});
+
+export const updateTime = (time) => ({
+  type: UPDATE_TIME,
+  payload: time,
+});
+
+export const timerToggle = (bool) => ({
+  type: TIMER_TOGLE,
   payload: bool,
 });
