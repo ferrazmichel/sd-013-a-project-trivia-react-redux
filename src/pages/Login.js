@@ -86,7 +86,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="d-flex align-items-center text-center form-container">
+      <div className="text-center">
         { this.renderForm() }
       </div>
     );
