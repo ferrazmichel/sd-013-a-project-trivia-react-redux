@@ -4,6 +4,7 @@ import {
   GET_DATA,
   SUCCESS_QUESTIONS,
   UPDATE_SCORE,
+  RESET_SCORE,
 } from '../actions';
 
 const initialState = {
@@ -38,6 +39,12 @@ export default (state = initialState, { type, payload }) => {
     return { ...state,
       score: score + payload,
       assertions: assertions + 1,
+    };
+
+  case RESET_SCORE:
+    return { ...state,
+      score: 0,
+      assertions: 0,
     };
 
   default:
