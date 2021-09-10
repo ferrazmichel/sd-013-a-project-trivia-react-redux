@@ -56,9 +56,13 @@
   }
 }
 
+.inputs-container {
+  margin-top: 30px;
+}
+
 .header-container {
   align-items: center;
-  background-color: #61dafb;
+  background-color: #67e6d5;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.575);
   display: flex;
@@ -82,4 +86,35 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.game-container {
+  align-items: center;
+  background-color: #67e6d5;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+}
+
+.feedback-container {
+  align-items: center;
+  background-color: #67e6d5;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 30px;
+  text-align: center;
+  width: fit-content;
+}
+
+.game-option {
+  margin: 5px;
 }

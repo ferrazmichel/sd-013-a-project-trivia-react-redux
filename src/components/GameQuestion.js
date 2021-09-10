@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
@@ -122,7 +121,7 @@ class GameQuestion extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary game-option"
                   disabled={ disabled }
                   onClick={ () => this.dispatchCorrectAnswer(difficulty) }
                   key={ questionIndex }
@@ -134,7 +133,7 @@ class GameQuestion extends Component {
             return (
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary game-option"
                 key={ questionIndex }
                 disabled={ disabled }
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
@@ -149,12 +148,12 @@ class GameQuestion extends Component {
   }
 
   render() {
-    const { loading, disabled, nextQ, renderIndex } = this.props;
+    const { loading } = this.props;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
-      <div>
+      <div className="container game-container">
         { this.handleQuestion() }
         <GameCounter counter={ countdown } />
       </div>
@@ -186,7 +185,6 @@ GameQuestion.propTypes = {
   questions: PropTypes.objectOf().isRequired,
   disabled: PropTypes.bool.isRequired,
   renderIndex: PropTypes.number.isRequired,
-  nextQ: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
   disableAnswers: PropTypes.func.isRequired,
 };

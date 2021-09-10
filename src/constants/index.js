@@ -23,6 +23,8 @@ export const USER_LOGIN = 'USER_LOGIN';
 export const DISABLE_ANSWER = 'DISABLE_ANSWER';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const TIMEOUT = 'TIMEOUT';
+export const RESET_GAME = 'RESET_GAME';
 
 // action creators da API
 export const API_URL_TOKEN = 'https://opentdb.com/api_token.php?command=request';

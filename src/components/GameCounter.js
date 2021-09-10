@@ -16,7 +16,6 @@ class GameCounter extends Component {
     this.scoreCalculator = this.scoreCalculator.bind(this);
     this.handleState = this.handleState.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleTimer = this.handleTimer.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +24,6 @@ class GameCounter extends Component {
   }
 
   handleState() {
-    const { counter } = this.props;
     this.setState({
       counter: 30,
     });
@@ -58,24 +56,18 @@ class GameCounter extends Component {
     handleTimeout();
   }
 
-  async handleTimer() {
-    const second = 1000;
+  async handleCounterChange() {
     const { counter } = this.state;
+    const second = 1000;
     const timeout = setTimeout(() => {
       this.setState({
         counter: counter - 1,
       });
     }, second);
-    return timeout;
-  }
-
-  async handleCounterChange() {
-    const { counter } = this.state;
-    this.handleTimer();
 
     if (counter <= 0) {
-      window.clearTimeout(this.handleTimer());
-      this.dispatchIncorrectAnswer(this.handleTimer());
+      window.clearTimeout(timeout);
+      this.dispatchIncorrectAnswer(timeout);
     }
   }
 
@@ -85,7 +77,16 @@ class GameCounter extends Component {
     this.setState({
       counter: 30,
     });
-    window.clearTimeout(this.handleTimer());
+    window.clearTimeout();
+    const correctAnswer = document.querySelector('[data-testid="correct-answer"]');
+    correctAnswer.style.border = null;
+    correctAnswer.disabled = true;
+
+    const wrongAnswers = document.querySelectorAll('[data-testid*="wrong-answer"]');
+    wrongAnswers.forEach((wrongAnswer) => {
+      wrongAnswer.style.border = null;
+      wrongAnswer.disabled = true;
+    });
   }
 
   render() {
@@ -95,6 +96,7 @@ class GameCounter extends Component {
       <button
         type="button"
         data-testid="btn-next"
+        className="btn btn-info"
         onClick={ () => this.handleButtonClick() }
       >
         Próxima
@@ -103,6 +105,7 @@ class GameCounter extends Component {
       <Link to="/feedback">
         <button
           type="button"
+          className="btn btn-info"
           data-testid="btn-next"
         >
           Próxima
@@ -126,7 +129,7 @@ class GameCounter extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   updateScore: (score) => dispatch({ type: 'UPDATE_SCORE', score }),
-  handleTimeout: () => dispatch({ type: 'INCORRECT_ANSWER' }),
+  handleTimeout: () => dispatch({ type: 'DISABLE_ANSWER' }),
   nextQ: () => dispatch(nextQuestion()),
 });
 
@@ -142,8 +145,10 @@ const mapStateToProps = ({ userReducer, loginReducer, scoreReducer }) => ({
 
 GameCounter.propTypes = {
   handleTimeout: PropTypes.func.isRequired,
-  difficulty: PropTypes.string.isRequired,
+  nextQ: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  renderIndex: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameCounter);

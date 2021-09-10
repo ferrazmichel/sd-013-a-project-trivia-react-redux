@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
 
 class FeedBack extends Component {
   constructor(props) {
@@ -35,14 +36,22 @@ class FeedBack extends Component {
     return feedbackMessage;
   }
 
+  handleClick() {
+    const { resetGame } = this.props;
+    resetGame();
+  }
+
   render() {
     const { userName, score } = this.props;
     const { assertions } = this.state;
     const feedbackMessage = this.fetchAssertions();
+    const state = JSON.parse(localStorage.getItem('state'));
+    const userEmail = state.player.gravatarEmail;
+    const hash = MD5(userEmail).toString();
     return (
-      <>
+      <div className="feedback-container">
         <header>
-          <img src="" data-testid="header-profile-picture" alt="header-profile" />
+          <img className="img-thumbnail" src={ `https://www.gravatar.com/avatar/${hash}` } data-testid="header-profile-picture" alt="header-profile" />
           <h3 data-testid="header-player-name">{ userName }</h3>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
@@ -56,11 +65,16 @@ class FeedBack extends Component {
           { assertions }
         </div>
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">
+          <button
+            onClick={ this.handleClick() }
+            className="btn btn-info"
+            type="button"
+            data-testid="btn-play-again"
+          >
             Jogar novamente
           </button>
         </Link>
-      </>
+      </div>
     );
   }
 }
@@ -70,9 +84,13 @@ const mapStateToProps = ({ loginReducer, scoreReducer }) => ({
   score: scoreReducer.score,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  resetGame: () => dispatch({ type: 'RESET_GAME' }),
+});
 FeedBack.propTypes = {
   userName: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  resetGame: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(FeedBack);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedBack);

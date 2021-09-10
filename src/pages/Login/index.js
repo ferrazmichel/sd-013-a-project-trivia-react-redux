@@ -55,7 +55,7 @@ class Login extends Component {
     const { name, email, disabled } = this.state;
     return (
       <div className="container">
-        <fieldset>
+        <fieldset className="inputs-container">
           <label htmlFor="name" className="input-group mb-3">
             <span className="input-group-text">Escreve o nome da pessoa jogadora</span>
             <input
