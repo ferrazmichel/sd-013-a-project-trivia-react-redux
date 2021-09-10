@@ -24,14 +24,16 @@ class Jogo extends React.Component {
     const buttonNext = document.querySelector('#button-next');
     const NUMBER_OF_QUESTIONS = 4;
     if (nextState.i === NUMBER_OF_QUESTIONS) {
-      buttonNext.style.display = 'none';
+      buttonNext.parentNode.removeChild(buttonNext);
     }
     return true;
   }
 
   colorGreen(e) {
     const buttonNext = document.querySelector('#button-next');
-    buttonNext.style.display = 'block';
+    if (buttonNext) {
+      buttonNext.style.display = 'block';
+    }
     e.target.style.border = '3px solid rgb(6, 240, 15)';
     const wrong = document.querySelectorAll('.wrong');
     const NUM = 3;
@@ -46,7 +48,9 @@ class Jogo extends React.Component {
 
   colorRed(e) {
     const buttonNext = document.querySelector('#button-next');
-    buttonNext.style.display = 'block';
+    if (buttonNext) {
+      buttonNext.style.display = 'block';
+    }
     e.target.style.border = '3px solid rgb(255, 0, 0)';
     const correct = document.querySelector('.correct');
     correct.style.border = '3px solid rgb(6, 240, 15)';
