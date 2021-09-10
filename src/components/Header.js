@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 class Header extends React.Component {
   render() {
     const { nome, picture, score } = this.props;
-    const imagem = JSON.parse(localStorage.getItem('ranking'));
+    // const imagem = JSON.parse(localStorage.getItem('ranking'));
     return (
       <header>
         <img
-          src={ picture || imagem[0].picture }
+          src={ picture }
           alt="Imagem do usuario"
           data-testid="header-profile-picture"
         />

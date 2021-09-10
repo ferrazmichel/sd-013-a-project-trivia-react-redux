@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import RankingList from '../components/Ranking';
+import RankingList from '../components/RankingList';
 
 class Ranking extends React.Component {
   render() {
