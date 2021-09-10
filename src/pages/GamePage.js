@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import Button from '../components/Button';
@@ -27,6 +28,7 @@ class GamePage extends Component {
     this.stopTimer = this.stopTimer.bind(this);
     this.pauseTimer = this.pauseTimer.bind(this);
     this.isClicked = this.isClicked.bind(this);
+    this.saveRanking = this.saveRanking.bind(this);
   }
 
   async componentDidMount() {
@@ -56,6 +58,11 @@ class GamePage extends Component {
   }
 
   nextQuestion() {
+    const FOUR = 4;
+    const { questionsIndex } = this.state;
+    if (questionsIndex === FOUR) {
+      this.saveRanking();
+    }
     this.resetTimer();
     this.timer();
     this.setState((prevState) => ({
@@ -73,6 +80,17 @@ class GamePage extends Component {
     this.setState({
       timerValue: 30,
     });
+  }
+
+  saveRanking() {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { gravatarUrl } = player;
+    const finalScore = [{
+      img: gravatarUrl,
+      name: player.name,
+      score: player.score,
+    }];
+    localStorage.setItem('ranking', JSON.stringify(finalScore));
   }
 
   stopTimer() {
@@ -112,6 +130,12 @@ class GamePage extends Component {
       loading,
       timerValue,
       disabledOptions } = this.state;
+
+    const FIVE = 5;
+
+    if (questionsIndex === FIVE) {
+      return <Redirect to="/feedback" />;
+    }
 
     return (
       <>

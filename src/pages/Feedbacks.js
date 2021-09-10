@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Button from '../components/Button';
+import { getScore } from '../redux/actions/index';
 
 class Feedbacks extends Component {
   constructor() {
@@ -16,12 +18,14 @@ class Feedbacks extends Component {
   }
 
   componentDidMount() {
+    const { storeScore } = this.props;
     const { player } = JSON.parse(localStorage.getItem('state'));
     const { assertions, score } = player;
     this.getAssertionsAndScore(assertions, score);
     player.assertions = 0;
     player.score = 0; // zera e salva no localStorage chave player.score
-    localStorage.setItem('state', JSON.stringify({ Player: { ...player } }));
+    storeScore(player.score);
+    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   getAssertionsAndScore(assertions, score) {
@@ -82,7 +86,12 @@ class Feedbacks extends Component {
 Feedbacks.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
-  }).isRequired,
-};
+  }),
+  storeScore: PropTypes.func,
+}.isRequired;
 
-export default Feedbacks;
+const mapDispatchToProps = (dispatch) => ({
+  storeScore: (score) => dispatch(getScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Feedbacks);
