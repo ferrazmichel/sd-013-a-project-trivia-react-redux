@@ -1,12 +1,35 @@
+/*
+  SECTION
+  LINK Referências CSS
+  Caso tenha dúvida de algum propriedade, consulte: https://www.w3schools.com/cssref/
+
+  O conceito que é aplicado o elemento pai (main) fica com os tamanhos explicitos
+  ou seja nele há a definição da abragência da tela com 100vh (altura) e 100vw (largura)
+  E nos elementos filhos é utilizado a porcentagem para
+  o navegador basear o calculo nas dimensões dadas do elemento pai
+  Importante reforçar que o grid tem a responsabilidade de organizar o layout
+  e os passos acimas se tratam das dimensões do elemento para espaçamento
+
+*/
+
 .main {
   align-items: center;
   background-color: var(--primary);
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid: 1fr 1fr / 1fr;
   height: 100vh;
   justify-items: center;
   width: 100vw;
+
+  /*
+
+  NOTE Shorthand Grid
+  A propriedade grid é um atalho para as propriedades acima:
+
+  LINHAS: grid-template-rows: 1fr 1fr;
+  COLUNAS: grid-template-columns: 1fr;
+  grid: LINHA / COLUNA;
+  */
 }
 
 .main > article {
@@ -26,13 +49,27 @@
 .form {
   display: grid;
   gap: 25px;
-  grid-template-rows: 1fr 1fr 2fr 1fr;
+  grid: 1fr 1fr 2fr 1fr / 1fr;
   height: 50%;
+
+  /*
+  NOTE Outro exemplo do Shorthand
+  A propriedade grid é um atalho para as propriedades acima
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 2fr 1fr;
+  grid: LINHA / COLUNA;
+  */
 }
 
 .input {
   border: 0;
+  border-radius: 5px;
 }
+
+/*
+  LINK Pseudo seletor para a classe input
+  https://www.w3schools.com/cssref/css_selectors.asp
+*/
 
 .input::placeholder {
   text-align: center;
@@ -50,3 +87,5 @@
     grid-template-rows: 1fr;
   }
 }
+
+/* !SECTION */
