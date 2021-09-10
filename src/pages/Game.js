@@ -20,7 +20,6 @@ class Game extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.setButtonVisibility = this.setButtonVisibility.bind(this);
-    this.handleLoadButtons = this.handleLoadButtons.bind(this);
   }
 
   componentDidMount() {
@@ -72,7 +71,6 @@ class Game extends React.Component {
         <QuestionCard
           questionData={ questions[currentQuestion] }
           setButtonVisibility={ this.setButtonVisibility }
-          handleLoadButtons={ this.handleLoadButtons }
 
         />
         <Timer setButtonVisibility={ this.setButtonVisibility } />
