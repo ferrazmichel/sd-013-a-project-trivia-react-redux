@@ -182,6 +182,7 @@ class Game extends React.Component {
         <h2 data-testid="question-category">
           {category}
         </h2>
+        teste
         <h3
           type="button"
           data-testid="question-text"
@@ -220,10 +221,12 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  questions: PropTypes.arrayOf({}).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   user: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
-  history: PropTypes.objectOf({}).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   feedback: PropTypes.func.isRequired,
 };
 

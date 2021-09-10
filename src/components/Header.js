@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../App.css';
 
 class Header extends React.Component {
   constructor() {
@@ -43,7 +44,7 @@ class Header extends React.Component {
     // const page1 = window.location('/game');
     // const page2 = window.location('/feedback');
     return (
-      <div>
+      <div className="header-container">
         <img
           src={ `https://www.gravatar.com/avatar/${img}` }
           alt="imagem"
@@ -54,6 +55,7 @@ class Header extends React.Component {
         </h3>
         <p data-testid="header-score">
           {score}
+          {' pontos'}
         </p>
       </div>
     );

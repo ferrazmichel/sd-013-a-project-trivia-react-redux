@@ -19,6 +19,7 @@ body {
   flex-direction: column;
   height: 100vh;
   justify-content: center;
+  vertical-align: middle;
   width: 100vw;
 }
 
@@ -52,5 +53,7 @@ body {
 }
 
 .material-icons {
+  background-position: center;
   color: white;
+  display: inline-block;
 }
