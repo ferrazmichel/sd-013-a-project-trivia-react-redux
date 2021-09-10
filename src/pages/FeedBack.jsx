@@ -7,6 +7,8 @@ class FeedBack extends React.Component {
     super();
     this.handleClick = this.handleClick.bind(this);
     this.handleRanking = this.handleRanking.bind(this);
+    this.returnMessageFeedBack = this.returnMessageFeedBack.bind(this);
+    this.returnPlacarFinalQuestions = this.returnPlacarFinalQuestions.bind(this);
   }
 
   handleClick(e) {
@@ -21,33 +23,63 @@ class FeedBack extends React.Component {
     history.push('/ranking');
   }
 
+  returnMessageFeedBack(assertions) {
+    const tres = 3;
+    switch (assertions) {
+    case assertions < tres:
+      return 'Podia ser melhor...';
+    case assertions >= tres:
+      return 'Mandou bem!';
+    default:
+      return 'Podia ser melhor...';
+    }
+  }
+
+  returnPlacarFinalQuestions(assertions) {
+    if (assertions === 0) {
+      return 'Não acertou nenhuma pergunta';
+    }
+    return `Acertou ${assertions} perguntas`;
+  }
+
   render() {
     const { grav, nameUser } = this.props;
     const localJson = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = localJson;
+    const { player: { score, assertions } } = localJson;
     return (
-      <header>
-        tela feedback
-        <img
-          src={ grav }
-          alt="imagem do gravatar"
-          data-testid="header-profile-picture"
-        />
-        <p data-testid="header-player-name">
-          Nome:
-          { nameUser }
+      <div>
+        <header>
+          tela feedback
+          <img
+            src={ grav }
+            alt="imagem do gravatar"
+            data-testid="header-profile-picture"
+          />
+          <p data-testid="header-player-name">
+            Nome:
+            { nameUser }
+          </p>
+          <p data-testid="header-score">
+            Score:
+            { score }
+          </p>
+          <button type="submit" data-testid="btn-ranking" onClick={ this.handleRanking }>
+            Ver Ranking
+          </button>
+          <button type="submit" data-testid="btn-play-again" onClick={ this.handleClick }>
+            Jogar novamente
+          </button>
+        </header>
+        <p data-testid="feedback-text">
+          { this.returnMessageFeedBack(assertions)}
         </p>
-        <p data-testid="header-score">
-          Score:
+        <span data-testid="feedback-total-score">
           { score }
+        </span>
+        <p data-testid="feedback-total-question">
+          { this.returnPlacarFinalQuestions(assertions)}
         </p>
-        <button type="submit" data-testid="btn-ranking" onClick={ this.handleRanking }>
-          Ver Ranking
-        </button>
-        <button type="submit" data-testid="btn-play-again" onClick={ this.handleClick }>
-          Jogar novamente
-        </button>
-      </header>
+      </div>
     );
   }
 }

@@ -73,8 +73,9 @@ class Pergunta extends React.Component {
     }));
   }
 
-  pushToFeedbackPage() {
+  pushToFeedbackPage(e) {
     const { history } = this.props;
+    e.preventDefault();
     history.push('/feedback');
   }
 
@@ -242,6 +243,7 @@ const mapDispatchToProps = (dispatch) => ({
 Pergunta.propTypes = {
   timerFinished: PropTypes.func,
   perguntas: PropTypes.array,
+  history: PropTypes.func,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pergunta);
