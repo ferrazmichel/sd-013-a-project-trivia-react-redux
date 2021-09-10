@@ -72,11 +72,11 @@ class TelaDeJogo extends Component {
         { questionNumber: prevState.questionNumber + 1 }
       ), () => {
         this.shuffleAnswers();
+        this.nextSound.play();
       });
     } else {
       history.push('/tela-de-feedback');
     }
-    this.nextSound.play();
   }
 
   savePoints({ target: { id } }) {

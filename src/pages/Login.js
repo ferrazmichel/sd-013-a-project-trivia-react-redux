@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { fetchQuestions, saveLogin } from '../redux/actions';
 import silvioSantos from '../images/silviosantos.gif';
 import themeSong from '../sound_fx/theme-song.mp3';
+import '../styles/login.css';
+import logo from '../images/show-do-milhao.png';
 
 class Login extends Component {
   constructor() {
@@ -13,6 +15,7 @@ class Login extends Component {
       btnDisable: true,
       name: '',
       email: '',
+      startGame: false,
     };
 
     this.checkLogin = this.checkLogin.bind(this);
@@ -60,6 +63,24 @@ class Login extends Component {
     localStorage.setItem('token', JSON.stringify(result.token));
   }
 
+  renderPlayButton() {
+    return (
+      <div className="page-logo">
+        <img className="image" src={ logo } alt="logo" />
+        <button
+          className="play-button"
+          type="button"
+          onClick={ () => {
+            this.setState({ startGame: true });
+            this.startTheme.play();
+          } }
+        >
+          Jogar
+        </button>
+      </div>
+    );
+  }
+
   renderForm() {
     const { btnDisable, name, email } = this.state;
     const { sendLogin, getQuestions } = this.props;
@@ -101,11 +122,11 @@ class Login extends Component {
             await this.saveToLocalStorage();
             sendLogin(name, email);
             await getQuestions(JSON.parse(localStorage.getItem('token')));
-            this.startTheme.play();
+            this.startTheme.pause();
             this.goToGamePage();
           } }
         >
-          Jogar
+          Iniciar
         </button>
       </form>
     );
@@ -113,10 +134,10 @@ class Login extends Component {
 
   render() {
     const { loading } = this.props;
-    return (loading ? <img
-      src={ silvioSantos }
-      alt="silvio santos"
-    /> : this.renderForm());
+    const { startGame } = this.state;
+    if (loading) { return (<img src={ silvioSantos } alt="silvio santos" />); }
+    if (!startGame) return (this.renderPlayButton());
+    if (startGame) return (this.renderForm());
   }
 }
 
