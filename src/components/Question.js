@@ -14,6 +14,7 @@ class Question extends Component {
     this.shuffle = this.shuffle.bind(this);
     this.clickedOption = this.clickedOption.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.getButtonClass = this.getButtonClass.bind(this);
     // this.timer = this.timer.bind(this);
     // this.clearInterval = this.clearInterval.bind(this);
   }
@@ -32,18 +33,32 @@ class Question extends Component {
     }
   }
 
-  calculateScore() {
-    const { question: { difficulty }, timerValue } = this.props;
-    const ONE = 1;
-    const TWO = 2;
-    const THREE = 3;
-    let weight = 0;
-    const defaultPoints = 10;
-    if (difficulty === 'hard') { weight = THREE; }
-    if (difficulty === 'medium') { weight = TWO; }
-    if (difficulty === 'easy') { weight = ONE; }
+  getButtonClass(option) {
+    const { disabledOptions } = this.props;
+    const { correctAnswer } = this.state;
+    const correct = option === correctAnswer;
+    let actualClass = 'nada';
 
-    return defaultPoints + (timerValue * weight);
+    if (correct && disabledOptions) {
+      actualClass = 'correct-answer';
+    } else if (!correct && disabledOptions) {
+      actualClass = 'incorrect-answer';
+    }
+
+    return actualClass;
+  }
+
+  shuffle() {
+    const { question } = this.props;
+    const correctAnswer = question.correct_answer;
+    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
+    const magicNumber = 0.5;
+    allAlternatives.sort(() => Math.random() - magicNumber);
+    // this.timer();
+    this.setState({
+      options: allAlternatives,
+      correctAnswer,
+    });
   }
 
   clickedOption({ target: { id } }) {
@@ -60,17 +75,18 @@ class Question extends Component {
     show();
   }
 
-  shuffle() {
-    const { question } = this.props;
-    const correctAnswer = question.correct_answer;
-    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
-    const magicNumber = 0.5;
-    allAlternatives.sort(() => Math.random() - magicNumber);
-    // this.timer();
-    this.setState({
-      options: allAlternatives,
-      correctAnswer,
-    });
+  calculateScore() {
+    const { question: { difficulty }, timerValue } = this.props;
+    const ONE = 1;
+    const TWO = 2;
+    const THREE = 3;
+    let weight = 0;
+    const defaultPoints = 10;
+    if (difficulty === 'hard') { weight = THREE; }
+    if (difficulty === 'medium') { weight = TWO; }
+    if (difficulty === 'easy') { weight = ONE; }
+
+    return defaultPoints + (timerValue * weight);
   }
 
   render() {
@@ -93,7 +109,7 @@ class Question extends Component {
           const correct = option === correctAnswer;
           return (
             <Button
-              classe="optionButton"
+              classe={ this.getButtonClass(option) }
               key={ option }
               dataTestId={
                 correct

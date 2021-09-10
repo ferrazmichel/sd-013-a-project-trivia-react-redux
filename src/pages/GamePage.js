@@ -7,6 +7,7 @@ import Question from '../components/Question';
 import Button from '../components/Button';
 import mountQuestions from '../services/fetchGame';
 import { getScore } from '../redux/actions/index';
+import './pages-css/GamePage.css';
 
 class GamePage extends Component {
   constructor() {
@@ -161,7 +162,7 @@ class GamePage extends Component {
     }
 
     return (
-      <>
+      <div>
         <Header />
         {
           loading ? <p>Loading...</p> : <Question
@@ -185,7 +186,7 @@ class GamePage extends Component {
             onClick={ this.nextQuestion }
           />
         }
-      </>
+      </div>
     );
   }
 }
