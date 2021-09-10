@@ -1,14 +1,36 @@
 import React, { Component } from 'react';
-import Ranking from '../components/Ranking';
+import PropTypes from 'prop-types';
 
-class TelaDeRanking extends Component {
+class Ranking extends Component {
+  constructor() {
+    super();
+
+    this.rankingToHome = this.rankingToHome.bind(this);
+  }
+
+  rankingToHome() {
+    const { history } = this.props;
+    history.push('/');
+  }
+
   render() {
     return (
       <div>
-        <Ranking />
+        <title data-testid="ranking-title">Ranking dos Jogadores</title>
+        <button
+          type="button"
+          data-testid="btn-go-home"
+          onClick={ this.rankingToHome }
+        >
+          Voltar ao Início
+        </button>
       </div>
     );
   }
 }
 
-export default TelaDeRanking;
+Ranking.propTypes = {
+  history: PropTypes.object,
+}.isRequired;
+
+export default Ranking;

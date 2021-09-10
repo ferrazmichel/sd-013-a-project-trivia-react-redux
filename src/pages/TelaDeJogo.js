@@ -18,15 +18,6 @@ class TelaDeJogo extends Component {
       time: 30,
     };
 
-    this.checkCounter = this.checkCounter.bind(this);
-    this.counter = this.counter.bind(this);
-    this.createButtons = this.createButtons.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
-    this.renderNextButton = this.renderNextButton.bind(this);
-    this.renderContent = this.renderContent.bind(this);
-    this.savePoints = this.savePoints.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
-    this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.nextSound = new Audio(nextQuestionSound);
     this.wrongSound = new Audio(wrongQuestionSound);
   }
