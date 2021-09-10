@@ -15,27 +15,27 @@ class Header extends Component {
   }
 
   Gravatar() {
-    const { username, email } = this.getPlayerDataFromLocalStorage();
+    const { name, email } = this.getPlayerDataFromLocalStorage();
 
     const hashGerada = md5(email).toString();
     const imgemPerfil = `https://www.gravatar.com/avatar/${hashGerada}`;
-    const perfil = { username, imgemPerfil, email };
+    const perfil = { name, imgemPerfil, email };
 
     return perfil;
   }
 
   render() {
-    const { username, imgemPerfil } = this.Gravatar();
+    const { name, imgemPerfil } = this.Gravatar();
     const { score, testID } = this.props;
     return (
       <div>
         <img
           src={ imgemPerfil }
-          alt={ username }
+          alt={ name }
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">
-          { username }
+          { name }
         </p>
         <h3 data-testid={ testID }>
           {score}

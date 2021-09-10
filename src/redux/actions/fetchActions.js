@@ -3,6 +3,7 @@ import {
   GET_TOKEN,
   SET_CATEGORY,
   SUBMIT_QUESTIONS,
+  ADD_CURRENT_COUNT,
 } from './actionTypes';
 
 const requestToken = () => ({
@@ -67,5 +68,23 @@ export const categoriesThunk = () => (results) => ({
   type: 'GET_QUESTIONS',
   questions: results,
 });
+
+export const getCurrentCount = (payload) => ({
+  type: ADD_CURRENT_COUNT,
+  count: payload,
+});
+
+const awaitCount = () => ({
+  type: 'AWAIT',
+});
+
+export function addCurrentCount(payload) {
+  return (dispatch) => {
+    dispatch(awaitCount());
+    const results = dispatch(getCurrentCount(payload));
+
+    return results;
+  };
+}
 
 export default fetchActions;
