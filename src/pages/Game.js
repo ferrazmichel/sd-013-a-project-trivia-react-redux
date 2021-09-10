@@ -38,7 +38,7 @@ class Game extends React.Component {
 
     clearInterval(intervalId); // Encerra o timer ao final de uma partida do jogo
   }
-  
+
   startCronometer() {
     // Será utilizado em componentWillUnmount para encerrar o timer rodando em background
     const intervalId = setInterval(() => this.chronometer(), ONE_SECOND);
