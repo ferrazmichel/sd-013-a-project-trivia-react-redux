@@ -72,7 +72,6 @@ class Game extends React.Component {
     }
 
     if (timerIsOn) {
-      console.log('deu certo');
       localStorage.setItem('time', JSON.stringify(seconds));
       this.setState({ seconds: 0 });
       toggleTimer(false);
