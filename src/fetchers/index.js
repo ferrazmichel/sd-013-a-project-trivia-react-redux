@@ -20,7 +20,7 @@ export const fetchToken = async () => {
   try {
     const response = await fetch(TRIVIA_TOKEN_URL);
     const data = await response.json();
-
+    console.log(data.response_code, 'response_code');
     // Conforme https://opentdb.com/api_config.php
     if (data.response_code === responseCodes.SUCCESS) {
       const { token } = data;

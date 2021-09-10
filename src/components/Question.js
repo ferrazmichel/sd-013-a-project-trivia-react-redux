@@ -14,7 +14,7 @@ class Question extends React.Component {
     const { question } = this.props;
 
     const { alternatives } = question;
-    console.log(question, alternatives);
+
     return (
       <div>
         <h1 data-testid="question-text">{question.question}</h1>
@@ -31,7 +31,11 @@ Question.propTypes = {
   question: PropTypes.shape({
     question: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
-    alternatives: PropTypes.arrayOf({ }).isRequired,
+    alternatives: PropTypes.arrayOf(PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      textId: PropTypes.string.isRequired,
+      difficulty: PropTypes.number.isRequired,
+    })).isRequired,
     difficulty: PropTypes.string.isRequired,
   }).isRequired,
 };
