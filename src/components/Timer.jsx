@@ -21,8 +21,8 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { counter } = this.state;
-    const { timeRemaining } = this.props;
-    if (counter === 0) {
+    const { timeRemaining, stopCount } = this.props;
+    if (counter === 0 || stopCount) {
       clearInterval(this.countdownInterval);
       this.disableBtns();
     }
@@ -50,6 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Timer.propTypes = {
   timeRemaining: PropTypes.func.isRequired,
+  stopCount: PropTypes.bool.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);
