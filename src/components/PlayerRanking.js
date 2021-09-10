@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 
-export class Ranking extends Component {
+export class PlayerRanking extends Component {
   render() {
     return (
       <div>
-        <p data-testid="ranking-title">Ranking</p>
+        <p>PlayerRanking</p>
       </div>
     );
   }
 }
 
-export default Ranking;
+export default PlayerRanking;
