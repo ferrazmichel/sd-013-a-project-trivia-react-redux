@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Login, Play, Settings, Feedback } from './pages';
+import { Login, Play, Settings, Feedback, Ranking } from './pages';
 import './css/main.css';
 import './App.css';
 
@@ -11,6 +11,7 @@ export default function App() {
         <Route path="/play" component={ Play } />
         <Route path="/settings" component={ Settings } />
         <Route path="/feedback" component={ Feedback } />
+        <Route path="/ranking" component={ Ranking } />
         <Route path="/" component={ Login } />
       </Switch>
     </div>
