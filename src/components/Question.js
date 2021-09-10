@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
+import { getScore } from '../redux/actions/index';
 
 class Question extends Component {
   constructor(props) {
@@ -45,13 +47,14 @@ class Question extends Component {
   }
 
   clickedOption({ target: { id } }) {
-    const { show, pauseTimer, isClicked } = this.props;
+    const { show, pauseTimer, isClicked, storeScore } = this.props;
     pauseTimer();
     if (id === 'correct') {
       const { player } = JSON.parse(localStorage.getItem('state'));
       player.assertions += 1;
       player.score += this.calculateScore(); // calcula e salva no localStorage chave player.score
-      localStorage.setItm('state', JSON.stringify({ Player: { ...player } }));
+      localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
+      storeScore(player.score);
     }
     isClicked();
     show();
@@ -111,8 +114,18 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-  show: PropTypes.func,
+  disabledOptions: PropTypes.bool,
   hide: PropTypes.func,
+  isClicked: PropTypes.func,
+  pauseTimer: PropTypes.func,
+  question: PropTypes.object,
+  show: PropTypes.func,
+  storeScore: PropTypes.func,
+  timerValue: PropTypes.number,
 }.isRequired;
 
-export default Question;
+const mapDispatchToProps = (dispatch) => ({
+  storeScore: (score) => dispatch(getScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Question);

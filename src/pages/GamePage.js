@@ -87,6 +87,12 @@ class GamePage extends Component {
     }
   }
 
+  showNextQuestionButton() {
+    this.setState({
+      hidden: false,
+    });
+  }
+
   timer() {
     const ONE_SECOND = 1000;
 
@@ -96,12 +102,6 @@ class GamePage extends Component {
       }));
       this.stopTimer();
     }, ONE_SECOND);
-  }
-
-  showNextQuestionButton() {
-    this.setState({
-      hidden: false,
-    });
   }
 
   render() {

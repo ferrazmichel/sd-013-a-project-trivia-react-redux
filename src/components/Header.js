@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Header extends Component {
   constructor() {
     super();
     this.state = {
       name: '',
-      score: '',
       src: '',
     };
 
@@ -13,23 +14,22 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    const state = JSON.parse(localStorage.getItem('state'));
-    if (state !== null) {
-      this.mountHeader(state);
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    if (player !== null) {
+      this.mountHeader(player);
     }
   }
 
-  mountHeader(state) {
-    const { player } = state;
+  mountHeader(player) {
     this.setState({
       name: player.name,
-      score: player.score,
       src: player.gravatarUrl,
     });
   }
 
   render() {
-    const { name, score, src } = this.state;
+    const { name, src } = this.state;
+    const { thisScore } = this.props;
 
     return (
       <div>
@@ -38,7 +38,7 @@ class Header extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">
             Score:
-            { score }
+            { thisScore }
           </h3>
         </header>
       </div>
@@ -46,4 +46,12 @@ class Header extends Component {
   }
 }
 
-export default Header;
+Header.propTypes = {
+  thisScore: PropTypes.number,
+}.isRequired;
+
+const mapStateToProps = (state) => ({
+  thisScore: state.score.score,
+});
+
+export default connect(mapStateToProps)(Header);

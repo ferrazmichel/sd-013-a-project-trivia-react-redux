@@ -28,9 +28,9 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const state = JSON.parse(localStorage.getItem('state'));
-    if (state !== null) {
-      this.playBtnOn(false, state);
+    const player = JSON.parse(localStorage.getItem('state'));
+    if (player !== null) {
+      this.playBtnOn(false, player);
     }
   }
 
@@ -50,8 +50,8 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  playBtnOn(on, state) {
-    const { player } = state;
+  playBtnOn(on, game) {
+    const { player } = game;
     this.setState({
       name: player.name,
       email: player.gravatarEmail,

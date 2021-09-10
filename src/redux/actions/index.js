@@ -1,4 +1,4 @@
-export const ADD_USER = 'ADD_USER';
+export const SCORE = 'ADD_USER';
 export const GAME_SETTINGS = 'GAME_SETTINGS';
 
 // Criando action creator changeSettings
@@ -6,4 +6,9 @@ export const GAME_SETTINGS = 'GAME_SETTINGS';
 export const changeSettings = (thisConfig) => ({
   type: GAME_SETTINGS,
   thisConfig,
+});
+
+export const getScore = (score) => ({
+  type: SCORE,
+  score,
 });
