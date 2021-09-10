@@ -60,6 +60,12 @@ class QuestionCard extends React.Component {
     }
   }
 
+  decode(str) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = str;
+    return textArea.value;
+  }
+
   renderQuestionButton() {
     const { questionData, qstIndex } = this.props;
     const { correct_answer: correctAnswer,
@@ -73,7 +79,7 @@ class QuestionCard extends React.Component {
         data-testid="correct-answer"
         onClick={ this.handleCorrectAnswer }
       >
-        {correctAnswer}
+        { this.decode(correctAnswer) }
       </button>);
     const wrongButtons = incorrectAnswers.map((answer, index) => (
       <button
@@ -84,7 +90,7 @@ class QuestionCard extends React.Component {
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.handleClick }
       >
-        {answer}
+        { this.decode(answer) }
       </button>));
 
     const allButtons = [...wrongButtons, correctButtons];
@@ -106,7 +112,7 @@ class QuestionCard extends React.Component {
     return (
       <div>
         <h1 data-testid="question-category">{category}</h1>
-        <p data-testid="question-text">{question}</p>
+        <p data-testid="question-text">{this.decode(question)}</p>
         {buttons}
       </div>
     );
