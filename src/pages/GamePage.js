@@ -81,15 +81,25 @@ class GamePage extends React.Component {
     const { setPointsClink } = this.props;
     const assertions = 1;
     const TEN = 10;
-    const score = TEN + (timer * dificuldade);
+    const objD = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const score = TEN + (timer * objD[dificuldade]);
+    console.log(score);
+    console.log(objD[dificuldade]);
     setPointsClink({ score, assertions });
   }
 
   handleclick(event) {
+    const { seconds, index } = this.state;
+    const { questions } = this.props;
     if (event.target.id === 'correct') {
       // Esperando os dados do temporizado para calcular corretamente.
-      const NUMBER = 30;
-      this.calculationOfPoints(NUMBER, 2);
+      const NUMBER = seconds;
+      const dificult = questions[index].difficulty;
+      this.calculationOfPoints(NUMBER, dificult);
     }
     const correct = document.querySelector('#correct');
     correct.classList.add('buttonCorrect');
@@ -170,7 +180,9 @@ class GamePage extends React.Component {
 
 GamePage.propTypes = {
   getQuestionsThunk: PropTypes.func.isRequired,
-  questions: PropTypes.shape({}).isRequired,
+  questions: PropTypes.shape({
+    difficulty: PropTypes.string,
+  }).isRequired,
   loading: PropTypes.bool.isRequired,
   change: PropTypes.func.isRequired,
   disabledButton: PropTypes.bool.isRequired,

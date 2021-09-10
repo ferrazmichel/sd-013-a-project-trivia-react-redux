@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { getGravatar } from '../services/Api';
+import { resetScore } from '../redux/actions';
 
 class Feedback extends React.Component {
   constructor() {
@@ -42,12 +43,15 @@ class Feedback extends React.Component {
           score: player.score,
         });
         localStorage.setItem('ranking', JSON.stringify(ls));
+      } else {
+        lsBOOL.score = player.score;
+        localStorage.setItem('ranking', JSON.stringify(ls));
       }
     }
   }
 
   render() {
-    const { totalScore, hits } = this.props;
+    const { totalScore, hits, reset } = this.props;
     return (
       <div>
         <Header />
@@ -60,7 +64,7 @@ class Feedback extends React.Component {
         <span data-testid="feedback-total-question">
           { hits }
         </span>
-        <Link to="/" type="button" data-testid="btn-play-again">
+        <Link to="/" type="button" data-testid="btn-play-again" onClick={ reset }>
           Jogar novamente
         </Link>
         <Link
@@ -83,6 +87,10 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetScore()),
+});
+
 Feedback.propTypes = {
   hits: PropTypes.number.isRequired,
   totalScore: PropTypes.number.isRequired,
@@ -91,6 +99,7 @@ Feedback.propTypes = {
     score: PropTypes.number,
   }).isRequired,
   email: PropTypes.string.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

@@ -2,7 +2,7 @@ import { getQuestionsFetch, getToken } from '../../services/Api';
 import { GET_LOGIN, GET_QUESTIONS, GET_QUESTIONS_SUCCESS,
   GET_QUESTIONS_FAIL, GET_TOKEN, GET_TOKEN_SUCCESS,
   GET_TOKEN_FAIL, CHANGE_DISABLED, SET_PLAYER,
-  SET_SCORE } from './actionType';
+  SET_SCORE, RESET_SCORE } from './actionType';
 
 export const getLogin = (payload) => ({
   type: GET_LOGIN, payload,
@@ -44,6 +44,10 @@ export const setPlayer = (payload) => ({
 export const setPoints = (payload) => ({
   type: SET_SCORE,
   payload,
+});
+
+export const resetScore = () => ({
+  type: RESET_SCORE,
 });
 
 export const fetchTokenThunk = () => (dispatch) => {
