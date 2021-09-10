@@ -20,6 +20,10 @@ class Login extends Component {
     this.handleonClick = this.handleonClick.bind(this);
   }
 
+  componentDidMount() {
+    getTokenApi();
+  }
+
   handleonChange() {
     const valueEmail = document.getElementById('email');
     const valuePlayer = document.getElementById('player');
@@ -33,7 +37,6 @@ class Login extends Component {
     const { email, player } = this.state;
     const { userLogin } = this.props;
     userLogin(({ email, player }));
-    getTokenApi();
     // fetchApi();
     this.setState({ redirect: true });
   }

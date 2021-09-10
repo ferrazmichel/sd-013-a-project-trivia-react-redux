@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { fetchApiQuestions } from '../redux/actions';
+import { sucessQuestions } from '../redux/actions';
 import Question from './Question';
 
 class Trivia extends Component {
@@ -14,18 +14,21 @@ class Trivia extends Component {
       disable: false,
       countdown: 30,
       indexQuestions: 0,
+      // questions: [],
     };
     this.fetchGravater = this.fetchGravater.bind(this);
     // this.gameInfo = this.gameInfo.bind(this);
     // this.changeColor = this.changeColor.bind(this);
     this.timerDisable = this.timerDisable.bind(this);
     this.countdown = this.countdown.bind(this);
+    this.fetchQuestion = this.fetchQuestion.bind(this);
   }
 
   componentDidMount() {
-    const { fetchApi, questions } = this.props;
+    // const { fetchApi } = this.props;
     this.fetchGravater();
-    fetchApi();
+    // fetchApi();
+    this.fetchQuestion();
   }
 
   componentDidUpdate(prevProps) {
@@ -34,6 +37,23 @@ class Trivia extends Component {
       this.countdown();
       this.timerDisable();
     }
+  }
+
+  // fecthLocalStorage() {
+  // async fetchApiQuestions() {
+  //   // let token = localStorage.getItem('token');
+  //   // if (!localStorage[token]) {
+  //   //   token = await getTokenApi();
+  //   // }
+  async fetchQuestion() {
+    const { questionSucess } = this.props;
+    const tokenGet = localStorage.getItem(('token'));
+    const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
+    const questionsApi = await fetchQuestions.json();
+    const questionJson = await questionsApi.results;
+    localStorage.setItem('questions', JSON.stringify(questionJson));
+    // this.setState({ questions: questionJson });
+    questionSucess(questionJson);
   }
 
   fetchGravater() {
@@ -119,7 +139,7 @@ class Trivia extends Component {
   // }
 
   render() {
-    const { userPlayer, questions } = this.props;
+    const { userPlayer, questionsAPI } = this.props;
     const { disable, countdown, indexQuestions } = this.state;
 
     return (
@@ -131,8 +151,8 @@ class Trivia extends Component {
         </header>
         <h3>{ countdown }</h3>
         { disable && clearInterval(this.timeout)}
-        {questions.length > 0
-          ? <Question question={ questions[indexQuestions] } />
+        {questionsAPI.length > 0
+          ? <Question question={ questionsAPI[indexQuestions] } />
           : <p> Loading...</p>}
       </main>
     );
@@ -140,8 +160,12 @@ class Trivia extends Component {
 }
 
 Trivia.propTypes = {
+  questionSucess: PropTypes.func.isRequired,
   questions: PropTypes.shape({
     map: PropTypes.func,
+  }).isRequired,
+  questionsAPI: PropTypes.shape({
+    length: PropTypes.number,
   }).isRequired,
   userEmail: PropTypes.shape({
     toLowerCase: PropTypes.func,
@@ -150,13 +174,15 @@ Trivia.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  questions: state.trivia.results,
+  questionsAPI: state.trivia.results,
   userEmail: state.user.email,
   userPlayer: state.user.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchApi: () => dispatch(fetchApiQuestions()),
+  // fetchApi: () => dispatch(fetchApiQuestions()),
+  questionSucess: (state) => dispatch(sucessQuestions(state)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
