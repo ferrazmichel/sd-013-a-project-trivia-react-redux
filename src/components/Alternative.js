@@ -32,8 +32,9 @@ class Alternative extends React.Component {
 
     if (alternative.textId === 'correct-answer') {
       // Atualiza o localStorage com a nova pontuação.
+      // const ONE_SECOND = 500;
       toggleTimer(true);
-      const timer = JSON.parse(localStorage.getItem('time'));
+      const timer = JSON.parse(sessionStorage.getItem('time'));
       const localState = JSON.parse(localStorage.getItem('state'));
       const { score, assertions } = localState.player;
       const newScore = score + (STARTING_POINTS + (timer * alternative.difficulty));

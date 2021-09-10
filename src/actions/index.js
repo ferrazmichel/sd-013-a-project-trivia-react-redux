@@ -5,6 +5,7 @@ export const GET_QUESTIONS = 'match/get_questions';
 export const ENABLE_NEXT_QUESTION = 'match/enable_button';
 export const UPDATE_TIME = 'UPDATE_TIME';
 export const TIMER_TOGLE = 'TIMER_TOGLE';
+export const CLEAR_QUESTIONS = 'CLEAR_QUESTIONS';
 
 // Action disparada no momento do login. Após os dados terem sido validados.
 export const userLoggedIn = (playerInfo) => (
@@ -45,4 +46,9 @@ export const updateTime = (time) => ({
 export const timerToggle = (bool) => ({
   type: TIMER_TOGLE,
   payload: bool,
+});
+
+export const clearQuestions = (payload) => ({
+  type: CLEAR_QUESTIONS,
+  payload,
 });
