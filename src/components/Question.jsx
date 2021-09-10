@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -9,7 +10,7 @@ class Question extends React.Component {
   constructor() {
     super();
 
-    this.state = { id: 0, activateOn: true };
+    this.state = { id: 0, activateOn: true, hide: false };
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.disableButton = this.disableButton.bind(this);
@@ -23,7 +24,7 @@ class Question extends React.Component {
 
   disableButton() {
     // essa função habilita o botão próximo quando a questão é selecionada
-    this.setState({ activateOn: false });
+    this.setState({ activateOn: false, hide: true });
   }
 
   nextQuestion() {
@@ -55,11 +56,25 @@ class Question extends React.Component {
     );
   }
 
+  renderButton() {
+    const { activateOn } = this.state;
+    return (
+      <button
+        type="button"
+        disabled={ activateOn }
+        data-testid="btn-next"
+        onClick={ this.nextQuestion }
+      >
+        Próxima
+      </button>
+    );
+  }
+
   // FALTA REMOVER O BUG DAS CORES E RESETAR O TIME QUANDO CLICAR EM PRÓXIMO
 
   render() {
     const { questions } = this.props;
-    const { id, activateOn } = this.state;
+    const { id, hide } = this.state;
     const questionMap = questions.map((question) => this.renderQuestions(question));
 
     if (questions.length === 0) return <p>Loading...</p>;
@@ -68,15 +83,7 @@ class Question extends React.Component {
         <div>
           {questionMap[id]}
         </div>
-        {/* { respondido ?  : null }  */}
-        <button
-          type="button"
-          disabled={ activateOn }
-          data-testid="btn-next"
-          onClick={ this.nextQuestion }
-        >
-          Próxima
-        </button>
+        { hide ? this.renderButton() : null }
       </div>
     );
   }
