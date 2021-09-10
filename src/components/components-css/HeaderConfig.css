@@ -1,0 +1,11 @@
+.header-config {
+  align-items: center;
+  background-color: rgb(65, 25, 127);
+  color: rgb(255, 255, 255);
+  display: flex; 
+  font-family: epilogue;
+  font-size: 1em;
+  height: 70px;
+  justify-content: space-around;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.479);
+}

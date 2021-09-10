@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import './pages-css/Ranking.css';
 
 class Ranking extends Component {
   constructor() {
@@ -19,10 +20,6 @@ class Ranking extends Component {
       b.score - a.score
     ));
     this.showRanking(sortedRanking);
-    // const { player } = JSON.parse(localStorage.getItem('state'));
-    // player.assertions = 0;
-    // player.score = 0; // calcula e salva no localStorage chave player.score
-    // localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   showRanking(sortedRanking) {
@@ -34,27 +31,28 @@ class Ranking extends Component {
   render() {
     const { ranking } = this.state;
     return (
-      <>
-        <h1 data-testid="ranking-title">Ranking</h1>
-        <ol>
+      <div className="ranking-div">
+        <div className="ranking-title">
+          <h1 data-testid="ranking-title">Ranking</h1>
+          <Link to="/" data-testid="btn-go-home">
+            <button className="btn-go-home" type="button">Tela inicial</button>
+          </Link>
+        </div>
+        <ol className="ol-ranking">
           { ranking.map((player, index) => (
-            <li key={ player.gravatarUrl }>
+            <li className="li-ranking" key={ player.gravatarUrl }>
               <p>{ `${index + 1}` }</p>
-              <img src={ player.picture } alt="Gravatar" />
+              <img className="img-gravatar" src={ player.picture } alt="Gravatar" />
               <p data-testid={ `player-name-${index}` }>
                 { player.name }
               </p>
               <p data-testid={ `player-score-${index}` }>
                 { player.score }
               </p>
-              { player.record && <p>{ player.record }</p>}
             </li>
           ))}
         </ol>
-        <Link to="/" data-testid="btn-go-home">
-          <button type="button">Tela inicial</button>
-        </Link>
-      </>
+      </div>
     );
   }
 }

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import './components-css/HeaderConfig.css';
 
 class HeaderConfig extends Component {
   render() {
     return (
-      <div>
+      <div className="header-config">
         <h1>Configurações</h1>
       </div>
     );

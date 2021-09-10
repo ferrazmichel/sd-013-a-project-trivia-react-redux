@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import { getScore } from '../redux/actions/index';
+import './components-css/Question.css';
 
 class Question extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Question extends Component {
     this.shuffle = this.shuffle.bind(this);
     this.clickedOption = this.clickedOption.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
+    this.getButtonClass = this.getButtonClass.bind(this);
     // this.timer = this.timer.bind(this);
     // this.clearInterval = this.clearInterval.bind(this);
   }
@@ -32,18 +34,32 @@ class Question extends Component {
     }
   }
 
-  calculateScore() {
-    const { question: { difficulty }, timerValue } = this.props;
-    const ONE = 1;
-    const TWO = 2;
-    const THREE = 3;
-    let weight = 0;
-    const defaultPoints = 10;
-    if (difficulty === 'hard') { weight = THREE; }
-    if (difficulty === 'medium') { weight = TWO; }
-    if (difficulty === 'easy') { weight = ONE; }
+  getButtonClass(option) {
+    const { disabledOptions } = this.props;
+    const { correctAnswer } = this.state;
+    const correct = option === correctAnswer;
+    let actualClass = 'nada';
 
-    return defaultPoints + (timerValue * weight);
+    if (correct && disabledOptions) {
+      actualClass = 'correct-answer';
+    } else if (!correct && disabledOptions) {
+      actualClass = 'incorrect-answer';
+    }
+
+    return actualClass;
+  }
+
+  shuffle() {
+    const { question } = this.props;
+    const correctAnswer = question.correct_answer;
+    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
+    const magicNumber = 0.5;
+    allAlternatives.sort(() => Math.random() - magicNumber);
+    // this.timer();
+    this.setState({
+      options: allAlternatives,
+      correctAnswer,
+    });
   }
 
   clickedOption({ target: { id } }) {
@@ -60,17 +76,18 @@ class Question extends Component {
     show();
   }
 
-  shuffle() {
-    const { question } = this.props;
-    const correctAnswer = question.correct_answer;
-    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
-    const magicNumber = 0.5;
-    allAlternatives.sort(() => Math.random() - magicNumber);
-    // this.timer();
-    this.setState({
-      options: allAlternatives,
-      correctAnswer,
-    });
+  calculateScore() {
+    const { question: { difficulty }, timerValue } = this.props;
+    const ONE = 1;
+    const TWO = 2;
+    const THREE = 3;
+    let weight = 0;
+    const defaultPoints = 10;
+    if (difficulty === 'hard') { weight = THREE; }
+    if (difficulty === 'medium') { weight = TWO; }
+    if (difficulty === 'easy') { weight = ONE; }
+
+    return defaultPoints + (timerValue * weight);
   }
 
   render() {
@@ -78,37 +95,43 @@ class Question extends Component {
     const { question, timerValue, disabledOptions } = this.props;
 
     return (
-      <>
-        <h2
-          data-testid="question-category"
-        >
-          { question.category }
-        </h2>
-        <h3
-          data-testid="question-text"
-        >
-          { question.question }
-        </h3>
-        {options.map((option) => {
-          const correct = option === correctAnswer;
-          return (
-            <Button
-              classe="optionButton"
-              key={ option }
-              dataTestId={
-                correct
-                  ? 'correct-answer'
-                  : `wrong-answer-${question.incorrect_answers.indexOf(option)}`
-              }
-              id={ correct ? 'correct' : 'incorrect' }
-              name={ option }
-              onClick={ this.clickedOption }
-              disabled={ disabledOptions }
-            />
-          );
-        })}
-        <span>{ timerValue }</span>
-      </>
+      <div className="question-container">
+        <div>
+          <h2
+            data-testid="question-category"
+          >
+            { question.category }
+          </h2>
+          <h3
+            data-testid="question-text"
+          >
+            { question.question }
+          </h3>
+        </div>
+        <div className="timer-container">
+          <h3 className="timer">{ timerValue }</h3>
+        </div>
+        <div className="options-container">
+          {options.map((option) => {
+            const correct = option === correctAnswer;
+            return (
+              <Button
+                classe={ `btn-options ${this.getButtonClass(option)}` }
+                key={ option }
+                dataTestId={
+                  correct
+                    ? 'correct-answer'
+                    : `wrong-answer-${question.incorrect_answers.indexOf(option)}`
+                }
+                id={ correct ? 'correct' : 'incorrect' }
+                name={ option }
+                onClick={ this.clickedOption }
+                disabled={ disabledOptions }
+              />
+            );
+          })}
+        </div>
+      </div>
     );
   }
 }

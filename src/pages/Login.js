@@ -4,6 +4,7 @@ import md5 from 'crypto-js/md5';
 import fetchTriviaAPI from '../services/triviaAPI';
 import InputLogin from '../components/InputLogin';
 import Button from '../components/Button';
+import './pages-css/Login.css';
 
 class Login extends Component {
   constructor() {
@@ -16,6 +17,7 @@ class Login extends Component {
       redirectToGamePage: false,
       redirectToSettings: false,
       redirectToRankingPage: false,
+      rankingBtn: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,6 +27,8 @@ class Login extends Component {
     this.verifyInputs = this.verifyInputs.bind(this);
     this.playBtnOn = this.playBtnOn.bind(this);
     this.savePlayerData = this.savePlayerData.bind(this);
+    this.rankingOn = this.rankingOn.bind(this);
+    this.renderForm = this.renderForm.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +36,16 @@ class Login extends Component {
     if (player !== null) {
       this.playBtnOn(false, player);
     }
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (ranking !== null) {
+      this.rankingOn();
+    }
+  }
+
+  rankingOn() {
+    this.setState({
+      rankingBtn: false,
+    });
   }
 
   savePlayerData() {
@@ -104,27 +118,26 @@ class Login extends Component {
     }
   }
 
-  render() {
+  renderForm() {
     const { btnDisabledStatus, email, name,
-      redirectToGamePage, redirectToSettings, redirectToRankingPage } = this.state;
-
+      rankingBtn } = this.state;
     return (
-      <div>
-        <form action="">
-          <InputLogin
-            labelValue="Nome"
-            dataTestId="input-player-name"
-            onChange={ this.handleChange }
-            name="name"
-            value={ name }
-          />
-          <InputLogin
-            labelValue="E-mail"
-            dataTestId="input-gravatar-email"
-            onChange={ this.handleChange }
-            name="email"
-            value={ email }
-          />
+      <form className="formLogin">
+        <InputLogin
+          placeHolder="Name/Username"
+          dataTestId="input-player-name"
+          onChange={ this.handleChange }
+          name="name"
+          value={ name }
+        />
+        <InputLogin
+          placeHolder="E-mail"
+          dataTestId="input-gravatar-email"
+          onChange={ this.handleChange }
+          name="email"
+          value={ email }
+        />
+        <div className="buttons">
           <Button
             dataTestId="btn-play"
             name="Jogar"
@@ -133,18 +146,30 @@ class Login extends Component {
             onClick={ this.handleClickPlay }
           />
           <Button
-            name="Ranking"
-            classe="btn-ranking"
-            disabled={ btnDisabledStatus }
-            onClick={ this.handleClickRanking }
-          />
-          <Button
             dataTestId="btn-settings"
             name="Configurações"
             classe="btn-config"
             onClick={ this.handleClickSettings }
           />
-        </form>
+          <Button
+            name="Ranking"
+            classe="btn-ranking"
+            disabled={ rankingBtn }
+            onClick={ this.handleClickRanking }
+          />
+        </div>
+      </form>
+    );
+  }
+
+  render() {
+    const { redirectToGamePage, redirectToSettings,
+      redirectToRankingPage } = this.state;
+
+    return (
+      <div className="loginDiv">
+        <h1 className="loginTitle">Trivia Game</h1>
+        { this.renderForm() }
         { redirectToGamePage && <Redirect to="/gamepage" /> }
         { redirectToSettings && <Redirect to="/settings" /> }
         { redirectToRankingPage && <Redirect to="/ranking" />}
