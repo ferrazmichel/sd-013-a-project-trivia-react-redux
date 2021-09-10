@@ -53,6 +53,16 @@ class Login extends React.Component {
       // { name, gravatarEmail } é o `payload` da action.
       logPlayerIn({ name, gravatarEmail: email });
 
+      const localState = {
+        player: {
+          name,
+          assertions: 0,
+          score: 0,
+          gravatarEmail: email,
+        },
+      };
+      localStorage.setItem('state', JSON.stringify(localState));
+
       // Reseta o state do component Login, já que este foi utilizado
       // apenas para validação dos dados informados pelo usuário.
       this.setState({ name: '', email: '' });
