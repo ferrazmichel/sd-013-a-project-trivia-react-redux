@@ -17,7 +17,6 @@ class Game extends React.Component {
     this.state = {
       currentQuestion: 0,
       isHidden: true,
-      shouldLoadButtons: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.setButtonVisibility = this.setButtonVisibility.bind(this);
@@ -47,12 +46,10 @@ class Game extends React.Component {
     const { disable, handleRestart, handlePause } = this.props;
     disable(false);
     if (currentQuestion <= penultIndex) {
-      // disable(false);
       handleRestart(true);
       handlePause(false);
       this.setState({
         currentQuestion: currentQuestion + 1,
-        shouldLoadButtons: true,
       });
     } else {
       const { history } = this.props;
@@ -61,16 +58,9 @@ class Game extends React.Component {
     this.setButtonVisibility(); // desabilita o botão de prox após clicar em prox
   }
 
-  handleLoadButtons() {
-    const { shouldLoadButtons } = this.state;
-    this.setState({
-      shouldLoadButtons: !shouldLoadButtons,
-    });
-  }
-
   render() {
     const { questions } = this.props;
-    const { currentQuestion, isHidden, shouldLoadButtons } = this.state;
+    const { currentQuestion, isHidden } = this.state;
     if (questions.length === 0) {
       return <p>Loading</p>;
     }
@@ -82,7 +72,6 @@ class Game extends React.Component {
         <QuestionCard
           questionData={ questions[currentQuestion] }
           setButtonVisibility={ this.setButtonVisibility }
-          loadButtons={ shouldLoadButtons }
           handleLoadButtons={ this.handleLoadButtons }
 
         />

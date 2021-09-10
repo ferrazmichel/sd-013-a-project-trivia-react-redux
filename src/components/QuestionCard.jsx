@@ -17,11 +17,10 @@ class QuestionCard extends React.Component {
     this.renderQuestionButton();
   }
 
-  componentDidUpdate() {
-    const { loadButtons, handleLoadButtons } = this.props;
-    if (loadButtons) {
+  componentDidUpdate(prevProps) {
+    const { questionData } = this.props;
+    if (prevProps.questionData !== questionData) {
       this.renderQuestionButton();
-      handleLoadButtons();
     }
   }
 
@@ -61,36 +60,29 @@ class QuestionCard extends React.Component {
     }
   }
 
-  // handleDisableButtons() {
-  //   const wrongButtonsList = document.querySelectorAll('.wrong-answer');
-  //   for (let i = 0; i < wrongButtonsList.length; i += 1) {
-  //     wrongButtonsList[i].setAttribute('disabled', true);
-  //   }
-  //   const correctButton = document.querySelector('.correct-answer');
-  //   correctButton.setAttribute('disabled', true);
-  // }
-
   renderQuestionButton() {
     const { questionData } = this.props;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
       <button
-        key={correctAnswer}
+        key={ correctAnswer }
         className="correct-answer"
         type="button"
+        name="question"
         data-testid="correct-answer"
-        onClick={this.handleCorrectAnswer}
+        onClick={ this.handleCorrectAnswer }
       >
         {correctAnswer}
       </button>);
     const wrongButtons = incorrectAnswers.map((answer, index) => (
       <button
         type="button"
+        name="question"
         className="wrong-answer"
-        key={answer}
-        data-testid={`wrong-answer-${index}`}
-        onClick={this.handleClick}
+        key={ answer }
+        data-testid={ `wrong-answer-${index}` }
+        onClick={ this.handleClick }
       >
         {answer}
       </button>));
@@ -106,14 +98,11 @@ class QuestionCard extends React.Component {
     const { questionData, shouldDisableButtons } = this.props;
     const { category, question } = questionData;
     const { buttons } = this.state;
-    // if (shouldDisableButtons === true) {
-    //   const wrongButtonsList = document.querySelectorAll('.wrong-answer');
-    //   for (let i = 0; i < wrongButtonsList.length; i += 1) {
-    //     wrongButtonsList[i].setAttribute('disabled', true);
-    //   }
-    //   const correctButton = document.querySelector('.correct-answer');
-    //   correctButton.setAttribute('disabled', true);
-    // }
+    if (shouldDisableButtons === true) {
+      document.getElementsByName('question').forEach((qst) => {
+        qst.disabled = true;
+      });
+    }
     return (
       <div>
         <h1 data-testid="question-category">{category}</h1>

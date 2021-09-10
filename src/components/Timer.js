@@ -91,6 +91,7 @@ Timer.propTypes = {
   sendTime: PropTypes.func.isRequired,
   restart: PropTypes.bool.isRequired,
   pause: PropTypes.bool.isRequired,
+  setButtonVisibility: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer);

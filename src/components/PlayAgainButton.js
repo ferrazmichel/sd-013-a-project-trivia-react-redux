@@ -19,6 +19,7 @@ class PlayAgainButton extends Component {
 
 PlayAgainButton.propTypes = {
   testid: PropTypes.string.isRequired,
+  clearStore: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
