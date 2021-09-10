@@ -15,24 +15,24 @@ class Configurations extends Component {
       categories: [],
       category: '',
       difficulty: '',
-      saveEnabled: false,
+      saveDisabled: true,
       type: '',
     };
 
-    this.getCategoriesOptions = getCategoriesOptions.bind(this);
-    this.getDifficultiesOptions = getDifficultiesOptions.bind(this);
-    this.handleChange = handleChange.bind(this);
-    this.handleClickCancel = handleClickCancel.bind(this);
-    this.handleClickSave = handleClickSave.bind(this);
-    this.mountCategories = mountCategories.bind(this);
-    this.mountSettings = mountSettings.bind(this);
+    this.getCategoriesOptions = this.getCategoriesOptions.bind(this);
+    this.getDifficultiesOptions = this.getDifficultiesOptions.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClickCancel = this.handleClickCancel.bind(this);
+    this.handleClickSave = this.handleClickSave.bind(this);
+    this.mountCategories = this.mountCategories.bind(this);
+    this.mountSettings = this.mountSettings.bind(this);
   }
 
-  componentDidMount() {
-    const categories = fetchCategories();
-    const { props: { storedSetting } } = this;
-    mountCategories(categories);
-    this.mountSettings(storedSetting);
+  async componentDidMount() {
+    const categories = await fetchCategories();
+    const { storedSettings } = this.props;
+    this.mountCategories(categories);
+    this.mountSettings(storedSettings);
   }
 
   getCategoriesOptions() {
@@ -58,7 +58,7 @@ class Configurations extends Component {
   handleChange({ target: { value, name } }) {
     this.setState({
       [name]: value,
-      saveEnabled: true,
+      saveDisabled: false,
     });
   }
 
@@ -81,8 +81,8 @@ class Configurations extends Component {
     });
   }
 
-  mountSettings(storedSetting) {
-    const { difficulty, type, category } = storedSetting;
+  mountSettings(storedSettings) {
+    const { difficulty, type, category } = storedSettings;
     this.setState({
       difficulty,
       type,
@@ -91,7 +91,7 @@ class Configurations extends Component {
   }
 
   render() {
-    const { category, difficulty, type, saveEnabled } = this.state;
+    const { category, difficulty, type, saveDisabled } = this.state;
     const categoriesOptions = this.getCategoriesOptions();
     const difficultiesOptions = this.getDifficultiesOptions();
     const types = this.getTypeOptions();
@@ -127,13 +127,12 @@ class Configurations extends Component {
         />
         <Button
           className="btn-save-config"
-          disabled={ saveEnabled }
+          disabled={ saveDisabled }
           name="Salvar e Sair"
           onClick={ this.handleClickSave }
         />
         <Button
           className="btn-not-save-config"
-          disabled="false"
           name="Sair sem Salvar"
           onClick={ this.handleClickCancel }
         />
@@ -142,23 +141,23 @@ class Configurations extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  setConfigs: (thisConfig) => dispatch(changeSettings(thisConfig)),
-});
-
-const mapStateToProps = (state) => ({
-  storeSetting: state.gameSettings,
-});
-
 Configurations.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
   setConfigs: PropTypes.func,
-  storedSetting: PropTypes.shape({
+  storedSettings: PropTypes.shape({
     cattegory: PropTypes.string,
     difficulty: PropTypes.string,
     type: PropTypes.string }),
 }.isRequired;
+
+const mapDispatchToProps = (dispatch) => ({
+  setConfigs: (thisConfig) => dispatch(changeSettings(thisConfig)),
+});
+
+const mapStateToProps = (state) => ({
+  storedSettings: state.gameSettings,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Configurations);
