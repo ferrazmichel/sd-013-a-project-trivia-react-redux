@@ -43,6 +43,7 @@ class FeedBack extends Component {
 
   render() {
     const { userName, score } = this.props;
+    console.log(userName);
     const { assertions } = this.state;
     const feedbackMessage = this.fetchAssertions();
     const state = JSON.parse(localStorage.getItem('state'));
@@ -66,7 +67,7 @@ class FeedBack extends Component {
         </div>
         <Link to="/">
           <button
-            onClick={ this.handleClick() }
+            onClick={ () => this.handleClick() }
             className="btn btn-info"
             type="button"
             data-testid="btn-play-again"
