@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from './Header';
+import './Jogo.css';
 
 class Jogo extends React.Component {
   constructor() {
@@ -10,7 +11,7 @@ class Jogo extends React.Component {
     this.state = {
       i: 0,
       timer: 30,
-      button: false, 
+      button: false,
     };
     this.colorGreen = this.colorGreen.bind(this);
     this.colorRed = this.colorRed.bind(this);
@@ -27,44 +28,11 @@ class Jogo extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const buttonNext = document.querySelector('#button-next');
-    const NUMBER_OF_QUESTIONS = 4;
+    const NUMBER_OF_QUESTIONS = 5;
     if (nextState.i === NUMBER_OF_QUESTIONS) {
       buttonNext.parentNode.removeChild(buttonNext);
     }
     return true;
-  }
-
-  colorGreen(e) {
-    const buttonNext = document.querySelector('#button-next');
-    if (buttonNext) {
-      buttonNext.style.display = 'block';
-    }
-    e.target.style.border = '3px solid rgb(6, 240, 15)';
-    const wrong = document.querySelectorAll('.wrong');
-    const NUM = 3;
-    const styleWrong = '3px solid rgb(255, 0, 0)';
-    if (wrong.length === NUM) {
-      wrong[0].style.border = styleWrong;
-      wrong[1].style.border = styleWrong;
-      wrong[2].style.border = styleWrong;
-    }
-    wrong[0].style.border = styleWrong;
-  }
-
-  colorRed(e) {
-    const buttonNext = document.querySelector('#button-next');
-    if (buttonNext) {
-      buttonNext.style.display = 'block';
-    }
-    e.target.style.border = '3px solid rgb(255, 0, 0)';
-    const correct = document.querySelector('.correct');
-    correct.style.border = '3px solid rgb(6, 240, 15)';
-  }
-
-  nextQuestion() {
-    const buttonNext = document.querySelector('#button-next');
-    buttonNext.style.display = 'none';
-    this.setState((state) => ({ i: state.i + 1 }));
   }
 
   setTimer() {
@@ -82,6 +50,52 @@ class Jogo extends React.Component {
         timer: timer - 1,
       });
     }
+  }
+
+  colorGreen(e) {
+    const buttonNext = document.querySelector('#button-next');
+    if (buttonNext) {
+      buttonNext.style.display = 'inline-block';
+    }
+    e.target.classList.add('certo');
+    const wrong = document.querySelectorAll('.wrong');
+    const NUM = 3;
+
+    if (wrong.length === NUM) {
+      wrong[0].classList.add('errado');
+      wrong[1].classList.add('errado');
+      wrong[2].classList.add('errado');
+    }
+    wrong[0].classList.add('errado');
+  }
+
+  colorRed(e) {
+    const buttonNext = document.querySelector('#button-next');
+    if (buttonNext) {
+      buttonNext.style.display = 'inline-block';
+    }
+    e.target.classList.add('errado');
+    const correct = document.querySelector('.correct');
+    correct.classList.add('certo');
+  }
+
+  nextQuestion() {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'none';
+    const correctButton = document.querySelector('.certo');
+    const wrong = document.querySelectorAll('.errado');
+    correctButton.classList.remove('certo');
+    const NUM = 3;
+    if (wrong.length === NUM) {
+      wrong[0].classList.remove('errado');
+      wrong[1].classList.remove('errado');
+      wrong[2].classList.remove('errado');
+    }
+    wrong[0].classList.remove('errado');
+    this.setState((state) => ({
+      i: state.i + 1,
+      timer: 30,
+    }));
   }
 
   render() {
@@ -114,7 +128,11 @@ class Jogo extends React.Component {
             </p>
           ))}
         </div>
-        <p> { timer } </p>
+        <p>
+          {' '}
+          { timer }
+          {' '}
+        </p>
         <Link to="/feedback">
           <button type="button">feedback</button>
         </Link>
