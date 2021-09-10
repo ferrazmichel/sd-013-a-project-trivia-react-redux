@@ -1,12 +1,19 @@
+.correctColor {
+  border: 3px solid rgb(6, 240, 15);
+  color: black;
+}
+
+.wrongColor {
+  border: 3px solid red;
+  color: black;
+}
+
+.defaultColor {
+  color: black;
+}
+
 /* button[disabled]{
   border: none;
   background-color: none;
   color: none;
 } */
-
-.correctColor { border: 3px solid rgb(6, 240, 15); color: black }
-
-.wrongColor { border: 3px solid rgb(255, 0, 0); color: black }
-.defaultColor { color: black }
-
-/*  */

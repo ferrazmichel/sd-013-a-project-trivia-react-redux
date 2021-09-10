@@ -92,6 +92,9 @@ class Answers extends React.Component {
       correctColor: 'correctColor',
       wrongColor: 'wrongColor',
     });
+
+    this.pauseTime();
+    funcDisable();
   }
 
   verifyClock() {

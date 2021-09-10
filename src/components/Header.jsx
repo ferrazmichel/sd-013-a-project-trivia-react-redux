@@ -6,7 +6,8 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.Gravatar = this.Gravatar.bind(this);
+
+    this.gravatar = this.gravatar.bind(this);
   }
 
   getPlayerDataFromLocalStorage() {
