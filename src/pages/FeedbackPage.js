@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 
-class Feedback extends React.Component {
+class FeedbackPage extends Component {
   constructor() {
     super();
 
@@ -33,17 +34,22 @@ class Feedback extends React.Component {
   }
 
   render() {
+    const number = 3;
+
+    const localState = JSON.parse(localStorage.getItem('state'));
+    const { assertions } = localState.player;
+
     return (
       <div>
-        <h1 data-testid="feedback-text">Feedback page</h1>
+        <Header />
+        {(assertions < number) ? <p data-testid="feedback-text">Podia ser melhor...</p>
+          : <p data-testid="feedback-text">Mandou bem!</p>}
         <Link to="/ranking">
           <button type="button" data-testid="btn-ranking">ranking aqui</button>
         </Link>
-
       </div>
-
     );
   }
 }
 
-export default Feedback;
+export default FeedbackPage;

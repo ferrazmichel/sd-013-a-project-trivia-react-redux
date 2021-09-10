@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { clearQuestions } from '../actions';
 
 class Ranking extends React.Component {
-
   componentDidMount() {
     const { clear } = this.props;
     clear();
@@ -32,6 +32,10 @@ class Ranking extends React.Component {
     );
   }
 }
+
+Ranking.propTypes = {
+  clear: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   clear: (bool) => dispatch(clearQuestions(bool)),
