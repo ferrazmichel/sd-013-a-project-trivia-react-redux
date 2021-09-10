@@ -32,7 +32,7 @@ class Game extends React.Component {
   nextQuestion() {
     const { enable } = this.props;
     enable(false);
-    this.setState((prev) => ({ index: prev.index + 1, seconds: 5 }));
+    this.setState((prev) => ({ index: prev.index + 1, seconds: 30 }));
   }
 
   chronometer() {
