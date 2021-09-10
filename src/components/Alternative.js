@@ -36,8 +36,6 @@ class Alternative extends React.Component {
       const timer = JSON.parse(localStorage.getItem('time'));
       const localState = JSON.parse(localStorage.getItem('state'));
       const { score, assertions } = localState.player;
-      /* const timer = 10; // Precisa vir do redux */
-      console.log(timer);
       const newScore = score + (STARTING_POINTS + (timer * alternative.difficulty));
       localState.player.score = newScore;
       localState.player.assertions = Number(assertions) + 1;
