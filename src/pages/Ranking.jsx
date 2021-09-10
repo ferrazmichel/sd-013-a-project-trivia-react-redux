@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 
@@ -43,9 +42,9 @@ class Ranking extends Component {
 
   // funçao para salvar o ranking no localStorage
   saveRankingStorage() {
-    const { name, email, score } = this.props;
-    const picture = this.getGravatarPicture(email);
-
+    const { name, gravatarEmail, score } = JSON
+      .parse(localStorage.getItem('state')).player;
+    const picture = this.getGravatarPicture(gravatarEmail);
     const localStorageRanking = JSON.parse(localStorage.getItem('ranking'));
 
     if (!localStorageRanking) {
@@ -56,7 +55,6 @@ class Ranking extends Component {
       const ranking = { name, score, picture };
 
       localStorageRanking.push(ranking);
-      console.log(localStorageRanking);
       localStorage.setItem('ranking', JSON.stringify(localStorageRanking));
 
       this.getRankingStorage(localStorageRanking);
@@ -80,13 +78,13 @@ class Ranking extends Component {
           {rankings.sort((a, b) => b.score - a.score)
             .map(({ name, picture, score }, index) => (
               <li key={ index }>
-                <h4 data-testid={ `player-name-${index}` }>
-                  { name }
-                </h4>
                 <img src={ picture } alt="Player Gravatar" />
-                <h4 data-testid={ `player-score-${index}` }>
+                <span data-testid={ `player-name-${index}` }>
+                  { name }
+                </span>
+                <span data-testid={ `player-score-${index}` }>
                   { score }
-                </h4>
+                </span>
               </li>
             ))}
         </ul>
@@ -103,19 +101,10 @@ class Ranking extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   name: state.game.name,
-//   email: state.game.gravatarEmail,
-//   score: state.game.score,
-// });
-
 Ranking.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
-  }),
-  name: PropTypes.string,
-  email: PropTypes.string,
-  score: PropTypes.number,
-}.isRequired;
+  }).isRequired,
+};
 
-export default connect(null)(Ranking);
+export default Ranking;
