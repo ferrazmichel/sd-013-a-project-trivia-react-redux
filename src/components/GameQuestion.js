@@ -111,8 +111,8 @@ class GameQuestion extends Component {
     return (
       <div>
         <div className="question-n-category">
-          <h3 data-testid="question-category">{currQuestion.category}</h3>
-          <p data-testid="question-text">{currQuestion.question}</p>
+          <h3 data-testid="question-category">{window.atob(currQuestion.category)}</h3>
+          <p data-testid="question-text">{window.atob(currQuestion.question)}</p>
         </div>
         <div className="question-options">
           { currQuestionOptions.map((question, questionIndex) => {
@@ -126,7 +126,7 @@ class GameQuestion extends Component {
                   onClick={ () => this.dispatchCorrectAnswer(difficulty) }
                   key={ questionIndex }
                 >
-                  {question}
+                  {window.atob(question)}
                 </button>);
             }
             wrongIndex += 1;
@@ -139,7 +139,7 @@ class GameQuestion extends Component {
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
                 onClick={ () => this.dispatchIncorrectAnswer() }
               >
-                {question}
+                {window.atob(question)}
               </button>);
           }) }
         </div>
