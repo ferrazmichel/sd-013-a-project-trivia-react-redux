@@ -48,19 +48,19 @@ class FeedBack extends Component {
     const { player: { name, score, gravatarEmail } } = currentState;
     const hash = MD5(gravatarEmail).toString();
     const picture = `https://www.gravatar.com/avatar/${hash}`;
-    const currentPlayerRanking = {
+    const currentPlayer = {
       name,
       score,
       picture,
     };
     const currentRanking = JSON.parse(localStorage.getItem('ranking'));
     if (currentRanking === null) {
-      localStorage.setItem('ranking', JSON.stringify(currentPlayerRanking));
+      localStorage.setItem('ranking', JSON.stringify([currentPlayer]));
     } else {
-      const newRanking = {
-        currentRanking,
-        ...currentPlayerRanking,
-      };
+      const newRanking = [
+        ...currentRanking,
+        currentPlayer,
+      ];
       localStorage.setItem('ranking', JSON.stringify(newRanking));
     }
   }
