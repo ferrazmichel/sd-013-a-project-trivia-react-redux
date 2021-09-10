@@ -31,7 +31,6 @@ class Alternative extends React.Component {
     const { alternative, updatePlayerScore } = this.props;
 
     if (alternative.textId === 'correct-answer') {
-      console.log('CORRECT', alternative);
       // Atualiza o localStorage com a nova pontuação.
       const localState = JSON.parse(localStorage.getItem('state'));
       const { score, assertions } = localState.player;
