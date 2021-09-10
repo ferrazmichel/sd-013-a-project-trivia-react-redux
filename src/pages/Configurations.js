@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
+import HeaderConfig from '../components/HeaderConfig';
 import { changeSettings } from '../redux/actions';
 import fetchCategories from '../services/fetchCategories';
 import Button from '../components/Button';
@@ -97,7 +97,8 @@ class Configurations extends Component {
     const types = this.getTypeOptions();
     return (
       <>
-        <Header />
+        <HeaderConfig />
+        <h3 data-testid="settings-title">Personalize o teu game!</h3>
         <Select
           classe="select-categories"
           id="category"
