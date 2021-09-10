@@ -4,16 +4,18 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { sucessQuestions } from '../redux/actions';
 import Question from './Question';
+import '../App.css';
 
 class Trivia extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // rigthBoarder: '',
-      // wrongBoarder: '',
+      rigthBoarder: false,
+      wrongBoarder: false,
       disable: false,
       countdown: 30,
       indexQuestions: 0,
+      disableButtonNext: true,
       // questions: [],
     };
     this.fetchGravater = this.fetchGravater.bind(this);
@@ -22,6 +24,7 @@ class Trivia extends Component {
     this.timerDisable = this.timerDisable.bind(this);
     this.countdown = this.countdown.bind(this);
     this.fetchQuestion = this.fetchQuestion.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -29,15 +32,19 @@ class Trivia extends Component {
     this.fetchGravater();
     // fetchApi();
     this.fetchQuestion();
+    this.countdown();
+    this.timerDisable();
   }
 
-  componentDidUpdate(prevProps) {
-    const { questions } = this.props;
-    if (prevProps.questions !== questions) {
-      this.countdown();
-      this.timerDisable();
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   // const {questions } = this.props;
+  //   // const { countdown } = this.state;
+  //   // const magicNumber = 30;
+  //   if (prevState.countdown !== 0) {
+  //     this.countdown();
+  //     this.timerDisable();
+  //   }
+  // }
 
   // fecthLocalStorage() {
   // async fetchApiQuestions() {
@@ -67,80 +74,50 @@ class Trivia extends Component {
     />);
   }
 
-  // changeColor() {
-  //   this.setState({
-  //     rigthBoarder: 'green-border',
-  //     wrongBoarder: 'red-border',
-  //   });
-  // }
-
-  timerDisable() {
-    const TIMER = 30000;
-
-    setTimeout(() => {
-      this.setState({ disable: true });
-    }, TIMER);
-  }
-
   countdown() {
     const TIME_RELOAD = 1000;
+    // const count10 = 10;
     this.timeout = setInterval(() => {
       const { countdown } = this.state;
       this.setState({ countdown: countdown - 1 });
     }, TIME_RELOAD);
   }
 
-  // gameInfo() {
-  //   const { questions } = this.props;
-  //   const { rigthBoarder, wrongBoarder, disable, indexQuestios } = this.state;
-  //   if (questions.length > 0) {
-  //     console.log(questions);
-  //     const question = questions[indexQuestios];
-  //     console.log(question);
-  //     return (
-  //       <div>
-  //         <p data-testid="question-category">
-  //           Category:
-  //           <span>{question.category}</span>
-  //         </p>
-  //         <p>
-  //           Question:
-  //           <span data-testid="question-text">{question.question}</span>
-  //         </p>
-  //         <ul>
-  //           <li>
-  //             <button
-  //               disabled={ disable }
-  //               className={ rigthBoarder }
-  //               data-testid="correct-answer"
-  //               onClick={ this.ChangeColor }
-  //               type="button"
-  //             >
-  //               {question.correct_answer}
-  //             </button>
-  //           </li>
-  //           {question.incorrect_answers.map((incorrect, i) => (
-  //             <li key={ i }>
-  //               <button
-  //                 disabled={ disable }
-  //                 className={ wrongBoarder }
-  //                 data-testid={ `wrong-answer-${i}` }
-  //                 onClick={ this.ChangeColor }
-  //                 type="button"
-  //               >
-  //                 {incorrect}
-  //               </button>
-  //             </li>
-  //           ))}
-  //         </ul>
-  //       </div>
-  //     );
-  //   }
-  // }
+  timerDisable() {
+    // const { countdown } = this.state;
+    const TIMER = 30000;
+    // const counter = 30;
+    // if (countdown === counter) {
+    setTimeout(() => {
+      this.setState({ disable: true, disableButtonNext: false });
+    }, TIMER);
+    // }
+  }
+
+  handleClick() {
+    const { indexQuestions } = this.state;
+    const INDEX_LIMIT = 4;
+    const { rigthBoarder, wrongBoarder } = this.state;
+
+    if (indexQuestions < INDEX_LIMIT) {
+      this.setState({
+        indexQuestions: indexQuestions + 1,
+        disable: false,
+        disableButtonNext: true,
+        countdown: 30,
+        rigthBorder: !rigthBoarder,
+        wrongBorder: !wrongBoarder,
+      }, () => {
+        // this.randomAnswer();
+        this.countdown();
+      });
+    }
+  }
 
   render() {
     const { userPlayer, questionsAPI } = this.props;
-    const { disable, countdown, indexQuestions } = this.state;
+    const { disable,
+      countdown, indexQuestions, disableButtonNext, rigthBorder, wrongBorder } = this.state;
 
     return (
       <main>
@@ -152,26 +129,24 @@ class Trivia extends Component {
         <h3>{ countdown }</h3>
         { disable && clearInterval(this.timeout)}
         {questionsAPI.length > 0
-          ? <Question question={ questionsAPI[indexQuestions] } />
+          ? <Question
+            right={ rigthBorder }
+            wrong={ wrongBorder }
+            disable={ disable }
+            question={ questionsAPI[indexQuestions] }
+          />
           : <p> Loading...</p>}
+        <button
+          type="button"
+          onClick={ this.handleClick }
+          disabled={ disableButtonNext }
+        >
+          Next
+        </button>
       </main>
     );
   }
 }
-
-Trivia.propTypes = {
-  questionSucess: PropTypes.func.isRequired,
-  questions: PropTypes.shape({
-    map: PropTypes.func,
-  }).isRequired,
-  questionsAPI: PropTypes.shape({
-    length: PropTypes.number,
-  }).isRequired,
-  userEmail: PropTypes.shape({
-    toLowerCase: PropTypes.func,
-  }).isRequired,
-  userPlayer: PropTypes.string.isRequired,
-};
 
 const mapStateToProps = (state) => ({
   questionsAPI: state.trivia.results,

@@ -1,88 +1,83 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import '../App.css';
 
 class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rigthBoarder: '',
-      wrongBoarder: '',
-      disable: false,
+      rigthBoarder: false,
+      wrongBoarder: false,
+      // countdown: 30,
+      // disableButtonNext: true,
     };
     this.changeColor = this.changeColor.bind(this);
-    this.timerDisable = this.timerDisable.bind(this);
+    // this.timerDisable = this.timerDisable.bind(this);
+    // this.countdown = this.countdown.bind(this);
+    // this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    this.timerDisable();
+    // this.countdown();
+    // this.timerDisable();
   }
 
   changeColor() {
+    const { rigthBoarder, wrongBoarder } = this.state;
+
+    const green = rigthBoarder === '' ? 'green-border' : '';
+    const red = wrongBoarder === '' ? 'red-border' : '';
+
     this.setState({
-      rigthBoarder: 'green-border',
-      wrongBoarder: 'red-border',
+      rigthBoarder: green,
+      wrongBoarder: red,
     });
   }
 
-  timerDisable() {
-    const TIMER = 30000;
-
-    setTimeout(() => {
-      this.setState({ disable: true });
-    }, TIMER);
-  }
-
   render() {
-    const { question } = this.props;
-    const { disable, rigthBoarder, wrongBoarder } = this.state;
+    const { question, disable, rigth, wrong } = this.props;
+    const { rigthBoarder, wrongBoarder } = this.state;
     return (
-      <div>
-        <p data-testid="question-category">
-          Category:
-          <span>{question.category}</span>
-        </p>
-        <p>
-          Question:
-          <span data-testid="question-text">{question.question}</span>
-        </p>
-        <ul>
-          <li>
-            <button
-              disabled={ disable }
-              className={ rigthBoarder }
-              data-testid="correct-answer"
-              onClick={ this.changeColor }
-              type="button"
-            >
-              {question.correct_answer}
-            </button>
-          </li>
-          {question.incorrect_answers.map((incorrect, i) => (
-            <li key={ i }>
+      <main>
+        <div>
+          <p data-testid="question-category">
+            Category:
+            <span>{question.category}</span>
+          </p>
+          <p>
+            Question:
+            <span data-testid="question-text">{question.question}</span>
+          </p>
+          <ul>
+            <li>
               <button
                 disabled={ disable }
-                className={ wrongBoarder }
-                data-testid={ `wrong-answer-${i}` }
+                className={ rigthBoarder ? 'green-border' : '' }
+                data-testid="correct-answer"
                 onClick={ this.changeColor }
                 type="button"
               >
-                {incorrect}
+                {question.correct_answer}
               </button>
             </li>
-          ))}
-        </ul>
-      </div>
+            {question.incorrect_answers.map((incorrect, i) => (
+              <li key={ i }>
+                <button
+                  disabled={ disable }
+                  className={ wrongBoarder ? 'red-border' : '' }
+                  data-testid={ `wrong-answer-${i}` }
+                  onClick={ this.changeColor }
+                  type="button"
+                >
+                  {incorrect}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </main>
     );
   }
 }
-
-Question.propTypes = {
-  question: PropTypes.shape({
-    category: PropTypes.string,
-    correct_answer: PropTypes.string,
-    incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
-    question: PropTypes.string,
-  }).isRequired,
-};
 
 export default Question;

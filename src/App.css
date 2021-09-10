@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -9,12 +9,12 @@ body {
   height: 100vh;
   place-items: center;
   width: 100vw;
+} */
+
+.red-border {
+  border: 3px solid red;
 }
 
-.red-border{
-  border: 3px solid rgb(255, 0, 0);
-}
-
-.green-border{
+.green-border {
   border: 3px solid rgb(6, 240, 15);
 }
