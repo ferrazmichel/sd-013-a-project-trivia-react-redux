@@ -14,7 +14,9 @@
 
 .main {
   align-items: center;
-  background-color: var(--primary);
+  animation: BackgroundAnimate 20s ease infinite;
+  background: linear-gradient(50deg, var(--secondary) 0%, var(--primary) 100%);
+  background-size: 400% 400%;
   display: grid;
   grid: 1fr 1fr / 1fr;
   height: 100vh;
@@ -64,6 +66,8 @@
 .input {
   border: 0;
   border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  padding-left: 5px;
 }
 
 /*
@@ -72,12 +76,48 @@
 */
 
 .input::placeholder {
+  font-size: 0.7rem;
   text-align: center;
 }
 
-.button {
+/* NOTE Reaproveitando classes do botões com definições padrões */
+.settings, .play {
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
   height: 100%;
+  transition: filter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   width: 100%;
+}
+
+/* NOTE Agora podemos aplicar o que queremos para cada */
+.settings {
+  background: var(--secondary);
+  color: white;
+}
+
+
+/* NOTE Botão Play
+Como o botão fica desativado temos que definir a classe para ele
+O transition serve para uma transição suave
+*/
+
+.play {
+  background: rgb(0, 207, 0);
+  color: white;
+  font-weight: 500;
+  transition: 0.5s ease;
+}
+
+.play:disabled {
+  background: #283312;
+  color: black;
+  font-weight: 500;
+}
+
+.settings:hover, .play:hover {
+  filter: brightness(125%);
 }
 
 @media screen and ( min-width : 768px ) {
@@ -86,6 +126,39 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr;
   }
+}
+
+/* NOTE Use Geradores!
+  LINK https://www.gradient-animator.com/
+  Eles facilitam a complexidade de fazer tudo do zero
+*/
+
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
+}
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
+}
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
 }
 
 /* !SECTION */

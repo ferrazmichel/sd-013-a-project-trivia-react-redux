@@ -45,7 +45,7 @@ class Login extends Component {
           type="text"
           name="name"
           className={ style.input }
-          placeholder="Nome"
+          placeholder="Digite seu nome"
           value={ name }
           onChange={ this.handleChange }
         />
@@ -53,13 +53,15 @@ class Login extends Component {
           data-testid="input-gravatar-email"
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Digite seu e-mail com gravatar"
           value={ email }
           className={ style.input }
           onChange={ this.handleChange }
         />
         <button
           type="submit"
+          title="Clique aqui para jogar"
+          className={ style.play }
           data-testid="btn-play"
           disabled={ name.length < 1 || email.length < 1 }
         >
@@ -68,7 +70,7 @@ class Login extends Component {
 
         <Link to="/settings">
           <button
-            className={ style.button }
+            className={ style.settings }
             type="button"
             data-testid="btn-settings"
           >
