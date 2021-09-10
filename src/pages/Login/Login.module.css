@@ -25,17 +25,22 @@
 
 .form {
   display: grid;
+  gap: 25px;
   grid-template-rows: 1fr 1fr 2fr 1fr;
   height: 50%;
 }
 
 .input {
   border: 0;
-  height: 50%;
 }
 
 .input::placeholder {
   text-align: center;
+}
+
+.button {
+  height: 100%;
+  width: 100%;
 }
 
 @media screen and ( min-width : 768px ) {

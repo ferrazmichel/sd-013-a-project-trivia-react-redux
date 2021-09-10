@@ -36,49 +36,57 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
+  renderForm() {
+    const { name, email } = this.state;
+    return (
+      <form className={ style.form } onSubmit={ this.handleSubmit }>
+        <input
+          data-testid="input-player-name"
+          type="text"
+          name="name"
+          className={ style.input }
+          placeholder="Nome"
+          value={ name }
+          onChange={ this.handleChange }
+        />
+        <input
+          data-testid="input-gravatar-email"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={ email }
+          className={ style.input }
+          onChange={ this.handleChange }
+        />
+        <button
+          type="submit"
+          data-testid="btn-play"
+          disabled={ name.length < 1 || email.length < 1 }
+        >
+          Jogar
+        </button>
+
+        <Link to="/settings">
+          <button
+            className={ style.button }
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurações
+          </button>
+        </Link>
+      </form>
+    );
+  }
+
   render() {
-    const { name, email, shouldRedirect } = this.state;
+    const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
 
     return (
       <main className={ style.main }>
         <article>
-          <form className={ style.form } onSubmit={ this.handleSubmit }>
-            <input
-              data-testid="input-player-name"
-              type="text"
-              name="name"
-              className={ style.input }
-              placeholder="Nome"
-              value={ name }
-              onChange={ this.handleChange }
-            />
-            <input
-              data-testid="input-gravatar-email"
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={ email }
-              className={ style.input }
-              onChange={ this.handleChange }
-            />
-            <button
-              type="submit"
-              data-testid="btn-play"
-              disabled={ name.length < 1 || email.length < 1 }
-            >
-              Jogar
-            </button>
-
-            <Link to="/settings">
-              <button
-                type="button"
-                data-testid="btn-settings"
-              >
-                Configurações
-              </button>
-            </Link>
-          </form>
+          {this.renderForm()}
         </article>
         <article>
           <img src={ logo } alt="Logo" />
