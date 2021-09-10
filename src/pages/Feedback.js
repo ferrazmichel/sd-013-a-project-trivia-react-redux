@@ -12,11 +12,11 @@ class Feedback extends React.Component {
       <div className="feedback-main">
         <Header />
         <FeedbackMSG score={ score } assertions={ assertions } />
-        <button type="button" data-testid="btn-play-again">
+        <button type="button" data-testid="btn-ranking">
           <Link to="/ranking">Ranking &#127942;</Link>
         </button>
         <button type="button" data-testid="btn-play-again">
-          <Link to="/play">Jogar Novamente 🗘</Link>
+          <Link to="/">Jogar Novamente 🗘</Link>
         </button>
       </div>
     );

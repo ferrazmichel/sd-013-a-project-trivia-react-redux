@@ -17,9 +17,12 @@ class Header extends Component {
           <h2 data-testid="header-player-name">
             {`Jogador: ${name}`}
           </h2>
-          <h2 data-testid="header-score">
-            { `Pontuação: ${score}` }
-          </h2>
+          <div className="header-placar">
+            <h2>Pontuação</h2>
+            <h2 data-testid="header-score" value={ score }>
+              { score }
+            </h2>
+          </div>
         </div>
       </header>
     );
@@ -37,6 +40,7 @@ const mapStateToProps = (state) => ({
   gravatarEmail: state.user.gravatarEmail,
   name: state.user.name,
   score: state.play.player.score,
+  assertions: state.play.player.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

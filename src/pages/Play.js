@@ -6,7 +6,7 @@ import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services
 import { sendPlayerInfo } from '../actions';
 import Timer from '../components/Timer';
 
-const correctAnswer = 'correct-answer';
+const CORRECT_ANSWER = 'correct-answer';
 const MAX_QUESTIONS = 5;
 const LAST_QUESTION_INDEX = MAX_QUESTIONS - 1;
 class Play extends Component {
@@ -17,6 +17,7 @@ class Play extends Component {
       questionIndex: 0,
       button: false,
       answerButton: false,
+      answers: [],
     };
     this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -25,20 +26,64 @@ class Play extends Component {
     this.redirectTo = this.redirectTo.bind(this);
     this.handleButton = this.handleButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.preventSortAnswers = this.preventSortAnswers.bind(this);
   }
 
   componentDidMount() {
+    console.log('MONTOU');
     this.handleQuestions();
+    const {
+      name,
+      gravatarEmail,
+      player: { score, assertions },
+      submitPlayer } = this.props;
+    const TESTE = { name,
+      gravatarEmail,
+      score,
+      assertions };
+    submitPlayer({ player: TESTE });
+    saveToLocalStorage('state', { player: TESTE });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    this.preventSortAnswers(prevState);
   }
 
   componentWillUnmount() {
-    const { player: { name, gravatarEmail }, submitPlayer } = this.props;
+    const {
+      player: { name, gravatarEmail, score, assertions },
+      submitPlayer,
+    } = this.props;
     const TESTE = { name,
       gravatarEmail,
-      score: 44,
-      assertions: 3 };
-    submitPlayer((TESTE));
-    saveToLocalStorage('state', TESTE);
+      score,
+      assertions };
+    submitPlayer({ player: TESTE });
+    saveToLocalStorage('state', { player: TESTE });
+  }
+
+  // ao clicar na questão Às vezes reembaralha as questões, essa função resolve o bug
+  preventSortAnswers(prevState) {
+    const { questions, questionIndex, button } = this.state;
+    // primeira pergunta
+    if (!prevState.questions && questions) {
+      this.setState({
+        answers: this.handleAnswers(questions.results[questionIndex]),
+      });
+    }
+    // quando trocar de pergunta atualiza as respostas
+    if (prevState.questionIndex < questionIndex) {
+      this.setState({
+        answers: this.handleAnswers(questions.results[questionIndex]),
+      });
+    }
+    // tempo acabou ou respondeu desativa os butões
+    if (!prevState.button && button) {
+      const disableButtons = document.querySelectorAll('.answer-style');
+      disableButtons.forEach((btn) => {
+        btn.disabled = button;
+      });
+    }
   }
 
   handleAnswers(results) {
@@ -52,16 +97,11 @@ class Play extends Component {
         key={ answer }
         type="button"
         className="answer-style"
-        name={ answer === results.correct_answer ? correctAnswer
+        name={ answer === results.correct_answer ? CORRECT_ANSWER
           : `wrong-answer-${index}` }
-        data-testid={ answer === results.correct_answer ? correctAnswer
+        data-testid={ answer === results.correct_answer ? CORRECT_ANSWER
           : `wrong-answer-${index}` }
         disabled={ button }
-        // onClick={ this.handleButtonStyle }
-        // onClick={() => {
-        //   this.handleButtonStyle,
-        //   this.setState({ answerButton: true }),
-        // }}
         onClick={ this.handleClick }
       >
         {answer}
@@ -72,7 +112,7 @@ class Play extends Component {
   handleButtonStyle() {
     const whichButton = document.querySelectorAll('.answer-style');
     whichButton.forEach((button) => {
-      if (button.name === correctAnswer) {
+      if (button.name === CORRECT_ANSWER) {
         button.style.border = '3px solid rgb(6, 240, 15)';
       } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
     });
@@ -105,15 +145,31 @@ class Play extends Component {
     }));
   }
 
-  handleClick() {
+  handleClick(e) {
     this.handleButtonStyle();
     this.setState({ answerButton: true });
+    if (e.target.name === CORRECT_ANSWER) {
+      const {
+        player: { name, gravatarEmail, score, assertions },
+        submitPlayer,
+      } = this.props;
+      const TESTE = { name,
+        gravatarEmail,
+        score: score + 1,
+        assertions: assertions + 1 };
+      submitPlayer({ player: TESTE });
+      saveToLocalStorage('state', { player: TESTE });
+    }
   }
 
   render() {
-    const { questions, questionIndex, answerButton } = this.state;
+    const { questions, questionIndex, answerButton, answers } = this.state;
     if (!questions) {
-      return <div>Loading...</div>;
+      return (
+        <div className="play-main">
+          <Header />
+          <div>Loading...</div>
+        </div>);
     }
     const { results } = questions;
     return (
@@ -131,11 +187,12 @@ class Play extends Component {
             </section>
             <div className="play-question-answers">
               <div className="playquestion-answers-options">
-                { this.handleAnswers(results[questionIndex]) }
+                {/* { this.handleAnswers(results[questionIndex]) } */}
+                { answers }
               </div>
               <Timer
                 nextQuestion={ this.nextQuestion }
-                onChange={ this.handleButton }
+                handleButton={ this.handleButton }
                 answerButton={ answerButton }
               />
             </div>
@@ -146,8 +203,10 @@ class Play extends Component {
   }
 }
 
-const mapStateToProps = ({ play: { player } }) => ({
+const mapStateToProps = ({ user: { name, gravatarEmail }, play: { player } }) => ({
   player,
+  name,
+  gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -157,6 +216,10 @@ const mapDispatchToProps = (dispatch) => ({
 Play.propTypes = {
   history: PropTypes.arrayOf(PropTypes.object).isRequired,
   submitPlayer: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.shape({
+    trim: PropTypes.func,
+  }).isRequired,
   player: PropTypes.shape({
     name: PropTypes.string,
     assertions: PropTypes.number,

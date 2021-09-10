@@ -214,7 +214,7 @@ describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta,
   });
 });
 
-describe.only('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
+describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -390,6 +390,7 @@ describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve con
   it('O placar com o valor atual está presente no header', () => {
     cy.get(HEADER_SCORE_SELECTOR).should(($el) => {
       const state = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
+      console.log($el.text());
       expect(parseInt($el.text())).to.be.eq(state.player.score);
     });
   });
