@@ -13,7 +13,7 @@ class Trivia extends Component {
       // wrongBoarder: '',
       disable: false,
       countdown: 30,
-      indexQuestios: 0,
+      indexQuestions: 0,
     };
     this.fetchGravater = this.fetchGravater.bind(this);
     // this.gameInfo = this.gameInfo.bind(this);
@@ -23,7 +23,7 @@ class Trivia extends Component {
   }
 
   componentDidMount() {
-    const { fetchApi } = this.props;
+    const { fetchApi, questions } = this.props;
     this.fetchGravater();
     fetchApi();
   }
@@ -120,22 +120,22 @@ class Trivia extends Component {
 
   render() {
     const { userPlayer, questions } = this.props;
-    const { disable, countdown, indexQuestios } = this.state;
-    if (questions.length > 0) {
-      return (
-        <main>
-          <header>
-            { this.fetchGravater() }
-            <p data-testid="header-player-name">{userPlayer}</p>
-            <p data-testid="header-score">Placar: 0</p>
-          </header>
-          <h3>{ countdown }</h3>
-          { disable && clearInterval(this.timeout)}
-          <Question question={ questions[indexQuestios] } />
-        </main>
-      );
-    }
-    return <p> Loading...</p>;
+    const { disable, countdown, indexQuestions } = this.state;
+
+    return (
+      <main>
+        <header>
+          { this.fetchGravater() }
+          <p data-testid="header-player-name">{userPlayer}</p>
+          <p data-testid="header-score">Placar: 0</p>
+        </header>
+        <h3>{ countdown }</h3>
+        { disable && clearInterval(this.timeout)}
+        {questions.length > 0
+          ? <Question question={ questions[indexQuestions] } />
+          : <p> Loading...</p>}
+      </main>
+    );
   }
 }
 

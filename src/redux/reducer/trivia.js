@@ -4,13 +4,13 @@ import {
   SUCESS_TRIVIA,
 } from '../actions';
 
-// Esse reducer será responsável por tratar as informações da pessoa usuária
+// Esse reducer será responsável por tratar as informações das questões
 const INITIAL_STATE = {
   results: [],
   error: '',
 };
 
-function userReducer(state = INITIAL_STATE, action) {
+function triviaReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOAD_TRIVIA:
     return {
@@ -34,4 +34,4 @@ function userReducer(state = INITIAL_STATE, action) {
   }
 }
 
-export default userReducer;
+export default triviaReducer;
