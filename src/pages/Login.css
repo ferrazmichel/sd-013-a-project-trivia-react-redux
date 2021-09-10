@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap') ;
 
 body {
   background-image: url('https://mocah.org/uploads/posts/547224-landscape-wallpaper.gif');
@@ -8,11 +8,11 @@ body {
 
 .login-title {
   background-image: url('https://i.pinimg.com/originals/62/39/4d/62394d753859943e6a1a36443ef78795.gif');
-  background-size: contain;
   background-clip: text;
-  font-family: Sigmar One, cursive;
-  text-align: center;
+  background-size: contain;
+  font-family: Sigmar One , cursive;
   color: transparent;
+  text-align: center;
   font-size: 60px;
   line-height: 0.75;
   margin: 10px;
@@ -20,15 +20,15 @@ body {
 }
 
 .login-panel {
-  background-color: #d2d7df;
   align-items: center;
+  background-color: #d2d7df;
   border: 1px solid black;
   border-radius: 16px;
+  box-shadow: 1px 3px 10px black;
   display: flex;
   flex-direction: column;
   margin: 15% auto;
   padding: 20px;
-  box-shadow: 1px 3px 10px black;
   width: 300px;
 }
 
@@ -54,7 +54,7 @@ body {
 
 .login-panel .btn-login-screen:hover {
   background-color: aquamarine;
-  cursor: pointer;
   color: black;
+  cursor: pointer;
   font-size: 16px;
 }
