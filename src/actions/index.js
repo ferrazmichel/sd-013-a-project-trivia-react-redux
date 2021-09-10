@@ -3,6 +3,7 @@ export const REQUEST_API = 'REQUEST_API';
 export const SUCCESS_API = 'SUCCESS_API';
 export const SUCCESS_QUEST = 'SUCCESS_QUEST';
 export const FEEDBACK = 'FEEDBACK';
+export const CONFIG = 'CONFIG';
 
 const setLogin = (login, email) => ({
   type: LOGIN, login, email,
@@ -47,4 +48,10 @@ export function fetchQuestions(token) { // thunk das perguntas
 export const feedBack = (feedback) => ({
   type: FEEDBACK,
   feedback,
+});
+
+// configuração do game
+export const saveSettings = (payload) => ({
+  type: CONFIG,
+  payload,
 });
