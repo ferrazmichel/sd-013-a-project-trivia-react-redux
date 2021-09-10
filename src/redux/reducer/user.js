@@ -1,5 +1,5 @@
-import { GET_LOGIN, SET_SCORE } from '../actions/actionType';
-import { setLocalStorage } from '../../services/localStoreService';
+import { GET_LOGIN, SET_SCORE, RESET_SCORE } from '../actions/actionType';
+// import { setLocalStorage } from '../../services/localStoreService';
 
 const INITIAL_STATE = {
   name: '',
@@ -14,8 +14,11 @@ const user = (state = INITIAL_STATE, action) => {
     return { ...state, ...action.payload };
 
   case SET_SCORE:
-    setLocalStorage('ranking', [{ ...state, score: state.score + action.payload.score }]);
+    // setLocalStorage('ranking', [{ ...state, score: state.score + action.payload.score }]);
     return { ...state, score: state.score + action.payload.score };
+
+  case RESET_SCORE:
+    return { ...state, score: 0 };
 
   default:
     return state;

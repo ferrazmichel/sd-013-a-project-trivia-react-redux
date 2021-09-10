@@ -43,15 +43,15 @@ class Login extends React.Component {
   }
 
   fetchToken() {
-    const { email, name } = this.state;
-    const { token, score } = this.props;
-    const imagem = getGravatar(email);
+    // const { email, name } = this.state;
+    const { token } = this.props;
+    // const imagem = getGravatar(email);
     localStorage.setItem('token', token);
-    localStorage.setItem('ranking', JSON.stringify([{
-      picture: imagem,
-      name,
-      score,
-    }]));
+    // localStorage.setItem('ranking', JSON.stringify([{
+    //   picture: imagem,
+    //   name,
+    //   score,
+    // }]));
   }
 
   async tokenThunk() {
