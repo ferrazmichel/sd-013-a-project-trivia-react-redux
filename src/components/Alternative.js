@@ -29,7 +29,6 @@ class Alternative extends React.Component {
 
   calculatePoints() {
     const { alternative, updatePlayerScore } = this.props;
-    console.log('CALCULATE POINTS', alternative);
 
     if (alternative.textId === 'correct-answer') {
       console.log('CORRECT', alternative);
