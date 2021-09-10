@@ -5,3 +5,8 @@
 .incorrect.selected {
   border: 3px solid red;
 }
+
+.background {
+  background-color: #98e8b3;
+  height: 100vh;
+}
