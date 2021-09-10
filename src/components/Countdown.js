@@ -14,6 +14,7 @@ class Countdown extends React.Component {
   }
 
   componentDidMount() {
+    console.log('criou cronometro');
     const timeout = 5000;
     const interval = 1000;
     this.timer = setTimeout(() => {
@@ -37,8 +38,8 @@ class Countdown extends React.Component {
     const { countdown } = this.state;
     const { boolClickAnswer, handleColor, createButton } = this.props; // handleTimeout estava sendo desestruturado aqui...
     console.log('Booleano no Countdown DidUpdate', boolClickAnswer);
-    console.log('Contador', countdown);
     if (boolClickAnswer === true) {
+      console.log('Chamou stopTimer');
       this.stopTimer();
       // clearTimeout(this.timer);
       // clearInterval(this.intervalId);
@@ -61,7 +62,7 @@ class Countdown extends React.Component {
     const { timerFinished } = this.props;
     clearTimeout(this.timer); // Para o Set Time out
     clearInterval(this.intervalId); // para o set interval
-    timerFinished(true);
+    timerFinished(true); // Esse booleano vai para as propriedades disabled dos botoes de resposta
   }
 
   render() {
@@ -74,8 +75,9 @@ class Countdown extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-// });
+const mapStateToProps = (state) => ({
+  timeFinished: state.player.boolTimeout,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   timerFinished: (booleano) => dispatch(timeFinished(booleano)),
@@ -90,4 +92,4 @@ Countdown.propTypes = {
   choiceSelection: propTypes.bool,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Countdown);
+export default connect(mapStateToProps, mapDispatchToProps)(Countdown);
