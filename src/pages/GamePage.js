@@ -12,6 +12,7 @@ class GamePage extends React.Component {
     this.state = {
       btnShouldExist: false,
       index: 0,
+      seconds: 30,
     };
 
     this.fetchThunk = this.fetchThunk.bind(this);
@@ -19,11 +20,48 @@ class GamePage extends React.Component {
     this.disableBtn = this.disableBtn.bind(this);
     this.handleclick = this.handleclick.bind(this);
     this.calculationOfPoints = this.calculationOfPoints.bind(this);
+    this.cronometerInterval = this.cronometerInterval.bind(this);
+    this.disabledButtons = this.disabledButtons.bind(this);
     // this.createBtnNext = this.createBtnNext.bind(this);
   }
 
   componentDidMount() {
     this.fetchThunk();
+    const FIVE_SECONDS = 5000;
+    setTimeout(() => {
+      this.cronometerInterval();
+    }, FIVE_SECONDS);
+  }
+
+  componentDidUpdate() {
+    this.disabledButtons();
+  }
+
+  cronometerInterval() {
+    const { seconds } = this.state;
+    const ONE_SECOND = 1000;
+    this.interval = setInterval(() => {
+      if (seconds === 0) {
+        this.setState({ seconds: 30 });
+      } else {
+        this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
+      }
+    }, ONE_SECOND);
+  }
+
+  disabledButtons() {
+    const { change } = this.props;
+    const { seconds } = this.state;
+    const MIN_SECONDS = 0;
+    if (seconds === MIN_SECONDS) {
+      clearInterval(this.interval);
+      const disabledButton = true;
+      change(disabledButton);
+      this.setState({
+        seconds: 30,
+        btnShouldExist: true,
+      });
+    }
   }
 
   // componentDidUpdate() {
@@ -97,16 +135,21 @@ class GamePage extends React.Component {
     }
     disabledButton = false;
     change(disabledButton);
+    this.setState({ seconds: 30 });
+    this.cronometerInterval();
   }
 
   render() {
-    const { index, btnShouldExist } = this.state;
+    const { index, btnShouldExist, seconds } = this.state;
     const { questions, loading } = this.props;
     if (loading === true) return <h1>Carregando as perguntas</h1>;
     return (
       <div>
         <Header />
         <GameTrivia questions={ questions[index] } handleclick={ this.handleclick } />
+        <section>
+          <p>{seconds}</p>
+        </section>
         <button
           type="button"
           onClick={ () => {
