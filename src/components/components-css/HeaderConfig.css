@@ -7,4 +7,5 @@
   font-size: 1em;
   height: 70px;
   justify-content: space-around;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.479);
 }

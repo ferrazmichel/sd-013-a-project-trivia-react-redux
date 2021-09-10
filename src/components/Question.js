@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import { getScore } from '../redux/actions/index';
+import './components-css/Question.css';
 
 class Question extends Component {
   constructor(props) {
@@ -94,37 +95,43 @@ class Question extends Component {
     const { question, timerValue, disabledOptions } = this.props;
 
     return (
-      <>
-        <h2
-          data-testid="question-category"
-        >
-          { question.category }
-        </h2>
-        <h3
-          data-testid="question-text"
-        >
-          { question.question }
-        </h3>
-        {options.map((option) => {
-          const correct = option === correctAnswer;
-          return (
-            <Button
-              classe={ this.getButtonClass(option) }
-              key={ option }
-              dataTestId={
-                correct
-                  ? 'correct-answer'
-                  : `wrong-answer-${question.incorrect_answers.indexOf(option)}`
-              }
-              id={ correct ? 'correct' : 'incorrect' }
-              name={ option }
-              onClick={ this.clickedOption }
-              disabled={ disabledOptions }
-            />
-          );
-        })}
-        <span>{ timerValue }</span>
-      </>
+      <div className="question-container">
+        <div>
+          <h2
+            data-testid="question-category"
+          >
+            { question.category }
+          </h2>
+          <h3
+            data-testid="question-text"
+          >
+            { question.question }
+          </h3>
+        </div>
+        <div className="timer-container">
+          <h3 className="timer">{ timerValue }</h3>
+        </div>
+        <div className="options-container">
+          {options.map((option) => {
+            const correct = option === correctAnswer;
+            return (
+              <Button
+                classe={ `btn-options ${this.getButtonClass(option)}` }
+                key={ option }
+                dataTestId={
+                  correct
+                    ? 'correct-answer'
+                    : `wrong-answer-${question.incorrect_answers.indexOf(option)}`
+                }
+                id={ correct ? 'correct' : 'incorrect' }
+                name={ option }
+                onClick={ this.clickedOption }
+                disabled={ disabledOptions }
+              />
+            );
+          })}
+        </div>
+      </div>
     );
   }
 }

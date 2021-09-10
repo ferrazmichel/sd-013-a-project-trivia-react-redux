@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Button from '../components/Button';
+import './pages-css/Feedbacks.css';
 
 class Feedbacks extends Component {
   constructor() {
@@ -43,35 +44,38 @@ class Feedbacks extends Component {
   render() {
     const { assertions, score } = this.state; // Vem do estado do componente, e antes, do localStorage
     const WELL_PLAYED = 3;
-    const questionX = (assertions === 1 ? 'questão' : 'questões');
-
     return (
-      <div>
+      <div className="divFeedback">
         <Header />
-        <section>
-          <p data-testid="feedback-text">
-            {assertions >= WELL_PLAYED ? 'Mandou bem!' : 'Podia ser melhor...'}
-          </p>
-          <p>
-            Você acertou
+        <section className="sectionMain">
+          <div className="feedbackTitle">
+            <h2 data-testid="feedback-text">
+              {assertions >= WELL_PLAYED ? 'Mandou bem!' : 'Podia ser melhor...'}
+            </h2>
+          </div>
+          <div className="acertos">
+            <h3>
+              De 5 questões você acertou:
+            </h3>
             <span data-testid="feedback-total-question">{assertions}</span>
-            {questionX}
-            de 5;
-          </p>
-          <p>
-            Você marcou
+          </div>
+          <div className="pontuacao">
+            <h3>
+              Pontuação:
+            </h3>
             <span data-testid="feedback-total-score">
               {score}
             </span>
-            pontos no total!
-          </p>
+          </div>
           <div className="button-container">
             <Button
+              classe="again"
               dataTestId="btn-play-again"
               name="Jogar Novamente"
               onClick={ this.handleClick }
             />
             <Button
+              classe="ranking"
               dataTestId="btn-ranking"
               name="Ver Ranking"
               onClick={ this.handleClick }

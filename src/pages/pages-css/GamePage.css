@@ -1,7 +1,46 @@
-.correct-answer {
-  border: 3px solid rgb(6, 240, 15);
+.game-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  /* margin-bottom: 40px; */
+  align-items: center;
+  padding: 20px 10px 20px 10px;
+  width: 95%;
+  background-color: khaki;
+  border-radius: 10px;
+  height: 385px;
 }
 
-.incorrect-answer {
-  border:3px solid rgb(255, 0, 0);
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  margin-top: 100px;
+  font-size: 150px;
+  animation: loading 1.5s linear infinite;
+  margin-bottom: 100px;
+}
+
+.game-btn-next-container {
+  width: 420px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-next {
+  margin-top: 30px;
+  height: 40px;
+  border-radius: 3px;
+  width: 170px;
+  background-color: rgb(67, 115, 179);
+  font-weight: bold;
+  color: white;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.493);
 }

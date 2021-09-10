@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 
 class InputLogin extends Component {
   render() {
-    const { labelValue, dataTestId, onChange, name, value } = this.props;
+    const { labelValue, dataTestId, onChange, name, value, placeHolder } = this.props;
 
     return (
       <label htmlFor={ dataTestId }>
         { labelValue }
         <input
+          placeHolder={ placeHolder }
           type="text"
           data-testid={ dataTestId }
           id={ dataTestId }
@@ -27,6 +28,7 @@ InputLogin.propTypes = {
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  placeHolder: PropTypes.string.isRequired,
 };
 
 export default InputLogin;

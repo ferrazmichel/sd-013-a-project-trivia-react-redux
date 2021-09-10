@@ -154,38 +154,44 @@ class GamePage extends Component {
       loading,
       timerValue,
       disabledOptions } = this.state;
-
     const FIVE = 5;
-
     if (questionsIndex === FIVE) {
       return <Redirect to="/feedback" />;
     }
 
     return (
-      <div>
+      <div className="game-page-container">
         <Header />
-        {
-          loading ? <p>Loading...</p> : <Question
-            hide={ this.hideNextQuestionButton }
-            question={ questions[questionsIndex] }
-            show={ this.showNextQuestionButton }
-            timerValue={ timerValue }
-            pauseTimer={ this.pauseTimer }
-            startTimer={ this.timer }
-            resetTimer={ this.resetTimer }
-            isClicked={ this.isClicked }
-            disabledOptions={ disabledOptions }
-          />
-        }
-        {
-          !hidden && <Button
-            className=""
-            dataTestId="btn-next"
-            disabled={ hidden }
-            name="Próxima"
-            onClick={ this.nextQuestion }
-          />
-        }
+        <div className="game">
+          <div className="game-container">
+            <div className="game-question-container">
+              {
+                loading ? <p><i className="fas fa-spinner loading" /></p> : <Question
+                  hide={ this.hideNextQuestionButton }
+                  question={ questions[questionsIndex] }
+                  show={ this.showNextQuestionButton }
+                  timerValue={ timerValue }
+                  pauseTimer={ this.pauseTimer }
+                  startTimer={ this.timer }
+                  resetTimer={ this.resetTimer }
+                  isClicked={ this.isClicked }
+                  disabledOptions={ disabledOptions }
+                />
+              }
+            </div>
+            <div className="game-btn-next-container">
+              {
+                !hidden && <Button
+                  classe="btn-next"
+                  dataTestId="btn-next"
+                  disabled={ hidden }
+                  name="Próxima"
+                  onClick={ this.nextQuestion }
+                />
+              }
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

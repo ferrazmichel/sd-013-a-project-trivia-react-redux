@@ -4,8 +4,9 @@
   color: rgb(255, 255, 255);
   display: flex; 
   font-family: epilogue; 
-  height: 70px;
+  height: 80px;
   justify-content: space-around;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.479);
 }
 
 .header-player-name {
@@ -27,4 +28,5 @@
 
 .header-score {
   display: flex;
+  font-size: 25px;
 }

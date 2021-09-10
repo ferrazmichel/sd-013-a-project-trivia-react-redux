@@ -6,6 +6,7 @@ import { changeSettings } from '../redux/actions';
 import fetchCategories from '../services/fetchCategories';
 import Button from '../components/Button';
 import Select from '../components/Select';
+import './pages-css/Configurations.css';
 
 class Configurations extends Component {
   constructor() {
@@ -26,6 +27,8 @@ class Configurations extends Component {
     this.handleClickSave = this.handleClickSave.bind(this);
     this.mountCategories = this.mountCategories.bind(this);
     this.mountSettings = this.mountSettings.bind(this);
+    this.renderConfigs = this.renderConfigs.bind(this);
+    this.renderButtons = this.renderButtons.bind(this);
   }
 
   async componentDidMount() {
@@ -90,15 +93,13 @@ class Configurations extends Component {
     });
   }
 
-  render() {
-    const { category, difficulty, type, saveDisabled } = this.state;
+  renderConfigs() {
+    const { category, difficulty, type } = this.state;
     const categoriesOptions = this.getCategoriesOptions();
     const difficultiesOptions = this.getDifficultiesOptions();
     const types = this.getTypeOptions();
     return (
-      <>
-        <HeaderConfig />
-        <h3 data-testid="settings-title">Personalize o teu game!</h3>
+      <div className="selectInputs">
         <Select
           classe="select-categories"
           id="category"
@@ -126,18 +127,41 @@ class Configurations extends Component {
           options={ types }
           value={ type }
         />
+      </div>
+    );
+  }
+
+  renderButtons() {
+    const { saveDisabled } = this.state;
+    return (
+      <div className="saveButtons">
         <Button
-          className="btn-save-config"
+          classe="btn-save-config"
           disabled={ saveDisabled }
           name="Salvar e Sair"
           onClick={ this.handleClickSave }
         />
         <Button
-          className="btn-not-save-config"
+          classe="btn-not-save-config"
           name="Sair sem Salvar"
           onClick={ this.handleClickCancel }
         />
-      </>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <HeaderConfig />
+        <div className="mainSettings">
+          <h1 data-testid="settings-title" className="settings-title">
+            Personalize o teu game!
+          </h1>
+          { this.renderConfigs() }
+          { this.renderButtons() }
+        </div>
+      </div>
     );
   }
 }
