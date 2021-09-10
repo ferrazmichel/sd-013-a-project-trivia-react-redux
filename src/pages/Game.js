@@ -6,10 +6,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
+// import { Redirect } from 'react-router';
 import Question from '../components/Question';
 import { timerToggle, toggleNextButton, updateTime } from '../actions/index';
 import Header from '../components/Header';
+
+const ONE_SECOND = 1000;
+const NUMBER_OF_QUESTIONS = 5;
 
 class Game extends React.Component {
   constructor() {
@@ -18,26 +21,46 @@ class Game extends React.Component {
     this.state = {
       index: 0,
       seconds: 30,
+      intervalId: null,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.chronometer = this.chronometer.bind(this);
+    this.startCronometer = this.startCronometer.bind(this);
   }
 
   componentDidMount() {
-    const ONE_SECOND = 1000;
-    setInterval(() => this.chronometer(), ONE_SECOND);
+    this.startCronometer();
+  }
+
+  componentWillUnmount() {
+    const { intervalId } = this.state;
+
+    clearInterval(intervalId); // Encerra o timer ao final de uma partida do jogo
+  }
+
+  startCronometer() {
+    // Será utilizado em componentWillUnmount para encerrar o timer rodando em background
+    const intervalId = setInterval(() => this.chronometer(), ONE_SECOND);
+    this.setState((previous) => ({ ...previous, intervalId }));
   }
 
   nextQuestion() {
-    const { enable } = this.props;
+    const { index } = this.state;
+    const { enable, history } = this.props;
+
     enable(false);
+
+    // Se a última questão foi respondida
+    if (index === NUMBER_OF_QUESTIONS - 1) {
+      history.push('/feedback'); // Redireciona
+    }
     this.setState((prev) => ({ index: prev.index + 1, seconds: 30 }));
   }
 
   chronometer() {
     const { seconds } = this.state;
-    const { /* enable, */ timerIsOn, toggleTimer, timer } = this.props;
+    const { /* enable, */ timerIsOn, toggleTimer } = this.props;
 
     if (seconds > 0) {
       this.setState((prev) => ({
@@ -50,7 +73,6 @@ class Game extends React.Component {
 
     if (timerIsOn) {
       console.log('deu certo');
-      timer(seconds);
       localStorage.setItem('time', JSON.stringify(seconds));
       this.setState({ seconds: 0 });
       toggleTimer(false);
@@ -60,14 +82,14 @@ class Game extends React.Component {
   render() {
     const { questions, loading, answered } = this.props; // Vem da store do redux
     const { index, seconds } = this.state;
-    const FOUR = 4;
+    // const FOUR = 4;
     if (loading) {
       return <h3>loading...</h3>;
     }
 
-    if (index > FOUR) {
+    /*     if (index > FOUR) {
       return <Redirect to="/feedback" />;
-    }
+    } */
 
     return (
       <div>
@@ -93,7 +115,9 @@ Game.propTypes = {
   loading: PropTypes.bool.isRequired,
   enable: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
-  timer: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   toggleTimer: PropTypes.func.isRequired,
   timerIsOn: PropTypes.bool.isRequired,
 };
