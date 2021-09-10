@@ -223,7 +223,9 @@ Game.propTypes = {
   questions: PropTypes.arrayOf({}).isRequired,
   user: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
-  history: PropTypes.objectOf({}).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   feedback: PropTypes.func.isRequired,
 };
 
