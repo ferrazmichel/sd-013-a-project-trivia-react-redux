@@ -56,11 +56,25 @@ class Question extends React.Component {
     );
   }
 
+  renderButton() {
+    const { activateOn } = this.state;
+    return (
+      <button
+        type="button"
+        disabled={ activateOn }
+        data-testid="btn-next"
+        onClick={ this.nextQuestion }
+      >
+        Próxima
+      </button>
+    );
+  }
+
   // FALTA REMOVER O BUG DAS CORES E RESETAR O TIME QUANDO CLICAR EM PRÓXIMO
 
   render() {
     const { questions } = this.props;
-    const { id, activateOn, hide } = this.state;
+    const { id, hide } = this.state;
     const questionMap = questions.map((question) => this.renderQuestions(question));
 
     if (questions.length === 0) return <p>Loading...</p>;
@@ -69,14 +83,7 @@ class Question extends React.Component {
         <div>
           {questionMap[id]}
         </div>
-        { hide ? <button
-          type="button"
-          disabled={ activateOn }
-          data-testid="btn-next"
-          onClick={ this.nextQuestion }
-        >
-          Próxima
-        </button> : null }
+        { hide ? this.renderButton() : null }
       </div>
     );
   }
