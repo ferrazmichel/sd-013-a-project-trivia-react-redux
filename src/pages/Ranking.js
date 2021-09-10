@@ -19,15 +19,15 @@ class Ranking extends Component {
       b.score - a.score
     ));
     this.showRanking(sortedRanking);
-    const { player } = JSON.parse(localStorage.getItem('state'));
-    player.assertions = 0;
-    player.score = 0; // calcula e salva no localStorage chave player.score
-    localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
+    // const { player } = JSON.parse(localStorage.getItem('state'));
+    // player.assertions = 0;
+    // player.score = 0; // calcula e salva no localStorage chave player.score
+    // localStorage.setItem('state', JSON.stringify({ player: { ...player } }));
   }
 
   showRanking(sortedRanking) {
     this.setState({
-      ranking: sortedRanking, // ARRUMAR AQUI
+      ranking: sortedRanking,
     });
   }
 
@@ -40,13 +40,14 @@ class Ranking extends Component {
           { ranking.map((player, index) => (
             <li key={ player.gravatarUrl }>
               <p>{ `${index + 1}` }</p>
-              <img src={ player.gravatarUrl } alt="Gravatar" />
+              <img src={ player.picture } alt="Gravatar" />
               <p data-testid={ `player-name-${index}` }>
                 { player.name }
               </p>
               <p data-testid={ `player-score-${index}` }>
                 { player.score }
               </p>
+              { player.record && <p>{ player.record }</p>}
             </li>
           ))}
         </ol>

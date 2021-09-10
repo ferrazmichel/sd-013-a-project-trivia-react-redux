@@ -94,7 +94,7 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe.only('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
@@ -214,7 +214,7 @@ describe.skip('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resp
   });
 });
 
-describe.skip('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
+describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -681,7 +681,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+describe.only('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
   it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
