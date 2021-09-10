@@ -14,8 +14,8 @@ const user = (state = INITIAL_STATE, action) => {
     return { ...state, ...action.payload };
 
   case SET_SCORE:
-    setLocalStorage('ranking', [{ ...state, score: state.score + action.payload }]);
-    return { ...state, score: state.score + action.payload };
+    setLocalStorage('ranking', [{ ...state, score: state.score + action.payload.score }]);
+    return { ...state, score: state.score + action.payload.score };
 
   default:
     return state;

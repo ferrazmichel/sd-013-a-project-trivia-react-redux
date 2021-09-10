@@ -10,12 +10,12 @@ const INITIAL_STATE = {
   questions: '',
   token: '',
   disabledButton: false,
-  player: [{
+  player: {
     name: '',
-    assertions: '',
+    assertions: 0,
     score: 0,
     gravatarEmail: '',
-  }],
+  },
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -46,11 +46,16 @@ const game = (state = INITIAL_STATE, action) => {
 
   case SET_SCORE:
     setLocalStorage('state', { player: {
-      ...state.player, score: state.player.score + action.payload,
+      ...state.player,
+      score: state.player.score + action.payload.score,
+      assertions: state.player.assertions + action.payload.assertions,
     } });
+    console.log(action.payload);
     return { ...state,
       player: {
-        ...state.player, score: state.player.score + action.payload,
+        ...state.player,
+        score: state.player.score + action.payload.score,
+        assertions: state.player.assertions + action.payload.assertions,
       } };
 
   default:

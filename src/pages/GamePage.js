@@ -41,9 +41,10 @@ class GamePage extends React.Component {
 
   calculationOfPoints(timer, dificuldade) {
     const { setPointsClink } = this.props;
+    const assertions = 1;
     const TEN = 10;
-    const points = TEN + (timer * dificuldade);
-    setPointsClink(points);
+    const score = TEN + (timer * dificuldade);
+    setPointsClink({ score, assertions });
   }
 
   handleclick(event) {

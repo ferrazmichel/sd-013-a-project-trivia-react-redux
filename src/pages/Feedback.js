@@ -6,9 +6,15 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+    this.handleMenssage = this.handleMenssage.bind(this);
+  }
+
   handleMenssage() {
     const { hits } = this.props;
     if (hits <= 2) {
+      console.log(hits);
       return <p>Podia ser melhor...</p>;
     }
     return <p>Mandou bem!</p>;
@@ -40,8 +46,8 @@ class Feedback extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  hits: state.game.points,
-  totalScore: state.game.score,
+  hits: state.game.player.assertions,
+  totalScore: state.game.player.score,
 });
 
 Feedback.propTypes = {
