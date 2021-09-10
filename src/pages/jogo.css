@@ -1,0 +1,22 @@
+.btn-next {
+  background-color: #5e5be1;
+  color: white;
+}
+
+.questions {
+  width: 60%;
+}
+
+@media screen and ( max-width : 768px ) {
+
+  .questions {
+    width: 80%;
+  }
+}
+
+@media screen and ( max-width : 590px ) {
+
+  .questions {
+    width: 90%;
+  }
+}
