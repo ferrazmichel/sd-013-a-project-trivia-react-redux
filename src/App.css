@@ -4,14 +4,6 @@
   padding: 0;
 }
 
-.correct-answer {
-  border: 3px solid rgb(6, 240, 15);
-}
-
-.wrong-answer {
-  border: 3px solid red;
-}
-
 .btn-next-invisible {
   display: none;
 }
@@ -20,7 +12,10 @@
   display: inline-block;
 }
 
-input, input:focus, textarea:focus, select:focus {
+input,
+input:focus,
+textarea:focus,
+select:focus {
   border: none;
   outline: none;
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import DisplayQuestion from '../components/DisplayQuestion';
 import Header from '../components/Header';
-import '../App.css';
+import '../styles/Game.css';
 
 class Game extends Component {
   constructor(props) {
@@ -48,8 +48,10 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        {fetching
-          ? loading : <DisplayQuestion questions={ questions } history={ history } />}
+        <div className="container-game">
+          {fetching
+            ? loading : <DisplayQuestion questions={ questions } history={ history } />}
+        </div>
       </div>
     );
   }

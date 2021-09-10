@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ButtonNext from './ButtonNext';
 import ButtonsQuestions from './ButtonsQuestions';
-import '../App.css';
 import { handleScore } from '../redux/actions';
+import '../styles/Game.css';
 
 const ONE_SECOND = 1000;
 const THIRTY = 30;
@@ -27,6 +27,12 @@ function mapDifficulty(string) {
     return null;
   }
 }
+
+const decode = (str) => {
+  const textArea = document.createElement('textarea');
+  textArea.innerHTML = str;
+  return textArea.value;
+};
 
 class DisplayQuestion extends Component {
   constructor(props) {
@@ -152,21 +158,27 @@ class DisplayQuestion extends Component {
     const question = questions[id];
 
     return (
-      <div>
+      <div className="container-question">
         <p>{finalTime}</p>
-        <h3 data-testid="question-category">{question.category}</h3>
-        <h2 data-testid="question-text">{question.question}</h2>
-        <ButtonsQuestions
-          id={ id }
-          readyQuestions={ readyQuestions }
-          classCorrect={ classCorrect }
-          classWrong={ classWrong }
-          isAnswered={ isAnswered }
-          questions={ questions }
-          handleAnswer={ this.handleAnswer }
-          calculateScore={ this.calculateScore }
-        />
+
+        <div className="container-question-btns">
+          <div className="question-box">
+            <h3 data-testid="question-category">{question.category}</h3>
+            <h2 data-testid="question-text">{decode(question.question)}</h2>
+          </div>
+          <ButtonsQuestions
+            id={ id }
+            readyQuestions={ readyQuestions }
+            classCorrect={ classCorrect }
+            classWrong={ classWrong }
+            isAnswered={ isAnswered }
+            questions={ questions }
+            handleAnswer={ this.handleAnswer }
+            calculateScore={ this.calculateScore }
+          />
+        </div>
         <ButtonNext classBtn={ btnNext } handleId={ this.buttonNext } />
+
       </div>
     );
   }
