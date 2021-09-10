@@ -9,15 +9,20 @@ class Jogo extends React.Component {
     super();
     this.state = {
       i: 0,
+      timer: 30,
+      button: false, 
     };
     this.colorGreen = this.colorGreen.bind(this);
     this.colorRed = this.colorRed.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
   componentDidMount() {
     const buttonNext = document.querySelector('#button-next');
     buttonNext.style.display = 'none';
+    const SECONDS = 1000;
+    this.interval = setInterval(this.setTimer, SECONDS);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -62,9 +67,26 @@ class Jogo extends React.Component {
     this.setState((state) => ({ i: state.i + 1 }));
   }
 
+  setTimer() {
+    const { timer, button } = this.state;
+    if (timer - 1 <= 0) {
+      const correct = document.querySelector('.correct');
+      correct.style.border = '3px solid rgb(6, 240, 15)';
+      this.setState({
+        button: true,
+      });
+      clearInterval(this.interval);
+    }
+    if (!button) {
+      this.setState({
+        timer: timer - 1,
+      });
+    }
+  }
+
   render() {
     const { questions } = this.props;
-    const { i } = this.state;
+    const { i, timer } = this.state;
     return (
       <div>
         <Header />
@@ -92,6 +114,7 @@ class Jogo extends React.Component {
             </p>
           ))}
         </div>
+        <p> { timer } </p>
         <Link to="/feedback">
           <button type="button">feedback</button>
         </Link>
