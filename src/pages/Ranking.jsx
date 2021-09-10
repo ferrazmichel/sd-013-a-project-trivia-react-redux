@@ -20,6 +20,7 @@ class Ranking extends React.Component {
     e.preventDefault();
     history.push('/');
   }
+  // Essa requisito foi feito consultando o projeto do grupo 9 da turma 13-A link: https://github.com/tryber/sd-013-a-project-trivia-react-redux/blob/main-group-9/src/pages/Ranking.jsx
 
   returnRanking() {
     const { name, score, assertion,
@@ -27,11 +28,11 @@ class Ranking extends React.Component {
     const newPlayer = { name, score, assertion, gravatar };
     if (localStorage.getItem('ranking')) {
       const ranking = JSON.parse(localStorage.getItem('ranking'));
-      const newRaking = [...ranking, newPlayer];
+      const newRanking = [...ranking, newPlayer];
       newRaking.sort((a, b) => b.score - a.score);
-      localStorage.ranking = JSON.stringify(newRaking);
+      localStorage.ranking = JSON.stringify(newRanking);
       this.setState({
-        rankingPlayers: newRaking,
+        rankingPlayers: newRanking,
       });
     } else {
       const newRanking = [newPlayer];
@@ -73,4 +74,5 @@ class Ranking extends React.Component {
 Ranking.propTypes = {
   history: PropTypes.func,
 }.isRequired;
+
 export default Ranking;

@@ -52,7 +52,7 @@ class FeedBack extends React.Component {
           tela feedback
           <img
             src={ grav }
-            alt="imagem do gravatar"
+            alt="imatgem do gravatar"
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">
