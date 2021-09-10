@@ -14,17 +14,24 @@ class GamePage extends Component {
       questionsIndex: 0,
       hidden: true,
       loading: true,
+      timerValue: 30,
+      disabledOptions: false,
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getQuestions = this.getQuestions.bind(this);
     this.hideNextQuestionButton = this.hideNextQuestionButton.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.showNextQuestionButton = this.showNextQuestionButton.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.timer = this.timer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.pauseTimer = this.pauseTimer.bind(this);
+    this.isClicked = this.isClicked.bind(this);
   }
 
   async componentDidMount() {
-    // const { configs } = this.props;
-    const questions = await mountQuestions();
+    const { configs } = this.props;
+    const questions = await mountQuestions(configs);
     this.getQuestions(questions);
     console.log(questions);
   }
@@ -42,10 +49,53 @@ class GamePage extends Component {
     });
   }
 
+  isClicked() {
+    this.setState({
+      disabledOptions: true,
+    });
+  }
+
   nextQuestion() {
+    this.resetTimer();
+    this.timer();
     this.setState((prevState) => ({
       questionsIndex: prevState.questionsIndex + 1,
+      disabledOptions: false,
+      hidden: true,
     }));
+  }
+
+  pauseTimer() {
+    clearInterval(this.interval);
+  }
+
+  resetTimer() {
+    this.setState({
+      timerValue: 30,
+    });
+  }
+
+  stopTimer() {
+    const { timerValue } = this.state;
+    const ZERO = 0;
+    if (timerValue === ZERO) {
+      clearInterval(this.interval);
+      this.setState({
+        disabledOptions: true,
+      });
+      this.showNextQuestionButton();
+    }
+  }
+
+  timer() {
+    const ONE_SECOND = 1000;
+
+    this.interval = setInterval(() => {
+      this.setState((prevState) => ({
+        timerValue: prevState.timerValue - 1,
+      }));
+      this.stopTimer();
+    }, ONE_SECOND);
   }
 
   showNextQuestionButton() {
@@ -55,16 +105,28 @@ class GamePage extends Component {
   }
 
   render() {
-    const { hidden, questions, questionsIndex, loading } = this.state;
+    const {
+      hidden,
+      questions,
+      questionsIndex,
+      loading,
+      timerValue,
+      disabledOptions } = this.state;
+
     return (
       <>
         <Header />
-
         {
           loading ? <p>Loading...</p> : <Question
             hide={ this.hideNextQuestionButton }
             question={ questions[questionsIndex] }
             show={ this.showNextQuestionButton }
+            timerValue={ timerValue }
+            pauseTimer={ this.pauseTimer }
+            startTimer={ this.timer }
+            resetTimer={ this.resetTimer }
+            isClicked={ this.isClicked }
+            disabledOptions={ disabledOptions }
           />
         }
         {
@@ -81,10 +143,10 @@ class GamePage extends Component {
   }
 }
 
-const mapStateToProps = ({ gameSettings: { difficulty, cattegory, type } }) => ({
+const mapStateToProps = ({ gameSettings: { difficulty, category, type } }) => ({
   configs: {
     difficulty,
-    cattegory,
+    category,
     type,
   },
 });

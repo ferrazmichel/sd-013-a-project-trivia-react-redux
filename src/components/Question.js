@@ -3,59 +3,35 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 
 class Question extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       options: [],
       correctAnswer: '',
-      disabled: false,
-      timerValue: 30,
     };
     this.shuffle = this.shuffle.bind(this);
     this.clickedOption = this.clickedOption.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
-    this.timer = this.timer.bind(this);
+    // this.timer = this.timer.bind(this);
+    // this.clearInterval = this.clearInterval.bind(this);
   }
 
   componentDidMount() {
-    const { hide } = this.props;
+    const { hide, startTimer } = this.props;
     this.shuffle();
+    startTimer();
     hide();
   }
 
-  shuffle() {
+  componentDidUpdate(prevProps) {
     const { question } = this.props;
-    const correctAnswer = question.correct_answer;
-    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
-    const magicNumber = 0.5;
-    allAlternatives.sort(() => Math.random() - magicNumber);
-    this.timer();
-    this.setState({
-      options: allAlternatives,
-      correctAnswer,
-      disabled: false,
-      timerValue: 30,
-    });
-  }
-
-  clickedOption({ target: { id } }) {
-    const { show } = this.props;
-    clearInterval(this.interval);
-    if (id === 'correct') {
-      const { player } = JSON.parse(localStorage.getItem('state'));
-      player.assertions += 1;
-      player.score += this.calculateScore(); // calcula e salva no localStorage chave player.score
-      localStorage.setItm('state', JSON.stringify({ Player: { ...player } }));
+    if (prevProps.question.correct_answer !== question.correct_answer) {
+      this.shuffle();
     }
-    this.setState({
-      disabled: true,
-    });
-    show();
   }
 
   calculateScore() {
-    const { question: { difficulty } } = this.props;
-    const { timerValue } = this.state;
+    const { question: { difficulty }, timerValue } = this.props;
     const ONE = 1;
     const TWO = 2;
     const THREE = 3;
@@ -68,29 +44,35 @@ class Question extends Component {
     return defaultPoints + (timerValue * weight);
   }
 
-  timer() {
-    const { timerValue } = this.state;
-    const { show } = this.props;
-    const ONE_SECOND = 1000;
-    const ZERO = 0;
+  clickedOption({ target: { id } }) {
+    const { show, pauseTimer, isClicked } = this.props;
+    pauseTimer();
+    if (id === 'correct') {
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      player.assertions += 1;
+      player.score += this.calculateScore(); // calcula e salva no localStorage chave player.score
+      localStorage.setItm('state', JSON.stringify({ Player: { ...player } }));
+    }
+    isClicked();
+    show();
+  }
 
-    this.interval = setInterval(() => {
-      this.setState((prevState) => ({
-        timerValue: prevState.timerValue - 1,
-      }));
-      if (timerValue === ZERO) {
-        clearInterval(this.interval);
-        this.setState({
-          disabled: true,
-        });
-      }
-      show();
-    }, ONE_SECOND);
+  shuffle() {
+    const { question } = this.props;
+    const correctAnswer = question.correct_answer;
+    const allAlternatives = [question.correct_answer, ...question.incorrect_answers];
+    const magicNumber = 0.5;
+    allAlternatives.sort(() => Math.random() - magicNumber);
+    // this.timer();
+    this.setState({
+      options: allAlternatives,
+      correctAnswer,
+    });
   }
 
   render() {
-    const { disabled, options, correctAnswer, timerValue } = this.state;
-    const { question } = this.props;
+    const { options, correctAnswer } = this.state;
+    const { question, timerValue, disabledOptions } = this.props;
 
     return (
       <>
@@ -118,11 +100,10 @@ class Question extends Component {
               id={ correct ? 'correct' : 'incorrect' }
               name={ option }
               onClick={ this.clickedOption }
-              disabled={ disabled }
+              disabled={ disabledOptions }
             />
           );
         })}
-        ;
         <span>{ timerValue }</span>
       </>
     );
