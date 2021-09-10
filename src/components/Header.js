@@ -15,6 +15,7 @@ class Header extends React.Component {
             <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
           </div>
           <div>
+            <h1 data-testid="feedback-text">Feedback Page</h1>
             <p data-testid="header-player-name">
               Nome:
               { name }
