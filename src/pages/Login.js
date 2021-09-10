@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUser, fetchTrivia } from '../redux/actions';
+import '../styles/Login.css';
+import logo from '../trivia.png';
 
 function validateEmail(email) {
   const re = /\S+@\S+\.\S+/;
@@ -55,42 +57,47 @@ class Login extends Component {
   render() {
     const { isDisabled } = this.state;
     return (
-      <div>
-        <form>
-          <label htmlFor="email">
-            Email do Gravatar:
-            <input
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-              name="email"
-              type="email"
-            />
-          </label>
-          <label htmlFor="name">
-            Nome do Jogador
-            <input
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-              name="name"
-              type="text"
-            />
-          </label>
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ isDisabled }
-            onClick={ this.handleSubmit }
-          >
-            JOGAR!
-          </button>
-          <Link to="/settings">
+      <div className="container-login">
+        <form autoComplete="off" className="login-form">
+          <img src={ logo } alt="trivia logo" />
+          <div className="login-inputs">
+            <label htmlFor="email">
+              <input
+                data-testid="input-gravatar-email"
+                onChange={ this.handleChange }
+                name="email"
+                type="email"
+                placeholder="email do gravatar"
+              />
+            </label>
+            <label htmlFor="name">
+              <input
+                data-testid="input-player-name"
+                onChange={ this.handleChange }
+                name="name"
+                type="text"
+                placeholder="nome do jogador"
+              />
+            </label>
+          </div>
+          <div className="login-buttons">
             <button
+              data-testid="btn-play"
               type="submit"
-              data-testid="btn-settings"
+              disabled={ isDisabled }
+              onClick={ this.handleSubmit }
             >
-              Configurações
+              JOGAR!
             </button>
-          </Link>
+            <Link to="/settings">
+              <button
+                type="submit"
+                data-testid="btn-settings"
+              >
+                Configurações
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     );
