@@ -123,8 +123,7 @@ O transition serve para uma transição suave
 @media screen and ( min-width : 768px ) {
 
   .main {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid: 1fr / 1fr 1fr;
   }
 }
 

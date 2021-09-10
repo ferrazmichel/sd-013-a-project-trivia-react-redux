@@ -1,13 +1,35 @@
+.btn-next {
+  background: #cecece;
+  border: 0.15px solid rgba(0, 0, 0, 0.25);
+  cursor: help;
+  font-size: 3rem;
+  font-weight: 200;
+  height: 75%;
+  letter-spacing: 5px;
+  opacity: 1;
+  transition: all 0.25s ease;
+  width: 75%;
+}
+
 .invisible {
   display: none;
+  transition: all 0.5s ease;
 }
 
 .game-correct {
+  background: rgb(6, 240, 15);
   border: 3px solid rgb(6, 240, 15);
+  color: black;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 
 .game-incorrect {
+  background: red;
   border: 3px solid red;
+  color: black;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 
 .dev-correct {

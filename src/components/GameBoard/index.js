@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import style from './GameBoard.module.css';
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class GameBoard extends React.Component {
       this.resetCronometer();
     }
     if (prevProps !== this.props) {
+      this.cronometer();
       this.shuffleOptions();
     }
   }
@@ -35,6 +37,7 @@ class GameBoard extends React.Component {
 
   cronometer() {
     const ONE_SECOND = 1000;
+
     this.intervalID = setInterval(() => {
       this.setState((prevState) => ({ seconds: prevState.seconds - 1 }));
     }, ONE_SECOND);
@@ -60,8 +63,12 @@ class GameBoard extends React.Component {
 
   shuffleOptions() {
     const { onSelect, question } = this.props;
-    const { correct_answer: correctOption,
-      incorrect_answers: incorrectOptions } = question;
+    const {
+      correct_answer: correctOption,
+      incorrect_answers: incorrectOptions,
+    } = question;
+
+    this.setState({ seconds: 30 });
 
     const optionsArray = [...incorrectOptions, correctOption];
     for (let i = optionsArray.length - 1; i > 0; i -= 1) {
@@ -72,9 +79,12 @@ class GameBoard extends React.Component {
       <button
         key={ opt }
         type="button"
-        className={ opt === correctOption ? 'dev-correct' : null }
-        data-testid={ opt === correctOption ? 'correct-answer'
-          : `wrong-answer-${incorrectOptions.indexOf(opt)}` }
+        // className={ opt === correctOption ? 'dev-correct' : null }
+        data-testid={
+          opt === correctOption
+            ? 'correct-answer'
+            : `wrong-answer-${incorrectOptions.indexOf(opt)}`
+        }
         name="options"
         value={ opt }
         onClick={ ({ target }) => {
@@ -83,7 +93,7 @@ class GameBoard extends React.Component {
           onSelect(question, target, seconds);
         } }
       >
-        { this.decode(opt) }
+        {this.decode(opt)}
       </button>
     ));
     this.setState({ options: allOptions });
@@ -93,14 +103,14 @@ class GameBoard extends React.Component {
     const { question, onNext } = this.props;
     const { seconds, options } = this.state;
     return (
-      <div>
-        <div>
-          {seconds}
-          <h3 data-testid="question-category">{ question.category }</h3>
-          <h4 data-testid="question-text">{ this.decode(question.question) }</h4>
-        </div>
-        <div>
-          {options}
+      <section className={ style.section }>
+        <article className={ style.time }>{seconds}</article>
+        <article className={ style.question }>
+          <h3 data-testid="question-category">{question.category}</h3>
+          <h4 data-testid="question-text">{this.decode(question.question)}</h4>
+        </article>
+        <article className={ style.options }>{options}</article>
+        <article className={ style.next }>
           <button
             type="button"
             data-testid="btn-next"
@@ -109,8 +119,8 @@ class GameBoard extends React.Component {
           >
             Próxima
           </button>
-        </div>
-      </div>
+        </article>
+      </section>
     );
   }
 }

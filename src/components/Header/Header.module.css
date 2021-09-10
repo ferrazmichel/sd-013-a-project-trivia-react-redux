@@ -1,0 +1,41 @@
+.header {
+  background: var(--tertiary);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+}
+
+.header > section {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.profile {
+  border-bottom: 5px solid var(--primary);
+  display: grid;
+  height: 100%;
+  place-items: center;
+  width: 100%;
+}
+
+.sectionScore {
+  border: 5px double var(--primary);
+
+}
+
+.score {
+  background: var(--primary);
+  left: 0;
+  text-align: center;
+  top: 0;
+  width: 50%;
+}
+
+.points {
+  color: var(--primary);
+}

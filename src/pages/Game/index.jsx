@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
 import { getQuestions, updateScore } from '../../redux/actions';
-import GameBoard from '../../components/GameBoard';
+import { GameBoard } from '../../components';
 import './Game.css';
 import style from './Game.module.css';
 
