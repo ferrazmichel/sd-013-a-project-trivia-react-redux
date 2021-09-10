@@ -15,6 +15,11 @@ class Jogo extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
+  componentDidMount() {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'none';
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     const buttonNext = document.querySelector('#button-next');
     const NUMBER_OF_QUESTIONS = 4;
@@ -25,6 +30,8 @@ class Jogo extends React.Component {
   }
 
   colorGreen(e) {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'block';
     e.target.style.border = '3px solid rgb(6, 240, 15)';
     const wrong = document.querySelectorAll('.wrong');
     const NUM = 3;
@@ -38,12 +45,16 @@ class Jogo extends React.Component {
   }
 
   colorRed(e) {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'block';
     e.target.style.border = '3px solid rgb(255, 0, 0)';
     const correct = document.querySelector('.correct');
     correct.style.border = '3px solid rgb(6, 240, 15)';
   }
 
   nextQuestion() {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'none';
     this.setState((state) => ({ i: state.i + 1 }));
   }
 
@@ -81,11 +92,12 @@ class Jogo extends React.Component {
           <button type="button">feedback</button>
         </Link>
         <button
+          data-testid="btn-next"
           type="button"
           id="button-next"
           onClick={ this.nextQuestion }
         >
-          Próximo
+          Próxima
         </button>
       </div>
     );
