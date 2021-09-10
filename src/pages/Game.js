@@ -72,7 +72,7 @@ class Game extends React.Component {
     }
 
     if (timerIsOn) {
-      localStorage.setItem('time', JSON.stringify(seconds));
+      sessionStorage.setItem('time', JSON.stringify(seconds));
       this.setState({ seconds: 0 });
       toggleTimer(false);
     }

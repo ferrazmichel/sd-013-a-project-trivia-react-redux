@@ -1,4 +1,4 @@
-import { ENABLE_NEXT_QUESTION,
+import { CLEAR_QUESTIONS, ENABLE_NEXT_QUESTION,
   GET_QUESTIONS,
   TIMER_TOGLE,
   UPDATE_TIME } from '../actions';
@@ -66,6 +66,12 @@ const gameReducer = (state = initialState, action) => {
     return {
       ...state,
       timerIsOn: action.payload,
+    };
+  case CLEAR_QUESTIONS:
+    return {
+      ...state,
+      questions: [],
+      loading: true,
     };
   default:
     return state;
