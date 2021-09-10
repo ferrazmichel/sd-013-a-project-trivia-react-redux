@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import nextQuestionSound from '../sound_fx/proxima-pergunta.mp3';
+import wrongQuestionSound from '../sound_fx/que-pena.mp3';
 
 class TelaDeJogo extends Component {
   constructor() {
@@ -25,6 +27,8 @@ class TelaDeJogo extends Component {
     this.savePoints = this.savePoints.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
+    this.nextSound = new Audio(nextQuestionSound);
+    this.wrongSound = new Audio(wrongQuestionSound);
   }
 
   componentDidMount() {
@@ -72,6 +76,7 @@ class TelaDeJogo extends Component {
     } else {
       history.push('/tela-de-feedback');
     }
+    this.nextSound.play();
   }
 
   savePoints({ target: { id } }) {
@@ -169,6 +174,7 @@ class TelaDeJogo extends Component {
             onClick={ () => {
               this.setState({ colorBorders: true });
               this.stopTimer();
+              this.wrongSound.play();
             } }
           >
             { atob(answer) }
