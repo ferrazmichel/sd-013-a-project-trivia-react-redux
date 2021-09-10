@@ -9,6 +9,11 @@ export class Feedback extends Component {
     super(props);
 
     this.feedbackMsg = this.feedbackMsg.bind(this);
+    this.saveRanking = this.saveRanking.bind(this);
+  }
+
+  componentDidMount() {
+    this.saveRanking();
   }
 
   feedbackMsg() {
@@ -17,6 +22,22 @@ export class Feedback extends Component {
     return assertions >= MIN_ASSERT
       ? 'Mandou bem!'
       : 'Podia ser melhor...';
+  }
+
+  saveRanking() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, score, gravatarEmail } } = state;
+    const newPlayer = {
+      name, score, gravatarEmail,
+    };
+    if (!localStorage.getItem('rankings')) {
+      localStorage.setItem('rankings', JSON.stringify([newPlayer]));
+    } else {
+      const rankings = JSON.parse(localStorage.getItem('rankings'));
+      rankings.push(newPlayer);
+      const orderedRanking = rankings.sort((a, b) => b.score - a.score);
+      localStorage.setItem('rankings', JSON.stringify(orderedRanking));
+    }
   }
 
   render() {

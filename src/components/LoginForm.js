@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchToken, sendData } from '../redux/actions';
+import { fetchToken, resetScore, sendData } from '../redux/actions';
 import { Button } from './Button';
 import { SettingsButton } from './SettingsButton';
 
@@ -14,6 +14,11 @@ export class LoginForm extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatchReset } = this.props;
+    dispatchReset();
   }
 
   handleChange(e) {
@@ -81,11 +86,13 @@ export class LoginForm extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchToken()),
   storeData: (state) => dispatch(sendData(state)),
+  dispatchReset: () => dispatch(resetScore()),
 });
 
 LoginForm.propTypes = {
   getToken: PropTypes.func.isRequired,
   storeData: PropTypes.func.isRequired,
+  dispatchReset: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(LoginForm);
