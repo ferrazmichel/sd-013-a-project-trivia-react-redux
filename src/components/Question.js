@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import shuffleArray from '../helpers';
 import './Question.css';
-import { toggleNextButton, updateScore } from '../actions/index';
+import { timerToggle, toggleNextButton, updateScore } from '../actions/index';
 
 const STARTING_POINTS = 10;
 
@@ -42,22 +42,25 @@ class Question extends React.Component {
   }
 
   handleQuestionAnswering(questionId) {
-    const { updatePlayerScore } = this.props;
-
+    const { updatePlayerScore, toggleTimer } = this.props;
     if (questionId === 'correct') {
       console.log('correct answer from handleQuestionAnswering:', questionId);
-
+      toggleTimer(true);
       // Atualiza o localStorage com a nova pontuação.
-      const localState = JSON.parse(localStorage.getItem('state'));
-      const { score, assertions } = localState.player;
-      const timer = 10; // Precisa vir do redux
-      const newScore = score + (STARTING_POINTS + (timer * this.getDifficulty()));
-      localState.player.score = newScore;
-      localState.player.assertions = assertions + 1;
-      localStorage.setItem('state', JSON.stringify(localState));
+      setTimeout(() => {
+        const timer = JSON.parse(localStorage.getItem('time'));
+        const localState = JSON.parse(localStorage.getItem('state'));
+        const { score, assertions } = localState.player;
+        /* const timer = 10; // Precisa vir do redux */
+        console.log(timer);
 
-      // Atualiza a store do redux (para ser utilizado no Header)
-      updatePlayerScore(newScore);
+        const newScore = score + (STARTING_POINTS + (timer * this.getDifficulty()));
+        localState.player.score = newScore;
+        localState.player.assertions = assertions + 1;
+        localStorage.setItem('state', JSON.stringify(localState));
+        // Atualiza a store do redux (para ser utilizado no Header)
+        updatePlayerScore(newScore);
+      }, 1000);
     }
   }
 
@@ -101,6 +104,7 @@ class Question extends React.Component {
       (a, idx) => ({ text: a, textId: `wrong-answer-${idx}`, id: 'incorrect' }),
     );
     answers.push({ text: correct, textId: 'correct-answer', id: 'correct' });
+
     shuffleArray(answers);
 
     return (
@@ -136,15 +140,19 @@ Question.propTypes = {
   enable: PropTypes.func.isRequired,
   updatePlayerScore: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
+  toggleTimer: PropTypes.func.isRequired,
+  timer: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
   updatePlayerScore: (score) => dispatch(updateScore(score)),
+  toggleTimer: (bool) => dispatch(timerToggle(bool)),
 });
 
 const mapStateToProps = (store) => ({
   answered: store.game.answered,
+  timer: store.game.time,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

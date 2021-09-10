@@ -1,9 +1,14 @@
-import { ENABLE_NEXT_QUESTION, GET_QUESTIONS } from '../actions';
+import { ENABLE_NEXT_QUESTION,
+  GET_QUESTIONS,
+  TIMER_TOGLE,
+  UPDATE_TIME } from '../actions';
 
 const initialState = {
   questions: [],
   loading: true,
   answered: false,
+  time: 0,
+  timerIsOn: false,
 };
 
 const matchReducer = (state = initialState, action) => {
@@ -14,6 +19,16 @@ const matchReducer = (state = initialState, action) => {
   case ENABLE_NEXT_QUESTION: {
     return { ...state, answered: action.payload };
   }
+  case UPDATE_TIME:
+    return {
+      ...state,
+      time: action.payload,
+    };
+  case TIMER_TOGLE:
+    return {
+      ...state,
+      timerIsOn: action.payload,
+    };
   default:
     return state;
   }
