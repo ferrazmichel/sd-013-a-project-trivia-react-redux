@@ -44,7 +44,10 @@ class Play extends Component {
   }
 
   componentWillUnmount() {
-    const { player: { name, gravatarEmail, score, assertions }, submitPlayer } = this.props;
+    const {
+      player: { name, gravatarEmail, score, assertions },
+      submitPlayer,
+    } = this.props;
     const TESTE = { name,
       gravatarEmail,
       score,
@@ -55,7 +58,7 @@ class Play extends Component {
 
   // ao clicar na questão Às vezes reembaralha as questões, essa função resolve o bug
   preventSortAnswers(prevState) {
-    const { questions, questionIndex, button, answers } = this.state;
+    const { questions, questionIndex, button } = this.state;
     // primeira pergunta
     if (!prevState.questions && questions) {
       this.setState({
@@ -140,7 +143,10 @@ class Play extends Component {
     this.handleButtonStyle();
     this.setState({ answerButton: true });
     if (e.target.name === CORRECT_ANSWER) {
-      const { player: { name, gravatarEmail, score, assertions }, submitPlayer } = this.props;
+      const {
+        player: { name, gravatarEmail, score, assertions },
+        submitPlayer,
+      } = this.props;
       const TESTE = { name,
         gravatarEmail,
         score: score + 1,
