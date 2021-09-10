@@ -55,6 +55,9 @@ class GamePage extends React.Component {
 
   handleNext() {
     const { numeroDaPergunta } = this.state;
+    const { history } = this.props;
+    const FOUR = 3;
+    if (numeroDaPergunta > FOUR) history.push('/feedback');
     const perguntaAtual = numeroDaPergunta + 1;
     const buttons = document.querySelectorAll('.alternativas');
     this.setState({ numeroDaPergunta: perguntaAtual });
@@ -152,6 +155,9 @@ const mapStateToProps = (state) => ({
 GamePage.propTypes = {
   results: PropTypes.arrayOf.isRequired,
   remainingTime: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, null)(GamePage);
