@@ -61,12 +61,12 @@ class QuestionCard extends React.Component {
   }
 
   renderQuestionButton() {
-    const { questionData } = this.props;
+    const { questionData, qstIndex } = this.props;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
       <button
-        key={ correctAnswer }
+        key={ correctAnswer + qstIndex }
         className="correct-answer"
         type="button"
         name="question"
@@ -80,7 +80,7 @@ class QuestionCard extends React.Component {
         type="button"
         name="question"
         className="wrong-answer"
-        key={ answer }
+        key={ answer + qstIndex }
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.handleClick }
       >
@@ -98,7 +98,7 @@ class QuestionCard extends React.Component {
     const { questionData, shouldDisableButtons } = this.props;
     const { category, question } = questionData;
     const { buttons } = this.state;
-    if (shouldDisableButtons === true) {
+    if (shouldDisableButtons) {
       document.getElementsByName('question').forEach((qst) => {
         qst.disabled = true;
       });
@@ -138,6 +138,7 @@ QuestionCard.propTypes = {
   pause: PropTypes.func.isRequired,
   setPoints: PropTypes.func.isRequired,
   setButtonVisibility: PropTypes.func.isRequired,
+  qstIndex: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);

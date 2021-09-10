@@ -43,8 +43,8 @@ class Game extends React.Component {
     const penultIndex = 3;
     const { currentQuestion } = this.state;
     const { disable, handleRestart, handlePause } = this.props;
-    disable(false);
     if (currentQuestion <= penultIndex) {
+      disable(false); // habilita as alternativas ao clicar em prox
       handleRestart(true);
       handlePause(false);
       this.setState({
@@ -70,6 +70,7 @@ class Game extends React.Component {
         <Header />
         <QuestionCard
           questionData={ questions[currentQuestion] }
+          qstIndex={ currentQuestion }
           setButtonVisibility={ this.setButtonVisibility }
 
         />
