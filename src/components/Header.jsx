@@ -38,7 +38,7 @@ class Header extends Component {
           { name }
         </p>
         <h3 data-testid={ testID }>
-          {score}
+          <p data-testid="header-score">{score}</p>
         </h3>
       </div>
     );
