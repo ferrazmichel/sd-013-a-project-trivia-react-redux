@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from './Header';
+import BUTTON_NEXT from './JogoConstante';
 import './Jogo.css';
 
 class Jogo extends React.Component {
@@ -20,14 +21,14 @@ class Jogo extends React.Component {
   }
 
   componentDidMount() {
-    const buttonNext = document.querySelector('#button-next');
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     buttonNext.style.display = 'none';
     const SECONDS = 1000;
     this.interval = setInterval(this.setTimer, SECONDS);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const buttonNext = document.querySelector('#button-next');
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     const NUMBER_OF_QUESTIONS = 5;
     if (nextState.i === NUMBER_OF_QUESTIONS) {
       buttonNext.parentNode.removeChild(buttonNext);
@@ -53,7 +54,7 @@ class Jogo extends React.Component {
   }
 
   colorGreen(e) {
-    const buttonNext = document.querySelector('#button-next');
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     if (buttonNext) {
       buttonNext.style.display = 'inline-block';
     }
@@ -70,7 +71,7 @@ class Jogo extends React.Component {
   }
 
   colorRed(e) {
-    const buttonNext = document.querySelector('#button-next');
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     if (buttonNext) {
       buttonNext.style.display = 'inline-block';
     }
@@ -80,7 +81,7 @@ class Jogo extends React.Component {
   }
 
   nextQuestion() {
-    const buttonNext = document.querySelector('#button-next');
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     buttonNext.style.display = 'none';
     const correctButton = document.querySelector('.certo');
     const wrong = document.querySelectorAll('.errado');
@@ -129,9 +130,7 @@ class Jogo extends React.Component {
           ))}
         </div>
         <p>
-          {' '}
           { timer }
-          {' '}
         </p>
         <Link to="/feedback">
           <button type="button">feedback</button>
