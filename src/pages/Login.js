@@ -93,7 +93,7 @@ Login.propTypes = {
   token: PropTypes.string.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
-  }),
+  }).isRequired,
   // perguntas: PropTypes.objectOf({}).isRequired,
 };
 

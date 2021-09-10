@@ -14,13 +14,13 @@ class Ranking extends React.Component {
 
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    ranking.sort((a, b) =>  b.score - a.score );
+    ranking.sort((a, b) => b.score - a.score);
     return (
       <div>
         <h1 data-testid="ranking-title">TELA DE RANKING</h1>
         {ranking.map((element, index) => (
           <div key={ index }>
-            <p data-testid={ `player-name${index} `}>{element.name}</p>
+            <p data-testid={ `player-name${index} ` }>{element.name}</p>
             <img src={ element.picture } alt={ element.name } />
             <p data-testid={ `player-score-${index}` }>{element.score}</p>
           </div>))}
