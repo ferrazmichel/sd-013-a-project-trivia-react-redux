@@ -6,8 +6,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// import { Redirect } from 'react-router';
 import Question from '../components/Question';
-import { toggleNextButton } from '../actions/index';
+import { timerToggle, toggleNextButton, updateTime } from '../actions/index';
 import Header from '../components/Header';
 
 const ONE_SECOND = 1000;
@@ -59,21 +60,27 @@ class Game extends React.Component {
 
   chronometer() {
     const { seconds } = this.state;
-    const { enable } = this.props;
+    const { /* enable, */ timerIsOn, toggleTimer } = this.props;
 
     if (seconds > 0) {
       this.setState((prev) => ({
         seconds: prev.seconds - 1,
       }));
     } else {
-      enable(true);
+      document.querySelector('#incorrect').click();
+      /* enable(true); */
+    }
+
+    if (timerIsOn) {
+      localStorage.setItem('time', JSON.stringify(seconds));
+      this.setState({ seconds: 0 });
+      toggleTimer(false);
     }
   }
 
   render() {
     const { questions, loading, answered } = this.props; // Vem da store do redux
     const { index, seconds } = this.state;
-
     if (loading) {
       return <h3>loading...</h3>;
     }
@@ -105,16 +112,21 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  toggleTimer: PropTypes.func.isRequired,
+  timerIsOn: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   loading: state.game.loading,
+  timerIsOn: state.game.timerIsOn,
   answered: state.game.answered,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
+  timer: (time) => dispatch(updateTime(time)),
+  toggleTimer: (time) => dispatch(timerToggle(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

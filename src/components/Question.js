@@ -6,7 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './Question.css';
-import { toggleNextButton, updateScore } from '../actions/index';
+import { timerToggle, toggleNextButton, updateScore } from '../actions/index';
 import Alternative from './Alternative';
 
 class Question extends React.Component {
@@ -43,10 +43,12 @@ Question.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
   updatePlayerScore: (score) => dispatch(updateScore(score)),
+  toggleTimer: (bool) => dispatch(timerToggle(bool)),
 });
 
 const mapStateToProps = (store) => ({
   answered: store.game.answered,
+  timer: store.game.time,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

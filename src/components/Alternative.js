@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { toggleNextButton, updateScore } from '../actions';
+import { timerToggle, toggleNextButton, updateScore } from '../actions';
 
 const STARTING_POINTS = 10;
 
@@ -28,13 +28,14 @@ class Alternative extends React.Component {
   }
 
   calculatePoints() {
-    const { alternative, updatePlayerScore } = this.props;
+    const { alternative, updatePlayerScore, toggleTimer } = this.props;
 
     if (alternative.textId === 'correct-answer') {
       // Atualiza o localStorage com a nova pontuação.
+      toggleTimer(true);
+      const timer = JSON.parse(localStorage.getItem('time'));
       const localState = JSON.parse(localStorage.getItem('state'));
       const { score, assertions } = localState.player;
-      const timer = 10; // Precisa vir do redux
       const newScore = score + (STARTING_POINTS + (timer * alternative.difficulty));
       localState.player.score = newScore;
       localState.player.assertions = Number(assertions) + 1;
@@ -61,6 +62,7 @@ class Alternative extends React.Component {
       <li>
         <button
           data-testid={ alternative.textId }
+          id={ alternative.textId === 'wrong-answer-0' ? 'incorrect' : '' }
           type="button"
           onClick={ this.handleAnswering }
           disabled={ answered }
@@ -82,6 +84,7 @@ Alternative.propTypes = {
   enable: PropTypes.func.isRequired,
   updatePlayerScore: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
+  toggleTimer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (store) => ({
@@ -91,6 +94,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   enable: (bool) => dispatch(toggleNextButton(bool)),
   updatePlayerScore: (score) => dispatch(updateScore(score)),
+  toggleTimer: (bool) => dispatch(timerToggle(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alternative);

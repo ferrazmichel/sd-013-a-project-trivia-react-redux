@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { ConfigScreen, Login, Game } from './pages';
-import Feedback from './pages/Feedback';
+import { ConfigScreen, Login, Game, Feedback } from './pages';
 
 class App extends React.Component {
   render() {

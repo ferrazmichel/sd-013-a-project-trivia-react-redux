@@ -1,10 +1,16 @@
-import { ENABLE_NEXT_QUESTION, GET_QUESTIONS } from '../actions';
+import { ENABLE_NEXT_QUESTION,
+  GET_QUESTIONS,
+  TIMER_TOGLE,
+  UPDATE_TIME } from '../actions';
+
 import shuffleArray from '../helpers';
 
 const initialState = {
   questions: [],
   loading: true,
   answered: false,
+  time: 0,
+  timerIsOn: false,
 };
 
 const difficulties = {
@@ -51,6 +57,16 @@ const gameReducer = (state = initialState, action) => {
   case ENABLE_NEXT_QUESTION: {
     return { ...state, answered: action.payload };
   }
+  case UPDATE_TIME:
+    return {
+      ...state,
+      time: action.payload,
+    };
+  case TIMER_TOGLE:
+    return {
+      ...state,
+      timerIsOn: action.payload,
+    };
   default:
     return state;
   }
