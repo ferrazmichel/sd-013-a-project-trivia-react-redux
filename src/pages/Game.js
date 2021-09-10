@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import QuestionCard from '../components/QuestionCard';
 import Header from '../components/Header';
@@ -20,6 +21,7 @@ class Game extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.setButtonVisibility = this.setButtonVisibility.bind(this);
+    this.saveRanking = this.saveRanking.bind(this);
   }
 
   componentDidMount() {
@@ -52,9 +54,27 @@ class Game extends React.Component {
       });
     } else {
       const { history } = this.props;
+      this.saveRanking();
       history.push('/feedback');
     }
     this.setButtonVisibility(); // desabilita o botão de prox após clicar em prox
+  }
+
+  saveRanking() {
+    const { email, name, score } = this.props;
+    const hash = md5(email).toString();
+    const picture = `https://www.gravatar.com/avatar/${hash}`;
+    const rankObj = {
+      name,
+      score,
+      picture,
+    };
+    const previousRanking = JSON.parse(localStorage.getItem('ranking'));
+    if (previousRanking !== null) {
+      localStorage.ranking = JSON.stringify([...previousRanking, rankObj]);
+    } else {
+      localStorage.ranking = JSON.stringify([rankObj]);
+    }
   }
 
   render() {
@@ -97,8 +117,11 @@ const mapDispatchToProps = (dispatch) => ({
   handlePause: (response) => dispatch(pauseTimer(response)),
 });
 
-const mapStateToProps = ({ questionsReducer }) => ({
+const mapStateToProps = ({ questionsReducer, player }) => ({
   questions: questionsReducer.questions,
+  email: player.gravatarEmail,
+  name: player.name,
+  score: player.score,
 });
 
 Game.propTypes = {
@@ -110,6 +133,9 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
