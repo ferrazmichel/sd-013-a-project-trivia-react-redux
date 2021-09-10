@@ -6,6 +6,7 @@ export const RESTART_TIMER = 'RESTART_TIMER';
 export const PAUSE_TIMER = 'PAUSE_TIMER';
 export const RECORD_TIME = 'RECORD_TIME';
 export const SAVE_SCORE = 'SAVE_SCORE';
+export const CLEAR_STORE = 'CLEAR_STORE';
 
 export const saveUserInfo = (payload) => ({
   type: SAVE_USER_INFO,
@@ -51,4 +52,8 @@ export const recordTime = (time) => ({
 export const saveScore = (points) => ({
   type: SAVE_SCORE,
   points,
+});
+
+export const returnInitialState = () => ({
+  type: CLEAR_STORE,
 });

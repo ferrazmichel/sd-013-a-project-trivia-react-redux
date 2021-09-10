@@ -9,16 +9,19 @@ import {
   pauseTimer,
   restartTimer,
 } from '../redux/actions';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentQuestion: 0,
-      disabledButton: 'none',
+      isHidden: true,
+      shouldLoadButtons: false,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleDisable = this.handleDisable.bind(this);
+    this.setButtonVisibility = this.setButtonVisibility.bind(this);
+    this.handleLoadButtons = this.handleLoadButtons.bind(this);
   }
 
   componentDidMount() {
@@ -31,9 +34,10 @@ class Game extends React.Component {
     return localStorage.getItem('token');
   }
 
-  handleDisable() {
+  setButtonVisibility() {
+    const { isHidden } = this.state;
     this.setState({
-      disabledButton: 'inline-block',
+      isHidden: !isHidden,
     });
   }
 
@@ -41,23 +45,32 @@ class Game extends React.Component {
     const penultIndex = 3;
     const { currentQuestion } = this.state;
     const { disable, handleRestart, handlePause } = this.props;
+    disable(false);
     if (currentQuestion <= penultIndex) {
-      disable(false);
+      // disable(false);
       handleRestart(true);
       handlePause(false);
       this.setState({
         currentQuestion: currentQuestion + 1,
+        shouldLoadButtons: true,
       });
     } else {
       const { history } = this.props;
       history.push('/feedback');
     }
-    this.handleDisable();
+    this.setButtonVisibility(); // desabilita o botão de prox após clicar em prox
+  }
+
+  handleLoadButtons() {
+    const { shouldLoadButtons } = this.state;
+    this.setState({
+      shouldLoadButtons: !shouldLoadButtons,
+    });
   }
 
   render() {
     const { questions } = this.props;
-    const { currentQuestion, disabledButton } = this.state;
+    const { currentQuestion, isHidden, shouldLoadButtons } = this.state;
     if (questions.length === 0) {
       return <p>Loading</p>;
     }
@@ -68,12 +81,16 @@ class Game extends React.Component {
         <Header />
         <QuestionCard
           questionData={ questions[currentQuestion] }
-          nextQuestion={ this.handleDisable }
+          setButtonVisibility={ this.setButtonVisibility }
+          loadButtons={ shouldLoadButtons }
+          handleLoadButtons={ this.handleLoadButtons }
+
         />
+        <Timer setButtonVisibility={ this.setButtonVisibility } />
         <button
           type="button"
           data-testid="btn-next"
-          style={ { display: `${disabledButton}` } }
+          hidden={ isHidden }
           onClick={ this.handleClick }
         >
           Próxima pergunta

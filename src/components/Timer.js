@@ -31,14 +31,18 @@ class Timer extends React.Component {
 
   countDown() {
     const { timerEnd, timerStart } = this.state;
-    const { disable } = this.props;
+    const { disable, setButtonVisibility } = this.props;
     if (timerEnd !== timerStart) {
       this.setState({
         timerStart: timerStart - 1,
       });
     } else {
+      this.setState({
+        timerStart: 'Tempo esgotado!',
+      });
       clearInterval(this.timer); // para o set interval
       disable(true); // desabilita as alternativas ao fim do tempo
+      setButtonVisibility();
     }
   }
 

@@ -1,4 +1,4 @@
-import { SAVE_SCORE, SAVE_USER_INFO } from '../actions';
+import { CLEAR_STORE, SAVE_SCORE, SAVE_USER_INFO } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -20,6 +20,10 @@ const player = (state = INITIAL_STATE, { type, payload, points }) => {
       ...state,
       score: state.score + points,
       assertions: state.assertions + 1,
+    };
+  case CLEAR_STORE:
+    return {
+      ...INITIAL_STATE,
     };
   default: {
     return state;

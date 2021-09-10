@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Timer from './Timer';
 import { disableButtons, pauseTimer, saveScore } from '../redux/actions';
 
 class QuestionCard extends React.Component {
@@ -9,28 +8,21 @@ class QuestionCard extends React.Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleCorrectAnswer = this.handleCorrectAnswer.bind(this);
+    this.state = {
+      buttons: [],
+    };
   }
 
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
+  componentDidMount() {
+    this.renderQuestionButton();
   }
 
-  handleClick() {
-    const { disable, nextQuestion, pause } = this.props;
-    const correct = document.querySelector('.correct-answer');
-    const incorrects = document.querySelectorAll('.wrong-answer');
-    for (let i = 0; i < incorrects.length; i += 1) {
-      incorrects[i].classList.add('wrong-color');
+  componentDidUpdate() {
+    const { loadButtons, handleLoadButtons } = this.props;
+    if (loadButtons) {
+      this.renderQuestionButton();
+      handleLoadButtons();
     }
-    correct.classList.add('correct-color');
-    disable(true); // desabilita as alternativas após responder
-    nextQuestion(); // habilita o botão de prox após pergunta
-    pause(true); // pausa o timer após responder
   }
 
   handleCorrectAnswer() {
@@ -47,18 +39,48 @@ class QuestionCard extends React.Component {
     setPoints(points);// envia os pontos pra store
   }
 
+  handleClick() {
+    const { disableQuestions, setButtonVisibility, pause } = this.props;
+    const correct = document.querySelector('.correct-answer');
+    const incorrects = document.querySelectorAll('.wrong-answer');
+    for (let i = 0; i < incorrects.length; i += 1) {
+      incorrects[i].classList.add('wrong-color');
+    }
+    correct.classList.add('correct-color');
+    disableQuestions(true); // desabilita as alternativas após responder
+    setButtonVisibility(); // habilita o botão de prox após clicar na pergunta
+    pause(true); // pausa o timer após responder
+  }
+
+  shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+  }
+
+  // handleDisableButtons() {
+  //   const wrongButtonsList = document.querySelectorAll('.wrong-answer');
+  //   for (let i = 0; i < wrongButtonsList.length; i += 1) {
+  //     wrongButtonsList[i].setAttribute('disabled', true);
+  //   }
+  //   const correctButton = document.querySelector('.correct-answer');
+  //   correctButton.setAttribute('disabled', true);
+  // }
+
   renderQuestionButton() {
-    const { questionData, handleDisable } = this.props;
+    const { questionData } = this.props;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questionData;
     const correctButtons = (
       <button
-        key={ correctAnswer }
+        key={correctAnswer}
         className="correct-answer"
         type="button"
         data-testid="correct-answer"
-        disabled={ handleDisable }
-        onClick={ this.handleCorrectAnswer }
+        onClick={this.handleCorrectAnswer}
       >
         {correctAnswer}
       </button>);
@@ -66,40 +88,49 @@ class QuestionCard extends React.Component {
       <button
         type="button"
         className="wrong-answer"
-        key={ answer }
-        data-testid={ `wrong-answer-${index}` }
-        disabled={ handleDisable }
-        onClick={ this.handleClick }
+        key={answer}
+        data-testid={`wrong-answer-${index}`}
+        onClick={this.handleClick}
       >
         {answer}
       </button>));
 
     const allButtons = [...wrongButtons, correctButtons];
     this.shuffleArray(allButtons);
-    return allButtons;
+    this.setState({
+      buttons: allButtons,
+    });
   }
 
   render() {
-    const { questionData } = this.props;
+    const { questionData, shouldDisableButtons } = this.props;
     const { category, question } = questionData;
+    const { buttons } = this.state;
+    // if (shouldDisableButtons === true) {
+    //   const wrongButtonsList = document.querySelectorAll('.wrong-answer');
+    //   for (let i = 0; i < wrongButtonsList.length; i += 1) {
+    //     wrongButtonsList[i].setAttribute('disabled', true);
+    //   }
+    //   const correctButton = document.querySelector('.correct-answer');
+    //   correctButton.setAttribute('disabled', true);
+    // }
     return (
       <div>
         <h1 data-testid="question-category">{category}</h1>
         <p data-testid="question-text">{question}</p>
-        {this.renderQuestionButton()}
-        <Timer />
+        {buttons}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ questionsReducer }) => ({
-  handleDisable: questionsReducer.disableButtons,
+  shouldDisableButtons: questionsReducer.disableButtons,
   timer: questionsReducer.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  disable: (response) => dispatch(disableButtons(response)),
+  disableQuestions: (response) => dispatch(disableButtons(response)),
   pause: (response) => dispatch(pauseTimer(response)),
   setPoints: (points) => dispatch(saveScore(points)),
 });
@@ -112,12 +143,12 @@ QuestionCard.propTypes = {
     question: PropTypes.string,
     difficulty: PropTypes.string,
   }).isRequired,
-  disable: PropTypes.func.isRequired,
-  handleDisable: PropTypes.bool.isRequired,
-  timer: PropTypes.number.isRequired,
+  disableQuestions: PropTypes.func.isRequired,
+  shouldDisableButtons: PropTypes.bool.isRequired,
+  timer: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   pause: PropTypes.func.isRequired,
   setPoints: PropTypes.func.isRequired,
-  nextQuestion: PropTypes.func.isRequired,
+  setButtonVisibility: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);
