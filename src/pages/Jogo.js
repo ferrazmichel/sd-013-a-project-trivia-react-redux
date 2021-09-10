@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getTriviaApi, fetchAvatar } from '../utils/utils';
 import JogoHeader from '../components/JogoHeader';
+import Pergunta from '../components/Pergunta';
+import './jogo.css';
 
 class Jogo extends React.Component {
   constructor(props) {
@@ -19,14 +21,13 @@ class Jogo extends React.Component {
         gravatarEmail: props.email,
       },
     };
-    this.renderQuestions = this.renderQuestions.bind(this);
     this.getData = this.getData.bind(this);
     this.tickSecond = this.tickSecond.bind(this);
     this.handleClickAnswer = this.handleClickAnswer.bind(this);
-    this.handleClickNext = this.handleClickNext.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
     this.startClock = this.startClock.bind(this);
     this.setRanking = this.setRanking.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
   }
 
   componentDidMount() {
@@ -38,8 +39,6 @@ class Jogo extends React.Component {
   async getData() {
     const { token } = this.props;
     const data = await getTriviaApi(token);
-    console.log(data);
-
     this.setState({
       questions: data,
       isLoading: false,
@@ -158,77 +157,28 @@ class Jogo extends React.Component {
     }
   }
 
-  renderNextButton() {
-    return (
-      <button
-        id="next"
-        data-testid="btn-next"
-        type="button"
-        onClick={ this.handleClickNext }
-        hidden
-      >
-        Próxima
-      </button>
-    );
-  }
-
-  renderQuestions() {
-    const { questions, currentIndex, seconds } = this.state;
-    const currentQuestion = questions[currentIndex];
-    const correctAnswer = currentQuestion.correct_answer;
-    const alternatives = [...currentQuestion.incorrect_answers, correctAnswer];
-    const sortAlternatives = alternatives.sort();
-    return (
-      <div>
-        <div>
-          <h2 data-testid="question-category">{ currentQuestion.category }</h2>
-          <p data-testid="question-text">{ currentQuestion.question }</p>
-          <p>
-            Tempo:
-            {' '}
-            { seconds }
-          </p>
-        </div>
-        <div id="alternatives-container">
-          {sortAlternatives.map((alternative, index) => {
-            if (alternative === correctAnswer) {
-              return (
-                <button
-                  key={ index }
-                  data-testid="correct-answer"
-                  type="button"
-                  className="correct"
-                  onClick={ this.handleClickAnswer }
-                  disabled={ seconds === 0 }
-                >
-                  { alternative }
-                </button>
-              );
-            }
-            return (
-              <button
-                key={ index }
-                data-testid={ `wrong-answer-${index}` }
-                type="button"
-                className="incorrect"
-                onClick={ this.handleClickAnswer }
-                disabled={ seconds === 0 }
-              >
-                { alternative }
-              </button>);
-          })}
-          { this.renderNextButton() }
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    const { player: { score }, isLoading } = this.state;
+    const { player: { score }, isLoading, questions, currentIndex, seconds } = this.state;
     return (
-      <div>
+      <div className="questions text-center">
         { (!isLoading && <JogoHeader score={ score } />) }
-        { (!isLoading && this.renderQuestions()) }
+        { (!isLoading
+            && <Pergunta
+              questions={ questions }
+              currentIndex={ currentIndex }
+              seconds={ seconds }
+              handleClickAnswer={ this.handleClickAnswer }
+            />) }
+        <button
+          className="btn btn-next text-uppercase fw-bold px-5"
+          id="next"
+          data-testid="btn-next"
+          type="button"
+          onClick={ this.handleClickNext }
+          hidden
+        >
+          Próxima
+        </button>
       </div>
     );
   }

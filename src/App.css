@@ -8,5 +8,6 @@
 
 .background {
   background-color: #98e8b3;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
 }

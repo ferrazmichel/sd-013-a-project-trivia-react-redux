@@ -1,0 +1,14 @@
+.header {
+  align-items: center;
+  background-color: #2f2762;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+
+  /* min-width: 350px; */
+}
+
+.avatar {
+  height: 35px;
+  width: 35px;
+}
