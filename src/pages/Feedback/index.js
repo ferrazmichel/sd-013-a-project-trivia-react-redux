@@ -12,6 +12,7 @@ class FeedBack extends Component {
     };
     this.fetchAssertions = this.fetchAssertions.bind(this);
     this.setAssertions = this.setAssertions.bind(this);
+    this.updateRanking = this.updateRanking.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +40,29 @@ class FeedBack extends Component {
   handleClick() {
     const { resetGame } = this.props;
     resetGame();
+    this.updateRanking();
+  }
+
+  updateRanking() {
+    const currentState = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, score, gravatarEmail } } = currentState;
+    const hash = MD5(gravatarEmail).toString();
+    const picture = `https://www.gravatar.com/avatar/${hash}`;
+    const currentPlayerRanking = {
+      name,
+      score,
+      picture,
+    };
+    const currentRanking = JSON.parse(localStorage.getItem('ranking'));
+    if (currentRanking === null) {
+      localStorage.setItem('ranking', JSON.stringify(currentPlayerRanking));
+    } else {
+      const newRanking = {
+        currentRanking,
+        ...currentPlayerRanking,
+      };
+      localStorage.setItem('ranking', JSON.stringify(newRanking));
+    }
   }
 
   render() {
