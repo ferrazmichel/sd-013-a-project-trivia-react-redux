@@ -99,7 +99,7 @@ class Answers extends React.Component {
   }
 
   addScoreOnClick(clock, difficulty) {
-    const { score, assertions } = this.state;
+    const { score } = this.state;
     const { easy, medium, hard } = answersScore;
     const difficulties = Object.keys(answersScore).find((key) => key === difficulty);
     let scoreValue;
@@ -118,13 +118,15 @@ class Answers extends React.Component {
     }
     const tenScore = 10;
     const result = score + (tenScore + (clock * scoreValue));
-    const getPlayer = JSON.parse(localStorage.getItem('player'));
-    this.setState(() => (
+    const getPlayer = JSON.parse(localStorage.getItem('state')).player;
+    console.log(getPlayer);
+    this.setState((prevState) => (
       {
         score: result,
-        assertions: assertions + 1,
+        assertions: prevState.assertions + 1,
       }
     ), () => {
+      const { assertions } = this.state;
       const newPlayer = {
         ...getPlayer,
         score: result,

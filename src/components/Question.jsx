@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import {
-} from '../redux/actions/saveCurPlayerScore';
 import { fetchQuestions } from '../redux/actions/fetchActions';
 import Answers from './Answers';
 
@@ -53,7 +52,9 @@ class Question extends React.Component {
   render() {
     const { questions } = this.props;
     const { id } = this.state;
+    const questionsLimit = 5;
     if (questions.length === 0) return <p>Loading...</p>;
+    if (id === questionsLimit) return <Redirect to="/feedback" />;
     const questionMap = questions.map((question) => this.renderQuestions(question));
     return (
       <div>

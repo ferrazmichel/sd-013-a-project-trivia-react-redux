@@ -24,7 +24,8 @@ class Login extends React.Component {
       disable: true,
       gravatarEmail: '',
       name: '',
-      score: '',
+      score: 0,
+      assertions: 0,
       redirect: false,
     };
 

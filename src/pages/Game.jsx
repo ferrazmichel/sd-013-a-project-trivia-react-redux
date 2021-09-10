@@ -10,26 +10,8 @@ class Game extends React.Component {
     super();
 
     this.state = {
-      score: 0,
       redirect: false,
     };
-
-    // this.addScoreOnClick = this.addScoreOnClick.bind(this);
-    this.onClick = this.onClick.bind(this);
-    // this.addScoreInThisComponent = this.addScoreInThisComponent.bind(this);
-  }
-
-  // async componentDidMount() {
-  //   const { addScoreOnStore } = this.props;
-
-  //   const { score } = this.state;
-  //   await addScoreOnStore(score);
-  // }
-
-  async onClick() {
-    const { score } = this.state;
-    await localStorage.setItem('score', JSON.stringify(score));
-    this.setState({ redirect: true });
   }
 
   render() {
@@ -44,18 +26,9 @@ class Game extends React.Component {
         <h2>Game Page</h2>
         <main>
           <Question />
-          {/* <Reset /> */}
           <Home />
 
         </main>
-        {/* <Button
-          text="Add Score Points"
-          onClick={ this.addScoreOnClick }
-        />
-        <Button
-          text="Ver Score"
-          onClick={ this.onClick }
-        /> */}
       </div>
 
     );

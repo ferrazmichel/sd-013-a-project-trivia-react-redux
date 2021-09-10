@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import FeedbackAnswers from '../components/FeedbackAswers';
+import Reset from '../components/Reset';
 
 function getitem() {
   const getItem = localStorage.getItem('score');
@@ -19,9 +21,11 @@ class Feedback extends Component {
       <div>
         <Header
           score={ score }
-          testID="feedback-total-question"
+          testID="feedback-total-score"
         />
         <FeedbackAnswers score={ score } />
+        <Link to="/">Home</Link>
+        <Reset />
       </div>
     );
   }

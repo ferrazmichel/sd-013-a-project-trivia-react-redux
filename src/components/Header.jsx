@@ -10,16 +10,16 @@ class Header extends Component {
   }
 
   getPlayerDataFromLocalStorage() {
-    const getPlayerData = JSON.parse(localStorage.getItem('player'));
+    const getPlayerData = JSON.parse(localStorage.getItem('state')).player;
     return getPlayerData;
   }
 
   Gravatar() {
-    const { name, email } = this.getPlayerDataFromLocalStorage();
+    const { name, gravatarEmail } = this.getPlayerDataFromLocalStorage();
 
-    const hashGerada = md5(email).toString();
+    const hashGerada = md5(gravatarEmail).toString();
     const imgemPerfil = `https://www.gravatar.com/avatar/${hashGerada}`;
-    const perfil = { name, imgemPerfil, email };
+    const perfil = { name, imgemPerfil, gravatarEmail };
 
     return perfil;
   }

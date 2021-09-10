@@ -19,8 +19,8 @@ const validateUsername = (name) => name.length > 1;
 
 export const savePlayerDataOnLocalStorage = (state) => {
   const { name, gravatarEmail, score, assertions } = state;
-  const user = { name, gravatarEmail, score, assertions };
-  localStorage.setItem('player', JSON.stringify(user));
+  const user = { player: { name, gravatarEmail, score, assertions } };
+  localStorage.setItem('state', JSON.stringify(user));
 };
 
 export const validateLoginFactory = (email, name) => (
