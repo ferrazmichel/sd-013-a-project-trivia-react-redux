@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { timeFinished } from '../redux/actions';
 import Countdown from './Countdown';
 
 class Pergunta extends React.Component {
@@ -8,21 +9,22 @@ class Pergunta extends React.Component {
     super();
     this.state = {
       contador: 0,
-      correctAnswer: '',
+      // correctAnswer: '',
       boolClickAnswer: false,
       assertions: 0,
       score: 0,
     };
-    this.correct = this.correct.bind(this);
+    // this.correct = this.correct.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.shuffleArr = this.shuffleArr.bind(this);
-    // this.timer = this.timer.bind(this);
     this.handleColor = this.handleColor.bind(this);
     this.onClicAknswer = this.onClicAknswer.bind(this);
     this.creatButton = this.creatButton.bind(this);
     this.calcScore = this.calcScore.bind(this);
     this.updateScore = this.updateScore.bind(this);
-    // this.disableButtons = this.disableButtons.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.incrementContador = this.incrementContador.bind(this);
+    this.pushToFeedbackPage = this.pushToFeedbackPage.bind(this);
   }
 
   componentDidMount() {
@@ -32,15 +34,15 @@ class Pergunta extends React.Component {
       { player: { name: nameUser, assertions, score, gravatarEmail: gravatar } },
     );
     localStorage.setItem('state', localData);
-    this.correct();
+    // this.correct();
   }
 
   onClicAknswer({ target }) {
-    const { assertions, score } = this.state;
+    const { assertions, score, contador } = this.state;
+    this.handleColor();
+    if (contador === 0) this.creatButton();
     let acertos = assertions;
     let pontuacao = score;
-    this.handleColor();
-    this.creatButton();
     if (target.className === 'correct') {
       pontuacao = this.calcScore();
       acertos += 1;
@@ -65,10 +67,48 @@ class Pergunta extends React.Component {
     });
   }
 
+  incrementContador() {
+    this.setState((prevState) => ({
+      contador: prevState.contador + 1,
+    }));
+  }
+
+  pushToFeedbackPage() {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
+  nextQuestion() {
+    const { perguntas, timerFinished } = this.props;
+    const { contador } = this.state;
+    if (contador === perguntas.length - 1) {
+      this.pushToFeedbackPage();
+    } else {
+      this.setState({
+        boolClickAnswer: false,
+      });
+      this.incrementContador();
+      this.resetButtons();
+      timerFinished(false);
+    }
+  }
+
+  resetButtons() {
+    const buttonCorrect = document.querySelector('.correct');
+    const buttonWrong = document.querySelectorAll('.wrong');
+    buttonCorrect.disabled = false;
+    buttonWrong.forEach((btnWrong) => {
+      btnWrong.disabled = false;
+    });
+  }
+
   creatButton() {
     const botao = document.createElement('button');
     botao.innerHTML = 'Próxima';
     botao.setAttribute('data-testid', 'btn-next');
+    botao.setAttribute('id', 'btnNextId');
+    // botao.setAttribute('onclick', () => { this.nextQuestion(); });
+    botao.onclick = () => { this.nextQuestion(); };
     const div = document.querySelector('.question');
     div.appendChild(botao);
   }
@@ -91,39 +131,53 @@ class Pergunta extends React.Component {
 
   shuffleArr(inputArr) {
     const number = 0.5;
-    inputArr.sort(() => Math.random() - number);
-    console.log('shuffleAr', inputArr);
-    return inputArr;
+    return inputArr.sort(() => Math.random() - number);
+    // console.log('shuffleAr', inputArr);
+    // return inputArr;
   }
 
-  correct() {
-    const { perguntas } = this.props;
-    const { contador } = this.state;
-    this.setState({
-      correctAnswer: perguntas[contador].correct_answer,
-    });
-  }
+  // correct() {
+  //   const { perguntas } = this.props;
+  //   const { contador } = this.state;
+  //   this.setState({
+  //     correctAnswer: perguntas[contador].correct_answer,
+  //   });
+  // }
 
   shuffleAnswers() {
     const { perguntas, boolTimeout } = this.props;
-    const { contador, correctAnswer } = this.state;
+    const { contador } = this.state; // correctAnswer
     const arrAlternativas = [...perguntas[contador].incorrect_answers,
       perguntas[contador].correct_answer,
     ];
-    const result = this.shuffleArr(arrAlternativas);
+    console.log('arrAlternativas', arrAlternativas);
+    // ====================================================
+    // Trabalhando com objeto:
+    const objAlternativas = {
+      [perguntas[contador].correct_answer]: 'correct',
+    };
+    perguntas[contador].incorrect_answers.forEach((answer) => {
+      objAlternativas[answer] = 'wrong';
+    });
+    // ====================================================
+    console.log('objAlternativas', objAlternativas);
+    console.log('Entries - objAlternativas', Object.entries(objAlternativas));
+    // console.log('Shuffle Entries objAlternativas', this.shuffleArr(Object.entries(objAlternativas)));
+    // const result = this.shuffleArr(arrAlternativas); // Versão anterior (apenas os values do array)
+    const result = this.shuffleArr(Object.entries(objAlternativas));
     console.log('result', result);
     return result.map((alternativa, index) => (
       <button
         type="submit"
-        key={ alternativa }
-        className={ alternativa === correctAnswer ? 'correct' : 'wrong' }
+        key={ alternativa[0] }
+        className={ alternativa[1] === 'correct' ? 'correct' : 'wrong' }
         data-testid={
-          alternativa === correctAnswer ? 'correct-answer' : `wrong-answer-${index}`
+          alternativa[1] === 'correct' ? 'correct-answer' : `wrong-answer-${index}`
         }
         onClick={ this.onClicAknswer }
         disabled={ boolTimeout }
       >
-        { alternativa }
+        { alternativa[0] }
       </button>
     ));
   }
@@ -181,8 +235,13 @@ const mapStateToProps = (state) => ({
   nameUser: state.player.playerName,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  timerFinished: (booleano) => dispatch(timeFinished(booleano)),
+});
+
 Pergunta.propTypes = {
+  timerFinished: PropTypes.func,
   perguntas: PropTypes.array,
 }.isRequired;
 
-export default connect(mapStateToProps)(Pergunta);
+export default connect(mapStateToProps, mapDispatchToProps)(Pergunta);

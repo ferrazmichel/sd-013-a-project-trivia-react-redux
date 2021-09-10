@@ -10,6 +10,7 @@ class Countdown extends React.Component {
       countdown: 30,
     };
     this.stopTimer = this.stopTimer.bind(this);
+    this.zerarCronometro = this.zerarCronometro.bind(this);
   }
 
   componentDidMount() {
@@ -25,10 +26,18 @@ class Countdown extends React.Component {
     }, timeout);
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   const { choiceSelection } = this.props;
+  //   // console.log('nextProps in shouldComponentUpdate at Countdown', nextProps[choiceSelection]);
+  //   console.log('nextProps in shouldComponentUpdate at Countdown', nextProps.choiceSelection);
+  //   return choiceSelection === nextProps[choiceSelection];
+  // }
+
   componentDidUpdate() {
     const { countdown } = this.state;
     const { boolClickAnswer, handleColor, createButton } = this.props; // handleTimeout estava sendo desestruturado aqui...
     console.log('Booleano no Countdown DidUpdate', boolClickAnswer);
+    console.log('Contador', countdown);
     if (boolClickAnswer === true) {
       this.stopTimer();
       // clearTimeout(this.timer);
@@ -40,6 +49,12 @@ class Countdown extends React.Component {
       handleColor();
       this.stopTimer();
     }
+  }
+
+  zerarCronometro() {
+    this.setState({
+      countdown: 30,
+    });
   }
 
   stopTimer() {
@@ -59,16 +74,20 @@ class Countdown extends React.Component {
   }
 }
 
+// const mapStateToProps = (state) => ({
+// });
+
 const mapDispatchToProps = (dispatch) => ({
   timerFinished: (booleano) => dispatch(timeFinished(booleano)),
 });
 
 Countdown.propTypes = {
   // handleTimeout: propTypes.func.isRequired,
-  timerFinished: propTypes.func.isRequired,
-  handleColor: propTypes.func.isRequired,
-  createButton: propTypes.func.isRequired,
-  boolClickAnswer: propTypes.bool.isRequired,
-};
+  timerFinished: propTypes.func,
+  handleColor: propTypes.func,
+  createButton: propTypes.func,
+  boolClickAnswer: propTypes.bool,
+  choiceSelection: propTypes.bool,
+}.isRequired;
 
 export default connect(null, mapDispatchToProps)(Countdown);
