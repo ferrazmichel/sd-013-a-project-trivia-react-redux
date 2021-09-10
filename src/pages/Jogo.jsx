@@ -12,9 +12,28 @@ class Jogo extends React.Component {
     };
     this.colorGreen = this.colorGreen.bind(this);
     this.colorRed = this.colorRed.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+  }
+
+  componentDidMount() {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'none';
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const buttonNext = document.querySelector('#button-next');
+    const NUMBER_OF_QUESTIONS = 4;
+    if (nextState.i === NUMBER_OF_QUESTIONS) {
+      buttonNext.parentNode.removeChild(buttonNext);
+    }
+    return true;
   }
 
   colorGreen(e) {
+    const buttonNext = document.querySelector('#button-next');
+    if (buttonNext) {
+      buttonNext.style.display = 'block';
+    }
     e.target.style.border = '3px solid rgb(6, 240, 15)';
     const wrong = document.querySelectorAll('.wrong');
     const NUM = 3;
@@ -28,9 +47,19 @@ class Jogo extends React.Component {
   }
 
   colorRed(e) {
+    const buttonNext = document.querySelector('#button-next');
+    if (buttonNext) {
+      buttonNext.style.display = 'block';
+    }
     e.target.style.border = '3px solid rgb(255, 0, 0)';
     const correct = document.querySelector('.correct');
     correct.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  nextQuestion() {
+    const buttonNext = document.querySelector('#button-next');
+    buttonNext.style.display = 'none';
+    this.setState((state) => ({ i: state.i + 1 }));
   }
 
   render() {
@@ -66,6 +95,14 @@ class Jogo extends React.Component {
         <Link to="/feedback">
           <button type="button">feedback</button>
         </Link>
+        <button
+          data-testid="btn-next"
+          type="button"
+          id="button-next"
+          onClick={ this.nextQuestion }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
