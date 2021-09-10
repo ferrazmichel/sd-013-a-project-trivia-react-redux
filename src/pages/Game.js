@@ -81,7 +81,6 @@ class Game extends React.Component {
   render() {
     const { questions, loading, answered } = this.props; // Vem da store do redux
     const { index, seconds } = this.state;
-    // const FOUR = 4;
     if (loading) {
       return <h3>loading...</h3>;
     }
