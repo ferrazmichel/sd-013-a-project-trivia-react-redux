@@ -20,6 +20,7 @@
 }
 .container-timer p {
   width: 90%;
+  height: 50%;
 }
 
 .nextbtn {
@@ -29,4 +30,13 @@
 .bnt-next-quest {
   margin-left: 38%;
   width: 200px;
+  height: 35px;
+  border: 1px solid white;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size:18px;
+}
+.bnt-next-quest:hover {
+  background: rgb(150, 113, 180);
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -12,23 +13,29 @@ class RankingList extends React.Component {
     // ls.forEach((obj) => )
     // ls.sort((obj1, obj2) => obj2.score - obj1.score);
     return ls.map((obj, index) => (
-      <div key={ obj.score } score={ obj.score }>
-        <img
-          key={ obj.picture }
-          src={ obj.picture }
-          alt="imagem do player"
-        />
-        <div
-          data-testid={ `player-name-${index}` }
-          key={ obj.name }
-        >
-          { obj.name }
-        </div>
-        <div
-          data-testid={ `player-score-${index}` }
-          key={ obj.score }
-        >
-          { obj.score }
+      <div className="container-ranking">
+        <div className="ranking-imagem" key={ obj.score } score={ obj.score }>
+          <img
+            className="ranking-img"
+            key={ obj.picture }
+            src={ obj.picture }
+            alt="imagem do player"
+          />
+
+          <div
+            className="ranking-text"
+            data-testid={ `player-name-${index}` }
+            key={ obj.name }
+          >
+            { obj.name }
+          </div>
+          <div
+            className="ranking-text ranking-text-name"
+            data-testid={ `player-score-${index}` }
+            key={ obj.score }
+          >
+            { obj.score }
+          </div>
         </div>
       </div>
     )).sort((obj1, obj2) => obj2.key - obj1.key);
@@ -36,10 +43,10 @@ class RankingList extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 data-testid="ranking-title">data-testid</h1>
+      <section>
+        <h1 data-testid="ranking-title">Ranking</h1>
         { this.createList() }
-      </div>
+      </section>
     );
   }
 }

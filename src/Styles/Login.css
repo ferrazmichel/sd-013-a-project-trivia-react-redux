@@ -38,7 +38,7 @@
 }
 
 .bnt-play:hover {
-  background: #9083a5;
+  background: rgb(150, 113, 180);
 }
 
 .bnt-settings {
@@ -48,5 +48,5 @@
 }
 
 .bnt-settings:hover {
-  background: #9083a5;
+  background: rgb(150, 113, 180);
 }
