@@ -147,10 +147,10 @@ class Jogo extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { i, timer, button } = this.state;
+    const { i, timer, button, assertions, score } = this.state;
     return (
       <div>
-        <Header />
+        <Header score={ score } assertions={ assertions } i={ i } />
         <div>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
