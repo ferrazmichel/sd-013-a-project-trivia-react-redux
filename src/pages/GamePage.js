@@ -124,7 +124,7 @@ class GamePage extends Component {
       picture: gravatarUrl,
       name: player.name,
       score: player.score,
-      record: 'recorde',
+      record: '',
     };
     if (!ranking) {
       localStorage.setItem('ranking', JSON.stringify([finalScore]));
