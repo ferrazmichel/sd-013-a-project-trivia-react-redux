@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import Home from '../components/Home';
+import './Game.css';
 
 class Game extends React.Component {
   constructor() {
@@ -23,11 +24,12 @@ class Game extends React.Component {
         <Header
           testID="header-score"
         />
-        <h2>Game Page</h2>
+        <span>
+          <h2>Home Page</h2>
+          <Home />
+        </span>
         <main>
           <Question />
-          <Home />
-
         </main>
       </div>
 

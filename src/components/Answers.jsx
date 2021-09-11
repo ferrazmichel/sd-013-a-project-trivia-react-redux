@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveScoreOnStore from '../redux/actions/saveCurPlayerScore';
 import { savePlayerDataOnLocalStorage } from '../pages/pageFunctions/loginFuncs';
+import decodeHtml from '../helpers/decodeHTML';
 
-import './Button.css';
+import './Answers.css';
 
 const answersScore = {
   easy: 1,
   medium: 2,
   hard: 3,
 };
+
+const defaultColor = 'btn btn-secondary';
 
 class Answers extends React.Component {
   constructor() {
@@ -19,8 +22,8 @@ class Answers extends React.Component {
       score: 0,
       assertions: 0,
       disable: false,
-      correctColor: 'defaultColor',
-      wrongColor: 'defaultColor',
+      correctColor: defaultColor,
+      wrongColor: defaultColor,
       currentCount: 30,
       hide: false,
     };
@@ -61,8 +64,8 @@ class Answers extends React.Component {
     nextQuestion();
     this.setState({
       disable: false,
-      correctColor: 'defaultColor',
-      wrongColor: 'defaultColor',
+      correctColor: defaultColor,
+      wrongColor: defaultColor,
       hide: false,
     });
     this.resetTimeNext();
@@ -89,8 +92,8 @@ class Answers extends React.Component {
   disableButtom() {
     this.setState({
       disable: true,
-      correctColor: 'correctColor',
-      wrongColor: 'wrongColor',
+      correctColor: 'btn btn-success',
+      wrongColor: 'btn btn-danger',
     });
   }
 
@@ -159,6 +162,7 @@ class Answers extends React.Component {
       <button
         type="button"
         data-testid="btn-next"
+        className="btn btn-light"
         onClick={ () => this.nextQuestionOnClick() }
       >
         Próxima
@@ -182,12 +186,13 @@ class Answers extends React.Component {
                 ? 'correct-answer' : `wrong-answer-${index}`
             }
             onClick={ (e) => this.handleClick(e, correctAnswer, currentCount) }
+            id="answer-button"
             className={ correctAnswer === answers[index] ? correctColor : wrongColor }
             difficulty={ answer.difficulty }
           >
-            {answer}
+            {decodeHtml(answer)}
           </button>))}
-        <p>
+        <p className="current-count">
           { currentCount }
         </p>
         { hide ? this.renderButton() : null }

@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+}
+
 .App {
   text-align: center;
 }
@@ -54,4 +58,46 @@
   40%, 60% {
     transform: translate3d(4px, 0, 0);
   }
+}
+
+#player-name {
+  margin-top: 100px;
+  margin-right: 30px;
+}
+
+#settings-icon {
+  color: #a9bcd0;
+}
+
+#settings-icon:hover {
+  color: #373f51;
+}
+
+#login-submit {
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+#settings-button {
+  margin-left: 3px;
+  margin-bottom: 4px;
+}
+
+#reset-button {
+  margin-left: 8px;
+}
+
+.question-category {
+  margin-top: 10px;
+  font-size: 30px;
+}
+
+.question-text {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.current-count {
+  margin-top: 30px;
+  font-size: 30px;
 }

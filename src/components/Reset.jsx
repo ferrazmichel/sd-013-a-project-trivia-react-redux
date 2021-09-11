@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router';
+import { BsArrowRepeat } from 'react-icons/bs';
 import Button from './Button';
 
 export default class Reset extends React.Component {
@@ -31,8 +32,9 @@ export default class Reset extends React.Component {
       <Button
         category="button"
         id="reset-button"
+        className="btn btn-light"
         testID="btn-play-again"
-        text="Jogar novamente"
+        text={ <BsArrowRepeat /> }
         onClick={ this.handleClick }
       />
     );

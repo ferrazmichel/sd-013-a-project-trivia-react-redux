@@ -3,6 +3,8 @@ import React from 'react';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { IoIosSettings } from 'react-icons/io';
+import { BsFillPlayFill } from 'react-icons/bs';
 import fetchActions from '../redux/actions/fetchActions';
 
 import {
@@ -78,6 +80,7 @@ class Login extends React.Component {
             type="text"
             name="name"
             id="player-name"
+            className="input-login"
             labelText="Usuário: "
             testID="input-player-name"
             onChange={ this.handleChange }
@@ -87,6 +90,7 @@ class Login extends React.Component {
             type="email"
             name="gravatarEmail"
             id="player-email"
+            className="input-login"
             labelText="E-mail: "
             testID="input-gravatar-email"
             onChange={ this.handleChange }
@@ -94,13 +98,18 @@ class Login extends React.Component {
           />
           <Button
             id="login-submit"
+            className="btn btn-success"
             testID="btn-play"
-            text="Jogar"
+            text={ <BsFillPlayFill /> }
             disabled={ disable }
             onClick={ this.handleClick }
           />
-          <Link to="/settings" data-testid="btn-settings">
-            Configurações
+          <Link to="/settings" data-testid="btn-settings" id="settings-button">
+            <Button
+              className="btn btn-secondary"
+              id="settings-button"
+              text={ <IoIosSettings id="settings-icon" /> }
+            />
           </Link>
         </form>
       </header>

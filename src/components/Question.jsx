@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions/fetchActions';
 import Answers from './Answers';
+import decodeHtml from '../helpers/decodeHTML';
 
 class Question extends React.Component {
   constructor() {
@@ -34,9 +35,18 @@ class Question extends React.Component {
     answers.sort();
     return (
       <div>
-        <p data-testid="question-category">{question.category}</p>
-        <p data-testid="question-text">{question.question}</p>
-        <p>{question.correct_answer}</p>
+        <p
+          data-testid="question-category"
+          className="question-category"
+        >
+          {question.category}
+        </p>
+        <p
+          data-testid="question-text"
+          className="question-text"
+        >
+          { decodeHtml(question.question) }
+        </p>
         <div>
           <Answers
             nextQuestion={ this.nextQuestion }
