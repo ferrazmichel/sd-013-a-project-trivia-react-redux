@@ -1,0 +1,36 @@
+header {
+  margin: 50px 150px;
+} 
+
+.avatar-img {
+  width: 100%;
+  border-radius: 18px 18px 0 18px;
+  overflow: hidden;
+}
+
+.avatar-imagem {
+  width: 102px;
+  height: 102px;
+  background: white;
+  border-radius: 18px 18px 0 18px;
+  
+}
+
+.avatar-text {
+  position: relative;
+  left: 100px;
+  bottom: 48px;
+  width: 275px;
+  background: white;
+  margin: 5px 0;
+  padding: 0 10px;
+  border-radius: 0 7px 0 0;
+}
+.avatar-text-name {
+  border-radius: 0 0 7px 0;
+}
+
+.avatar-text > span {
+  font-size: 14px;
+  margin-right: 5px;;
+}

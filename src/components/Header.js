@@ -1,25 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../Styles/Header.css';
 
 class Header extends React.Component {
   render() {
     const { nome, picture, score } = this.props;
-    // const imagem = JSON.parse(localStorage.getItem('ranking'));
     return (
       <header>
-        <img
-          src={ picture }
-          alt="Imagem do usuario"
-          data-testid="header-profile-picture"
-        />
-        <br />
-        Nome:
-        <span data-testid="header-player-name">{nome}</span>
-        <br />
-        Placar:
-        <span data-testid="header-score">{score}</span>
-        <br />
+        <section className="container-avatar">
+          <section className="avatar-imagem">
+            <img
+              className="avatar-img "
+              src={ picture }
+              alt="Imagem do usuario"
+              data-testid="header-profile-picture"
+            />
+          </section>
+          <section className="avatar-text">
+            <span>Nome:</span>
+            <span data-testid="header-player-name">{nome}</span>
+          </section>
+
+          <section className="avatar-text avatar-text-name">
+            <span>Placar:</span>
+            <span data-testid="header-score">{score}</span>
+          </section>
+        </section>
       </header>
     );
   }
