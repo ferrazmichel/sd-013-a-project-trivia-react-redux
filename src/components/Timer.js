@@ -23,10 +23,9 @@ class Timer extends Component {
     this.startTimer();
   }
 
-  componentDidUpdate(qlqr, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { time } = this.state;
-    const { handleButton } = this.props;
-    console.log(prevState.time);
+    const { handleButton, button } = this.props;
 
     if (time === 0 && prevState.time === 1) {
       handleButton();
@@ -34,13 +33,21 @@ class Timer extends Component {
     }
 
     if (time === TIME && prevState.time === 0) {
-      handleButton();
+      // handleButton();
+      this.startTimer();
+    }
+
+    if (!prevProps.button && button) {
+      this.clearTimer();
+    }
+
+    if(prevProps.button && !button) {
       this.startTimer();
     }
   }
 
   startTimer() {
-    const seg = 1000;
+    const seg = 100;
     this.interval = setInterval(() => {
       this.setState((prevState) => ({
         time: prevState.time - 1,
@@ -53,28 +60,27 @@ class Timer extends Component {
   }
 
   resetTime() {
-    const { nextQuestion } = this.props;
+    const { nextQuestion, handleButton } = this.props;
 
+    handleButton();
     this.setState(INITIAL_TIME);
     nextQuestion();
   }
 
   render() {
     const { time } = this.state;
-    const { answerButton } = this.props;
+    const { button } = this.props;
     return (
       <div>
         { time }
-        {(time === 0 || answerButton === true) && (
-          <Button resetTime={ this.resetTime } />
-        )}
+        {(button) && <Button resetTime={ this.resetTime } />}
       </div>
     );
   }
 }
 
 Timer.propTypes = {
-  answerButton: PropTypes.bool.isRequired,
+  button: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   handleButton: PropTypes.func.isRequired,
 };

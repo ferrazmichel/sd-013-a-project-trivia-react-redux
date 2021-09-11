@@ -16,7 +16,7 @@ class Play extends Component {
       questions: '',
       questionIndex: 0,
       button: false,
-      answerButton: false,
+      // answerButton: false,
       answers: [],
     };
     this.handleQuestions = this.handleQuestions.bind(this);
@@ -64,7 +64,7 @@ class Play extends Component {
 
   // ao clicar na questão Às vezes reembaralha as questões, essa função resolve o bug
   preventSortAnswers(prevState) {
-    const { questions, questionIndex, button } = this.state;
+    const { questions, questionIndex } = this.state;
     // primeira pergunta
     if (!prevState.questions && questions) {
       this.setState({
@@ -78,18 +78,19 @@ class Play extends Component {
       });
     }
     // tempo acabou ou respondeu desativa os butões
-    if (!prevState.button && button) {
-      const disableButtons = document.querySelectorAll('.answer-style');
-      disableButtons.forEach((btn) => {
-        btn.disabled = button;
-      });
-    }
+    // if (!prevState.button && button) {
+    //   const disableButtons = document.querySelectorAll('.answer-style');
+    //   disableButtons.forEach((btn) => {
+    //     btn.disabled = button;
+    //   });
+    // }
   }
 
   handleAnswers(results) {
     const answers = [...results.incorrect_answers, results.correct_answer];
     const HALF = 0.5;
     const { button } = this.state;
+    console.log(button, answers);
     answers.sort(() => Math.random() - HALF);
     // https://javascript.info/array-methods#shuffle-an-array
     return (answers.map((answer, index) => (
@@ -147,7 +148,7 @@ class Play extends Component {
 
   handleClick(e) {
     this.handleButtonStyle();
-    this.setState({ answerButton: true });
+    this.setState({ button: true });
     if (e.target.name === CORRECT_ANSWER) {
       const {
         player: { name, gravatarEmail, score, assertions },
@@ -163,7 +164,7 @@ class Play extends Component {
   }
 
   render() {
-    const { questions, questionIndex, answerButton, answers } = this.state;
+    const { questions, questionIndex, button } = this.state;
     if (!questions) {
       return (
         <div className="play-main">
@@ -187,13 +188,13 @@ class Play extends Component {
             </section>
             <div className="play-question-answers">
               <div className="playquestion-answers-options">
-                {/* { this.handleAnswers(results[questionIndex]) } */}
-                { answers }
+                { this.handleAnswers(results[questionIndex]) }
+                {/* { answers } */}
               </div>
               <Timer
                 nextQuestion={ this.nextQuestion }
                 handleButton={ this.handleButton }
-                answerButton={ answerButton }
+                button={ button }
               />
             </div>
           </div>
