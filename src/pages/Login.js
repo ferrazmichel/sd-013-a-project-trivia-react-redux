@@ -124,14 +124,15 @@ class Login extends Component {
     return (
       <form className="formLogin">
         <InputLogin
-          placeHolder="Name/Username"
+          placeHolder=" Name/Username"
           dataTestId="input-player-name"
           onChange={ this.handleChange }
+          maxlength="24"
           name="name"
           value={ name }
         />
         <InputLogin
-          placeHolder="E-mail"
+          placeHolder=" E-mail"
           dataTestId="input-gravatar-email"
           onChange={ this.handleChange }
           name="email"
@@ -167,12 +168,14 @@ class Login extends Component {
       redirectToRankingPage } = this.state;
 
     return (
-      <div className="loginDiv">
-        <h1 className="loginTitle">Trivia Game</h1>
-        { this.renderForm() }
-        { redirectToGamePage && <Redirect to="/gamepage" /> }
-        { redirectToSettings && <Redirect to="/settings" /> }
-        { redirectToRankingPage && <Redirect to="/ranking" />}
+      <div className="loginBackground">
+        <div className="loginDiv">
+          <h1 className="loginTitle">Trivia Game</h1>
+          { this.renderForm() }
+          { redirectToGamePage && <Redirect to="/gamepage" /> }
+          { redirectToSettings && <Redirect to="/settings" /> }
+          { redirectToRankingPage && <Redirect to="/ranking" />}
+        </div>
       </div>
     );
   }

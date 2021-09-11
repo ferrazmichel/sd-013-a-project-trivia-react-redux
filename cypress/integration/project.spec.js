@@ -176,7 +176,7 @@ describe('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escol
   });
 });
 
-describe.skip('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta, a correta deve ficar verde e as incorretas, vermelhas', () => {
+describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta, a correta deve ficar verde e as incorretas, vermelhas', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -681,7 +681,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe.only('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
   it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

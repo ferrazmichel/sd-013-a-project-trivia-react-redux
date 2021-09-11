@@ -49,9 +49,12 @@ class Header extends Component {
               { name }
             </h2>
           </section>
-          <h3 data-testid="header-score" className="header-score">
-            { thisScore }
-          </h3>
+          <div className="header-points">
+            <h3>Pontos:</h3>
+            <h3 data-testid="header-score" className="header-score">
+              { thisScore }
+            </h3>
+          </div>
         </header>
       </div>
     );

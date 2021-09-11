@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 class InputLogin extends Component {
   render() {
-    const { labelValue, dataTestId, onChange, name, value, placeHolder } = this.props;
+    const { labelValue, maxlength,
+      dataTestId, onChange, name, value, placeHolder } = this.props;
 
     return (
       <label htmlFor={ dataTestId }>
         { labelValue }
         <input
+          maxLength={ maxlength }
           placeHolder={ placeHolder }
           type="text"
           data-testid={ dataTestId }
@@ -29,6 +31,7 @@ InputLogin.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   placeHolder: PropTypes.string.isRequired,
+  maxlength: PropTypes.number.isRequired,
 };
 
 export default InputLogin;

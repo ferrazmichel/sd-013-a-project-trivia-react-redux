@@ -46,8 +46,14 @@ class Configurations extends Component {
   }
 
   getDifficultiesOptions() {
-    return ['easy', 'medium', 'hard'].map((difficultyOption, index) => (
-      <option key={ index } value={ difficultyOption }>{ difficultyOption }</option>));
+    return [{ Fácil: 'easy' }, { Médio: 'medium' }, { Difícil: 'hard' }]
+      .map((difficultyOption, index) => (
+        <option
+          key={ index }
+          value={ Object.values(difficultyOption) }
+        >
+          { Object.keys(difficultyOption) }
+        </option>));
   }
 
   getTypeOptions() {

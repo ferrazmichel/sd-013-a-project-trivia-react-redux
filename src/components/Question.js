@@ -96,21 +96,21 @@ class Question extends Component {
 
     return (
       <div className="question-container">
-        <div>
-          <h2
+        <div className="questionTitles">
+          <h3
+            className="question-category"
             data-testid="question-category"
           >
             { question.category }
-          </h2>
-          <h3
+          </h3>
+          <h2
+            className="question-text"
             data-testid="question-text"
           >
             { question.question }
-          </h3>
+          </h2>
         </div>
-        <div className="timer-container">
-          <h3 className="timer">{ timerValue }</h3>
-        </div>
+        <h3 className="timer">{ timerValue }</h3>
         <div className="options-container">
           {options.map((option) => {
             const correct = option === correctAnswer;
