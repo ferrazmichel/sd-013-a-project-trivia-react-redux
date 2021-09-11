@@ -9,6 +9,7 @@ export const GET_QUESTIONS_SUCCESS = 'GET_QUESTIONS_SUCCESS';
 export const GET_QUESTIONS_ERROR = 'GET_QUESTIONS_ERROR';
 export const ASSERT = 'ASSERT';
 export const SAVE_SCORE = 'SAVE_SCORE';
+export const RESET_SCORE = 'RESET_SCORE';
 
 export const addUser = (payload) => ({
   type: ADD_USER,
@@ -21,17 +22,12 @@ export const getQuestionSuccess = ((payload) => ({
   payload,
 }));
 
-export const getQuestionError = ((error) => ({
-  type: GET_QUESTIONS_ERROR,
-  error,
-}));
-
+export const resetScore = () => ({ type: RESET_SCORE });
 export const assertsAction = () => ({ type: ASSERT });
-
+export const getQuestionError = ((payload) => ({ type: GET_QUESTIONS_ERROR, payload }));
 export const saveScore = (payload) => ({ type: SAVE_SCORE, payload });
-
-export const getTokenSuccess = (token) => ({ type: GET_TOKEN_SUCCESS, payload: token });
-export const getTokenError = (error) => ({ type: GET_TOKEN_ERROR, payload: error });
+export const getTokenSuccess = (payload) => ({ type: GET_TOKEN_SUCCESS, payload });
+export const getTokenError = (payload) => ({ type: GET_TOKEN_ERROR, payload });
 
 export const fetchToken = () => (async (dispatch) => {
   try {

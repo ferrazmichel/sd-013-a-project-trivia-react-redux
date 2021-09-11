@@ -1,5 +1,5 @@
 import { GET_QUESTIONS_SUCCESS, GET_QUESTIONS_ERROR,
-  ASSERT, SAVE_SCORE } from '../actions';
+  ASSERT, SAVE_SCORE, RESET_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   questions: [],
@@ -29,6 +29,12 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: action.payload,
+    };
+  case RESET_SCORE:
+    return {
+      ...state,
+      score: 0,
+      asserts: 0,
     };
   default:
     return state;

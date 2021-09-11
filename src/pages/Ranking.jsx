@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 
+const numberRanking = 10;
+
 class Ranking extends Component {
   constructor() {
     super();
@@ -9,54 +11,52 @@ class Ranking extends Component {
       score: [],
     };
 
-    this.createRanking = this.createRanking.bind(this);
+    this.loadRanking = this.loadRanking.bind(this);
   }
 
   componentDidMount() {
-    this.createRanking();
+    this.loadRanking();
   }
 
-  createRanking() {
-    const { name, score, gravatarEmail, assertions } = JSON
-      .parse(localStorage.getItem('state')).player;
-    const newPlayer = { name, score, gravatarEmail, assertions };
-    if (localStorage.ranking) {
-      const ranking = JSON.parse(localStorage.ranking);
-      const rankingUppdate = [...ranking, newPlayer];
-      localStorage.ranking = JSON.stringify(rankingUppdate);
-      rankingUppdate.sort((a, b) => b.score - a.score);
-      this.setState({ score: rankingUppdate });
-    } else {
-      const ranking = [newPlayer];
-      localStorage.ranking = JSON.stringify(ranking);
-      this.setState({ score: ranking });
-    }
+  loadRanking() {
+    const ranking = JSON.parse(localStorage.ranking);
+    const rankingUppdate = [...ranking].slice(0, numberRanking);
+    this.setState({ score: rankingUppdate });
   }
 
   render() {
     const { score } = this.state;
 
     return (
-      <div>
-        <p data-testid="ranking-title">Ranking</p>
+      <section className="container-fluid text-center">
+        <div className="row col-md-5 shadow mx-auto p-5 bg-white mt-5">
 
-        {
-          score.map((jogador, index) => (
-            <section key={ jogador.name }>
-              <img src={ `https://www.gravatar.com/avatar/${md5(jogador.gravatarEmail).toString()}` } alt={ jogador.name } />
-              <span data-testid={ `player-name-${index}` }>{`${jogador.name}`}</span>
-              <span data-testid={ `player-score-${index}` }>{jogador.score}</span>
-            </section>))
-        }
-        <Link to="/">
-          <button
-            data-testid="btn-go-home"
-            type="button"
-          >
-            Início
-          </button>
-        </Link>
-      </div>
+          <h1>Ranking</h1>
+          {
+            score.map((jogador, index) => (
+              <section key={ index }>
+                <h5>{ index + 1}</h5>
+                <img
+                  src={ `https://www.gravatar.com/avatar/${md5(jogador.gravatarEmail).toString()}` }
+                  alt={ jogador.name }
+                  className="rounded-circle border border-white"
+                />
+                <span>{`${jogador.name}`}</span>
+                <span>{jogador.score}</span>
+              </section>))
+          }
+          <Link to="/">
+            <div className="row mt-1">
+              <button
+                className="btn btn-primary btn-lg btn-block"
+                type="button"
+              >
+                Início
+              </button>
+            </div>
+          </Link>
+        </div>
+      </section>
     );
   }
 }

@@ -8,8 +8,8 @@ class FeedBackMessenger extends Component {
     const threeRightAnswer = 3;
     return (
       rightQuestions >= threeRightAnswer
-        ? <div data-testid="feedback-text">Mandou bem!</div>
-        : <div data-testid="feedback-text">Podia ser melhor...</div>
+        ? <h2 className="text-center">Mandou bem!</h2>
+        : <h2 className="text-center">Podia ser melhor...</h2>
     );
   }
 }

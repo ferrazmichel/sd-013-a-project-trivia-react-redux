@@ -14,20 +14,14 @@ class FeedbackScore extends Component {
     if (rightQuestions === 0) {
       return (
         <div>
-          <span>Acertos: </span>
-          <span data-testid="feedback-total-question">
-            { rightQuestions }
-          </span>
-          <p> Não acertou nenhuma pergunta </p>
+          <h3> Não acertou nenhuma pergunta! </h3>
         </div>
       );
     }
     return (
       <div>
-        <span>Acertos: </span>
-        <span data-testid="feedback-total-question">
-          { rightQuestions }
-        </span>
+        <h5>Acertos</h5>
+        <h1>{ rightQuestions }</h1>
       </div>
     );
   }
@@ -35,28 +29,34 @@ class FeedbackScore extends Component {
   render() {
     const { finalScore } = this.props;
     return (
-      <section>
-        <div data-testid="feedback-total-score">
-          { finalScore }
+      <section className="text-center">
+        <div>
+          <h4>PONTUAÇÃO </h4>
+          <h1>{ finalScore}</h1>
         </div>
         <div>
           {this.numberAsserts()}
         </div>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-          >
-            Jogar novamente
-          </button>
+        <hr className="mb-4" />
+        <Link to="/" className="text-decoration-none">
+          <div className="row mt-1">
+            <button
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              Jogar novamente
+            </button>
+          </div>
         </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ver Ranking
-          </button>
+        <Link to="/ranking" className="text-decoration-none">
+          <div className="row mt-1">
+            <button
+              className="btn btn-primary btn-lg btn-block"
+              type="button"
+            >
+              Ver Ranking
+            </button>
+          </div>
         </Link>
       </section>
     );

@@ -5,7 +5,7 @@ import { Login, Game, Settings, Feedback, Ranking } from './pages';
 
 export default function App() {
   return (
-    <div className="App">
+    <div className="bg-success">
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route exact path="/gameScreen" component={ Game } />

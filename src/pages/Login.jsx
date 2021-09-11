@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { Input } from '../components';
-import { fetchToken, addUser } from '../redux/actions';
+import { Input, Dropdown } from '../components';
+import { fetchToken, addUser, resetScore } from '../redux/actions';
 import logo from '../trivia.png';
 
 class Login extends Component {
@@ -20,7 +20,7 @@ class Login extends Component {
 
   async playSubmit(e) {
     e.preventDefault();
-    const { getToken, history, handleSubmit } = this.props;
+    const { getToken, history, handleSubmit, resetPlayer } = this.props;
     await getToken();
     const { valueToken } = this.props; // I had to call props here, because the async function
     localStorage.setItem('token', JSON.stringify(valueToken.token));
@@ -33,6 +33,7 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify({ player }));
 
     handleSubmit({ name, email });
+    resetPlayer();
     history.push('/gameScreen');
   }
 
@@ -55,47 +56,58 @@ class Login extends Component {
   render() {
     const { name, email, enable } = this.state;
     const { history } = this.props;
-
     return (
-      <section>
-        <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
+      <section className="container-fluid">
+        <header className="col-md-7 mx-auto p-4">
+          <img src={ logo } className="img-fluid" alt="logo" />
         </header>
-        <form action="submit">
-          <Input
-            label="Nome"
-            type="text"
-            onChange={ this.handleChange }
-            value={ name }
-            name="name"
-            dataTestid="input-player-name"
-            id="user-name"
-          />
-          <Input
-            label="Email"
-            type="email"
-            onChange={ this.handleChange }
-            value={ email }
-            name="email"
-            dataTestid="input-gravatar-email"
-            id="user-email"
-          />
-          <button
-            disabled={ !enable }
-            type="submit"
-            data-testid="btn-play"
-            onClick={ this.playSubmit }
-          >
-            Jogar
-          </button>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ () => history.push('/configScreen') }
-          >
-            Configurações
-          </button>
-        </form>
+        <div className="row col-md-5 shadow mx-auto p-5 bg-white">
+          <div className="d-flex justify-content-end">
+            <Dropdown />
+          </div>
+          <form action="submit">
+            <Input
+              label="Nome"
+              type="text"
+              onChange={ this.handleChange }
+              value={ name }
+              name="name"
+              id="user-name"
+              placeholder="Silvinho PoucasBalas"
+            />
+            <Input
+              label="Email"
+              type="email"
+              onChange={ this.handleChange }
+              value={ email }
+              name="email"
+              id="user-email"
+              placeholder="fulano@email.com"
+            />
+            <hr className="mb-4" />
+            <div className="row">
+              <button
+                disabled={ !enable }
+                type="submit"
+                onClick={ this.playSubmit }
+                className="btn btn-primary btn-lg btn-block"
+              >
+                Jogar
+              </button>
+            </div>
+            <div className="row mt-1">
+              <button
+                className="btn btn-primary btn-lg btn-block"
+                type="submit"
+                onClick={ () => history.push('/configScreen') }
+              >
+                Configurações
+              </button>
+            </div>
+          </form>
+        </div>
+        <br />
+        <br />
       </section>
     );
   }
@@ -104,6 +116,7 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(fetchToken()),
   handleSubmit: (data) => dispatch(addUser(data)),
+  resetPlayer: () => dispatch(resetScore()),
 });
 
 const mapStateToProps = (state) => ({
@@ -111,6 +124,7 @@ const mapStateToProps = (state) => ({
 });
 
 Login.propTypes = {
+  resetPlayer: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   getToken: PropTypes.func.isRequired,
   valueToken: PropTypes.shape({

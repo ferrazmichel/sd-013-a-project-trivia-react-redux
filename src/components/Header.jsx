@@ -6,19 +6,39 @@ class Header extends Component {
   render() {
     const { gravatarEmail, name, scoreStore } = this.props;
     return (
-      <header className="App-header">
-        <img
-          src={ gravatarEmail }
-          data-testid="header-profile-picture"
-          alt="avatar-user"
-        />
-        <p data-testid="header-player-name">
-          { `${name}` }
-          {' '}
-        </p>
-        <p data-testid="header-score">{scoreStore}</p>
-      </header>
+      <header className="row text-white p-3 mt-2 col-md-8 mx-auto bg-danger">
+        <div className="container">
+          <div
+            className="d-flex flex-wrap align-items-center
+          justify-content-center justify-content-lg-start"
+          >
+            <img
+              className="rounded-circle border border-white d-flex
+              align-items-center mb-2 mb-lg-0"
+              src={ gravatarEmail }
+              alt="avatar-user"
+              width="70"
+              height="70"
+            />
+            <div
+              className="nav col-12 col-lg-auto me-lg-auto
+            mb-2 justify-content-center mb-md-0"
+            >
 
+              <h4 className="px-2">
+                { name }
+              </h4>
+
+            </div>
+            <div className="row text-end">
+              <h3 className="align-items-center">
+                { `Pontuação: ${scoreStore}`}
+              </h3>
+            </div>
+
+          </div>
+        </div>
+      </header>
     );
   }
 }

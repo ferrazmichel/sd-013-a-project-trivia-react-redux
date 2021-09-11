@@ -14,12 +14,29 @@ class Game extends Component {
 
     this.changeIndex = this.changeIndex.bind(this);
     this.optionSelect = this.optionSelect.bind(this);
+    this.createRanking = this.createRanking.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
   }
 
   async componentDidMount() {
     const { getQuestions, token } = this.props;
     getQuestions(token);
+  }
+
+  createRanking() {
+    const { name, score, gravatarEmail, assertions } = JSON
+      .parse(localStorage.getItem('state')).player;
+    const newPlayer = { name, score, gravatarEmail, assertions };
+    if (localStorage.ranking) {
+      const ranking = JSON.parse(localStorage.ranking);
+      const rankingUppdate = [...ranking, newPlayer];
+      localStorage.ranking = JSON.stringify(rankingUppdate);
+      rankingUppdate.sort((a, b) => b.score - a.score);
+      localStorage.ranking = JSON.stringify(rankingUppdate);
+    } else {
+      const ranking = [newPlayer];
+      localStorage.ranking = JSON.stringify(ranking);
+    }
   }
 
   changeIndex() {
@@ -33,6 +50,7 @@ class Game extends Component {
         answer.disabled = false;
       });
     } else {
+      this.createRanking();
       history.push('/feedBack');
     }
   }
