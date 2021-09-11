@@ -1,5 +1,7 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 .App {
@@ -60,44 +62,44 @@ body {
   }
 }
 
-#player-name {
-  margin-top: 100px;
+.login-forms {
   margin-right: 30px;
+  margin-top: 100px;
 }
 
-#settings-icon {
+.settings-icon {
   color: #a9bcd0;
 }
 
-#settings-icon:hover {
+.settings-icon:hover {
   color: #373f51;
 }
 
-#login-submit {
+.login-submit {
+  margin-bottom: 4px;
   margin-left: 10px;
-  margin-bottom: 4px;
 }
 
-#settings-button {
+.settings-button {
+  margin-bottom: 4px;
   margin-left: 3px;
-  margin-bottom: 4px;
 }
 
-#reset-button {
+.reset-button {
   margin-left: 8px;
 }
 
 .question-category {
-  margin-top: 10px;
   font-size: 30px;
+  margin-top: 10px;
 }
 
 .question-text {
-  margin-bottom: 20px;
   font-size: 20px;
+  margin-bottom: 20px;
 }
 
 .current-count {
-  margin-top: 30px;
   font-size: 30px;
+  margin-top: 30px;
 }

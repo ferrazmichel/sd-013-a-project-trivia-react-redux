@@ -32,7 +32,7 @@ export default class Reset extends React.Component {
       <Button
         category="button"
         id="reset-button"
-        className="btn btn-light"
+        className="btn btn-light reset-button"
         testID="btn-play-again"
         text={ <BsArrowRepeat /> }
         onClick={ this.handleClick }

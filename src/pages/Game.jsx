@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Question from '../components/Question';
-import Home from '../components/Home';
 import './Game.css';
 
 class Game extends React.Component {
@@ -20,15 +19,11 @@ class Game extends React.Component {
     if (redirect) return <Redirect to="/feedback" />;
 
     return (
-      <div>
+      <div className="game-page">
         <Header
           testID="header-score"
         />
-        <span>
-          <h2>Home Page</h2>
-          <Home />
-        </span>
-        <main>
+        <main className="game-container">
           <Question />
         </main>
       </div>

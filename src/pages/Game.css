@@ -1,4 +1,35 @@
-body {
-  background-color: #011627 !important;
-  color: #FDFFFC !important;
+.game-page {
+  background-color: #011627;
+  color: #fdfffc;
+  display: grid;
+  grid: 1fr 4fr / 1fr;
+  height: 100vh;
+  overflow: auto;
+  width: 100vw;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header > img {
+  height: 100%;
+}
+
+.game-container {
+  display: grid;
+  grid: 1fr 1fr 2fr 1fr 1fr / 1fr;
+  place-items: center;
+}
+
+.answers-container {
+  display: grid;
+  gap: 25px;
+  grid: 1fr 1fr / 1fr 1fr;
+  height: 100%;
+  padding: 10px;
+  place-items: center;
+  width: 100%;
 }

@@ -34,7 +34,7 @@ class Question extends React.Component {
     const answers = [question.correct_answer, ...question.incorrect_answers];
     answers.sort();
     return (
-      <div>
+      <>
         <p
           data-testid="question-category"
           className="question-category"
@@ -47,15 +47,15 @@ class Question extends React.Component {
         >
           { decodeHtml(question.question) }
         </p>
-        <div>
-          <Answers
-            nextQuestion={ this.nextQuestion }
-            answers={ answers }
-            correctAnswer={ question.correct_answer }
-            difficulty={ question.difficulty }
-          />
-        </div>
-      </div>
+
+        <Answers
+          nextQuestion={ this.nextQuestion }
+          answers={ answers }
+          correctAnswer={ question.correct_answer }
+          difficulty={ question.difficulty }
+        />
+
+      </>
     );
   }
 
@@ -67,9 +67,7 @@ class Question extends React.Component {
     if (id === questionsLimit) return <Redirect to="/feedback" />;
     const questionMap = questions.map((question) => this.renderQuestions(question));
     return (
-      <div>
-        {questionMap[id]}
-      </div>
+      questionMap[id]
     );
   }
 }

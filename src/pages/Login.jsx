@@ -75,7 +75,7 @@ class Login extends React.Component {
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
 
-        <form>
+        <form className="login-forms">
           <Input
             type="text"
             name="name"
@@ -98,7 +98,7 @@ class Login extends React.Component {
           />
           <Button
             id="login-submit"
-            className="btn btn-success"
+            className="btn btn-success login-submit"
             testID="btn-play"
             text={ <BsFillPlayFill /> }
             disabled={ disable }
@@ -106,9 +106,8 @@ class Login extends React.Component {
           />
           <Link to="/settings" data-testid="btn-settings" id="settings-button">
             <Button
-              className="btn btn-secondary"
-              id="settings-button"
-              text={ <IoIosSettings id="settings-icon" /> }
+              className="btn btn-secondary settings-button"
+              text={ <IoIosSettings className="settings-icon" /> }
             />
           </Link>
         </form>

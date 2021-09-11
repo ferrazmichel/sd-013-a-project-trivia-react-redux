@@ -162,7 +162,7 @@ class Answers extends React.Component {
       <button
         type="button"
         data-testid="btn-next"
-        className="btn btn-light"
+        className="btn btn-light next-button"
         onClick={ () => this.nextQuestionOnClick() }
       >
         Próxima
@@ -174,29 +174,34 @@ class Answers extends React.Component {
     const { answers, correctAnswer } = this.props;
     const { correctColor, wrongColor, disable, currentCount, hide } = this.state;
     return (
-      <div>
-        {answers.map((answer, index) => (
-          <button
-            type="button"
-            disabled={ disable }
-            key={ answer }
-            value={ answer }
-            data-testid={
-              correctAnswer === answers[index]
-                ? 'correct-answer' : `wrong-answer-${index}`
-            }
-            onClick={ (e) => this.handleClick(e, correctAnswer, currentCount) }
-            id="answer-button"
-            className={ correctAnswer === answers[index] ? correctColor : wrongColor }
-            difficulty={ answer.difficulty }
-          >
-            {decodeHtml(answer)}
-          </button>))}
+      <>
+        <div className="answers-container">
+          {answers.map((answer, index) => (
+            <button
+              type="button"
+              disabled={ disable }
+              key={ answer }
+              value={ answer }
+              data-testid={
+                correctAnswer === answers[index]
+                  ? 'correct-answer' : `wrong-answer-${index}`
+              }
+              onClick={ (e) => this.handleClick(e, correctAnswer, currentCount) }
+              className={
+                `
+              ${correctAnswer === answers[index]
+              ? correctColor : wrongColor} answer-button`
+              }
+              difficulty={ answer.difficulty }
+            >
+              {decodeHtml(answer)}
+            </button>))}
+        </div>
+        { hide ? this.renderButton() : null }
         <p className="current-count">
           { currentCount }
         </p>
-        { hide ? this.renderButton() : null }
-      </div>
+      </>
     );
   }
 }
