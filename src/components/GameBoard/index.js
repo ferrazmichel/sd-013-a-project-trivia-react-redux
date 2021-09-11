@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import style from './GameBoard.module.css';
+import { decode, resetButtons, shuffleOptions } from './helpers';
 
 class GameBoard extends React.Component {
   constructor(props) {
@@ -46,19 +47,10 @@ class GameBoard extends React.Component {
   resetCronometer() {
     this.setState({
       seconds: 'ACABOU O TEMPO!',
+    }, () => {
+      resetButtons('options', '.btn-next');
+      clearInterval(this.intervalID);
     });
-    const btns = document.getElementsByName('options');
-    btns.forEach((btn) => {
-      btn.disabled = true;
-    });
-    document.querySelector('.btn-next').classList.remove('invisible');
-    clearInterval(this.intervalID);
-  }
-
-  decode(str) {
-    const textArea = document.createElement('textarea');
-    textArea.innerHTML = str;
-    return textArea.value;
   }
 
   shuffleOptions() {
@@ -68,35 +60,30 @@ class GameBoard extends React.Component {
       incorrect_answers: incorrectOptions,
     } = question;
 
-    this.setState({ seconds: 30 });
-
-    const optionsArray = [...incorrectOptions, correctOption];
-    for (let i = optionsArray.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
-    }
-    const allOptions = optionsArray.map((opt) => (
-      <button
-        key={ opt }
-        type="button"
-        // className={ opt === correctOption ? 'dev-correct' : null }
-        data-testid={
-          opt === correctOption
-            ? 'correct-answer'
-            : `wrong-answer-${incorrectOptions.indexOf(opt)}`
-        }
-        name="options"
-        value={ opt }
-        onClick={ ({ target }) => {
-          const { seconds } = this.state;
-          clearInterval(this.intervalID);
-          onSelect(question, target, seconds);
-        } }
-      >
-        {this.decode(opt)}
-      </button>
-    ));
-    this.setState({ options: allOptions });
+    this.setState({ seconds: 30 }, () => {
+      const optionsArray = shuffleOptions([...incorrectOptions, correctOption]);
+      const allOptions = optionsArray.map((opt) => (
+        <button
+          key={ opt }
+          type="button"
+          data-testid={
+            opt === correctOption
+              ? 'correct-answer'
+              : `wrong-answer-${incorrectOptions.indexOf(opt)}`
+          }
+          name="options"
+          value={ opt }
+          onClick={ ({ target }) => {
+            const { seconds } = this.state;
+            clearInterval(this.intervalID);
+            onSelect(question, target, seconds);
+          } }
+        >
+          {decode(opt)}
+        </button>
+      ));
+      this.setState({ options: allOptions });
+    });
   }
 
   render() {
@@ -104,12 +91,12 @@ class GameBoard extends React.Component {
     const { seconds, options } = this.state;
     return (
       <section className={ style.section }>
-        <article className={ style.time }>{seconds}</article>
         <article className={ style.question }>
           <h3 data-testid="question-category">{question.category}</h3>
-          <h4 data-testid="question-text">{this.decode(question.question)}</h4>
+          <h4 data-testid="question-text">{decode(question.question)}</h4>
         </article>
         <article className={ style.options }>{options}</article>
+        <article className={ style.time }>{seconds}</article>
         <article className={ style.next }>
           <button
             type="button"
@@ -117,7 +104,7 @@ class GameBoard extends React.Component {
             className="btn-next invisible"
             onClick={ onNext }
           >
-            Próxima
+            Próxima Pergunta
           </button>
         </article>
       </section>

@@ -2,8 +2,7 @@
   background: var(--tertiary);
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr;
+  grid: 1fr / 1fr 1fr;
   place-items: center;
 }
 
@@ -17,15 +16,27 @@
 
 .profile {
   border-bottom: 5px solid var(--primary);
+  color: white;
   display: grid;
+  grid: 1fr / repeat(2, 1fr) 2fr;
   height: 100%;
   place-items: center;
   width: 100%;
 }
 
-.sectionScore {
-  border: 5px double var(--primary);
+.profile > img {
+  height: 100%;
+}
 
+.profile > span {
+  text-shadow: 0 2px 5px rgba(250, 250, 250, 0.45);
+}
+
+.sectionScore {
+  border: 15px double var(--primary);
+  display: grid;
+  place-items: center;
+  text-align: center;
 }
 
 .score {
@@ -33,9 +44,10 @@
   left: 0;
   text-align: center;
   top: 0;
-  width: 50%;
+  width: 100%;
 }
 
 .points {
   color: var(--primary);
+  font-size: 2rem;
 }

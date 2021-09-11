@@ -22,7 +22,7 @@ class Header extends React.Component {
         </section>
         <section className={ style.sectionScore }>
           <span className={ style.score }>
-            Score
+            Pontuação
           </span>
           <span className={ style.points } data-testid="header-score">{ score }</span>
         </section>
