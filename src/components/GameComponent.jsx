@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { decode } from 'html-entities';
 import PropTypes from 'prop-types';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 const ONE_SECOND = 1000;
 
@@ -10,13 +11,14 @@ class GameComponent extends Component {
     this.state = {
       answersArray: [],
       visible: false,
-      seconds: 30,
+      seconds: 5,
     };
 
     this.buttonsAnswers = this.buttonsAnswers.bind(this);
     this.timer = this.timer.bind(this);
     this.clearSeconds = this.clearSeconds.bind(this);
     this.buttonVisibility = this.buttonVisibility.bind(this);
+    this.UrgeWithPleasureComponent = this.UrgeWithPleasureComponent.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,23 @@ class GameComponent extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
+  }
+
+  UrgeWithPleasureComponent() {
+    const { seconds } = this.state;
+    return (
+      <CountdownCircleTimer
+        isPlaying
+        duration={ 30 }
+        colors={ [
+          ['#004777', 0.33],
+          ['#F7B801', 0.33],
+          ['#A30000', 0.33],
+        ] }
+      >
+        { seconds }
+      </CountdownCircleTimer>
+    );
   }
 
   timer() {
@@ -95,15 +114,18 @@ class GameComponent extends Component {
     const { answersArray, visible, seconds } = this.state;
 
     return (
-      <>
-        <div>
-          <h2 data-testid="question-category">
+      <div className="container">
+        <div className="row row-cols-auto">
+          <h1>
+            {seconds}
+          </h1>
+          { this.UrgeWithPleasureComponent() }
+          <h2>
             { `Category: ${category}` }
           </h2>
-          <h4 data-testid="question-text">
+          <h4>
             { decode(question) }
           </h4>
-          { seconds }
         </div>
         <div>
           { answersArray }
@@ -122,7 +144,7 @@ class GameComponent extends Component {
             NEXT
           </button>
         </div>
-      </>
+      </div>
     );
   }
 }
