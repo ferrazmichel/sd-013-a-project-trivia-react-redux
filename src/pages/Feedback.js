@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { getGravatar } from '../services/Api';
 import { resetScore } from '../redux/actions';
+import '../Styles/Freedback.css';
 
 class Feedback extends React.Component {
   constructor() {
@@ -18,9 +18,9 @@ class Feedback extends React.Component {
     const { hits } = this.props;
     if (hits <= 2) {
       console.log(hits);
-      return <p>Podia ser melhor...</p>;
+      return <>Podia ser melhor...</>;
     }
-    return <p>Mandou bem!</p>;
+    return <>Mandou bem!</>;
   }
 
   handleClick() {
@@ -53,28 +53,47 @@ class Feedback extends React.Component {
   render() {
     const { totalScore, hits, reset } = this.props;
     return (
-      <div>
+      <div className="container-freedback">
         <Header />
-        <span data-testid="feedback-text">
-          { this.handleMenssage() }
-        </span>
-        <span data-testid="feedback-total-score">
-          { totalScore }
-        </span>
-        <span data-testid="feedback-total-question">
-          { hits }
-        </span>
-        <Link to="/" type="button" data-testid="btn-play-again" onClick={ reset }>
-          Jogar novamente
-        </Link>
-        <Link
-          to="/ranking"
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ this.handleClick }
-        >
-          Ver Ranking
-        </Link>
+        <p>
+          <span data-testid="feedback-text">
+            { this.handleMenssage() }
+          </span>
+        </p>
+
+        <p>
+          Total de Pontos:
+          <span data-testid="feedback-total-score">
+            { totalScore }
+          </span>
+        </p>
+        <p>
+          Total de acertos:
+          <span data-testid="feedback-total-question">
+            { hits }
+          </span>
+        </p>
+
+        <section>
+          <Link
+            className="freedback-bnt"
+            to="/"
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ reset }
+          >
+            Jogar novamente
+          </Link>
+          <Link
+            className="freedback-bnt"
+            to="/ranking"
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.handleClick }
+          >
+            Ver Ranking
+          </Link>
+        </section>
       </div>
     );
   }

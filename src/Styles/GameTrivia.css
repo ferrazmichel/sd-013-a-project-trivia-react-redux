@@ -1,20 +1,17 @@
 span {
   margin-left: 10px;
 }
-.conataoner-questions{
-  margin:  0 150px;
-}
 
 .questions-category{
   background: white;
-  width: 30%;
+  width: 50%;
   height: 25px;
   border-radius: 10px 10px 0 0;
 }
 
 .questions-quest{
   background: white;
-  width: 80%;
+
   height: 100px;
   border-radius: 0 10px 10px 10px;
   padding-top: 10px;
@@ -23,11 +20,11 @@ span {
 .questions-answer {
   display: flex;
   justify-content: space-between;
-  width: 63%;
-  margin:  20px 150px;
+  width: 100%;
+  margin-top: 15px;
 }
 
 .questions-answer button{
-  width: 210px;
+  width: 100%;
   height: 50px
 }

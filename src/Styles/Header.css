@@ -1,9 +1,7 @@
-header {
-  margin: 50px 150px 0 150px;
-} 
 
 .container-avatar {
-  height: 135px;
+  width: 396px;
+  height: 120px;
 }
 .avatar-img {
   width: 100%;
@@ -35,5 +33,4 @@ header {
 
 .avatar-text > span {
   font-size: 14px;
-  margin-right: 5px;;
 }

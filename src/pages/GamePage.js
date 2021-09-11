@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import { changeDisabled, fetchQuestionsThunk, setPoints } from '../redux/actions/index';
 import GameTrivia from '../components/GameTrivia';
 import '../Styles/Buttons.css';
+import '../Styles/GamePage.css';
 
 class GamePage extends React.Component {
   constructor(props) {
@@ -141,10 +142,10 @@ class GamePage extends React.Component {
     const { questions, loading } = this.props;
     if (loading === true) return <h1>Carregando as perguntas</h1>;
     return (
-      <div>
+      <div className="container-main">
         <Header />
         <GameTrivia questions={ questions[index] } handleclick={ this.handleclick } />
-        <section>
+        <section className="container-timer">
           <p>{seconds}</p>
         </section>
         <button
@@ -154,7 +155,7 @@ class GamePage extends React.Component {
             this.disableBtn();
           } }
           id="next"
-          className={ btnShouldExist ? '' : 'nextbtn' }
+          className={ btnShouldExist ? 'bnt-next-quest' : 'nextbtn' }
           data-testid="btn-next"
         >
           Próxima Pergunta
