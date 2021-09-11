@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import md5 from 'crypto-js/md5';
 import { getToken } from '../../redux/actions';
 import style from './Login.module.css';
 import logo from '../../assets/Trivia.png';
+import { generateGravatar, validateEmail } from './helpers';
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Login extends Component {
       name: '',
       email: '',
       shouldRedirect: false,
+      invalidEmail: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,20 +25,22 @@ class Login extends Component {
   async handleSubmit(event) {
     const { dispatchLogin } = this.props;
     const { name, email } = this.state;
+    const gravatar = generateGravatar(email);
+
     event.preventDefault();
-    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     await dispatchLogin(({ name, email, gravatar }));
-    this.setState({
-      shouldRedirect: true,
-    });
+    this.setState({ shouldRedirect: true });
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => (
+      (name === 'email' && validateEmail(value))
+        ? this.setState({ invalidEmail: false })
+        : this.setState({ invalidEmail: true })));
   }
 
   renderForm() {
-    const { name, email } = this.state;
+    const { name, email, invalidEmail } = this.state;
     return (
       <form className={ style.form } onSubmit={ this.handleSubmit }>
         <input
@@ -63,7 +66,7 @@ class Login extends Component {
           title="Clique aqui para jogar"
           className={ style.play }
           data-testid="btn-play"
-          disabled={ name.length < 1 || email.length < 1 }
+          disabled={ name.length < 1 || invalidEmail }
         >
           Jogar
         </button>
@@ -97,10 +100,6 @@ class Login extends Component {
     );
   }
 }
-
-// const mapStateToProps = (state) => ({
-
-// });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (userInfo) => dispatch(getToken(userInfo)),

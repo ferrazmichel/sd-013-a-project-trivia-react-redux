@@ -7,8 +7,7 @@ import { getQuestions, updateScore } from '../../redux/actions';
 import { GameBoard } from '../../components';
 import './Game.css';
 import style from './Game.module.css';
-
-const basePoints = 10;
+import { handleScore, handleSelectButtons, resetQuestions } from './helpers';
 
 class Game extends Component {
   constructor(props) {
@@ -31,36 +30,20 @@ class Game extends Component {
   handleNext() {
     const { qIndex } = this.state;
     const { questions } = this.props;
-    if (qIndex < questions.length - 1) {
-      this.setState((state) => ({ qIndex: state.qIndex + 1 }));
-      document.getElementsByName('options').forEach((opt) => {
-        opt.disabled = false;
-        opt.className = '';
-      });
-      document.querySelector('.btn-next').classList.add('invisible');
-    } else {
-      this.setState({ redirect: true });
-    }
+    return (qIndex < questions.length - 1)
+      ? this.setState((state) => ({ qIndex: state.qIndex + 1 }),
+        resetQuestions('options', '.btn-next'))
+      : this.setState({ redirect: true });
   }
 
   handleSelect(question, target, seconds) {
     const { updtScore } = this.props;
     const { correct_answer: correctOpt, difficulty } = question;
-    document.getElementsByName('options').forEach((opt) => {
-      opt.disabled = true;
-      const className = opt.value === correctOpt ? 'game-correct' : 'game-incorrect';
-      opt.classList.add(className);
-    });
-    document.querySelector('.btn-next').classList.remove('invisible');
+    handleSelectButtons(correctOpt, 'options', '.btn-next');
 
     if (target.value === correctOpt) {
-      const lsData = JSON.parse(localStorage.state);
-      const diff = ['batata', 'easy', 'medium', 'hard'];
-      const diffMultiplier = diff.indexOf(difficulty);
-      lsData.player.assertions += 1;
-      lsData.player.score += basePoints + (seconds * diffMultiplier);
-      updtScore({ score: lsData.player.score, assertions: lsData.player.assertions });
-      localStorage.state = JSON.stringify(lsData);
+      const score = handleScore(difficulty, seconds);
+      updtScore(score);
     }
   }
 
