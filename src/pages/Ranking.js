@@ -12,6 +12,7 @@ class Ranking extends Component {
 
     this.showRanking = this.showRanking.bind(this);
     this.divWon = this.divWon.bind(this);
+    this.divPersonal = this.divPersonal.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,14 @@ class Ranking extends Component {
         <span className="material-icons md-24">
           emoji_events
         </span>
+      </div>
+    );
+  }
+
+  divPersonal() {
+    return (
+      <div className="best">
+        <span className="material-icons md-24">star</span>
       </div>
     );
   }
@@ -67,9 +76,9 @@ class Ranking extends Component {
                       { player.score }
                     </h3>
                   </div>
-                  <div className="best">
-                    <span className={ player.record }>star</span>
-                  </div>
+                  {
+                    (player.record === 'recorde') && this.divPersonal()
+                  }
                   {
                     (index + 1 === 1) && this.divWon()
                   }

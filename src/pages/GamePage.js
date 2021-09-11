@@ -124,7 +124,7 @@ class GamePage extends Component {
       picture: gravatarUrl,
       name: player.name,
       score: player.score,
-      record: 'material-icons md-24',
+      record: 'recorde',
     };
     if (!ranking) {
       localStorage.setItem('ranking', JSON.stringify([finalScore]));
@@ -135,7 +135,7 @@ class GamePage extends Component {
       // Valeu Sir. Rafael Janovicci
       if (thisUser && thisUser.score <= player.score) {
         thisUser.score = player.score;
-        thisUser.record = 'material-icons md-24';
+        thisUser.record = 'recorde';
         localStorage.setItem('ranking', JSON.stringify(ranking));
       } else {
         ranking.push(finalScore);
