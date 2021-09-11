@@ -7,7 +7,6 @@ const rootReducer = combineReducers({
   reducerLogin,
   reducerQuestions,
   reducerStorage,
-
 });
 
 export default rootReducer;

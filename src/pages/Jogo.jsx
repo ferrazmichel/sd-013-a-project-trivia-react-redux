@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 import { BUTTON_NEXT, INLINE_BLOCK } from './JogoConstante';
+import { setLocalStorage } from '../Actions/index';
 import './Jogo.css';
 
 class Jogo extends React.Component {
@@ -34,7 +35,7 @@ class Jogo extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const buttonNext = document.querySelector(BUTTON_NEXT);
-    const NUMBER_OF_QUESTIONS = 4;
+    const NUMBER_OF_QUESTIONS = 5;
 
     if (nextState.i === NUMBER_OF_QUESTIONS) {
       buttonNext.parentNode.removeChild(buttonNext);
@@ -62,19 +63,23 @@ class Jogo extends React.Component {
   }
 
   scoreByLevelDifficulty(nivel) {
-    if (nivel === 'hard') return 3;
-    if (nivel === 'medium') return 2;
-    if (nivel === 'easy') return 1;
+    const NUMBH = 3;
+    const NUMBM = 2;
+    const NUMBE = 1;
+    if (nivel === 'hard') return NUMBH;
+    if (nivel === 'medium') return NUMBM;
+    if (nivel === 'easy') return NUMBE;
   }
 
   numberOfCorrectQuestions() {
+    const NUMB = 10;
     const { questions } = this.props;
     const { assertions, score, timer, i } = this.state;
     const nivel = questions[i].difficulty;
     const dificuldade = this.scoreByLevelDifficulty(nivel);
     this.setState({
       assertions: assertions + 1,
-      score: score + (1 * (10 + (timer * dificuldade))),
+      score: score + (1 * (NUMB + (timer * dificuldade))),
     });
   }
 
@@ -111,6 +116,7 @@ class Jogo extends React.Component {
   }
 
   nextQuestion() {
+    const { dispatchSetLocalStorage } = this.props;
     const buttonNext = document.querySelector(BUTTON_NEXT);
     buttonNext.style.display = 'none';
     const correctButton = document.querySelector('.certo');
@@ -130,6 +136,7 @@ class Jogo extends React.Component {
       timer: 30,
       button: false,
     }));
+    dispatchSetLocalStorage(this.state);
   }
 
   render() {
@@ -199,8 +206,12 @@ const mapStateToProps = (state) => ({
   questions: state.reducerQuestions.questions,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchSetLocalStorage: (state) => dispatch(setLocalStorage(state)),
+});
+
 Jogo.propTypes = {
   questions: PropTypes.string,
 }.isRequired;
 
-export default connect(mapStateToProps)(Jogo);
+export default connect(mapStateToProps, mapDispatchToProps)(Jogo);

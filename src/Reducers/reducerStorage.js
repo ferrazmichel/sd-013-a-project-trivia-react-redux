@@ -1,12 +1,8 @@
 import { SET_LOCAL_STORAGE } from '../Actions';
 
 const INITIAL_STATE = {
-  player: {
-    name: ',',
-    assertions: '',
-    score: 0,
-    gravatarEmail: '',
-  },
+  assertions: 0,
+// score: 0,
 };
 
 const reducerStorage = (state = INITIAL_STATE, action) => {
@@ -14,11 +10,9 @@ const reducerStorage = (state = INITIAL_STATE, action) => {
   case SET_LOCAL_STORAGE:
     return ({
       ...state,
-      name: action.payLoad.name,
-      assertions: action.payLoad.assertions,
-      score: action.payLoad.score,
-      gravatarEmail: action.payLoad.gravatarEmail,
-
+      // timer: action.payLoad.timer,
+      assertions: action.payload.assertions,
+      // score: action.payLoad.score,
     });
   default:
     return state;
