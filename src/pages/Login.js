@@ -28,8 +28,10 @@ class Login extends React.Component {
     await fetchToken();
     const { login, email } = this.state;
     loginSet(login, email);
-    const { token } = this.props;
-    await fetchQuest(token);
+    const { token, config } = this.props;
+    const settings = { ...config, token };
+    console.log(settings);
+    await fetchQuest(settings);
     // const { perguntas } = this.props;
     // localStorage.setItem('perguntas', JSON.stringify(perguntas));
     localStorage.setItem('token', JSON.stringify(token));
@@ -78,6 +80,7 @@ class Login extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.fetchToken.token,
   perguntas: state.fetchQuestions.questions,
+  config: state.saveSettings,
 });
 
 const mapDispatchToState = (dispatch) => ({

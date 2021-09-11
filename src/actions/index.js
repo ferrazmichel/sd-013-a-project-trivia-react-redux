@@ -34,10 +34,10 @@ export const questAPI = (questions) => ({
   questions,
 });
 
-export function fetchQuestions(token) { // thunk das perguntas
+export function fetchQuestions({ token, category, difficulty, type }) { // thunk das perguntas
   return (dispatch) => {
     dispatch(requestApi);
-    return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+    return fetch(`https://opentdb.com/api.php?amount=5&token=${token}&category=${category}&difficulty=${difficulty}&type=${type}`)
       .then((info) => info.json())
       .then((questions) => dispatch(questAPI(questions)));
   };

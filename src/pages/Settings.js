@@ -34,7 +34,7 @@ class Settings extends React.Component {
       <label htmlFor="trivia_category">
         Select Category:
         <select name="trivia_category" onClick={ this.selectTypes }>
-          <option value="any">Any Category</option>
+          <option value="">Any Category</option>
           <option value="9">General Knowledge</option>
           <option value="10">Entertainment: Books</option>
           <option value="11">Entertainment: Film</option>
