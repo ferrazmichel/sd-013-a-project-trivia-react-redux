@@ -1,9 +1,11 @@
+/* eslint-disable max-lines-per-function */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTokenThunk, getLogin, setPlayer } from '../redux/actions';
 import { getGravatar } from '../services/Api';
+import '../Styles/Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -73,48 +75,57 @@ class Login extends React.Component {
   render() {
     const { email, name, disabledButton } = this.state;
     return (
-      <form>
-        <label htmlFor="name">
-          Nome:
-          <input
-            type="text"
-            id="name"
-            name="name"
-            data-testid="input-player-name"
-            value={ name }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            type="email"
-            id="email"
-            name="email"
-            data-testid="input-gravatar-email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <Link to="/game">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ disabledButton }
-            onClick={ this.handleOnClick }
-          >
-            Jogar
-          </button>
-        </Link>
-        <Link to="/settings">
-          <button
-            type="button"
-            data-testid="btn-settings"
-          >
-            Configurações
-          </button>
-        </Link>
-      </form>
+      <section className="container-login">
+        <section>
+          <Link to="/settings">
+            <button
+              className="form-input bnt-settings"
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+        </section>
+        <section>
+          <form className="container-form">
+            <h1>Faça Seu Login</h1>
+            <label htmlFor="name">
+              <input
+                className="form-input"
+                type="text"
+                id="name"
+                name="name"
+                data-testid="input-player-name"
+                value={ name }
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="email">
+              <input
+                className="form-input"
+                type="email"
+                id="email"
+                name="email"
+                data-testid="input-gravatar-email"
+                value={ email }
+                onChange={ this.handleChange }
+              />
+            </label>
+            <Link to="/game">
+              <button
+                className="form-input bnt-play"
+                type="button"
+                data-testid="btn-play"
+                disabled={ disabledButton }
+                onClick={ this.handleOnClick }
+              >
+                Jogar
+              </button>
+            </Link>
+          </form>
+        </section>
+      </section>
     );
   }
 }
