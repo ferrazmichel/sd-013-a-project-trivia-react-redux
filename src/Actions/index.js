@@ -11,3 +11,10 @@ export const setQuestions = (payLoad) => ({
   type: SET_QUESTIONS,
   payLoad,
 });
+
+export const SET_PLACAR = 'SET_PLACAR';
+
+export const setPlacar = (payLoad) => ({
+  type: SET_PLACAR,
+  payLoad,
+});

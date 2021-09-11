@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import { BUTTON_NEXT, INLINE_BLOCK } from './JogoConstante';
 import './Jogo.css';
+import { setPlacar } from '../Actions';
 
 class Jogo extends React.Component {
   constructor() {
@@ -23,6 +24,7 @@ class Jogo extends React.Component {
     this.enableNextAndDisableOption = this.enableNextAndDisableOption.bind(this);
     this.numberOfCorrectQuestions = this.numberOfCorrectQuestions.bind(this);
     this.scoreByLevelDifficulty = this.scoreByLevelDifficulty.bind(this);
+    this.auxNextQuestion = this.auxNextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -110,7 +112,7 @@ class Jogo extends React.Component {
     correct.classList.add('certo');
   }
 
-  nextQuestion() {
+  auxNextQuestion() {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     buttonNext.style.display = 'none';
     const correctButton = document.querySelector('.certo');
@@ -125,32 +127,27 @@ class Jogo extends React.Component {
     } else if (wrong.length === ONE) {
       wrong[0].classList.remove('errado');
     }
+  }
+
+  nextQuestion() {
+    this.auxNextQuestion();
     this.setState((state) => ({
       i: state.i + 1,
       timer: 30,
       button: false,
     }));
+    const { i, assertions, score } = this.state;
+    const { dispatchsetPlacar } = this.props;
+    dispatchsetPlacar({ i, assertions, score });
   }
 
   render() {
     const { questions } = this.props;
-    const { i, timer, button, assertions, score } = this.state;
+    const { i, timer, button } = this.state;
     return (
       <div>
         <Header />
         <div>
-          <p>
-            Número de Acertos:
-            { assertions }
-          </p>
-          <p>
-            Score:
-            { score }
-          </p>
-          <p>
-            Nível:
-            {questions[i].difficulty}
-          </p>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           <button
@@ -199,8 +196,13 @@ const mapStateToProps = (state) => ({
   questions: state.reducerQuestions.questions,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchsetPlacar: (state) => dispatch(setPlacar(state)),
+});
+
 Jogo.propTypes = {
   questions: PropTypes.string,
+  dispatchsetPlacar: PropTypes.func.isRequired,
 }.isRequired;
 
-export default connect(mapStateToProps)(Jogo);
+export default connect(mapStateToProps, mapDispatchToProps)(Jogo);
