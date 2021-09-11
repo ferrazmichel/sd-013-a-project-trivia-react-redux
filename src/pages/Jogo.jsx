@@ -13,12 +13,16 @@ class Jogo extends React.Component {
       i: 0,
       timer: 30,
       button: false,
+      assertions: 0,
+      score: 0,
     };
     this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
     this.checkWrongAnswer = this.checkWrongAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.setTimer = this.setTimer.bind(this);
     this.enableNextAndDisableOption = this.enableNextAndDisableOption.bind(this);
+    this.numberOfCorrectQuestions = this.numberOfCorrectQuestions.bind(this);
+    this.scoreByLevelDifficulty = this.scoreByLevelDifficulty.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +61,23 @@ class Jogo extends React.Component {
     }
   }
 
+  scoreByLevelDifficulty(nivel) {
+    if (nivel === 'hard') return 3;
+    if (nivel === 'medium') return 2;
+    if (nivel === 'easy') return 1;
+  }
+
+  numberOfCorrectQuestions() {
+    const { questions } = this.props;
+    const { assertions, score, timer, i } = this.state;
+    const nivel = questions[i].difficulty;
+    const dificuldade = this.scoreByLevelDifficulty(nivel);
+    this.setState({
+      assertions: assertions + 1,
+      score: score + (1 * (10 + (timer * dificuldade))),
+    });
+  }
+
   enableNextAndDisableOption() {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     if (buttonNext) {
@@ -68,6 +89,7 @@ class Jogo extends React.Component {
   }
 
   checkCorrectAnswer(e) {
+    this.numberOfCorrectQuestions();
     this.enableNextAndDisableOption();
     e.target.classList.add('certo');
     const wrong = document.querySelectorAll('.wrong');
@@ -112,11 +134,23 @@ class Jogo extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { i, timer, button } = this.state;
+    const { i, timer, button, assertions, score } = this.state;
     return (
       <div>
         <Header />
         <div>
+          <p>
+            Número de Acertos:
+            { assertions }
+          </p>
+          <p>
+            Score:
+            { score }
+          </p>
+          <p>
+            Nível:
+            {questions[i].difficulty}
+          </p>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           <button
