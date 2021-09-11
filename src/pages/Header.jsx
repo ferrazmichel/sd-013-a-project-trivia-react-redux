@@ -7,7 +7,7 @@ class Header extends React.Component {
   render() {
     const { emailRedux, nomeRedux, scoreRedux } = this.props;
     const imgGravatar = md5(emailRedux).toString();
-
+    const player = localStorage.getItem('player');
     return (
       <header>
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />

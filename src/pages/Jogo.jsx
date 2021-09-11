@@ -64,19 +64,23 @@ class Jogo extends React.Component {
   }
 
   scoreByLevelDifficulty(nivel) {
-    if (nivel === 'hard') return 3;
-    if (nivel === 'medium') return 2;
-    if (nivel === 'easy') return 1;
+    const NUMBH = 3;
+    const NUMBM = 2;
+    const NUMBE = 1;
+    if (nivel === 'hard') return NUMBH;
+    if (nivel === 'medium') return NUMBM;
+    if (nivel === 'easy') return NUMBE;
   }
 
   numberOfCorrectQuestions() {
+    const NUMB = 10;
     const { questions } = this.props;
     const { assertions, score, timer, i } = this.state;
     const nivel = questions[i].difficulty;
     const dificuldade = this.scoreByLevelDifficulty(nivel);
     this.setState({
       assertions: assertions + 1,
-      score: score + (1 * (10 + (timer * dificuldade))),
+      score: score + (1 * (NUMB + (timer * dificuldade))),
     });
   }
 
