@@ -3,7 +3,10 @@ import { decode } from 'html-entities';
 import PropTypes from 'prop-types';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
+import './GameComponent.css';
+
 const ONE_SECOND = 1000;
+const color = 0.33;
 
 class GameComponent extends Component {
   constructor(props) {
@@ -11,14 +14,15 @@ class GameComponent extends Component {
     this.state = {
       answersArray: [],
       visible: false,
-      seconds: 5,
+      seconds: 30,
+      key: 0,
     };
 
     this.buttonsAnswers = this.buttonsAnswers.bind(this);
     this.timer = this.timer.bind(this);
     this.clearSeconds = this.clearSeconds.bind(this);
     this.buttonVisibility = this.buttonVisibility.bind(this);
-    this.UrgeWithPleasureComponent = this.UrgeWithPleasureComponent.bind(this);
+    this.renderTime = this.renderTime.bind(this);
   }
 
   componentDidMount() {
@@ -37,23 +41,6 @@ class GameComponent extends Component {
 
   componentWillUnmount() {
     clearInterval(this.interval);
-  }
-
-  UrgeWithPleasureComponent() {
-    const { seconds } = this.state;
-    return (
-      <CountdownCircleTimer
-        isPlaying
-        duration={ 30 }
-        colors={ [
-          ['#004777', 0.33],
-          ['#F7B801', 0.33],
-          ['#A30000', 0.33],
-        ] }
-      >
-        { seconds }
-      </CountdownCircleTimer>
-    );
   }
 
   timer() {
@@ -108,10 +95,22 @@ class GameComponent extends Component {
     }));
   }
 
+  renderTime({ remainingTime }) {
+    if (remainingTime === 0) {
+      return <div className="timer">Too lale...</div>;
+    }
+
+    return (
+      <div className="timer">
+        <div className="value">{remainingTime}</div>
+      </div>
+    );
+  }
+
   render() {
     const { atualQuestion, buttonNext } = this.props;
     const { category, question } = atualQuestion;
-    const { answersArray, visible, seconds } = this.state;
+    const { answersArray, visible, seconds, key } = this.state;
 
     return (
       <div className="container">
@@ -119,7 +118,17 @@ class GameComponent extends Component {
           <h1>
             {seconds}
           </h1>
-          { this.UrgeWithPleasureComponent() }
+          <div className="timer-wrapper">
+            <CountdownCircleTimer
+              key={ key }
+              size={ 90 }
+              isPlaying={ !visible }
+              duration={ 30 }
+              colors={ [['#004777', color], ['#F7B801', color], ['#A30000']] }
+            >
+              {this.renderTime}
+            </CountdownCircleTimer>
+          </div>
           <h2>
             { `Category: ${category}` }
           </h2>
@@ -134,8 +143,7 @@ class GameComponent extends Component {
             onClick={ () => {
               buttonNext();
               this.buttonVisibility();
-
-              this.setState(() => ({ seconds: 30 }));
+              this.setState((prevState) => ({ seconds: 30, key: prevState.key + 1 }));
               this.timer();
             } }
             hidden={ !visible }
