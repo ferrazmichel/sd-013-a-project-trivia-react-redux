@@ -7,47 +7,87 @@ class FeedBack extends React.Component {
     super();
     this.handleClick = this.handleClick.bind(this);
     this.handleRanking = this.handleRanking.bind(this);
+    this.returnMessageFeedBack = this.returnMessageFeedBack.bind(this);
+    this.returnPlacarFinalQuestions = this.returnPlacarFinalQuestions.bind(this);
   }
 
-  handleClick(e) {
+  handleClick() {
     const { history } = this.props;
-    e.preventDefault();
+    // e.preventDefault();
     history.push('/');
   }
 
-  handleRanking(e) {
+  handleRanking() {
     const { history } = this.props;
-    e.preventDefault();
+    // e.preventDefault();
     history.push('/ranking');
+  }
+
+  returnMessageFeedBack() {
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { assertions } = localJson;
+    const tres = 3;
+    if (assertions < tres) {
+      return 'Podia ser melhor...';
+    }
+    return 'Mandou bem!';
+  }
+
+  returnPlacarFinalQuestions() {
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { assertions } = localJson;
+    if (assertions === 0) {
+      return 0;
+    }
+    return assertions;
   }
 
   render() {
     const { grav, nameUser } = this.props;
-    const localJson = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = localJson;
+    const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { score } = localJson;
+    console.log(typeof score);
     return (
-      <header>
-        tela feedback
-        <img
-          src={ grav }
-          alt="imagem do gravatar"
-          data-testid="header-profile-picture"
-        />
-        <p data-testid="header-player-name">
-          Nome:
-          { nameUser }
+      <div>
+        <header>
+          tela feedback
+          <img
+            src={ grav }
+            alt="imatgem do gravatar"
+            data-testid="header-profile-picture"
+          />
+          <p data-testid="header-player-name">
+            Nome:
+            { nameUser }
+          </p>
+          <p data-testid="header-score">
+            { score }
+          </p>
+          <button
+            type="submit"
+            data-testid="btn-ranking"
+            onClick={ () => this.handleRanking() }
+          >
+            Ver Ranking
+          </button>
+          <button
+            type="submit"
+            data-testid="btn-play-again"
+            onClick={ () => this.handleClick() }
+          >
+            Jogar novamente
+          </button>
+        </header>
+        <p data-testid="feedback-text">
+          { this.returnMessageFeedBack()}
         </p>
-        <p data-testid="header-score">
-          Score:
+        <span data-testid="feedback-total-score">
           { score }
+        </span>
+        <p data-testid="feedback-total-question">
+          { this.returnPlacarFinalQuestions()}
         </p>
-        <button type="submit" data-testid="btn-ranking" onClick={ this.handleRanking }>
-          Ver Ranking
-        </button>
-        <button type="submit" data-testid="btn-play-again" onClick={ this.handleClick }>
-          Jogar novamente
-        </button>
-      </header>
+      </div>
     );
   }
 }
