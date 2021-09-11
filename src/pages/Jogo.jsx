@@ -14,10 +14,11 @@ class Jogo extends React.Component {
       timer: 30,
       button: false,
     };
-    this.colorGreen = this.colorGreen.bind(this);
-    this.colorRed = this.colorRed.bind(this);
+    this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
+    this.checkWrongAnswer = this.checkWrongAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.setTimer = this.setTimer.bind(this);
+    this.nextAndOptionDisable = this.nextAndOptionDisable.bind(this);
   }
 
   componentDidMount() {
@@ -56,7 +57,7 @@ class Jogo extends React.Component {
     }
   }
 
-  colorGreen(e) {
+  nextAndOptionDisable() {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     if (buttonNext) {
       buttonNext.style.display = INLINE_BLOCK;
@@ -64,6 +65,10 @@ class Jogo extends React.Component {
     this.setState({
       button: true,
     });
+  }
+
+  checkCorrectAnswer(e) {
+    this.nextAndOptionDisable();
     e.target.classList.add('certo');
     const wrong = document.querySelectorAll('.wrong');
     const NUM = 3;
@@ -76,14 +81,8 @@ class Jogo extends React.Component {
     wrong[0].classList.add('errado');
   }
 
-  colorRed(e) {
-    const buttonNext = document.querySelector(BUTTON_NEXT);
-    if (buttonNext) {
-      buttonNext.style.display = INLINE_BLOCK;
-    }
-    this.setState({
-      button: true,
-    });
+  checkWrongAnswer(e) {
+    this.nextAndOptionDisable();
     e.target.classList.add('errado');
     const correct = document.querySelector('.correct');
     correct.classList.add('certo');
@@ -109,7 +108,6 @@ class Jogo extends React.Component {
       timer: 30,
       button: false,
     }));
-    this.setTimer();
   }
 
   render() {
@@ -124,7 +122,7 @@ class Jogo extends React.Component {
           <button
             disabled={ button }
             className="correct"
-            onClick={ this.colorGreen }
+            onClick={ this.checkCorrectAnswer }
             type="button"
             data-testid="correct-answer"
           >
@@ -135,7 +133,7 @@ class Jogo extends React.Component {
               <button
                 disabled={ button }
                 className="wrong"
-                onClick={ this.colorRed }
+                onClick={ this.checkWrongAnswer }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
               >
