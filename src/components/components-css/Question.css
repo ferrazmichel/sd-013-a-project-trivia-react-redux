@@ -9,12 +9,12 @@
   border-radius: 50px;
   color: aliceblue;
   display: flex;
+  font-style: italic;
   height: 40px;
   justify-content: center;
-  font-style: italic;
   margin-bottom: 15px;
   margin-top: 25px;
-  text-align: center
+  text-align: center;
 }
 
 .question-text {
@@ -54,16 +54,10 @@
   flex-direction: column;
 }
 
-.question-category {
-  font-style: italic;
-  margin-bottom: 15px;
-  margin-top: 25px;
-  text-align: center;
-}
-
 .options-container {
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
 }
 
 .timer {
@@ -72,15 +66,11 @@
   border-radius: 50px;
   color: rgb(116, 36, 192);
   display: flex;
-  font-family: 'Orbitron' , sans-serif;
+  font-family: Orbitron , sans-serif;
   font-size: 2em;
   height: 50px;
   justify-content: center;
   margin-bottom: 20px;
   margin-top: 25px;
   width: 100px;
-}
-
-.options-container {
-  margin-bottom: 30px;
 }
