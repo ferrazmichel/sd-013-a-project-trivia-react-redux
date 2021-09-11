@@ -18,7 +18,7 @@ class GamePage extends Component {
       hidden: true,
       loading: true,
       timerValue: 30,
-      disabledOptions: false,
+      finalizeDisabled: true,
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.getQuestions = this.getQuestions.bind(this);
@@ -31,6 +31,7 @@ class GamePage extends Component {
     this.pauseTimer = this.pauseTimer.bind(this);
     this.isClicked = this.isClicked.bind(this);
     this.saveRanking = this.saveRanking.bind(this);
+    this.generateButtons = this.generateButtons.bind(this);
   }
 
   async componentDidMount() {
@@ -50,6 +51,32 @@ class GamePage extends Component {
       questions,
       loading: false,
     });
+  }
+
+  generateButtons() {
+    const { hidden, finalizeDisabled } = this.state;
+    return (
+      <div className="game-btn-next-container">
+        {
+          !hidden && <Button
+            classe="btn-next"
+            dataTestId="btn-next"
+            disabled={ hidden }
+            name="Próxima"
+            onClick={ this.nextQuestion }
+          />
+        }
+        {
+          !finalizeDisabled && <Button
+            classe="btn-finale"
+            dataTestId="btn-next"
+            disabled={ finalizeDisabled }
+            name="Finalizar"
+            onClick={ this.nextQuestion }
+          />
+        }
+      </div>
+    );
   }
 
   hideNextQuestionButton() {
@@ -97,7 +124,7 @@ class GamePage extends Component {
       picture: gravatarUrl,
       name: player.name,
       score: player.score,
-      record: '',
+      record: 'material-icons md-24',
     };
     if (!ranking) {
       localStorage.setItem('ranking', JSON.stringify([finalScore]));
@@ -108,7 +135,7 @@ class GamePage extends Component {
       // Valeu Sir. Rafael Janovicci
       if (thisUser && thisUser.score <= player.score) {
         thisUser.score = player.score;
-        thisUser.record = 'Recorde Pessoal';
+        thisUser.record = 'material-icons md-24';
         localStorage.setItem('ranking', JSON.stringify(ranking));
       } else {
         ranking.push(finalScore);
@@ -130,9 +157,17 @@ class GamePage extends Component {
   }
 
   showNextQuestionButton() {
-    this.setState({
-      hidden: false,
-    });
+    const { questionsIndex } = this.state;
+    const FOUR = 4;
+    if (questionsIndex === FOUR) {
+      this.setState({
+        finalizeDisabled: false,
+      });
+    } else {
+      this.setState({
+        hidden: false,
+      });
+    }
   }
 
   timer() {
@@ -148,7 +183,6 @@ class GamePage extends Component {
 
   render() {
     const {
-      hidden,
       questions,
       questionsIndex,
       loading,
@@ -179,17 +213,7 @@ class GamePage extends Component {
                 />
               }
             </div>
-            <div className="game-btn-next-container">
-              {
-                !hidden && <Button
-                  classe="btn-next"
-                  dataTestId="btn-next"
-                  disabled={ hidden }
-                  name="Próxima"
-                  onClick={ this.nextQuestion }
-                />
-              }
-            </div>
+            { this.generateButtons() }
           </div>
         </div>
       </div>

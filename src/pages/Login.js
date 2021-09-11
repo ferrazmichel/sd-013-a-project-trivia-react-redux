@@ -127,7 +127,7 @@ class Login extends Component {
           placeHolder=" Name/Username"
           dataTestId="input-player-name"
           onChange={ this.handleChange }
-          maxlength="24"
+          maxlength="29"
           name="name"
           value={ name }
         />

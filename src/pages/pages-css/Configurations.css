@@ -66,6 +66,11 @@ select:hover {
   width: 160px;
 }
 
+.btn-not-save-config:hover, .btn-save-config:hover {
+  background-color: rgb(85, 28, 139);
+  border-radius: 15px;
+}
+
 .btn-save-config:disabled {
   background-color: rgb(207, 207, 207);
   border: none;
@@ -76,11 +81,6 @@ select:hover {
   height: 40px;
   margin: 5px;
   width: 160px;
-}
-
-.btn-not-save-config:hover, .btn-save-config:hover {
-  background-color: rgb(85, 28, 139);
-  border-radius: 15px;
 }
 
 .btn-not-save-config:active, .btn-save-config:active {

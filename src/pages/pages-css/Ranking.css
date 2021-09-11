@@ -42,11 +42,30 @@
 .score {
   align-items: center;
   display: flex;
+  margin-right: 10px;
+  width: 220px;
 }
 
 .score h3 {
   color: blueviolet;
   font-family: Lato , sans-serif;
+}
+
+.won, .best {
+  align-items: center;
+  background-color: blueviolet;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  margin-left: 10px;
+  padding: 5px;
+  width: 30px;
+
+}
+
+.won span, .best span {
+  color: white;
+  margin: 0;
 }
 
 .points {

@@ -11,6 +11,7 @@ class Ranking extends Component {
     };
 
     this.showRanking = this.showRanking.bind(this);
+    this.divWon = this.divWon.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +27,16 @@ class Ranking extends Component {
     this.setState({
       ranking: sortedRanking,
     });
+  }
+
+  divWon() {
+    return (
+      <div className="won">
+        <span className="material-icons md-24">
+          emoji_events
+        </span>
+      </div>
+    );
   }
 
   render() {
@@ -56,6 +67,12 @@ class Ranking extends Component {
                       { player.score }
                     </h3>
                   </div>
+                  <div className="best">
+                    <span className={ player.record }>star</span>
+                  </div>
+                  {
+                    (index + 1 === 1) && this.divWon()
+                  }
                 </div>
               </li>
             ))}

@@ -16,8 +16,6 @@ class Question extends Component {
     this.clickedOption = this.clickedOption.bind(this);
     this.calculateScore = this.calculateScore.bind(this);
     this.getButtonClass = this.getButtonClass.bind(this);
-    // this.timer = this.timer.bind(this);
-    // this.clearInterval = this.clearInterval.bind(this);
   }
 
   componentDidMount() {
@@ -62,10 +60,10 @@ class Question extends Component {
     });
   }
 
-  clickedOption({ target: { id } }) {
+  clickedOption({ target }) {
     const { show, pauseTimer, isClicked, storeScore } = this.props;
     pauseTimer();
-    if (id === 'correct') {
+    if (target.id === 'correct') {
       const { player } = JSON.parse(localStorage.getItem('state'));
       player.assertions += 1;
       player.score += this.calculateScore(); // calcula e salva no localStorage chave player.score
@@ -73,6 +71,7 @@ class Question extends Component {
       storeScore(player.score);
     }
     isClicked();
+    target.id = `selected-${target.id}`;
     show();
   }
 

@@ -25,6 +25,7 @@
 
 .btn-options {
   background-color: blueviolet;
+  border: none;
   border-radius: 7px;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.493);
   color: white;
@@ -36,16 +37,45 @@
 }
 
 .btn-options:hover {
-  border: 3px solid rgba(24, 24, 110, 0.397);
+  background-color: rgb(110, 27, 189);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.787);
 }
+
+* [ id = 'correct' ]:disabled {
+  background-color: rgb(207, 207, 207);
+  border-radius: 7px;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.493);
+  color: rgb(122, 122, 122);
+  font-weight: 500;
+  height: 40px;
+  margin: 5px;
+  pointer-events: none;
+  width: 430px;
+}
+
+* [ id = 'incorrect' ]:disabled {
+  background-color: rgb(207, 207, 207);
+  border-radius: 7px;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.493);
+  color: rgb(122, 122, 122);
+  font-weight: 500;
+  height: 40px;
+  margin: 5px;
+  pointer-events: none;
+  width: 430px;
+}
+
 
 .correct-answer {
   background-color: rgb(44, 116, 47);
   border: 3px solid rgb(6, 240, 15);
+  pointer-events: none;
 }
 
 .incorrect-answer {
+  background-color: rgb(177, 27, 27);
   border: 3px solid red;
+  pointer-events: none;
 }
 
 .question-container {
