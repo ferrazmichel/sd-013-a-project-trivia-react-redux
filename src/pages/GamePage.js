@@ -64,19 +64,6 @@ class GamePage extends React.Component {
     }
   }
 
-  // componentDidUpdate() {
-  //   this.disableBtn();
-  // }
-
-  /* async fetchQuestions() {
-
-    const questionsFetch =  await getQuestionsFetch();
-    this.setState({
-      questions: questionsFetch.results,
-      loading: false,
-    });
-  } */
-
   calculationOfPoints(timer, dificuldade) {
     const { setPointsClink } = this.props;
     const assertions = 1;

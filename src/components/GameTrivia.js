@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setPoints } from '../redux/actions/index';
-
 import '../Styles/Buttons.css';
+import '../Styles/GameTrivia.css';
 
 class GameTrivia extends React.Component {
   constructor(props) {
@@ -61,24 +61,28 @@ class GameTrivia extends React.Component {
     console.log(questions);
     return (
       <form>
-        <p
-          key={ questions.category }
-          data-testid="question-category"
-        >
-          Categoria:
-          {' '}
-          {questions.category}
-        </p>
-        <p
-          key={ questions.question }
-          data-testid="question-text"
-        >
-          Pergunta:
-          {' '}
-          { questions.question }
-        </p>
-        { this.renderRandomQuestions() }
-        <section />
+        <section className="conataoner-questions">
+          <section className="questions-category">
+            <span>Categoria:</span>
+            <span
+              key={ questions.category }
+              data-testid="question-category"
+            >
+              {questions.category}
+            </span>
+          </section>
+          <section className="questions-quest">
+            <span
+              key={ questions.question }
+              data-testid="question-text"
+            >
+              { questions.question }
+            </span>
+          </section>
+        </section>
+        <section className="questions-answer">
+          { this.renderRandomQuestions()}
+        </section>
       </form>
     );
   }
