@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { validLogin, fetchToken } from '../redux/actions';
 import './login.css';
@@ -15,11 +14,12 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.handleClickPlay = this.handleClickPlay.bind(this);
     this.renderForm = this.renderForm.bind(this);
+    this.handleClickConfig = this.handleClickConfig.bind(this);
   }
 
-  async onSubmitForm(event) {
+  async handleClickPlay(event) {
     event.preventDefault();
     const { history, dispatchValidLogin, dispatchfetchToken, token } = this.props;
     const { email, name } = this.state;
@@ -27,6 +27,16 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     dispatchValidLogin(name, email);
     history.push('/jogo');
+  }
+
+  async handleClickConfig(event) {
+    event.preventDefault();
+    const { history, dispatchValidLogin, dispatchfetchToken, token } = this.props;
+    const { email, name } = this.state;
+    await dispatchfetchToken();
+    localStorage.setItem('token', token);
+    dispatchValidLogin(name, email);
+    history.push('/configuracoes');
   }
 
   handleChange({ target }) {
@@ -68,18 +78,19 @@ class Login extends React.Component {
           className="text-uppercase btn btn-play fw-bold mb-3"
           type="submit"
           disabled={ isDisabled }
-          onClick={ this.onSubmitForm }
+          onClick={ this.handleClickPlay }
           data-testid="btn-play"
         >
           Vamos Jogar!
         </button>
-        <Link
+        <button
           className="text-uppercase btn btn-config fw-bold"
-          to="/configuracoes"
+          type="submit"
+          onClick={ this.handleClickConfig }
           data-testid="btn-settings"
         >
           Configurações
-        </Link>
+        </button>
       </form>
     );
   }

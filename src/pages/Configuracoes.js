@@ -1,29 +1,104 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
-// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Option from '../components/Option';
+import { setConfigs } from '../redux/actions';
+import { categories, difficulties, types } from '../data';
 
 class Configuracoes extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //   };
-  // }
+  constructor() {
+    super();
+    this.state = {
+      category: '0',
+      difficulty: '0',
+      type: '0',
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.renderSelects = this.renderSelects.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleClick() {
+    const { dispatchConfigs } = this.props;
+    dispatchConfigs(this.state);
+  }
+
+  handleChange({ target }) {
+    const { value, name } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  renderSelects() {
+    const { category, difficulty, type } = this.state;
+    const INDEX_ADJUSTMENT = 8;
+    return (
+      <>
+        <select
+          name="category"
+          value={ category }
+          onChange={ this.handleChange }
+          className="form-control"
+        >
+          { categories.map((cat, index) => (
+            <Option
+              key={ index }
+              value={ (index === 0) ? 0 : index + INDEX_ADJUSTMENT }
+              name="category"
+              text={ cat }
+            />
+          )) }
+        </select>
+        <select
+          name="difficulty"
+          value={ difficulty }
+          onChange={ this.handleChange }
+          className="form-control"
+        >
+          { difficulties.map((dif, index) => (
+            <Option
+              key={ index }
+              value={ dif.value }
+              name="difficulty"
+              text={ dif.text }
+            />
+          ))}
+        </select>
+        <select
+          name="type"
+          value={ type }
+          onChange={ this.handleChange }
+          className="form-control"
+        >
+          {
+            types.map((item, index) => (
+              <Option key={ index } value={ item.value } name="type" text={ item.text } />
+            ))
+          }
+        </select>
+      </>);
+  }
 
   render() {
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
+        { this.renderSelects() }
+        <Link to="/jogo" onClick={ this.handleClick }>Vamos Jogar!</Link>
       </div>
     );
   }
 }
 
 Configuracoes.propTypes = {
+  dispatchConfigs: PropTypes.func.isRequired,
+
 };
 
-// const mapDispatchToProps = (dispatch) => ({
-//   // dispatchfetchAvatar: (email, name) => dispatch(fetchAvatar(email, name)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  dispatchConfigs: (configs) => dispatch(setConfigs(configs)),
+});
 
-// export default connect(null, mapDispatchToProps)(Jogo);
-export default Configuracoes;
+export default connect(null, mapDispatchToProps)(Configuracoes);

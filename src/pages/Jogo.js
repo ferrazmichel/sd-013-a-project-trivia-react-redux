@@ -37,12 +37,22 @@ class Jogo extends React.Component {
   }
 
   async getData() {
-    const { token } = this.props;
-    const data = await getTriviaApi(token);
-    this.setState({
-      questions: data,
-      isLoading: false,
-    });
+    const { token, configs } = this.props;
+    const { category, difficulty, type } = configs;
+    let data = await getTriviaApi(token, category, difficulty, type);
+    const MIN_QUESTIONS = 5;
+    if (data.length >= MIN_QUESTIONS) {
+      this.setState({
+        questions: data,
+        isLoading: false,
+      });
+    } else {
+      data = await getTriviaApi(token);
+      this.setState({
+        questions: data,
+        isLoading: false,
+      });
+    }
   }
 
   setPlayerLocalStorage() {
@@ -96,6 +106,10 @@ class Jogo extends React.Component {
     const { target } = event;
     const alternatives = [...target.parentElement.children];
     alternatives.forEach((alternative) => alternative.classList.add('selected'));
+    alternatives.forEach((alternative) => {
+      alternative.disabled = true;
+    });
+
     if (target.classList.contains('correct')) {
       this.calculateScore();
     }
@@ -113,6 +127,9 @@ class Jogo extends React.Component {
       const containerAlternatives = document.getElementById('alternatives-container');
       const alternatives = [...containerAlternatives.children];
       alternatives.forEach((alternative) => alternative.classList.remove('selected'));
+      alternatives.forEach((alternative) => {
+        alternative.disabled = false;
+      });
       const nextBtn = document.getElementById('next');
       nextBtn.hidden = true;
       clearInterval(this.intervalId);
@@ -190,10 +207,12 @@ Jogo.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  configs: PropTypes.shape().isRequired,
 };
 const mapStateToProps = (state) => ({
   email: state.game.player.gravatarEmail,
   name: state.game.player.name,
   token: state.game.token,
+  configs: state.game.configs,
 });
 export default connect(mapStateToProps, null)(Jogo);

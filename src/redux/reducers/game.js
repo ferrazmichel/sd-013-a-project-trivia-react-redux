@@ -1,4 +1,8 @@
-import { REQUEST_TOKEN, GET_TOKEN_SUCESS, GET_TOKEN_FAIL, VALID_LOGIN } from '../actions';
+import { REQUEST_TOKEN,
+  GET_TOKEN_SUCESS,
+  GET_TOKEN_FAIL,
+  VALID_LOGIN,
+  SET_CONFIGS } from '../actions';
 
 const initialState = {
   token: '',
@@ -7,6 +11,11 @@ const initialState = {
   player: {
     name: '',
     gravatarEmail: '',
+  },
+  configs: {
+    category: '0',
+    difficulty: '0',
+    type: '0',
   },
 };
 
@@ -33,6 +42,11 @@ function game(state = initialState, action) {
     return {
       ...state,
       player: { ...state.player, name: action.name, gravatarEmail: action.email },
+    };
+  case SET_CONFIGS:
+    return {
+      ...state,
+      configs: action.configs,
     };
   default:
     return state;
