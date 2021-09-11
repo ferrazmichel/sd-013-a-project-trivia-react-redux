@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Header from './Header';
+import Header from '../components/Header';
 import { BUTTON_NEXT, INLINE_BLOCK } from './JogoConstante';
 import './Jogo.css';
 import { setPlacar } from '../Actions';

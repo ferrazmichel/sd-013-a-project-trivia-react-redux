@@ -18,7 +18,6 @@ class Header extends React.Component {
     } = this.props;
     const imgGravatar = md5(emailRedux).toString();
     const numpergunta = i + 1;
-
     const obj = {
       player: {
         name: nomeRedux,
