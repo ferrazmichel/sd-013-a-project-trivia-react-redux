@@ -2,6 +2,7 @@ export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const GET_TOKEN_SUCESS = 'GET_TOKEN_SUCESS';
 export const GET_TOKEN_FAIL = 'GET_TOKEN_FAIL';
 export const VALID_LOGIN = 'VALID_LOGIN';
+export const SET_CONFIGS = 'SET_CONFIGS';
 
 export const requestToken = () => ({
   type: REQUEST_TOKEN,
@@ -21,6 +22,11 @@ export const validLogin = (name, email) => ({
   type: VALID_LOGIN,
   name,
   email,
+});
+
+export const setConfigs = (configs) => ({
+  type: SET_CONFIGS,
+  configs,
 });
 
 export function fetchToken() {
