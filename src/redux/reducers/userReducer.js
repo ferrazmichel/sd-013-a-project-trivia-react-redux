@@ -2,9 +2,11 @@ import {
   DISABLE_ANSWER,
   FINISH_FETCH,
   NEXT_QUESTION,
+  TIMEOUT,
   START_FETCH,
   userReducerInitialState,
-  USER_LOGIN } from '../../constants';
+  USER_LOGIN,
+  RESET_GAME } from '../../constants';
 
 const userReducer = (state = userReducerInitialState, action) => {
   switch (action.type) {
@@ -22,6 +24,12 @@ const userReducer = (state = userReducerInitialState, action) => {
 
   case NEXT_QUESTION:
     return { ...state, renderIndex: state.renderIndex + 1, disabled: false };
+
+  case TIMEOUT:
+    return { ...state, disabled: false };
+
+  case RESET_GAME:
+    return { ...state, disabled: false, renderIndex: 0 };
 
   default:
     return state;

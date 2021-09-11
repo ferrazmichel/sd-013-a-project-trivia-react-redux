@@ -54,11 +54,12 @@ class Login extends Component {
   render() {
     const { name, email, disabled } = this.state;
     return (
-      <div>
-        <fieldset>
-          <label htmlFor="name">
-            Escreve o nome da pessoa jogadora
+      <div className="container">
+        <fieldset className="inputs-container">
+          <label htmlFor="name" className="input-group mb-3">
+            <span className="input-group-text">Escreve o nome da pessoa jogadora</span>
             <input
+              className="form-control"
               name="name"
               type="text"
               data-testid="input-player-name"
@@ -67,9 +68,10 @@ class Login extends Component {
               onChange={ this.handleChange }
             />
           </label>
-          <label htmlFor="email">
-            Escreve o email da pessoa jogadora
+          <label htmlFor="email" className="input-group mb-3">
+            <span className="input-group-text">Escreve o email da pessoa jogadora</span>
             <input
+              className="form-control"
               name="email"
               type="text"
               data-testid="input-gravatar-email"
@@ -77,20 +79,24 @@ class Login extends Component {
               value={ email }
               onChange={ this.handleChange }
             />
-            <Link to="/game">
-              <button
-                data-testid="btn-play"
-                type="button"
-                disabled={ disabled }
-                onClick={ () => this.handleClick() }
-              >
-                Jogar
-              </button>
-            </Link>
           </label>
         </fieldset>
+        <Link to="/game">
+          <button
+            className="btn btn-success"
+            style={ { marginRight: '5px' } }
+            data-testid="btn-play"
+            type="button"
+            disabled={ disabled }
+            onClick={ () => this.handleClick() }
+          >
+            Jogar
+          </button>
+        </Link>
         <Link to="/config">
-          <button type="button" data-testid="btn-settings">Configurações</button>
+          <button type="button" data-testid="btn-settings" className="btn btn-info">
+            Configurações
+          </button>
         </Link>
       </div>
     );

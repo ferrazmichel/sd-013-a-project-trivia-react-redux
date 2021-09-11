@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
 
 class FeedBack extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class FeedBack extends Component {
     };
     this.fetchAssertions = this.fetchAssertions.bind(this);
     this.setAssertions = this.setAssertions.bind(this);
+    this.updateRanking = this.updateRanking.bind(this);
   }
 
   componentDidMount() {
@@ -35,14 +37,46 @@ class FeedBack extends Component {
     return feedbackMessage;
   }
 
+  handleClick() {
+    const { resetGame } = this.props;
+    resetGame();
+    this.updateRanking();
+  }
+
+  updateRanking() {
+    const currentState = JSON.parse(localStorage.getItem('state'));
+    const { player: { name, score, gravatarEmail } } = currentState;
+    const hash = MD5(gravatarEmail).toString();
+    const picture = `https://www.gravatar.com/avatar/${hash}`;
+    const currentPlayer = {
+      name,
+      score,
+      picture,
+    };
+    const currentRanking = JSON.parse(localStorage.getItem('ranking'));
+    if (currentRanking === null) {
+      localStorage.setItem('ranking', JSON.stringify([currentPlayer]));
+    } else {
+      const newRanking = [
+        ...currentRanking,
+        currentPlayer,
+      ];
+      localStorage.setItem('ranking', JSON.stringify(newRanking));
+    }
+  }
+
   render() {
     const { userName, score } = this.props;
+    console.log(userName);
     const { assertions } = this.state;
     const feedbackMessage = this.fetchAssertions();
+    const state = JSON.parse(localStorage.getItem('state'));
+    const userEmail = state.player.gravatarEmail;
+    const hash = MD5(userEmail).toString();
     return (
-      <>
+      <div className="feedback-container">
         <header>
-          <img src="" data-testid="header-profile-picture" alt="header-profile" />
+          <img className="img-thumbnail" src={ `https://www.gravatar.com/avatar/${hash}` } data-testid="header-profile-picture" alt="header-profile" />
           <h3 data-testid="header-player-name">{ userName }</h3>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
@@ -56,11 +90,26 @@ class FeedBack extends Component {
           { assertions }
         </div>
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">
+          <button
+            onClick={ () => this.handleClick() }
+            className="btn btn-info"
+            type="button"
+            data-testid="btn-play-again"
+          >
             Jogar novamente
           </button>
         </Link>
-      </>
+        <Link to="/ranking">
+          <button
+            onClick={ () => this.handleClick() }
+            className="btn btn-info"
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
+      </div>
     );
   }
 }
@@ -70,9 +119,13 @@ const mapStateToProps = ({ loginReducer, scoreReducer }) => ({
   score: scoreReducer.score,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  resetGame: () => dispatch({ type: 'RESET_GAME' }),
+});
 FeedBack.propTypes = {
   userName: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  resetGame: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(FeedBack);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedBack);

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameCounter from './GameCounter';
@@ -8,6 +7,7 @@ import {
   nextQuestion } from '../redux/actions';
 
 let assertions = 0;
+const countdown = 30;
 
 class GameQuestion extends Component {
   constructor(props) {
@@ -111,8 +111,8 @@ class GameQuestion extends Component {
     return (
       <div>
         <div className="question-n-category">
-          <h3 data-testid="question-category">{currQuestion.category}</h3>
-          <p data-testid="question-text">{currQuestion.question}</p>
+          <h3 data-testid="question-category">{window.atob(currQuestion.category)}</h3>
+          <p data-testid="question-text">{window.atob(currQuestion.question)}</p>
         </div>
         <div className="question-options">
           { currQuestionOptions.map((question, questionIndex) => {
@@ -121,61 +121,41 @@ class GameQuestion extends Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
+                  className="btn btn-secondary game-option"
                   disabled={ disabled }
                   onClick={ () => this.dispatchCorrectAnswer(difficulty) }
                   key={ questionIndex }
                 >
-                  {question}
+                  {window.atob(question)}
                 </button>);
             }
             wrongIndex += 1;
             return (
               <button
                 type="button"
+                className="btn btn-secondary game-option"
                 key={ questionIndex }
                 disabled={ disabled }
                 data-testid={ `wrong-answer-${wrongIndex - 1}` }
                 onClick={ () => this.dispatchIncorrectAnswer() }
               >
-                {question}
+                {window.atob(question)}
               </button>);
           }) }
         </div>
-        <GameCounter difficulty={ difficulty } />
       </div>
     );
   }
 
   render() {
-    const { loading, disabled, nextQ, renderIndex } = this.props;
-    const nextButton = (
-      <button
-        type="button"
-        data-testid="btn-next"
-        onClick={ () => nextQ() }
-      >
-        Próxima
-      </button>);
-    const feedbackButton = (
-      <Link to="/feedback">
-        <button
-          type="button"
-          data-testid="btn-next"
-        >
-          Próxima
-        </button>
-      </Link>);
-    const howManyQuestions = 5;
-    const finalButton = renderIndex === howManyQuestions - 1 ? feedbackButton
-      : nextButton;
-    const renderNextButton = disabled ? finalButton : null;
+    const { loading } = this.props;
     if (loading) {
       return <div>Loading...</div>;
     }
     return (
-      <div>
+      <div className="container game-container">
         { this.handleQuestion() }
-        { renderNextButton }
+        <GameCounter counter={ countdown } />
       </div>
     );
   }
@@ -205,7 +185,6 @@ GameQuestion.propTypes = {
   questions: PropTypes.objectOf().isRequired,
   disabled: PropTypes.bool.isRequired,
   renderIndex: PropTypes.number.isRequired,
-  nextQ: PropTypes.func.isRequired,
   updateScore: PropTypes.func.isRequired,
   disableAnswers: PropTypes.func.isRequired,
 };
