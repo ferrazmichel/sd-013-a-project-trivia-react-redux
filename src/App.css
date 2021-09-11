@@ -12,10 +12,7 @@
   display: inline-block;
 }
 
-input,
-input:focus,
-textarea:focus,
-select:focus {
+input, input:focus, textarea:focus, select:focus {
   border: none;
   outline: none;
 }

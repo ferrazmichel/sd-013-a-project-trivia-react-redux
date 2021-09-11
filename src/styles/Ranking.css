@@ -1,0 +1,78 @@
+.container-ranking {
+  align-items: center;
+  background: linear-gradient(#83a4d4, #b6fbff);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-ranking {
+  align-items: center;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  padding: 15px;
+  width: 35vw;
+}
+
+.ranking-header {
+  background-color: #0c2d5a;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+}
+
+.ranking-player {
+  width: 100%;
+}
+
+.ranking-players {
+  background-color: #4694c8;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.name-ranking {
+  font-size: 25px;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.score-ranking {
+  font-size: 25px;
+  margin-bottom: auto;
+  margin-right: 10px;
+  margin-top: auto;
+}
+
+.score-ranking:hover {
+  color: #0c2d5a;
+}
+
+.btn-home {
+  background-color: #0c2d5a;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 700;
+  height: 40px;
+  margin-bottom: 100px;
+  padding: 10px;
+  transition: 0.2s;
+  width: 150px;
+}
+
+.btn-home:hover {
+  background-color: #4694c8;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
