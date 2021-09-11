@@ -30,7 +30,7 @@ class Jogo extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const buttonNext = document.querySelector(BUTTON_NEXT);
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 4;
 
     if (nextState.i === NUMBER_OF_QUESTIONS) {
       buttonNext.parentNode.removeChild(buttonNext);

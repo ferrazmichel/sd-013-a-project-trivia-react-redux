@@ -5,14 +5,19 @@ import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-    const { emailRedux, nomeRedux } = this.props;
+    const { emailRedux, nomeRedux, scoreRedux = 0 } = this.props;
     const imgGravatar = md5(emailRedux).toString();
-
+    const player = localStorage.getItem('player');
     return (
       <header>
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{nomeRedux}</p>
-        <p data-testid="header-score"> 0 </p>
+        <p data-testid="header-score">
+          {scoreRedux}
+        </p>
+        <p>
+          {player}
+        </p>
       </header>
     );
   }
@@ -21,11 +26,13 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   emailRedux: state.reducerLogin.email,
   nomeRedux: state.reducerLogin.nome,
+  scoreRedux: state.reducerStorage.score,
 });
 
 Header.propTypes = {
   emailRedux: PropTypes.string,
   nomeRedux: PropTypes.string,
+  scoreRedux: PropTypes.number,
 }.isRequired;
 
 export default connect(mapStateToProps)(Header);
