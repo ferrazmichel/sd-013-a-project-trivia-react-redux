@@ -18,7 +18,7 @@ class Jogo extends React.Component {
     this.checkWrongAnswer = this.checkWrongAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.setTimer = this.setTimer.bind(this);
-    this.nextAndOptionDisable = this.nextAndOptionDisable.bind(this);
+    this.enableNextAndDisableOption = this.enableNextAndDisableOption.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +57,7 @@ class Jogo extends React.Component {
     }
   }
 
-  nextAndOptionDisable() {
+  enableNextAndDisableOption() {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     if (buttonNext) {
       buttonNext.style.display = INLINE_BLOCK;
@@ -68,7 +68,7 @@ class Jogo extends React.Component {
   }
 
   checkCorrectAnswer(e) {
-    this.nextAndOptionDisable();
+    this.enableNextAndDisableOption();
     e.target.classList.add('certo');
     const wrong = document.querySelectorAll('.wrong');
     const NUM = 3;
@@ -82,7 +82,7 @@ class Jogo extends React.Component {
   }
 
   checkWrongAnswer(e) {
-    this.nextAndOptionDisable();
+    this.enableNextAndDisableOption();
     e.target.classList.add('errado');
     const correct = document.querySelector('.correct');
     correct.classList.add('certo');

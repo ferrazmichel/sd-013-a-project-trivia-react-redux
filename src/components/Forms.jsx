@@ -58,37 +58,39 @@ class Forms extends React.Component {
   render() {
     const { nome, email } = this.state;
     return (
-      <form action="">
-        <label htmlFor="input-player-name">
-          Nome:
-          <input
-            type="text"
-            name="nome"
-            value={ nome }
-            data-testid="input-player-name"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="input-gravatar-email">
-          Email:
-          <input
-            type="text"
-            name="email"
-            value={ email }
-            data-testid="input-gravatar-email"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ this.validEmail(email, nome) }
-          onClick={ this.onSubmitForm }
-        >
-          Jogar
-        </button>
+      <fieldset>
+        <form action="">
+          <label htmlFor="input-player-name">
+            Nome:
+            <input
+              type="text"
+              name="nome"
+              value={ nome }
+              data-testid="input-player-name"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="input-gravatar-email">
+            Email:
+            <input
+              type="text"
+              name="email"
+              value={ email }
+              data-testid="input-gravatar-email"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ this.validEmail(email, nome) }
+            onClick={ this.onSubmitForm }
+          >
+            Jogar
+          </button>
 
-      </form>
+        </form>
+      </fieldset>
     );
   }
 }
