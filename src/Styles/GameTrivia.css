@@ -19,3 +19,15 @@ span {
   border-radius: 0 10px 10px 10px;
   padding-top: 10px;
 }
+
+.questions-answer {
+  display: flex;
+  justify-content: space-between;
+  width: 63%;
+  margin:  20px 150px;
+}
+
+.questions-answer button{
+  width: 210px;
+  height: 50px
+}

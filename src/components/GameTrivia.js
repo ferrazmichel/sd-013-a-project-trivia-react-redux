@@ -24,7 +24,7 @@ class GameTrivia extends React.Component {
     const questionsAnswers = [questions.correct_answer, ...questions.incorrect_answers];
     const randomAnswers = questionsAnswers.sort(this.randOrd);
     return (
-      <div>
+      <>
         { randomAnswers.map((answer, index) => {
           if (answer === questions.correct_answer) {
             return (
@@ -52,7 +52,7 @@ class GameTrivia extends React.Component {
               { answer }
             </button>);
         })}
-      </div>
+      </>
     );
   }
 
