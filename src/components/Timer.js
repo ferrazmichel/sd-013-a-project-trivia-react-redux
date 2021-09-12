@@ -62,7 +62,6 @@ class Timer extends Component {
 
   resetTime() {
     const { nextQuestion, handleButton } = this.props;
-
     handleButton();
     this.setState(INITIAL_TIME);
     nextQuestion();
