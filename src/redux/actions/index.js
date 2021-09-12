@@ -10,6 +10,8 @@ export const GET_QUESTIONS_ERROR = 'GET_QUESTIONS_ERROR';
 export const ASSERT = 'ASSERT';
 export const SAVE_SCORE = 'SAVE_SCORE';
 export const RESET_SCORE = 'RESET_SCORE';
+export const MISS_QUESTION = 'MISS_QUESTION';
+export const RIGHT_QUESTION = 'RIGHT_QUESTION';
 
 export const addUser = (payload) => ({
   type: ADD_USER,
@@ -28,6 +30,8 @@ export const getQuestionError = ((payload) => ({ type: GET_QUESTIONS_ERROR, payl
 export const saveScore = (payload) => ({ type: SAVE_SCORE, payload });
 export const getTokenSuccess = (payload) => ({ type: GET_TOKEN_SUCCESS, payload });
 export const getTokenError = (payload) => ({ type: GET_TOKEN_ERROR, payload });
+export const sendRightQt = () => ({ type: RIGHT_QUESTION });
+export const sendMissQt = () => ({ type: MISS_QUESTION });
 
 export const fetchToken = () => (async (dispatch) => {
   try {

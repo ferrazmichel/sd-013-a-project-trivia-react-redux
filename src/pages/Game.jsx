@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import './Game.css';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { assertsAction, fetchQuestions, saveScore } from '../redux/actions';
+import Sound from 'react-sound';
+
+import { assertsAction, fetchQuestions, saveScore,
+  sendMissQt, sendRightQt } from '../redux/actions';
 import { GameComponent, Header } from '../components';
+
+import quepena from '../files/sounds/errada.mp3';
+import certaresposta from '../files/sounds/certa-resposta.mp3';
 
 class Game extends Component {
   constructor(props) {
@@ -41,8 +47,13 @@ class Game extends Component {
 
   changeIndex() {
     const { index } = this.state;
-    const { gameQuestions, history } = this.props;
+    const { gameQuestions, history, sendMissQT, missSoundFx,
+      rightSoundFx, sendRightQT } = this.props;
     const two = 2000;
+
+    if (missSoundFx) sendMissQT();
+    if (rightSoundFx) sendRightQT();
+
     setTimeout(this.setState((prevState) => ({ index: prevState.index + 1 })), two);
     if (index < gameQuestions.length - 1) {
       document.querySelectorAll('.answer').forEach((answer) => {
@@ -72,6 +83,7 @@ class Game extends Component {
   }
 
   optionSelect(atualQt, seconds, value) {
+    const { sendMissQT, sendRightQT, rightSoundFx, missSoundFx } = this.props;
     const { correct_answer: correct, difficulty } = atualQt;
     document.querySelectorAll('.answer').forEach((answer) => {
       answer.disabled = true;
@@ -84,16 +96,35 @@ class Game extends Component {
       const { rightQuestion } = this.props;
       rightQuestion();
       this.calculateScore(difficulty, seconds);
+      sendRightQT();
+      if (missSoundFx) sendMissQT();
+    } else {
+      sendMissQT();
+      if (rightSoundFx) sendRightQT();
     }
   }
 
   render() {
-    const { gameQuestions } = this.props;
+    const { gameQuestions, missSoundFx, rightSoundFx } = this.props;
     const { index } = this.state;
     if (gameQuestions.length < 1) return <h1>loading...</h1>;
 
     return (
       <section className="feedback-page">
+        { missSoundFx && <Sound
+          url={ quepena }
+          playStatus={ Sound.status.PLAYING }
+          onLoading={ this.handleSongLoading }
+          onPlaying={ this.handleSongPlaying }
+          onFinishedPlaying={ this.handleSongFinishedPlaying }
+        />}
+        { rightSoundFx && <Sound
+          url={ certaresposta }
+          playStatus={ Sound.status.PLAYING }
+          onLoading={ this.handleSongLoading }
+          onPlaying={ this.handleSongPlaying }
+          onFinishedPlaying={ this.handleSongFinishedPlaying }
+        />}
         <Header />
         <div className="row col-md-5 shadow mx-auto p-5 btn-primary mt-3">
           <GameComponent
@@ -111,15 +142,22 @@ const mapDispatchToProps = (dispatch) => ({
   getQuestions: (payload) => dispatch(fetchQuestions(payload)),
   rightQuestion: () => dispatch(assertsAction()),
   saveToStore: (payload) => dispatch(saveScore(payload)),
+  sendMissQT: () => dispatch(sendMissQt()),
+  sendRightQT: () => dispatch(sendRightQt()),
 
 });
 const mapStateToProps = (state) => ({
   token: state.users.token.token,
   gameQuestions: state.game.questions,
-  // score: state.game.score,
+  rightSoundFx: state.game.rightSoundFx,
+  missSoundFx: state.game.missSoundFx,
 });
 
 Game.propTypes = {
+  sendMissQT: PropTypes.func.isRequired,
+  sendRightQT: PropTypes.func.isRequired,
+  rightSoundFx: PropTypes.bool.isRequired,
+  missSoundFx: PropTypes.bool.isRequired,
   getQuestions: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   gameQuestions: PropTypes.arrayOf(PropTypes.object).isRequired,

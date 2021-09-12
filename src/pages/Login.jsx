@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import Sound from 'react-sound';
+
 import { Input, Dropdown } from '../components';
 import { fetchToken, addUser, resetScore } from '../redux/actions';
+
 import logo from '../files/trivialogo.png';
+import music from '../files/sounds/music-theme.mp3';
 
 class Login extends Component {
   constructor() {
@@ -53,12 +57,26 @@ class Login extends Component {
     return true;
   }
 
+  sound() {
+    return (
+      <Sound
+        url={ music }
+        volume={ 20 }
+        playStatus={ Sound.status.PLAYING }
+        onLoading={ this.handleSongLoading }
+        onPlaying={ this.handleSongPlaying }
+        onFinishedPlaying={ this.handleSongFinishedPlaying }
+      />
+    );
+  }
+
   render() {
     const { name, email, enable } = this.state;
     const { history } = this.props;
     return (
       <section className="container-fluid">
         <br />
+        { this.sound() }
         <div className="row col-md-5 shadow mx-auto mt-3 p-5 bg-white">
           <header className="col-md-7 mx-auto p-4">
             <img src={ logo } className="img-fluid" alt="logo" width="500" />
