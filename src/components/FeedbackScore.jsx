@@ -41,7 +41,7 @@ class FeedbackScore extends Component {
         <Link to="/" className="text-decoration-none">
           <div className="row mt-1">
             <button
-              className="btn btn-primary btn-lg btn-block"
+              className="btn btn-primary btn-lg btn-block  btn-start"
               type="button"
             >
               Jogar novamente
@@ -51,7 +51,7 @@ class FeedbackScore extends Component {
         <Link to="/ranking" className="text-decoration-none">
           <div className="row mt-1">
             <button
-              className="btn btn-primary btn-lg btn-block"
+              className="btn btn-start btn-lg btn-block"
               type="button"
             >
               Ver Ranking

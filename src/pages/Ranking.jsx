@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 import './Game.css';
+import { ReactComponent as ReactLogo } from '../files/trybelogo.svg';
 
 const numberRanking = 10;
 
@@ -25,7 +26,7 @@ class Ranking extends Component {
 
     return score.map((jogador, index) => (
       <section
-        className="row mb-1 align-items-baseline border border-white bg-primary"
+        className="row mb-1 align-items-baseline border border-white btn-start"
         key={ index }
       >
         <div className="col">
@@ -56,10 +57,14 @@ class Ranking extends Component {
 
   render() {
     return (
-      <section className="container-fluid text-center">
-        <div className="row col-md-5 shadow mx-auto p-5 bg-danger mt-5">
-          <h1>Ranking</h1>
-          <hr className="mb-4" />
+      <section className="container-fluid text-center ranking-page">
+        <br />
+        <div className="row col-md-5 shadow mx-auto p-2 btn-primary mt-2">
+          <div className="d-flex align-items-baseline justify-content-around">
+            <ReactLogo />
+            <h1>Ranking</h1>
+          </div>
+          <hr className="mb-3" />
           <div className="row justify-content-center mx-auto">
             <section className="row mb-1 align-items-center">
               <div className="col">
@@ -75,7 +80,7 @@ class Ranking extends Component {
           <Link to="/" className="text-decoration-none">
             <div className="row mt-1">
               <button
-                className="btn btn-primary btn-lg btn-block"
+                className="btn btn-start btn-lg btn-block"
                 type="button"
               >
                 Início
@@ -83,6 +88,7 @@ class Ranking extends Component {
             </div>
           </Link>
         </div>
+        <br />
       </section>
     );
   }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Input, Dropdown } from '../components';
 import { fetchToken, addUser, resetScore } from '../redux/actions';
-import logo from '../trivia.png';
+import logo from '../files/trivialogo.png';
 
 class Login extends Component {
   constructor() {
@@ -58,10 +58,11 @@ class Login extends Component {
     const { history } = this.props;
     return (
       <section className="container-fluid">
-        <header className="col-md-7 mx-auto p-4">
-          <img src={ logo } className="img-fluid" alt="logo" />
-        </header>
-        <div className="row col-md-5 shadow mx-auto p-5 bg-white">
+        <br />
+        <div className="row col-md-5 shadow mx-auto mt-3 p-5 bg-white">
+          <header className="col-md-7 mx-auto p-4">
+            <img src={ logo } className="img-fluid" alt="logo" width="500" />
+          </header>
           <div className="d-flex justify-content-end">
             <Dropdown />
           </div>
@@ -90,14 +91,14 @@ class Login extends Component {
                 disabled={ !enable }
                 type="submit"
                 onClick={ this.playSubmit }
-                className="btn btn-primary btn-lg btn-block"
+                className="btn btn-start btn-lg btn-block"
               >
                 Jogar
               </button>
             </div>
             <div className="row mt-1">
               <button
-                className="btn btn-primary btn-lg btn-block"
+                className="trivia-btn btn btn-primary btn-lg btn-block "
                 type="submit"
                 onClick={ () => history.push('/configScreen') }
               >
