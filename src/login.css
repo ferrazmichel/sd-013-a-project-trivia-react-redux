@@ -35,7 +35,7 @@ body {
   border-radius: 3px;
   color: rgb(35,64,153);
   font-weight: 900;
-  padding: 0px 2px;
+  padding: 0px 3px;
 }
 
 a {
@@ -47,11 +47,12 @@ a {
 #button-answer {
   height: 32px;
   margin: 5px;
-  background-color: #ff99ff;
+  /* border: hidden; */
+  background-color: rgb(255, 142, 39);
   border-radius: 3px;
   color: black;
   font-weight: 900;
-  padding: 0px 2px;
+  padding: 0px 3px;
 }
 
 #button-next {
@@ -62,52 +63,5 @@ a {
   border-radius: 3px;
   color: black;
   font-weight: 900;
-  padding: 0px 2px;
-}
-
-.correct-color {
-  border: 3px solid rgb(6, 240, 15);
-}
-
-.wrong-color {
-  border: 3px solid red;
-}
-
-header {
-  position: flex;
-  flex-direction: row;
-  text-align: center;
-}
-
-header img {
-  display: inline-flex;
-  border-radius: 3px;
-  margin: 5px;
-}
-
-header div {
-  display: inline-block;
-  margin: 0 auto;
-  margin: 5px;
-}
-
-#game {
-  position: absolute;
-  text-align: center;
-  margin: 0 auto;
-  margin-left: 35%;
-  margin-right: 35%;
-}
-
-#timer {
-  text-align: center;
-}
-
-
-#feedback {
-  position: absolute;
-  text-align: center;
-  margin: 0 auto;
-  margin-left: 35%;
-  margin-right: 35%;
+  padding: 0px 3px;
 }
