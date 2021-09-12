@@ -10,7 +10,6 @@ const INITIAL_STATE = {
 };
 
 function playerReducer(state = INITIAL_STATE, action) {
-  console.log('PAYLOAD', action.type, action.payload);
   switch (action.type) {
   case PLAYER_INFO:
     return { ...state, ...action.payload };
