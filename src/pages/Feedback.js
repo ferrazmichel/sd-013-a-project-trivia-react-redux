@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { MD5 } from 'crypto-js';
 import Header from '../components/Header';
+import '../styles/Feedback.css';
 
 class Feedback extends Component {
   componentDidMount() {
@@ -36,30 +37,46 @@ class Feedback extends Component {
     const { assertions } = player;
     const { scoreState, assertionsState } = this.props;
     const message = this.feedbackMessage(assertions);
-
     return (
       <div>
         <Header />
-        <h2 data-testid="feedback-text">{message}</h2>
-        <Link to="/ranking" data-testid="btn-ranking">
-          Ver Ranking
-        </Link>
-        <div>
-          <span>Número de acertos: </span>
-          <span data-testid="feedback-total-question">{ assertionsState }</span>
+        <div className="container-feedback">
+          <div className="card-feedback">
+            <h2 data-testid="feedback-text" className="message-feedback">{ message }</h2>
+            <div>
+              <span className="span-message">Número de acertos: </span>
+              <span
+                data-testid="feedback-total-question"
+                className="span-message"
+              >
+                { assertionsState }
+              </span>
+            </div>
+            <div>
+              <span className="span-message">Número de pontos: </span>
+              <span
+                data-testid="feedback-total-score"
+                className="span-message"
+              >
+                {scoreState}
+              </span>
+            </div>
+            <Link to="/ranking" data-testid="btn-ranking">
+              <span className="btn-ranking">
+                Ver Ranking
+              </span>
+            </Link>
+            <Link to="/">
+              <button
+                className="btn-play"
+                type="submit"
+                data-testid="btn-play-again"
+              >
+                Jogar novamente
+              </button>
+            </Link>
+          </div>
         </div>
-        <div>
-          <span>Número de pontos: </span>
-          <span data-testid="feedback-total-score">{scoreState}</span>
-        </div>
-        <Link to="/">
-          <button
-            type="submit"
-            data-testid="btn-play-again"
-          >
-            Jogar novamente
-          </button>
-        </Link>
       </div>
     );
   }

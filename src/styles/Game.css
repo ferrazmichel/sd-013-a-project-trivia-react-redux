@@ -79,8 +79,7 @@
   transition: 0.2s;
 }
 
-.container-question button:hover,
-.next-btn:hover {
+.container-question button:hover, .next-btn:hover {
   background-color: #4694c8;
   color: white;
   cursor: pointer;
