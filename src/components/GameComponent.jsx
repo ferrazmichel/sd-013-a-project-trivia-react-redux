@@ -110,14 +110,11 @@ class GameComponent extends Component {
   render() {
     const { atualQuestion, buttonNext } = this.props;
     const { category, question } = atualQuestion;
-    const { answersArray, visible, seconds, key } = this.state;
+    const { answersArray, visible, key } = this.state;
 
     return (
       <div className="container">
         <div className="row row-cols-auto">
-          <h1>
-            {seconds}
-          </h1>
           <div className="timer-wrapper">
             <CountdownCircleTimer
               key={ key }
