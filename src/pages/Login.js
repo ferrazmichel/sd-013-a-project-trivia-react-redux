@@ -66,6 +66,7 @@ class Login extends React.Component {
             value={ email }
             onChange={ this.handleChange }
             placeholder=" Email"
+            type="email"
           />
         </label>
         <br />

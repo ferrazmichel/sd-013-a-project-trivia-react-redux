@@ -26,6 +26,7 @@ class Game extends React.Component {
     this.nextQuestionBtn = this.nextQuestionBtn.bind(this);
     this.shuffeQuestions = this.shuffeQuestions.bind(this);
     this.shuffleToState = this.shuffleToState.bind(this);
+    this.decode = this.decode.bind(this);
   }
 
   componentDidMount() {
@@ -168,6 +169,13 @@ class Game extends React.Component {
     });
   }
 
+  // lógica para o texto das perguntas aparecer corretamente
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   render() {
     const { state: { index, respondido, timer, total, shuffleredQuestions },
       props: { questions } } = this;
@@ -178,16 +186,19 @@ class Game extends React.Component {
     return (
       <main className="main-game">
         <Header score={ total } respondido={ respondido } />
-        <h2 className="timer">{ timer }</h2>
-        <h2 data-testid="question-category" className="category-game">
-          {category}
-        </h2>
+        <div className="div-timer-category">
+          <h2 className="timer">{ timer }</h2>
+          <h2 data-testid="question-category" className="category-game">
+            {category}
+          </h2>
+        </div>
         <h3
           type="text"
           data-testid="question-text"
-          className="category-game"
+          className="question-game"
         >
-          {question}
+          {/* aqui implementamos a lógica do texto */}
+          {this.decode(question)}
         </h3>
         <div className="answers-buttons">
           {shuffleredQuestions.map((answer, i) => (

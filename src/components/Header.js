@@ -55,6 +55,7 @@ class Header extends React.Component {
         </h3>
         <p data-testid="header-score">
           {score}
+          pts
         </p>
       </header>
     );
