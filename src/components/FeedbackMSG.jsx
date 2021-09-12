@@ -11,14 +11,14 @@ class FeedbackMSG extends React.Component {
         <h2 data-testid="feedback-text">
           {(assertions >= AVERAGE ? 'Mandou bem! 🤙' : 'Podia ser melhor... 😉')}
         </h2>
-        <h3>
+        <h3 className="feedback-msg-points">
           Você ganhou
           <h3 data-testid="feedback-total-score">
             {score}
           </h3>
           pontos !!
         </h3>
-        <h3>
+        <h3 className="feedback-msg-points">
           Você acertou
           <h3 data-testid="feedback-total-question">
             {assertions}

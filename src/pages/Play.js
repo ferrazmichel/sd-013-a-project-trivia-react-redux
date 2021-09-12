@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// import { getNodeText } from '@testing-library/react';
 import Header from '../components/Header';
 import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services';
 import { sendPlayerInfo } from '../actions';
@@ -9,6 +10,8 @@ import Timer from '../components/Timer';
 const CORRECT_ANSWER = 'correct-answer';
 const MAX_QUESTIONS = 5;
 const LAST_QUESTION_INDEX = MAX_QUESTIONS - 1;
+const HALF = 0.5;
+const randomOrder = () => Math.random() - HALF; // https://javascript.info/array-methods#shuffle-an-array
 class Play extends Component {
   constructor(props) {
     super(props);
@@ -16,95 +19,96 @@ class Play extends Component {
       questions: '',
       questionIndex: 0,
       button: false,
-      answerButton: false,
+      timeLeft: 0,
       answers: [],
     };
-    this.handleQuestions = this.handleQuestions.bind(this);
     this.handleAnswers = this.handleAnswers.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
-    this.handleStyle = this.handleButtonStyle.bind(this);
-    this.redirectTo = this.redirectTo.bind(this);
     this.handleButton = this.handleButton.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.preventSortAnswers = this.preventSortAnswers.bind(this);
+    this.handleQuestions = this.handleQuestions.bind(this);
+    this.handleStyle = this.handleButtonStyle.bind(this);
+    this.handleTimeLeft = this.handleTimeLeft.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.redirectTo = this.redirectTo.bind(this);
+    this.setShuffleAnswers = this.setShuffleAnswers.bind(this);
   }
 
   componentDidMount() {
-    console.log('MONTOU');
     this.handleQuestions();
-    const {
-      name,
-      gravatarEmail,
-      player: { score, assertions },
-      submitPlayer } = this.props;
-    const TESTE = { name,
-      gravatarEmail,
-      score,
-      assertions };
-    submitPlayer({ player: TESTE });
-    saveToLocalStorage('state', { player: TESTE });
+    const { name, gravatarEmail, player: { score, assertions }, sendPlayer } = this.props;
+    const PLAYER_START = { name, gravatarEmail, score, assertions };
+    sendPlayer({ player: PLAYER_START });
+    saveToLocalStorage('state', { player: PLAYER_START });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.preventSortAnswers(prevState);
+    const { timeLeft } = this.state;
+    const { sendPlayer,
+      player: { name, gravatarEmail, score, assertions },
+    } = this.props;
+
+    const CORRECT_ALTERNATIVE = prevProps.player.assertions < assertions;
+    const TIME_LEFT_UPDATE = prevState.timeLeft !== timeLeft;
+
+    if (CORRECT_ALTERNATIVE && TIME_LEFT_UPDATE) {
+      const { questionIndex, questions: { results } } = this.state;
+      const { difficulty } = results[questionIndex];
+
+      const POINTS = { easy: 1, medium: 2, hard: 3, base: 10 };
+      const answerPoints = POINTS.base + (timeLeft * POINTS[difficulty]);
+      const PLAYER_SCORE_UPDATE = {
+        name,
+        gravatarEmail,
+        score: score + answerPoints,
+        assertions,
+      };
+      sendPlayer({ player: PLAYER_SCORE_UPDATE });
+      saveToLocalStorage('state', { player: PLAYER_SCORE_UPDATE });
+    }
   }
 
   componentWillUnmount() {
     const {
       player: { name, gravatarEmail, score, assertions },
-      submitPlayer,
+      sendPlayer,
     } = this.props;
     const TESTE = { name,
       gravatarEmail,
       score,
       assertions };
-    submitPlayer({ player: TESTE });
+    sendPlayer({ player: TESTE });
     saveToLocalStorage('state', { player: TESTE });
   }
 
-  // ao clicar na questão Às vezes reembaralha as questões, essa função resolve o bug
-  preventSortAnswers(prevState) {
-    const { questions, questionIndex, button } = this.state;
-    // primeira pergunta
-    if (!prevState.questions && questions) {
-      this.setState({
-        answers: this.handleAnswers(questions.results[questionIndex]),
-      });
-    }
-    // quando trocar de pergunta atualiza as respostas
-    if (prevState.questionIndex < questionIndex) {
-      this.setState({
-        answers: this.handleAnswers(questions.results[questionIndex]),
-      });
-    }
-    // tempo acabou ou respondeu desativa os butões
-    if (!prevState.button && button) {
-      const disableButtons = document.querySelectorAll('.answer-style');
-      disableButtons.forEach((btn) => {
-        btn.disabled = button;
-      });
-    }
+  setShuffleAnswers() {
+    const { questions } = this.state;
+    const answerData = questions.results;
+    const answers = answerData.map((answer) => {
+      const shuffleAnswer = [
+        ...answer.incorrect_answers,
+        { correct_answer: answer.correct_answer },
+      ];
+      return (shuffleAnswer.sort(randomOrder));
+    });
+    this.setState({ answers });
   }
 
-  handleAnswers(results) {
-    const answers = [...results.incorrect_answers, results.correct_answer];
-    const HALF = 0.5;
+  handleAnswers(answers, results) {
     const { button } = this.state;
-    answers.sort(() => Math.random() - HALF);
-    // https://javascript.info/array-methods#shuffle-an-array
     return (answers.map((answer, index) => (
       <button
-        key={ answer }
+        key={ answer.correct_answer || answer }
         type="button"
         className="answer-style"
-        name={ answer === results.correct_answer ? CORRECT_ANSWER
+        name={ answer.correct_answer ? CORRECT_ANSWER
           : `wrong-answer-${index}` }
-        data-testid={ answer === results.correct_answer ? CORRECT_ANSWER
+        data-testid={ answer.correct_answer ? CORRECT_ANSWER
           : `wrong-answer-${index}` }
         disabled={ button }
         onClick={ this.handleClick }
+        dificulty={ results.difficulty }
       >
-        {answer}
+        {answer.correct_answer || answer}
       </button>))
     );
   }
@@ -122,7 +126,7 @@ class Play extends Component {
     const token = loadFromLocalStaorage('token');
     const questionURL = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&token=${token}`;
     const requestQuestions = await fetchURL(questionURL);
-    this.setState({ questions: requestQuestions });
+    this.setState({ questions: requestQuestions }, this.setShuffleAnswers);
   }
 
   redirectTo(path) {
@@ -147,24 +151,30 @@ class Play extends Component {
 
   handleClick(e) {
     this.handleButtonStyle();
-    this.setState({ answerButton: true });
-    if (e.target.name === CORRECT_ANSWER) {
-      const {
-        player: { name, gravatarEmail, score, assertions },
-        submitPlayer,
-      } = this.props;
-      const TESTE = { name,
-        gravatarEmail,
-        score: score + 1,
-        assertions: assertions + 1 };
-      submitPlayer({ player: TESTE });
-      saveToLocalStorage('state', { player: TESTE });
-    }
+    const playerAnswer = e.target.name;
+    this.setState({ button: true }, () => {
+      if (playerAnswer === CORRECT_ANSWER) {
+        const {
+          player: { name, gravatarEmail, score, assertions },
+          sendPlayer,
+        } = this.props;
+        const TESTE = { name,
+          gravatarEmail,
+          score,
+          assertions: assertions + 1 };
+        sendPlayer({ player: TESTE });
+        saveToLocalStorage('state', { player: TESTE });
+      }
+    });
+  }
+
+  handleTimeLeft(time) {
+    this.setState({ timeLeft: time });
   }
 
   render() {
-    const { questions, questionIndex, answerButton, answers } = this.state;
-    if (!questions) {
+    const { questions, questionIndex, button, answers } = this.state;
+    if (!questions || !answers.length) {
       return (
         <div className="play-main">
           <Header />
@@ -187,13 +197,13 @@ class Play extends Component {
             </section>
             <div className="play-question-answers">
               <div className="playquestion-answers-options">
-                {/* { this.handleAnswers(results[questionIndex]) } */}
-                { answers }
+                { this.handleAnswers(answers[questionIndex], results[questionIndex]) }
               </div>
               <Timer
                 nextQuestion={ this.nextQuestion }
                 handleButton={ this.handleButton }
-                answerButton={ answerButton }
+                button={ button }
+                handleTimeLeft={ this.handleTimeLeft }
               />
             </div>
           </div>
@@ -210,12 +220,12 @@ const mapStateToProps = ({ user: { name, gravatarEmail }, play: { player } }) =>
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  submitPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
+  sendPlayer: (payload) => dispatch(sendPlayerInfo(payload)),
 });
 
 Play.propTypes = {
   history: PropTypes.arrayOf(PropTypes.object).isRequired,
-  submitPlayer: PropTypes.func.isRequired,
+  sendPlayer: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.shape({
     trim: PropTypes.func,

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 
-const TIME = 30;
+// const POINTS = { easy: 1, medium: 2, hard: 3 };
+// const TIME = 30;
 const INITIAL_TIME = {
   time: 30,
 };
@@ -15,7 +16,7 @@ class Timer extends Component {
       time: 30,
     };
     this.resetTime = this.resetTime.bind(this);
-    this.clearTimer = this.clearTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
     this.startTimer = this.startTimer.bind(this);
   }
 
@@ -23,18 +24,25 @@ class Timer extends Component {
     this.startTimer();
   }
 
-  componentDidUpdate(qlqr, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { time } = this.state;
-    const { handleButton } = this.props;
-    console.log(prevState.time);
+    const { handleButton, button, handleTimeLeft } = this.props;
 
-    if (time === 0 && prevState.time === 1) {
+    const TIME_IS_OVER = time === 0 && prevState.time === 1;
+    const START_NEW_QUESTION = prevProps.button && !button;
+    const PLAYER_CLICKED_ON_ANSWER = !prevProps.button && button;
+
+    if (TIME_IS_OVER) {
       handleButton();
-      this.clearTimer();
+      this.stopTimer();
     }
 
-    if (time === TIME && prevState.time === 0) {
-      handleButton();
+    if (PLAYER_CLICKED_ON_ANSWER) {
+      this.stopTimer();
+      handleTimeLeft(time);
+    }
+
+    if (START_NEW_QUESTION) {
       this.startTimer();
     }
   }
@@ -48,35 +56,35 @@ class Timer extends Component {
     }, seg);
   }
 
-  clearTimer() {
+  stopTimer() {
     clearInterval(this.interval);
   }
 
   resetTime() {
-    const { nextQuestion } = this.props;
+    const { nextQuestion, handleButton } = this.props;
 
+    handleButton();
     this.setState(INITIAL_TIME);
     nextQuestion();
   }
 
   render() {
     const { time } = this.state;
-    const { answerButton } = this.props;
+    const { button } = this.props;
     return (
-      <div>
+      <div className="timer">
         { time }
-        {(time === 0 || answerButton === true) && (
-          <Button resetTime={ this.resetTime } />
-        )}
+        { button && <Button resetTime={ this.resetTime } /> }
       </div>
     );
   }
 }
 
 Timer.propTypes = {
-  answerButton: PropTypes.bool.isRequired,
+  button: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   handleButton: PropTypes.func.isRequired,
+  handleTimeLeft: PropTypes.func.isRequired,
 };
 
 export default Timer;
