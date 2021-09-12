@@ -10,7 +10,6 @@
 }
 
 .sectionMain {
-  margin-top: 50px;
   align-items: center;
   background-color: rgb(231, 231, 231);
   border-radius: 10px;
@@ -20,6 +19,7 @@
   height: 400px;
   justify-content: center;
   left: 50%;
+  margin-top: 50px;
   position: absolute;
   top: 35%;
   transform: translate(-50%, -50%);
