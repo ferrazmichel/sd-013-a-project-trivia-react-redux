@@ -1,68 +1,64 @@
 body {
-  background-color: #222;
-  background-image: url(./quiztime.jpg);
   background-blend-mode: overlay;
+  background-color: #222;
+  background-image: url('./quiztime.jpg');
   background-size: cover;
   color: white;
   margin: 10px;
   opacity: 0.8;
 }
 
-#form {
+.form {
   display: absolute;
-  /* flex-direction: column; */
   justify-content: center;
-  /* margin: 0 auto; */
-  /* margin-right: 40%;
-  margin-left: 40%; */
   text-align: center;
 }
 
-#name, #email {
-  text-indent: 5px;
-  height: 30px;
-  margin: 5px;
+.name-email {
   border: none;
   border-radius: 3px;
+  height: 30px;
+  margin: 5px;
+  text-indent: 5px;
 }
 
-#button-main {
-  height: 32px;
-  width: 120px;
-  margin: 5px;
+.button-main {
   background-color: rgb(1, 157, 232);
-  border: 2px solid rgb(1,232,232);
+  border: 2px solid rgb(1, 232, 232);
   border-radius: 3px;
-  color: rgb(35,64,153);
+  color: rgb(35, 64, 153);
   font-weight: 900;
-  padding: 0px 2px;
+  height: 32px;
+  margin: 5px;
+  padding: 0 2;
+  width: 120px;
 }
 
 a {
   display: block;
-  width: 120px;
   margin: 0 auto;
+  width: 120px;
 }
 
-#button-answer {
-  height: 32px;
-  margin: 5px;
-  background-color: #ff99ff;
+.button-answer {
+  background-color: #f9f;
   border-radius: 3px;
   color: black;
   font-weight: 900;
-  padding: 0px 2px;
-}
-
-#button-next {
   height: 32px;
   margin: 5px;
+  padding: 0 2;
+}
+
+.button-next {
+  background-color: #6f6;
   border: 2px solid green;
-  background-color: #66ff66;
   border-radius: 3px;
   color: black;
   font-weight: 900;
-  padding: 0px 2px;
+  height: 32px;
+  margin: 5px;
+  padding: 0 2;
 }
 
 .correct-color {
@@ -74,40 +70,38 @@ a {
 }
 
 header {
-  position: flex;
   flex-direction: row;
+  position: flex;
   text-align: center;
 }
 
 header img {
-  display: inline-flex;
   border-radius: 3px;
+  display: inline-flex;
   margin: 5px;
 }
 
 header div {
   display: inline-block;
-  margin: 0 auto;
-  margin: 5px;
 }
 
-#game {
-  position: absolute;
-  text-align: center;
+.game {
   margin: 0 auto;
   margin-left: 35%;
   margin-right: 35%;
-}
-
-#timer {
-  text-align: center;
-}
-
-
-#feedback {
   position: absolute;
   text-align: center;
+}
+
+.timer {
+  text-align: center;
+}
+
+
+.feedback {
   margin: 0 auto;
   margin-left: 35%;
   margin-right: 35%;
+  position: absolute;
+  text-align: center;
 }

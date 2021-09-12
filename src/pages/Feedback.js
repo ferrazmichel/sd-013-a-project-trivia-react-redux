@@ -7,19 +7,19 @@ class Feedback extends React.Component {
     return (
       <div>
         <h1 data-testid="feedback-text">Feedback</h1>
-        <div id="feedback">
+        <div className="feedback">
           <Header />
           <FeedbackMessage />
           <Performance />
           <PlayAgainButton
-            id="button-main"
+            className="button-main"
             testid="btn-play-again"
           />
           <Link to="/ranking">
             <button
               data-testid="btn-ranking"
               type="button"
-              id="button-main"
+              className="button-main"
             >
               Ver Ranking
             </button>

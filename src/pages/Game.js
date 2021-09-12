@@ -88,7 +88,7 @@ class Game extends React.Component {
         <h1>
           Game
         </h1>
-        <div id="game">
+        <div className="game">
           <Header />
           <QuestionCard
             questionData={ questions[currentQuestion] }
@@ -101,7 +101,7 @@ class Game extends React.Component {
             data-testid="btn-next"
             hidden={ isHidden }
             onClick={ this.handleClick }
-            id="button-next"
+            className="button-next"
           >
             Próxima pergunta
           </button>

@@ -73,12 +73,11 @@ class QuestionCard extends React.Component {
     const correctButtons = (
       <button
         key={ correctAnswer + qstIndex }
-        className="correct-answer"
+        className="correct-answer button-answer"
         type="button"
         name="question"
         data-testid="correct-answer"
         onClick={ this.handleCorrectAnswer }
-        id="button-answer"
       >
         { this.decode(correctAnswer) }
       </button>);
@@ -86,11 +85,10 @@ class QuestionCard extends React.Component {
       <button
         type="button"
         name="question"
-        className="wrong-answer"
+        className="wrong-answer button-answer"
         key={ answer + qstIndex }
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.handleClick }
-        id="button-answer"
       >
         { this.decode(answer) }
       </button>));

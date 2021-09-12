@@ -49,7 +49,7 @@ class Login extends React.Component {
   render() {
     const { name, email } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit } id="form">
+      <form onSubmit={ this.handleSubmit } className="form">
         <label htmlFor="name">
           Name:
           <input
@@ -59,6 +59,7 @@ class Login extends React.Component {
             placeholder="Coloque seu nome"
             value={ name }
             onChange={ this.handleChange }
+            className="name-email"
           />
         </label>
         <label htmlFor="email">
@@ -70,13 +71,14 @@ class Login extends React.Component {
             placeholder="Coloque seu e-mail"
             value={ email }
             onChange={ this.handleChange }
+            className="name-email"
           />
         </label>
 
         <button
           data-testid="btn-play"
           type="submit"
-          id="button-main"
+          className="button-main"
           disabled={ this.checkInputs() }
         >
           Jogar
@@ -85,7 +87,7 @@ class Login extends React.Component {
           <button
             data-testid="btn-settings"
             type="button"
-            id="button-main"
+            className="button-main"
           >
             Configurações
           </button>

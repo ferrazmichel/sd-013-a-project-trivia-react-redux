@@ -23,7 +23,7 @@ class Ranking extends React.Component {
           index={ index }
           rankInfo={ rank }
         />))}
-        <PlayAgainButton testid="btn-go-home" id="button-main" />
+        <PlayAgainButton testid="btn-go-home" className="button-main" />
       </div>
     );
   }
