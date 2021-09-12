@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { getNodeText } from '@testing-library/react';
 import Header from '../components/Header';
-import { fetchURL, loadFromLocalStaorage, saveToLocalStorage } from '../services';
+import { fetchURL, saveToLocalStorage, loadFromLocalStaorage } from '../services';
 import { sendPlayerInfo } from '../actions';
 import Timer from '../components/Timer';
 
@@ -19,7 +18,7 @@ class Play extends Component {
       questions: '',
       questionIndex: 0,
       button: false,
-      timeLeft: 0,
+      timeLeft: -1,
       answers: [],
     };
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -41,21 +40,17 @@ class Play extends Component {
     saveToLocalStorage('state', { player: PLAYER_START });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { timeLeft } = this.state;
-    const { sendPlayer,
-      player: { name, gravatarEmail, score, assertions },
-    } = this.props;
+  componentDidUpdate(prevProps) {
+    const { player: { name, gravatarEmail, score, assertions }, sendPlayer } = this.props;
 
     const CORRECT_ALTERNATIVE = prevProps.player.assertions < assertions;
-    const TIME_LEFT_UPDATE = prevState.timeLeft !== timeLeft;
 
-    if (CORRECT_ALTERNATIVE && TIME_LEFT_UPDATE) {
-      const { questionIndex, questions: { results } } = this.state;
+    if (CORRECT_ALTERNATIVE) {
+      const { timeLeft, questionIndex, questions: { results } } = this.state;
       const { difficulty } = results[questionIndex];
 
       const POINTS = { easy: 1, medium: 2, hard: 3, base: 10 };
-      const answerPoints = POINTS.base + (timeLeft * POINTS[difficulty]);
+      const answerPoints = POINTS.base + (timeLeft * POINTS[window.atob(difficulty)]);
       const PLAYER_SCORE_UPDATE = {
         name,
         gravatarEmail,
@@ -68,16 +63,10 @@ class Play extends Component {
   }
 
   componentWillUnmount() {
-    const {
-      player: { name, gravatarEmail, score, assertions },
-      sendPlayer,
-    } = this.props;
-    const TESTE = { name,
-      gravatarEmail,
-      score,
-      assertions };
-    sendPlayer({ player: TESTE });
-    saveToLocalStorage('state', { player: TESTE });
+    const { player: { name, gravatarEmail, score, assertions }, sendPlayer } = this.props;
+    const PLAYER_FINISH = { name, gravatarEmail, score, assertions };
+    sendPlayer({ player: PLAYER_FINISH });
+    saveToLocalStorage('state', { player: PLAYER_FINISH });
   }
 
   setShuffleAnswers() {
@@ -106,9 +95,9 @@ class Play extends Component {
           : `wrong-answer-${index}` }
         disabled={ button }
         onClick={ this.handleClick }
-        dificulty={ results.difficulty }
+        dificulty={ window.atob(results.difficulty) }
       >
-        {answer.correct_answer || answer}
+        {answer.correct_answer ? window.atob(answer.correct_answer) : window.atob(answer)}
       </button>))
     );
   }
@@ -124,7 +113,7 @@ class Play extends Component {
 
   async handleQuestions() {
     const token = loadFromLocalStaorage('token');
-    const questionURL = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&token=${token}`;
+    const questionURL = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&token=${token}&encode=base64`;
     const requestQuestions = await fetchURL(questionURL);
     this.setState({ questions: requestQuestions }, this.setShuffleAnswers);
   }
@@ -189,10 +178,10 @@ class Play extends Component {
           <div className="play-question">
             <section className="play-question-board">
               <h2 data-testid="question-category">
-                { results[questionIndex].category }
+                { window.atob(results[questionIndex].category) }
               </h2>
               <p data-testid="question-text">
-                { results[questionIndex].question }
+                { window.atob(results[questionIndex].question) }
               </p>
             </section>
             <div className="play-question-answers">
@@ -237,4 +226,5 @@ Play.propTypes = {
     gravatarEmail: PropTypes.string,
   }).isRequired,
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Play);
