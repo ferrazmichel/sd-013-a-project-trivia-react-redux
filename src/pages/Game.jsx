@@ -46,7 +46,7 @@ class Game extends Component {
     setTimeout(this.setState((prevState) => ({ index: prevState.index + 1 })), two);
     if (index < gameQuestions.length - 1) {
       document.querySelectorAll('.answer').forEach((answer) => {
-        answer.className = 'answer';
+        answer.className = 'answer btn rounded-pill btn-start btn-lg btn-block';
         answer.disabled = false;
       });
     } else {
@@ -75,8 +75,9 @@ class Game extends Component {
     const { correct_answer: correct, difficulty } = atualQt;
     document.querySelectorAll('.answer').forEach((answer) => {
       answer.disabled = true;
-      const cName = answer.value === correct ? 'answer correct-answer'
-        : 'answer incorrect-answer';
+      const cName = answer.value === correct
+        ? 'answer correct-answer rounded-pill btn btn-start btn-lg btn-block'
+        : 'answer incorrect-answer rounded-pill btn btn-start btn-lg btn-block';
       answer.className = cName;
     });
     if (value === correct) {
@@ -92,13 +93,15 @@ class Game extends Component {
     if (gameQuestions.length < 1) return <h1>loading...</h1>;
 
     return (
-      <section>
+      <section className="feedback-page">
         <Header />
-        <GameComponent
-          atualQuestion={ gameQuestions[index] }
-          optionSelect={ this.optionSelect }
-          buttonNext={ this.changeIndex }
-        />
+        <div className="row col-md-5 shadow mx-auto p-5 btn-primary mt-3">
+          <GameComponent
+            atualQuestion={ gameQuestions[index] }
+            optionSelect={ this.optionSelect }
+            buttonNext={ this.changeIndex }
+          />
+        </div>
       </section>
     );
   }

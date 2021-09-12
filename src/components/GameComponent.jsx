@@ -69,22 +69,24 @@ class GameComponent extends Component {
       .map(({ value }) => value);
 
     const buttonsAnswers = answers.map((answer, key) => (
-      <button
-        onClick={ ({ target }) => {
-          const { seconds } = this.state;
-          this.buttonVisibility();
-          optionSelect(atualQuestion, seconds, target.value);
-          clearInterval(this.interval);
-        } }
-        type="button"
-        key={ key }
-        className="answer"
-        data-testid={ answer === correct ? 'correct-answer'
-          : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
-        value={ answer === correct ? correct : incorrect }
-      >
-        { decode(answer) }
-      </button>
+      <div key={ key } className="mt-2 row mx-auto">
+        <button
+          onClick={ ({ target }) => {
+            const { seconds } = this.state;
+            this.buttonVisibility();
+            optionSelect(atualQuestion, seconds, target.value);
+            clearInterval(this.interval);
+          } }
+          type="button"
+          key={ key }
+          className="answer rounded-pill btn btn-start btn-lg btn-block"
+          data-testid={ answer === correct ? 'correct-answer'
+            : `wrong-answer-${incorrect.findIndex((inc) => inc === answer)}` }
+          value={ answer === correct ? correct : incorrect }
+        >
+          { decode(answer) }
+        </button>
+      </div>
     ));
     this.setState({ answersArray: buttonsAnswers });
   }
@@ -114,7 +116,10 @@ class GameComponent extends Component {
 
     return (
       <div className="container">
-        <div className="row row-cols-auto">
+        <div className="d-flex align-items-baseline justify-content-around">
+          <h5>
+            { `Category: ${category}` }
+          </h5>
           <div className="timer-wrapper">
             <CountdownCircleTimer
               key={ key }
@@ -126,15 +131,15 @@ class GameComponent extends Component {
               {this.renderTime}
             </CountdownCircleTimer>
           </div>
-          <h2>
-            { `Category: ${category}` }
-          </h2>
-          <h4>
-            { decode(question) }
-          </h4>
         </div>
-        <div>
-          { answersArray }
+        <hr className="mb-4" />
+        <h4>
+          { decode(question) }
+        </h4>
+        <hr className="mb-4" />
+        { answersArray }
+        <div className="row mt-2 mx-auto">
+          <hr className="mb-3 mt-3" />
           <button
             type="button"
             onClick={ () => {
@@ -143,13 +148,14 @@ class GameComponent extends Component {
               this.setState((prevState) => ({ seconds: 30, key: prevState.key + 1 }));
               this.timer();
             } }
+            className="btn btn-start btn-lg btn-block "
             hidden={ !visible }
-            data-testid="btn-next"
           >
             NEXT
           </button>
         </div>
       </div>
+
     );
   }
 }
