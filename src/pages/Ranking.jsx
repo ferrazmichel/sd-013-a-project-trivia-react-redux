@@ -4,9 +4,15 @@ import { Link } from 'react-router-dom';
 class Ranking extends React.Component {
   render() {
     return (
-      <Link to="/">
-        <button type="button" data-testid="btn-go-home">Go Home</button>
-      </Link>
+      <>
+        <p data-testid="ranking-title" />
+        <Link to="feedback">
+          <button type="button">Voltar</button>
+        </Link>
+        <Link to="/">
+          <button type="button" data-testid="btn-go-home">Go Home</button>
+        </Link>
+      </>
     );
   }
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { BUTTON_NEXT, INLINE_BLOCK } from './JogoConstante';
 import './Jogo.css';
@@ -32,16 +31,6 @@ class Jogo extends React.Component {
     buttonNext.style.display = 'none';
     const SECONDS = 1000;
     setInterval(this.setTimer, SECONDS);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const buttonNext = document.querySelector(BUTTON_NEXT);
-    const NUMBER_OF_QUESTIONS = 5;
-
-    if (nextState.i === NUMBER_OF_QUESTIONS) {
-      buttonNext.parentNode.removeChild(buttonNext);
-    }
-    return true;
   }
 
   setTimer() {
@@ -94,6 +83,16 @@ class Jogo extends React.Component {
     });
   }
 
+  fbRedirect() {
+    const { i } = this.state;
+    const { history } = this.props;
+    const NUMBER_OF_QUESTIONS = 4;
+    if (i === NUMBER_OF_QUESTIONS) {
+      history.push('/feedback');
+    }
+    return true;
+  }
+
   checkCorrectAnswer(e) {
     this.numberOfCorrectQuestions();
     this.enableNextAndDisableOption();
@@ -143,6 +142,7 @@ class Jogo extends React.Component {
     const { i, assertions, score } = this.state;
     const { dispatchsetPlacar } = this.props;
     dispatchsetPlacar({ i, assertions, score });
+    this.fbRedirect();
   }
 
   render() {
@@ -178,11 +178,11 @@ class Jogo extends React.Component {
           ))}
         </div>
         <p>
+          Tempo restante:
+          {' '}
           { timer }
+          s
         </p>
-        <Link to="/feedback">
-          <button type="button">feedback</button>
-        </Link>
         <button
           data-testid="btn-next"
           type="button"
@@ -205,8 +205,11 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Jogo.propTypes = {
-  questions: PropTypes.string,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchsetPlacar: PropTypes.func.isRequired,
-}.isRequired;
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jogo);

@@ -30,23 +30,11 @@ class Header extends React.Component {
     return (
       <header>
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{nomeRedux}</p>
-        <h3>
-          Pergunta número
-          { numpergunta }
-        </h3>
-        <p data-testid="header-score">
-          Score:
-          { score }
-        </p>
-        <p>
-          Número de acertos:
-          { assertions }
-        </p>
-        <p>
-          Nível:
-          { questionsRedux[i].difficulty }
-        </p>
+        <p data-testid="header-player-name">{`Jogador: ${nomeRedux}`}</p>
+        <p>{`Pergunta número: ${numpergunta}`}</p>
+        <p data-testid="header-score">{`Score: ${score}`}</p>
+        <p>{`Número de acertos: ${assertions}`}</p>
+        <p>{`Nível: ${questionsRedux[i].difficulty}`}</p>
       </header>
     );
   }
@@ -62,8 +50,8 @@ const mapStateToProps = (state) => ({
 });
 
 Header.propTypes = {
-  emailRedux: PropTypes.string,
-  nomeRedux: PropTypes.string,
+  emailRedux: PropTypes.string.isRequired,
+  nomeRedux: PropTypes.string.isRequired,
   /* scoreRedux: PropTypes.number, */
 }.isRequired;
 
