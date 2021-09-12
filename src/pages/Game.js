@@ -176,42 +176,35 @@ class Game extends React.Component {
       correct_answer: correctAnswer,
     } = currentQuestion;
     return (
-      <main>
+      <main className="main-game">
         <Header score={ total } respondido={ respondido } />
-        <h2>{ timer }</h2>
-        <h2 data-testid="question-category">
+        <h2 className="timer">{ timer }</h2>
+        <h2 data-testid="question-category" className="category-game">
           {category}
         </h2>
         <h3
-          type="button"
+          type="text"
           data-testid="question-text"
+          className="category-game"
         >
           {question}
         </h3>
-        {/* <button
-          id="correct"
-          type="button"
-          disabled={ timer === 0 || respondido }
-          data-testid="correct-answer"
-          className={ respondido ? 'correct' : '' }
-          onClick={ this.checkClick }
-        >
-          {correctAnswer}
-        </button> */}
-        {shuffleredQuestions.map((answer, i) => (
-          <button
-            id={ answer === correctAnswer ? 'correct' : null }
-            type="button"
-            key={ i }
-            onClick={ (e) => this.checkClick(e) }
-            className={ respondido && (answer === correctAnswer ? 'correct' : 'wrong') }
-            disabled={ timer === 0 || respondido }
-            data-testid={ answer === correctAnswer
-              ? 'correct-answer' : `wrong-answer-${i}` }
-          >
-            {answer}
-          </button>
-        ))}
+        <div className="answers-buttons">
+          {shuffleredQuestions.map((answer, i) => (
+            <button
+              id={ answer === correctAnswer ? 'correct' : null }
+              type="button"
+              key={ i }
+              onClick={ (e) => this.checkClick(e) }
+              className={ respondido && (answer === correctAnswer ? 'correct' : 'wrong') }
+              disabled={ timer === 0 || respondido }
+              data-testid={ answer === correctAnswer
+                ? 'correct-answer' : `wrong-answer-${i}` }
+            >
+              {answer}
+            </button>
+          ))}
+        </div>
         {(respondido || timer === 0)
           ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
       </main>
