@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
 import './App.css';
-import { Login, Game, Settings, Feedback, Ranking } from './pages';
+import { Login, Game, Settings, Feedback, Ranking, Credits } from './pages';
 
 export default function App() {
   return (
@@ -12,6 +12,8 @@ export default function App() {
         <Route exact path="/configscreen" component={ Settings } />
         <Route exact path="/feedback" component={ Feedback } />
         <Route exact path="/ranking" component={ Ranking } />
+        <Route exact path="/credits" component={ Credits } />
+
       </Switch>
     </div>
   );

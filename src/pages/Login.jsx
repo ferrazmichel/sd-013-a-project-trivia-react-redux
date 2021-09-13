@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import Sound from 'react-sound';
 
+import { Link } from 'react-router-dom';
 import { Input, Dropdown } from '../components';
 import { fetchToken, addUser, resetScore } from '../redux/actions';
 
@@ -38,7 +39,7 @@ class Login extends Component {
 
     handleSubmit({ name, email });
     resetPlayer();
-    history.push('/gameScreen');
+    history.push('/gamescreen');
   }
 
   handleChange({ target: { name, value } }) {
@@ -70,9 +71,38 @@ class Login extends Component {
     );
   }
 
+  renderButtons() {
+    return (
+
+      <div className="row mt-1">
+
+        <Link to="/credits" className="text-decoration-none">
+          <div className="row mt-1">
+            <button
+              className="trivia-btn btn btn-start btn-lg btn-block "
+              type="button"
+            >
+              Credits
+            </button>
+          </div>
+        </Link>
+        <Link to="/configscreen" className="text-decoration-none">
+          <div className="row mt-1">
+            <button
+              className="trivia-btn btn btn-primary btn-lg btn-block "
+              type="button"
+            >
+              Configurações
+            </button>
+          </div>
+        </Link>
+      </div>
+    );
+  }
+
   render() {
     const { name, email, enable } = this.state;
-    const { history } = this.props;
+
     return (
       <section className="container-fluid">
         <br />
@@ -114,15 +144,7 @@ class Login extends Component {
                 Jogar
               </button>
             </div>
-            <div className="row mt-1">
-              <button
-                className="trivia-btn btn btn-primary btn-lg btn-block "
-                type="submit"
-                onClick={ () => history.push('/configScreen') }
-              >
-                Configurações
-              </button>
-            </div>
+            { this.renderButtons() }
           </form>
         </div>
         <br />

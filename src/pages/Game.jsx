@@ -25,8 +25,13 @@ class Game extends Component {
   }
 
   async componentDidMount() {
-    const { getQuestions, token } = this.props;
-    getQuestions(token);
+    const { getQuestions, token, category, nQuestions, diff } = this.props;
+    const options = {
+      category,
+      nQuestions,
+      diff,
+    };
+    getQuestions(token, options);
   }
 
   createRanking() {
@@ -62,7 +67,7 @@ class Game extends Component {
       });
     } else {
       this.createRanking();
-      history.push('/feedBack');
+      history.push('/feedback');
     }
   }
 
@@ -139,7 +144,7 @@ class Game extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (payload) => dispatch(fetchQuestions(payload)),
+  getQuestions: (payload, options) => dispatch(fetchQuestions(payload, options)),
   rightQuestion: () => dispatch(assertsAction()),
   saveToStore: (payload) => dispatch(saveScore(payload)),
   sendMissQT: () => dispatch(sendMissQt()),
@@ -151,9 +156,15 @@ const mapStateToProps = (state) => ({
   gameQuestions: state.game.questions,
   rightSoundFx: state.game.rightSoundFx,
   missSoundFx: state.game.missSoundFx,
+  category: state.optionsReducer.category,
+  nQuestions: state.optionsReducer.nQuestions,
+  diff: state.optionsReducer.diff,
 });
 
 Game.propTypes = {
+  diff: PropTypes.string.isRequired,
+  nQuestions: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
   sendMissQT: PropTypes.func.isRequired,
   sendRightQT: PropTypes.func.isRequired,
   rightSoundFx: PropTypes.bool.isRequired,

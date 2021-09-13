@@ -1,6 +1,6 @@
 import md5 from 'crypto-js/md5';
 import tokenApi from '../../services/tokenAPI';
-import fetch5Questions from '../../services/questionsAPI';
+import fetchOnQuestions from '../../services/questionsAPI';
 
 export const GET_TOKEN_SUCCESS = 'GET_TOKEN_SUCCESS';
 export const GET_TOKEN_ERROR = 'GET_TOKEN_ERROR';
@@ -12,6 +12,7 @@ export const SAVE_SCORE = 'SAVE_SCORE';
 export const RESET_SCORE = 'RESET_SCORE';
 export const MISS_QUESTION = 'MISS_QUESTION';
 export const RIGHT_QUESTION = 'RIGHT_QUESTION';
+export const UPDATE_CONFIG = 'UPDATE_CONFIG';
 
 export const addUser = (payload) => ({
   type: ADD_USER,
@@ -24,6 +25,7 @@ export const getQuestionSuccess = ((payload) => ({
   payload,
 }));
 
+export const updateConfig = (payload) => ({ type: UPDATE_CONFIG, payload });
 export const resetScore = () => ({ type: RESET_SCORE });
 export const assertsAction = () => ({ type: ASSERT });
 export const getQuestionError = ((payload) => ({ type: GET_QUESTIONS_ERROR, payload }));
@@ -40,10 +42,10 @@ export const fetchToken = () => (async (dispatch) => {
   } catch (error) { return dispatch(getTokenError(error)); }
 });
 
-export const fetchQuestions = (token) => (
+export const fetchQuestions = (token, options) => (
   async (dispatch) => {
     try {
-      const data = await fetch5Questions(token);
+      const data = await fetchOnQuestions(token, options);
       return dispatch(getQuestionSuccess(data.results));
     } catch (error) {
       return dispatch(getQuestionError(error));

@@ -14,14 +14,14 @@ class Ranking extends Component {
     };
 
     this.loadRanking = this.loadRanking.bind(this);
-    this.test = this.test.bind(this);
+    this.top10 = this.top10.bind(this);
   }
 
   componentDidMount() {
     this.loadRanking();
   }
 
-  test() {
+  top10() {
     const { score } = this.state;
 
     return score.map((jogador, index) => (
@@ -75,7 +75,7 @@ class Ranking extends Component {
               <div className="col">Score</div>
             </section>
             <hr className="mb-4" />
-            { this.test() }
+            { this.top10() }
           </div>
           <Link to="/" className="text-decoration-none">
             <div className="row mt-1">
