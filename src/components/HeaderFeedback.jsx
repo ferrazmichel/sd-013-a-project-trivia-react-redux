@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 class HeaderFeedback extends React.Component {
   render() {
-    const { emailRedux } = this.props;
+    const { emailRedux, scoreRedux } = this.props;
     const imgGravatar = md5(emailRedux).toString();
 
     const playerPersonalInfo = JSON.parse(localStorage.getItem('state'));
@@ -17,7 +17,8 @@ class HeaderFeedback extends React.Component {
         >
           {`Jogador: ${playerPersonalInfo.player.name}`}
         </p>
-        <p data-testid="header-score">{`Score: ${playerPersonalInfo.player.score}`}</p>
+        {/* <p data-testid="header-score">{`Score: ${playerPersonalInfo.player.score}`}</p> */}
+        <p data-testid="header-score">{scoreRedux}</p>
       </header>
     );
   }
@@ -25,6 +26,7 @@ class HeaderFeedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   emailRedux: state.reducerLogin.email,
+  scoreRedux: state.reducerPlacar.score,
 });
 
 HeaderFeedback.propTypes = {
