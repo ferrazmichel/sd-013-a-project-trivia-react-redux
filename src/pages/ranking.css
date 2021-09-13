@@ -2,7 +2,7 @@
   background-color: #5e5be1;
   box-shadow: #00000040 0 5px 15px;
   padding: 50px;
-  width: 500px;
+  width: 60%;
 }
 
 .ranking-item {
@@ -10,14 +10,59 @@
   font-size: 20px;
 }
 
+ol {
+  counter-reset: item;
+  list-style-type: none;
+}
+
+li {
+  display: block;
+}
+
 li:before {
-  font-size: 60px;
+  content: counter(item) '  ';
+  counter-increment: item;
+  font-size: 80px;
+  left: -30px;
+  position: absolute;
 }
 
 .player-image-name {
+  flex-basis: 60%;
   justify-self: start;
 }
 
-.player-score {
-  margin-left: auto;
+.player-image-name img {
+  border-radius: 50%;
 }
+
+.player-score {
+  display: flex;
+  flex-basis: 25%;
+  justify-content: space-between;
+  margin-left: 10px;
+}
+
+.player-score-span {
+  flex-basis: 40%;
+}
+
+@media screen and ( max-width : 768px ) {
+
+  .ranking {
+    min-width: 500px;
+    width: 80%;
+  }
+}
+
+@media screen and ( max-width : 590px ) {
+
+  .ranking {
+    min-width: 500px;
+    width: 90%;
+  }
+}
+
+/* https://stackoverflow.com/questions/11946098/how-to-remove-dot-after-number- */
+
+/* in-ordered-list-items-in-ol-li/11946109 */
