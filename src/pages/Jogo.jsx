@@ -15,6 +15,7 @@ class Jogo extends React.Component {
       button: false,
       assertions: 0,
       score: 0,
+      numAleatorio: 0,
     };
     this.checkCorrectAnswer = this.checkCorrectAnswer.bind(this);
     this.checkWrongAnswer = this.checkWrongAnswer.bind(this);
@@ -24,6 +25,7 @@ class Jogo extends React.Component {
     this.numberOfCorrectQuestions = this.numberOfCorrectQuestions.bind(this);
     this.scoreByLevelDifficulty = this.scoreByLevelDifficulty.bind(this);
     this.auxNextQuestion = this.auxNextQuestion.bind(this);
+    this.answerAlternatives = this.answerAlternatives.bind(this);
   }
 
   componentDidMount() {
@@ -127,45 +129,63 @@ class Jogo extends React.Component {
 
   nextQuestion() {
     this.auxNextQuestion();
-    this.setState((state) => ({
-      i: state.i + 1,
+    const { i } = this.state;
+    const NUM = 4;
+    this.setState({
+      i: i + 1,
       timer: 30,
       button: false,
-    }));
+      numAleatorio: Math.floor(Math.random() * (NUM - 0)) + 0,
+    });
     this.fbRedirect();
+  }
+
+  answerAlternatives() {
+    const { questions } = this.props;
+    const { i, button, numAleatorio } = this.state;
+    const listaDeRespostas = questions[i].incorrect_answers.map((incorrect, index) => (
+      <p key={ index }>
+        <button
+          disabled={ button }
+          className="wrong"
+          onClick={ this.checkWrongAnswer }
+          type="button"
+          data-testid={ `wrong-answer-${index}` }
+        >
+          {incorrect}
+        </button>
+      </p>
+    ));
+
+    const alternativasCorretas = (
+      <p>
+        <button
+          disabled={ button }
+          className="correct"
+          onClick={ this.checkCorrectAnswer }
+          type="button"
+          data-testid="correct-answer"
+        >
+          {questions[i].correct_answer}
+        </button>
+      </p>);
+    listaDeRespostas.push(alternativasCorretas);
+    listaDeRespostas
+      .splice(numAleatorio, 0, listaDeRespostas
+        .splice(listaDeRespostas.length - 1, 1)[0]);
+    return listaDeRespostas;
   }
 
   render() {
     const { questions } = this.props;
-    const { i, timer, button } = this.state;
+    const { i, timer } = this.state;
     return (
       <div>
         <Header i={ i } />
         <div>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
-          <button
-            disabled={ button }
-            className="correct"
-            onClick={ this.checkCorrectAnswer }
-            type="button"
-            data-testid="correct-answer"
-          >
-            {questions[i].correct_answer}
-          </button>
-          {questions[i].incorrect_answers.map((incorrect, index) => (
-            <p key={ index }>
-              <button
-                disabled={ button }
-                className="wrong"
-                onClick={ this.checkWrongAnswer }
-                type="button"
-                data-testid={ `wrong-answer-${index}` }
-              >
-                {incorrect}
-              </button>
-            </p>
-          ))}
+          { this.answerAlternatives() }
         </div>
         <p>
           Tempo restante:
@@ -203,3 +223,7 @@ Jogo.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Jogo);
+
+/* Referências para a função que muda a posição da alternativa correta:
+https://www.horadecodar.com.br/2020/03/30/javascript-mudar-a-posicao-de-um-elemento-no-array/
+https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
