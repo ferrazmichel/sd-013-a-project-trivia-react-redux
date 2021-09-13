@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { login } from '../actions';
+import { login, score } from '../actions';
 import ButtonConfig from '../components/ButtonConfig';
 
 import '../css/Login.css';
@@ -39,8 +39,10 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { dispatchLogin, history } = this.props;
+    const { dispatchLogin, dispatchGame, history } = this.props;
+    const playerInfo = { assertions: 0, score: 0 };
     dispatchLogin(this.state);
+    dispatchGame(playerInfo);
     history.push('/Game');
   }
 
@@ -96,10 +98,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (state) => dispatch(login(state)),
+  dispatchGame: (state) => dispatch(score(state)),
 });
 
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
+  dispatchGame: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
