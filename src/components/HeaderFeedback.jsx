@@ -17,7 +17,9 @@ class HeaderFeedback extends React.Component {
         >
           {`Jogador: ${playerPersonalInfo.player.name}`}
         </p>
-        {/* <p data-testid="header-score">{`Score: ${playerPersonalInfo.player.score}`}</p> */}
+        {/* <p data-testid="header-score">
+          {`Score: ${playerPersonalInfo.player.score}`}
+        </p> */}
         <p data-testid="header-score">{scoreRedux}</p>
       </header>
     );
