@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-/* import Header from '../components/Header'; */
 import HeaderFeedback from '../components/HeaderFeedback';
 
 class Feedback extends React.Component {
@@ -22,7 +21,6 @@ class Feedback extends React.Component {
     return (
       <>
         <HeaderFeedback />
-        {/* <Header/> */}
         <p data-testid="feedback-text">{ this.numeroDeAcertos() }</p>
         <Link to="/">
           <button type="button" data-testid="btn-play-again">Jogar novamente</button>

@@ -107,14 +107,6 @@ class Jogo extends React.Component {
     e.target.classList.add('certo');
     const wrong = document.querySelectorAll('.wrong');
     wrong.forEach((item) => item.classList.add('errado'));
-    /* const NUM = 3; */
-
-    /* if (wrong.length === NUM) {
-      wrong[0].classList.add('errado');
-      wrong[1].classList.add('errado');
-      wrong[2].classList.add('errado');
-    }
-    wrong[0].classList.add('errado'); */
   }
 
   checkWrongAnswer(e) {
@@ -131,15 +123,6 @@ class Jogo extends React.Component {
     const wrong = document.querySelectorAll('.errado');
     correctButton.classList.remove('certo');
     wrong.forEach((item) => item.classList.remove('errado'));
-    /* const NUM = 3;
-    const ONE = 1;
-    if (wrong.length === NUM) {
-      wrong[0].classList.remove('errado');
-      wrong[1].classList.remove('errado');
-      wrong[2].classList.remove('errado');
-    } else if (wrong.length === ONE) {
-      wrong[0].classList.remove('errado');
-    } */
   }
 
   nextQuestion() {

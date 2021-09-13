@@ -10,7 +10,7 @@ class Header extends React.Component {
       nomeRedux,
       scoreRedux,
       assertionsRedux,
-      /* questionsRedux, */
+      questions,
       i,
     } = this.props;
     const imgGravatar = md5(emailRedux).toString();
@@ -32,7 +32,7 @@ class Header extends React.Component {
         <p>{`Pergunta número: ${numpergunta}`}</p>
         <p data-testid="header-score">{`Score: ${scoreRedux}`}</p>
         <p>{`Número de acertos: ${assertionsRedux}`}</p>
-        {/* <p>{`Nível: ${questionsRedux[i].difficulty}`}</p> */}
+        <p>{`Nível: ${questions[i].difficulty}`}</p>
       </header>
     );
   }
@@ -43,10 +43,11 @@ const mapStateToProps = (state) => ({
   nomeRedux: state.reducerLogin.nome,
   scoreRedux: state.reducerPlacar.score,
   assertionsRedux: state.reducerPlacar.assertions,
-  questionsRedux: state.reducerQuestions.questions,
+  questions: state.reducerQuestions.questions,
 });
 
 Header.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   emailRedux: PropTypes.string.isRequired,
   nomeRedux: PropTypes.string.isRequired,
   scoreRedux: PropTypes.number.isRequired,
