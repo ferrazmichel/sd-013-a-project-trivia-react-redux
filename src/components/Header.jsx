@@ -8,21 +8,19 @@ class Header extends React.Component {
     const {
       emailRedux,
       nomeRedux,
-      /* scoreRedux,
-      assertionsRedux, */
-      questionsRedux,
-      /* iRedux, */
+      scoreRedux,
+      assertionsRedux,
+      /* questionsRedux, */
       i,
-      assertions,
-      score,
     } = this.props;
     const imgGravatar = md5(emailRedux).toString();
     const numpergunta = i + 1;
+
     const obj = {
       player: {
         name: nomeRedux,
-        assertions,
-        score,
+        assertions: assertionsRedux,
+        score: scoreRedux,
         gravatarEmail: emailRedux,
       },
     };
@@ -32,9 +30,9 @@ class Header extends React.Component {
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{`Jogador: ${nomeRedux}`}</p>
         <p>{`Pergunta número: ${numpergunta}`}</p>
-        <p data-testid="header-score">{`Score: ${score}`}</p>
-        <p>{`Número de acertos: ${assertions}`}</p>
-        <p>{`Nível: ${questionsRedux[i].difficulty}`}</p>
+        <p data-testid="header-score">{`Score: ${scoreRedux}`}</p>
+        <p>{`Número de acertos: ${assertionsRedux}`}</p>
+        {/* <p>{`Nível: ${questionsRedux[i].difficulty}`}</p> */}
       </header>
     );
   }
@@ -43,16 +41,16 @@ class Header extends React.Component {
 const mapStateToProps = (state) => ({
   emailRedux: state.reducerLogin.email,
   nomeRedux: state.reducerLogin.nome,
-  /* scoreRedux: state.reducerPlacar.score,
-  assertionsRedux: state.reducerPlacar.assertions, */
-  /* iRedux: state.reducerPlacar.i, */
+  scoreRedux: state.reducerPlacar.score,
+  assertionsRedux: state.reducerPlacar.assertions,
   questionsRedux: state.reducerQuestions.questions,
 });
 
 Header.propTypes = {
   emailRedux: PropTypes.string.isRequired,
   nomeRedux: PropTypes.string.isRequired,
-  /* scoreRedux: PropTypes.number, */
+  scoreRedux: PropTypes.number.isRequired,
+  assertionsRedux: PropTypes.number.isRequired,
 }.isRequired;
 
 export default connect(mapStateToProps)(Header);

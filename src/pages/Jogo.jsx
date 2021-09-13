@@ -33,6 +33,14 @@ class Jogo extends React.Component {
     setInterval(this.setTimer, SECONDS);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      const { i, assertions, score } = this.state;
+      const { dispatchsetPlacar } = this.props;
+      dispatchsetPlacar({ i, assertions, score });
+    }
+  }
+
   setTimer() {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     const { timer, button } = this.state;
@@ -64,13 +72,13 @@ class Jogo extends React.Component {
   numberOfCorrectQuestions() {
     const NUMB = 10;
     const { questions } = this.props;
-    const { assertions, score, timer, i } = this.state;
+    const { timer, i } = this.state;
     const nivel = questions[i].difficulty;
     const dificuldade = this.scoreByLevelDifficulty(nivel);
-    this.setState({
-      assertions: assertions + 1,
-      score: score + (1 * (NUMB + (timer * dificuldade))),
-    });
+    this.setState((state) => ({
+      assertions: state.assertions + 1,
+      score: state.score + (NUMB + (timer * dificuldade)),
+    }));
   }
 
   enableNextAndDisableOption() {
@@ -141,18 +149,15 @@ class Jogo extends React.Component {
       timer: 30,
       button: false,
     }));
-    const { i, assertions, score } = this.state;
-    const { dispatchsetPlacar } = this.props;
-    dispatchsetPlacar({ i, assertions, score });
     this.fbRedirect();
   }
 
   render() {
     const { questions } = this.props;
-    const { i, timer, button, assertions, score } = this.state;
+    const { i, timer, button } = this.state;
     return (
       <div>
-        <Header score={ score } assertions={ assertions } i={ i } />
+        <Header i={ i } />
         <div>
           <h1 data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
