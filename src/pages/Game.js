@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { getQuestions, updateScore } from '../redux/actions';
@@ -15,12 +15,11 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      // redirect: false,
+      redirect: false,
       qIndex: 0,
     };
-
     this.handleSelect = this.handleSelect.bind(this);
-    // this.handleNext = this.handleNext.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
 
   componentDidMount() {
@@ -28,21 +27,22 @@ class Game extends Component {
     getQs(token);
   }
 
-  // handleNext() {
-  //   const { qIndex } = this.state;
-  //   const { questions } = this.props;
-  //   if (qIndex < questions.length - 1) {
-  //     this.setState((state) => ({ qIndex: state.qIndex + 1 }));
-  //     document.getElementsByName('options').forEach((opt) => {
-  //       opt.disabled = false;
-  //       opt.className = '';
-  //     });
-  //     document.querySelector('.btn-next').classList.add('invisible');
-  //   }
-  //   // else {
-  //   // //   this.setState({ redirect: true });
-  //   // // }
-  // }
+  handleNext() {
+    const { qIndex } = this.state;
+    const { questions } = this.props;
+    if (qIndex < questions.length - 1) {
+      this.setState((state) => ({ qIndex: state.qIndex + 1 }));
+      document.getElementsByName('options').forEach((opt) => {
+        opt.disabled = false;
+        opt.className = '';
+      });
+      document.querySelector('.btn-next').classList.add('invisible');
+    } else {
+      this.setState({
+        redirect: true,
+      });
+    }
+  }
 
   handleSelect(question, target, seconds) {
     const { updtScore } = this.props;
@@ -66,17 +66,17 @@ class Game extends Component {
   }
 
   render() {
-    const { qIndex } = this.state;
+    const { redirect, qIndex } = this.state;
     const { questions } = this.props;
     if (questions.length < 1) return <h3>Loading...</h3>;
-    // if (redirect) return <Redirect to="/feedback" />;
+    if (redirect) return <Redirect to="/feedback" />;
     return (
       <div>
         <Header />
         <GameBoard
           question={ questions[qIndex] }
           onSelect={ this.handleSelect }
-          // onNext={ this.handleNext }
+          onNext={ this.handleNext }
         />
       </div>
     );
