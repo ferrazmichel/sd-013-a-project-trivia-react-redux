@@ -52,7 +52,7 @@
   display: grid;
   gap: 25px;
   grid: 1fr 1fr 2fr 1fr / 1fr;
-  height: 50%;
+  height: 80%;
 
   /*
   NOTE Outro exemplo do Shorthand
@@ -124,6 +124,10 @@ O transition serve para uma transição suave
 
   .main {
     grid: 1fr / 1fr 1fr;
+  }
+
+  .form {
+    height: 50%;
   }
 }
 

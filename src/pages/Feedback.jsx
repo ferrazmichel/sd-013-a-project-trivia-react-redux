@@ -64,16 +64,9 @@ const mapStateToProps = (state) => ({
   assertions: state.gameReducer.assertions,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
-
 export default connect(mapStateToProps, null)(Feedback);
 
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
-
-// 39:17  error  Expected the depth of nested jsx elements to be <= 4, but found 5  react/jsx-max-depth
-//  49:17  error  Expected the depth of nested jsx elements to be <= 4, but found 5  react/jsx-max-depth

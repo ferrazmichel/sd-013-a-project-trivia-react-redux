@@ -16,8 +16,10 @@ class Header extends React.Component {
               src={ gravatar }
               alt="Gravatar Pic"
             />
-            Player
-            <span data-testid="header-player-name">{ userName }</span>
+            <span>
+              Player
+              <span data-testid="header-player-name">{ userName }</span>
+            </span>
           </article>
         </section>
         <section className={ style.sectionScore }>
