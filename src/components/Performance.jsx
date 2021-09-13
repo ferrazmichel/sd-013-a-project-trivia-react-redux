@@ -12,7 +12,7 @@ class Performance extends React.Component {
           <p data-testid="feedback-total-score">{score}</p>
         </div>
         <div>
-          <h1>Número de perguntas certas</h1>
+          <h1>Número de respostas certas</h1>
           <p data-testid="feedback-total-question">{assertions}</p>
         </div>
       </div>

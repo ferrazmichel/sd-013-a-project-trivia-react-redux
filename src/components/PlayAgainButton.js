@@ -6,10 +6,15 @@ import { returnInitialState } from '../redux/actions';
 
 class PlayAgainButton extends Component {
   render() {
-    const { testid, clearStore } = this.props;
+    const { testid, clearStore, className } = this.props;
     return (
       <Link to="/">
-        <button onClick={ clearStore } data-testid={ testid } type="button">
+        <button
+          className={ className }
+          onClick={ clearStore }
+          data-testid={ testid }
+          type="button"
+        >
           Jogar novamente
         </button>
       </Link>
@@ -19,6 +24,7 @@ class PlayAgainButton extends Component {
 
 PlayAgainButton.propTypes = {
   testid: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
   clearStore: PropTypes.func.isRequired,
 };
 

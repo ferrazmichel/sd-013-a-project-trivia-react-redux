@@ -25,9 +25,7 @@ class Header extends React.Component {
             src={ this.getGravatarImage() }
             alt=""
           />
-          <p data-testid="header-player-name">{ name }</p>
-        </div>
-        <div>
+          <p data-testid="header-player-name">{ `Jogador: ${name}` }</p>
           <p data-testid="header-score">{ score }</p>
         </div>
       </header>

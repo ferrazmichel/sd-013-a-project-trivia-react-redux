@@ -85,23 +85,27 @@ class Game extends React.Component {
 
     return (
       <div>
-        Game
-        <Header />
-        <QuestionCard
-          questionData={ questions[currentQuestion] }
-          qstIndex={ currentQuestion }
-          setButtonVisibility={ this.setButtonVisibility }
-
-        />
-        <Timer setButtonVisibility={ this.setButtonVisibility } />
-        <button
-          type="button"
-          data-testid="btn-next"
-          hidden={ isHidden }
-          onClick={ this.handleClick }
-        >
-          Próxima pergunta
-        </button>
+        <h1>
+          Game
+        </h1>
+        <div className="game">
+          <Header />
+          <QuestionCard
+            questionData={ questions[currentQuestion] }
+            qstIndex={ currentQuestion }
+            setButtonVisibility={ this.setButtonVisibility }
+          />
+          <Timer setButtonVisibility={ this.setButtonVisibility } />
+          <button
+            type="button"
+            data-testid="btn-next"
+            hidden={ isHidden }
+            onClick={ this.handleClick }
+            className="button-next"
+          >
+            Próxima pergunta
+          </button>
+        </div>
       </div>
     );
   }

@@ -73,7 +73,7 @@ class QuestionCard extends React.Component {
     const correctButtons = (
       <button
         key={ correctAnswer + qstIndex }
-        className="correct-answer"
+        className="correct-answer button-answer"
         type="button"
         name="question"
         data-testid="correct-answer"
@@ -85,7 +85,7 @@ class QuestionCard extends React.Component {
       <button
         type="button"
         name="question"
-        className="wrong-answer"
+        className="wrong-answer button-answer"
         key={ answer + qstIndex }
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.handleClick }
@@ -110,7 +110,7 @@ class QuestionCard extends React.Component {
       });
     }
     return (
-      <div>
+      <div id="question-card">
         <h1 data-testid="question-category">{category}</h1>
         <p data-testid="question-text">{this.decode(question)}</p>
         {buttons}

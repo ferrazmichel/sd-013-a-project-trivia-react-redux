@@ -7,15 +7,24 @@ class Feedback extends React.Component {
     return (
       <div>
         <h1 data-testid="feedback-text">Feedback</h1>
-        <Header />
-        <FeedbackMessage />
-        <Performance />
-        <PlayAgainButton testid="btn-play-again" />
-        <Link to="/ranking">
-          <button data-testid="btn-ranking" type="button">
-            Ver Ranking
-          </button>
-        </Link>
+        <div className="feedback">
+          <Header />
+          <FeedbackMessage />
+          <Performance />
+          <PlayAgainButton
+            className="button-main"
+            testid="btn-play-again"
+          />
+          <Link to="/ranking">
+            <button
+              data-testid="btn-ranking"
+              type="button"
+              className="button-main"
+            >
+              Ver Ranking
+            </button>
+          </Link>
+        </div>
       </div>
     );
   }
