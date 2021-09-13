@@ -6,12 +6,12 @@ class Question extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rigthBoarder: false,
-      wrongBoarder: false,
+      // rigthBoarder: false,
+      // wrongBoarder: false,
       // countdown: 30,
       // disableButtonNext: true,
     };
-    this.changeColor = this.changeColor.bind(this);
+    // this.changeColor = this.changeColor.bind(this);
     // this.timerDisable = this.timerDisable.bind(this);
     // this.countdown = this.countdown.bind(this);
     // this.handleClick = this.handleClick.bind(this);
@@ -22,21 +22,23 @@ class Question extends Component {
     // this.timerDisable();
   }
 
-  changeColor() {
-    const { rigthBoarder, wrongBoarder } = this.state;
+  // changeColor() {
+  //   const { rigthBoarder, wrongBoarder } = this.state;
 
-    const green = rigthBoarder === '' ? 'green-border' : '';
-    const red = wrongBoarder === '' ? 'red-border' : '';
+  //   const green = rigthBoarder === '' ? 'green-border' : '';
+  //   const red = wrongBoarder === '' ? 'red-border' : '';
 
-    this.setState({
-      rigthBoarder: green,
-      wrongBoarder: red,
-    });
-  }
+  //   this.setState({
+  //     rigthBoarder: green,
+  //     wrongBoarder: red,
+  //   });
+
+  //   clearInterval(this.timeout);
+  // }
 
   render() {
-    const { question, disable, rigth, wrong } = this.props;
-    const { rigthBoarder, wrongBoarder } = this.state;
+    const { question, disable, right, wrong, changeColor } = this.props;
+    // const { rigthBoarder, wrongBoarder } = this.state;
     return (
       <main>
         <div>
@@ -52,9 +54,9 @@ class Question extends Component {
             <li>
               <button
                 disabled={ disable }
-                className={ rigthBoarder ? 'green-border' : '' }
+                className={ right }
                 data-testid="correct-answer"
-                onClick={ this.changeColor }
+                onClick={ changeColor }
                 type="button"
               >
                 {question.correct_answer}
@@ -64,9 +66,9 @@ class Question extends Component {
               <li key={ i }>
                 <button
                   disabled={ disable }
-                  className={ wrongBoarder ? 'red-border' : '' }
+                  className={ wrong }
                   data-testid={ `wrong-answer-${i}` }
-                  onClick={ this.changeColor }
+                  onClick={ changeColor }
                   type="button"
                 >
                   {incorrect}

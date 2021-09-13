@@ -10,17 +10,17 @@ class Trivia extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rigthBoarder: false,
-      wrongBoarder: false,
+      rigthBoarder: '',
+      wrongBoarder: '',
       disable: false,
       countdown: 30,
       indexQuestions: 0,
-      disableButtonNext: true,
+      // disableButtonNext: true,
       // questions: [],
     };
     this.fetchGravater = this.fetchGravater.bind(this);
     // this.gameInfo = this.gameInfo.bind(this);
-    // this.changeColor = this.changeColor.bind(this);
+    this.changeColor = this.changeColor.bind(this);
     this.timerDisable = this.timerDisable.bind(this);
     this.countdown = this.countdown.bind(this);
     this.fetchQuestion = this.fetchQuestion.bind(this);
@@ -77,7 +77,7 @@ class Trivia extends Component {
   countdown() {
     const TIME_RELOAD = 1000;
     // const count10 = 10;
-    this.timeout = setInterval(() => {
+    this.interval = setInterval(() => {
       const { countdown } = this.state;
       this.setState({ countdown: countdown - 1 });
     }, TIME_RELOAD);
@@ -85,11 +85,11 @@ class Trivia extends Component {
 
   timerDisable() {
     // const { countdown } = this.state;
-    const TIMER = 30000;
+    const TIMER = 3000;
     // const counter = 30;
     // if (countdown === counter) {
-    setTimeout(() => {
-      this.setState({ disable: true, disableButtonNext: false });
+    this.timeout = setTimeout(() => {
+      this.setState({ disable: true });
     }, TIMER);
     // }
   }
@@ -105,19 +105,39 @@ class Trivia extends Component {
         disable: false,
         disableButtonNext: true,
         countdown: 30,
-        rigthBorder: !rigthBoarder,
-        wrongBorder: !wrongBoarder,
+        rigthBoarder: '',
+        wrongBoarder: '',
       }, () => {
         // this.randomAnswer();
         this.countdown();
       });
+      // asudhs({right, wrong})
+      clearTimeout(this.timeout);
     }
+  }
+
+  // Decidir trocar o nome mais especifico para essa função que faz tudo.
+  changeColor() {
+    const { rigthBoarder, wrongBoarder } = this.state;
+
+    const green = rigthBoarder === '' ? 'green-border' : '';
+    const red = wrongBoarder === '' ? 'red-border' : '';
+
+    this.setState({
+      rigthBoarder: green,
+      wrongBoarder: red,
+      disable: true,
+    });
+
+    clearInterval(this.interval);
+    clearTimeout(this.timeout);
   }
 
   render() {
     const { userPlayer, questionsAPI } = this.props;
     const { disable,
-      countdown, indexQuestions, disableButtonNext, rigthBorder, wrongBorder } = this.state;
+      countdown,
+      indexQuestions, disableButtonNext, rigthBoarder, wrongBoarder } = this.state;
 
     return (
       <main>
@@ -127,22 +147,23 @@ class Trivia extends Component {
           <p data-testid="header-score">Placar: 0</p>
         </header>
         <h3>{ countdown }</h3>
-        { disable && clearInterval(this.timeout)}
-        {questionsAPI.length > 0
-          ? <Question
-            right={ rigthBorder }
-            wrong={ wrongBorder }
+        { disable && clearInterval(this.interval) }
+        {questionsAPI.length > 0 ? (
+          <Question
+            changeColor={ this.changeColor }
+            right={ rigthBoarder }
+            wrong={ wrongBoarder }
             disable={ disable }
             question={ questionsAPI[indexQuestions] }
-          />
+          />)
           : <p> Loading...</p>}
-        <button
-          type="button"
-          onClick={ this.handleClick }
-          disabled={ disableButtonNext }
-        >
-          Next
-        </button>
+        {(rigthBoarder === 'green-border' || wrongBoarder === 'red-border') ? (
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Next
+          </button>) : null}
       </main>
     );
   }
