@@ -85,7 +85,7 @@ class Trivia extends Component {
 
   timerDisable() {
     // const { countdown } = this.state;
-    const TIMER = 3000;
+    const TIMER = 30000;
     // const counter = 30;
     // if (countdown === counter) {
     this.timeout = setTimeout(() => {
@@ -103,7 +103,7 @@ class Trivia extends Component {
       this.setState({
         indexQuestions: indexQuestions + 1,
         disable: false,
-        disableButtonNext: true,
+        // disableButtonNext: true,
         countdown: 30,
         rigthBoarder: '',
         wrongBoarder: '',
@@ -113,6 +113,7 @@ class Trivia extends Component {
       });
       // asudhs({right, wrong})
       clearTimeout(this.timeout);
+      clearInterval(this.interval);
     }
   }
 
@@ -137,7 +138,7 @@ class Trivia extends Component {
     const { userPlayer, questionsAPI } = this.props;
     const { disable,
       countdown,
-      indexQuestions, disableButtonNext, rigthBoarder, wrongBoarder } = this.state;
+      indexQuestions, rigthBoarder, wrongBoarder } = this.state;
 
     return (
       <main>
@@ -147,7 +148,7 @@ class Trivia extends Component {
           <p data-testid="header-score">Placar: 0</p>
         </header>
         <h3>{ countdown }</h3>
-        { disable && clearInterval(this.interval) }
+        { disable && clearInterval(this.interval) && clearTimeout(this.timeout) }
         {questionsAPI.length > 0 ? (
           <Question
             changeColor={ this.changeColor }
@@ -157,13 +158,16 @@ class Trivia extends Component {
             question={ questionsAPI[indexQuestions] }
           />)
           : <p> Loading...</p>}
-        {(rigthBoarder === 'green-border' || wrongBoarder === 'red-border') ? (
-          <button
-            type="button"
-            onClick={ this.handleClick }
-          >
-            Next
-          </button>) : null}
+        {(rigthBoarder === 'green-border'
+          || wrongBoarder === 'red-border'
+          || countdown === 0) ? (
+            <button
+              type="button"
+              onClick={ this.handleClick }
+            >
+              Next
+            </button>
+          ) : null}
       </main>
     );
   }

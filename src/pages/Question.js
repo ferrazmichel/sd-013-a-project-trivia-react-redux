@@ -15,12 +15,13 @@ class Question extends Component {
     // this.timerDisable = this.timerDisable.bind(this);
     // this.countdown = this.countdown.bind(this);
     // this.handleClick = this.handleClick.bind(this);
+    this.decodeHtml = this.decodeHtml.bind(this);
   }
 
-  componentDidMount() {
-    // this.countdown();
-    // this.timerDisable();
-  }
+  // componentDidMount() {
+  //   // this.countdown();
+  //   // this.timerDisable();
+  // }
 
   // changeColor() {
   //   const { rigthBoarder, wrongBoarder } = this.state;
@@ -36,6 +37,12 @@ class Question extends Component {
   //   clearInterval(this.timeout);
   // }
 
+  decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   render() {
     const { question, disable, right, wrong, changeColor } = this.props;
     // const { rigthBoarder, wrongBoarder } = this.state;
@@ -48,7 +55,7 @@ class Question extends Component {
           </p>
           <p>
             Question:
-            <span data-testid="question-text">{question.question}</span>
+            <span data-testid="question-text">{this.decodeHtml(question.question)}</span>
           </p>
           <ul>
             <li>
