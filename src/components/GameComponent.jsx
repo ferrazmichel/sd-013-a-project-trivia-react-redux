@@ -31,10 +31,11 @@ class GameComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { atualQuestion } = this.props;
     if (prevState.seconds === 1) {
       this.clearSeconds();
     }
-    if (prevProps !== this.props) {
+    if (prevProps.atualQuestion !== atualQuestion) {
       this.buttonsAnswers();
     }
   }
