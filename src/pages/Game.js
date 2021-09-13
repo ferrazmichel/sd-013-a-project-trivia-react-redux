@@ -26,6 +26,7 @@ class Game extends React.Component {
     this.nextQuestionBtn = this.nextQuestionBtn.bind(this);
     this.shuffeQuestions = this.shuffeQuestions.bind(this);
     this.shuffleToState = this.shuffleToState.bind(this);
+    this.decode = this.decode.bind(this);
   }
 
   componentDidMount() {
@@ -168,6 +169,13 @@ class Game extends React.Component {
     });
   }
 
+  // lógica para o texto das perguntas aparecer corretamente
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   render() {
     const { state: { index, respondido, timer, total, shuffleredQuestions },
       props: { questions } } = this;
@@ -176,42 +184,38 @@ class Game extends React.Component {
       correct_answer: correctAnswer,
     } = currentQuestion;
     return (
-      <main>
+      <main className="main-game">
         <Header score={ total } respondido={ respondido } />
-        <h2>{ timer }</h2>
-        <h2 data-testid="question-category">
-          {category}
-        </h2>
+        <div className="div-timer-category">
+          <h2 className="timer">{ timer }</h2>
+          <h2 data-testid="question-category" className="category-game">
+            {category}
+          </h2>
+        </div>
         <h3
-          type="button"
+          type="text"
           data-testid="question-text"
+          className="question-game"
         >
-          {question}
+          {/* aqui implementamos a lógica do texto */}
+          {this.decode(question)}
         </h3>
-        {/* <button
-          id="correct"
-          type="button"
-          disabled={ timer === 0 || respondido }
-          data-testid="correct-answer"
-          className={ respondido ? 'correct' : '' }
-          onClick={ this.checkClick }
-        >
-          {correctAnswer}
-        </button> */}
-        {shuffleredQuestions.map((answer, i) => (
-          <button
-            id={ answer === correctAnswer ? 'correct' : null }
-            type="button"
-            key={ i }
-            onClick={ (e) => this.checkClick(e) }
-            className={ respondido && (answer === correctAnswer ? 'correct' : 'wrong') }
-            disabled={ timer === 0 || respondido }
-            data-testid={ answer === correctAnswer
-              ? 'correct-answer' : `wrong-answer-${i}` }
-          >
-            {answer}
-          </button>
-        ))}
+        <div className="answers-buttons">
+          {shuffleredQuestions.map((answer, i) => (
+            <button
+              id={ answer === correctAnswer ? 'correct' : null }
+              type="button"
+              key={ i }
+              onClick={ (e) => this.checkClick(e) }
+              className={ respondido && (answer === correctAnswer ? 'correct' : 'wrong') }
+              disabled={ timer === 0 || respondido }
+              data-testid={ answer === correctAnswer
+                ? 'correct-answer' : `wrong-answer-${i}` }
+            >
+              {answer}
+            </button>
+          ))}
+        </div>
         {(respondido || timer === 0)
           ? <NextButton nextQuestionBtn={ this.nextQuestionBtn } /> : null}
       </main>
