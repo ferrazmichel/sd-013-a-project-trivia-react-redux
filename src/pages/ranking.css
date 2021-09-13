@@ -2,7 +2,6 @@
   background-color: #5e5be1;
   box-shadow: #00000040 0 5px 15px;
   padding: 50px;
-  /* width: 500px; */
   width: 60%;
 }
 
@@ -21,16 +20,16 @@ li {
 }
 
 li:before {
-  font-size: 80px;
-  content: counter(item) "  "; 
+  content: counter(item) '  ';
   counter-increment: item;
-  position: absolute;
+  font-size: 80px;
   left: -30px;
+  position: absolute;
 }
 
 .player-image-name {
-  justify-self: start;
   flex-basis: 60%;
+  justify-self: start;
 }
 
 .player-image-name img {
@@ -39,9 +38,9 @@ li:before {
 
 .player-score {
   display: flex;
+  flex-basis: 25%;
   justify-content: space-between;
   margin-left: 10px;
-  flex-basis: 25%;
 }
 
 .player-score-span {
@@ -51,17 +50,19 @@ li:before {
 @media screen and ( max-width : 768px ) {
 
   .ranking {
-    width: 80% !important;
     min-width: 500px;
+    width: 80%;
   }
 }
 
 @media screen and ( max-width : 590px ) {
 
   .ranking {
-    width: 90% !important;
     min-width: 500px;
+    width: 90%;
   }
 }
 
-/* https://stackoverflow.com/questions/11946098/how-to-remove-dot-after-number-in-ordered-list-items-in-ol-li/11946109 */
+/* https://stackoverflow.com/questions/11946098/how-to-remove-dot-after-number- */
+
+/* in-ordered-list-items-in-ol-li/11946109 */
