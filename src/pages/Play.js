@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchURL, saveToLocalStorage, loadFromLocalStaorage } from '../services';
+import { fetchURL, saveToLocalStorage, loadFromLocalStorage } from '../services';
 import { sendPlayerInfo } from '../actions';
 import Timer from '../components/Timer';
 
@@ -112,7 +112,7 @@ class Play extends Component {
   }
 
   async handleQuestions() {
-    const token = loadFromLocalStaorage('token');
+    const token = loadFromLocalStorage('token');
     const questionURL = `https://opentdb.com/api.php?amount=${MAX_QUESTIONS}&token=${token}&encode=base64`;
     const requestQuestions = await fetchURL(questionURL);
     this.setState({ questions: requestQuestions }, this.setShuffleAnswers);

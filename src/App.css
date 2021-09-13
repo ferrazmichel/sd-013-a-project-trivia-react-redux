@@ -1,3 +1,8 @@
+body {
+  display: flex;
+  justify-content: center;
+}
+
 html {
   background-image: linear-gradient(rgb(41, 55, 44), white);
   background-repeat: no-repeat;
@@ -63,3 +68,19 @@ header h2 {
   margin-top: 100px;
 }
 
+.ranking-table {
+  background-color: red;
+  justify-content: center;
+  text-align: center;
+  width: 500px;
+}
+
+.ranking-table-column {
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: space-around;
+}
+
+.ranking-table-row {
+  background-color: azure;
+}

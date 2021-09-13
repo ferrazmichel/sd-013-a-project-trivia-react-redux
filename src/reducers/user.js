@@ -8,8 +8,7 @@ const INITIAL_STATE = {
 function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case USER_INFO:
-    return {
-      ...state, ...action.payload };
+    return { ...state, ...action.payload };
   default: return state;
   }
 }

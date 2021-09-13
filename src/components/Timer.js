@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 
-// const POINTS = { easy: 1, medium: 2, hard: 3 };
-// const TIME = 30;
 const INITIAL_TIME = {
   time: 30,
 };
