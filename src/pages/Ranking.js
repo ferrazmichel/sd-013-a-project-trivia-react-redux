@@ -8,14 +8,14 @@ class Ranking extends React.Component {
     const ranking = JSON.parse(rankingStore);
     const sortedRanking = ranking.sort((a, b) => b.score - a.score);
     return (
-      <ol className="list-group list-group-numbered mb-5 ranking-list">
+      <ol className="list-group mb-5 ranking-list">
         {
           sortedRanking.map((player, index) => (
             <li
               key={ index }
               className="ranking-item
                 list-group-item
-                d-flex justify-content-start align-items-center text-white fw-bold
+                d-flex justify-content-between align-items-center text-white fw-bold
                 mb-3"
             >
               <div className="player-image-name">
@@ -28,8 +28,13 @@ class Ranking extends React.Component {
                 <span data-testid={ `player-name-${index}` }>{ player.name }</span>
               </div>
               <div className="player-score">
-                { ' Pontos: ' }
-                <span data-testid={ `player-score-${index}` }>{ player.score }</span>
+                <span>{ ' Pontos: ' }</span>
+                <span
+                  className="player-score-span"
+                  data-testid={ `player-score-${index}` }
+                >
+                  { player.score }
+                </span>
               </div>
             </li>
           ))
