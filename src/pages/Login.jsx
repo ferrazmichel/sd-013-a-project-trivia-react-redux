@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchDados, loginSubmit } from '../redux/actions';
 // import Loading from '../components/loading';
+import './pages.css';
 
 class Login extends React.Component {
   constructor() {
@@ -65,7 +66,8 @@ class Login extends React.Component {
     const { playerName, playerEmail, validateLogin } = this.state;
     // const { loadingPerguntas } = this.props;
     const loginPage = (
-      <div>
+      <div className="login-form">
+        <h1>Trivia</h1>
         <label htmlFor="inputPlayerName">
           Nome:
           <input

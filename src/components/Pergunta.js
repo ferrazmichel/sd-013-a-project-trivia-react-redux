@@ -90,7 +90,7 @@ class Pergunta extends React.Component {
       this.incrementContador();
       this.resetButtons();
       timerFinished(false);
-      const butonNext = document.querySelector('#btnNextId');
+      const butonNext = document.querySelector('.btnNextId');
       butonNext.parentNode.removeChild(butonNext);
     }
   }
@@ -108,7 +108,7 @@ class Pergunta extends React.Component {
     const botao = document.createElement('button');
     botao.innerHTML = 'Próxima';
     botao.setAttribute('data-testid', 'btn-next');
-    botao.setAttribute('id', 'btnNextId');
+    botao.setAttribute('class', 'btnNextId');
     // botao.setAttribute('onclick', () => { this.nextQuestion(); });
     botao.onclick = () => { this.nextQuestion(); };
     const div = document.querySelector('.question');
@@ -181,7 +181,7 @@ class Pergunta extends React.Component {
 
   calcScore() {
     const { contador } = this.state;
-    const timeRunned = Number(document.querySelector('#timerId').innerHTML);
+    const timeRunned = Number(document.querySelector('.timerId').innerHTML);
     console.log(timeRunned);
     const { perguntas } = this.props;
     const level = perguntas[contador].difficulty;
@@ -210,8 +210,10 @@ class Pergunta extends React.Component {
     console.log('boolClickAnswer', boolClickAnswer);
     return (
       <div className="question">
-        <span data-testid="question-category">{ perguntas[contador].category }</span>
-        <p data-testid="question-text">{ perguntas[contador].question }</p>
+        <div className="question-info">
+          <span data-testid="question-category">{ perguntas[contador].category }</span>
+          <p data-testid="question-text">{ perguntas[contador].question }</p>
+        </div>
         <div className="pergunta">{ this.shuffleAnswers() }</div>
         {/* <span>{ countdown }</span> */}
         { boolClickAnswer === false && boolTimeout === false ? <Countdown
