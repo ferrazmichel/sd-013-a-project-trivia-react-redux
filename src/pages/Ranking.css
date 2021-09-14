@@ -1,77 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap') ;
 
 .ranking-content {
   background-color: #444;
-  height: auto;
-  width: auto;
-  max-height: 600px;
-  max-width: 800px;
-  margin: 80px auto;
-  padding: 20px;
   border-radius: 10px;
   box-shadow: 3px 3px 3px black;
+  height: auto;
+  margin: 80px auto;
+  max-height: 600px;
+  max-width: 800px;
+  padding: 20px;
+  width: auto;
 }
 
 .ranking-content-inside {
-  overflow: auto;
   height: auto;
-  width: auto;
   max-height: 600px;
   max-width: 800px;
+  overflow: auto;
+  width: auto;
 }
 
 .ranking-content-inside h1 {
-  font-size: 40px;
-  text-align: center;
-  font-family: 'Press Start 2P', cursive;
   animation: movein 0.3s;
   animation-iteration-count: 3;
   color: whitesmoke;
+  font-family: Press Start 2P , cursive;
+  font-size: 40px;
+  text-align: center;
   text-shadow: 3px 3px 3px black;
 }
 
 @keyframes movein {
-  0% {color: green;}
-  100% {color: yellow;}
+
+  0% { color: green; }
+
+  100% { color: yellow; }
+
 }
 
 .ranking-content img {
-  width: 80px;
   border-radius: 50%;
   box-shadow: 0 0  8px 3px black;
+  width: 80px;
 }
 
 .ranking-content-items {
+  background-color: rgb(206, 206, 206);
   border: 1px solid black;
   border-radius: 20px;
-  margin-top: 20px;
-  margin-right: 50px;
-  width: 600px;
-  margin-left: 40px;
-  padding: 10px;
+  box-shadow: 3px 3px 3px black;
   display: flex;
   justify-content: space-around;
-  box-shadow: 3px 3px 3px black;
-  background-color: rgb(206, 206, 206);
+  margin-left: 40px;
+  margin-right: 50px;
+  margin-top: 20px;
+  padding: 10px;
   transition: all 0.5s ease-in-out;
+  width: 600px;
 }
 
 .ranking-content-items:hover {
-  transform: scale(1.1);
   background-color: rgb(255, 255, 255);
+  transform: scale(1.1);
 }
 
 .ranking-content-items span {
-  font-family: 'Press Start 2P', cursive;
+  font-family:  Press Start 2P , cursive;
   font-size: 22px;
   font-weight: 700;
   line-height: 80px;
 }
 
 .div-button {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .div-button button {

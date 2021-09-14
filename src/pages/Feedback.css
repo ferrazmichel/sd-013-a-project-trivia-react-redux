@@ -1,35 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap') ;
 
 .feedback-content {
-  width: auto;
-  height: auto;
-  max-width: 500px;
-  max-height: 700px;
-  margin: 1px auto;
-  margin-top: 180px;
+  align-items: center;
   background-color: #444;
-  padding: 20px 40px;
   border-radius: 10px;
   box-shadow: 4px 4px 50px black;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height: auto;
+  margin: 1px auto;
+  margin-top: 180px;
+  max-height: 700px;
+  max-width: 500px;
+  padding: 20px 40px;
+  width: auto;
 }
 
 .feedback-text, .feedback-score {
-  font-family: 'Press Start 2P', cursive;
+  font-family: Press Start 2P , cursive;
   font-size: 40px;
   text-shadow: 3px 3px black;
   color: aliceblue;
 }
 
-.feedback-text:hover , .feedback-score:hover {
+.feedback-text:hover, .feedback-score:hover {
   animation: movein 0.3s infinite;
 }
 
 @keyframes movein {
-  0% {color: #444;}
-  100% {color: whitesmoke;}
+
+  0% { color: #444; }
+
+  100% { color: whitesmoke; }
 }
 
 .fireworks {
