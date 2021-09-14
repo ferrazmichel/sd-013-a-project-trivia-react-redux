@@ -18,6 +18,7 @@ class Header extends React.Component {
               alt="avatar"
               data-testid="header-profile-picture"
               width="50px"
+              className="rounded-circle"
             />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
