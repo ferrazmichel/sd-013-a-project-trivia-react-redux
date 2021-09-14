@@ -4,6 +4,7 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import Pergunta from '../components/Pergunta';
 import { registerGravatar } from '../redux/actions';
+import './pages.css';
 
 class Game extends React.Component {
   constructor() {
@@ -31,24 +32,34 @@ class Game extends React.Component {
   }
 
   render() {
+    /* const localJson = JSON.parse(localStorage.getItem('state')).player;
+    const { score } = localJson; */
     const { gravatar } = this.state;
     const { nameUser, history } = this.props;
     return (
       <header>
-        <img src={ gravatar } alt="imagemGravatar" data-testid="header-profile-picture" />
-        <p>
-          User:
-          <span data-testid="header-player-name">
-            { nameUser }
-          </span>
-        </p>
-        <p>
-          Score:
-          <span data-testid="header-score">
-            0
-          </span>
-        </p>
-        Tela de game
+        <h1>Trivia</h1>
+        <div className="header-game">
+          <img
+            src={ gravatar }
+            alt="imagemGravatar"
+            data-testid="header-profile-picture"
+          />
+          <div className="header-inner">
+            <p className="div-p-game">
+              User:
+              <span data-testid="header-player-name">
+                { ` ${nameUser}`}
+              </span>
+            </p>
+            <p className="div-p-game">
+              Score:
+              <span data-testid="header-score">
+                0
+              </span>
+            </p>
+          </div>
+        </div>
         <Pergunta history={ history } />
       </header>
     );

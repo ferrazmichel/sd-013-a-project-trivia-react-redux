@@ -68,9 +68,11 @@ class Countdown extends React.Component {
   render() {
     const { countdown } = this.state;
     return (
-      <span id="timerId">
-        { countdown }
-      </span>
+      <div className="countdownClass">
+        <span className="timerId">
+          { countdown }
+        </span>
+      </div>
     );
   }
 }
@@ -84,7 +86,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Countdown.propTypes = {
-  // handleTimeout: propTypes.func.isRequired,
+  // handlleTimeout: propTypes.func.isRequired,
   timerFinished: propTypes.func,
   handleColor: propTypes.func,
   createButton: propTypes.func,

@@ -49,11 +49,12 @@ class FeedBack extends React.Component {
     console.log(typeof score);
     return (
       <div>
-        <header>
-          tela feedback
+        <header className="headerFeedback">
+          <h1>Trivia</h1>
           <img
+            className="gravatarClass"
             src={ grav }
-            alt="imatgem do gravatar"
+            alt="imagem do gravatar"
             data-testid="header-profile-picture"
           />
           <p data-testid="header-player-name">
@@ -62,6 +63,15 @@ class FeedBack extends React.Component {
           </p>
           <p data-testid="header-score">
             { score }
+          </p>
+          <p data-testid="feedback-text">
+            { this.returnMessageFeedBack()}
+          </p>
+          <span data-testid="feedback-total-score">
+            { score }
+          </span>
+          <p data-testid="feedback-total-question">
+            { this.returnPlacarFinalQuestions()}
           </p>
           <button
             type="submit"
@@ -78,15 +88,6 @@ class FeedBack extends React.Component {
             Jogar novamente
           </button>
         </header>
-        <p data-testid="feedback-text">
-          { this.returnMessageFeedBack()}
-        </p>
-        <span data-testid="feedback-total-score">
-          { score }
-        </span>
-        <p data-testid="feedback-total-question">
-          { this.returnPlacarFinalQuestions()}
-        </p>
       </div>
     );
   }
