@@ -31,13 +31,16 @@ class Login extends React.Component {
         score: 0,
         gravatarEmail: document.getElementById('email').value,
       },
+      ranking: localStorage.getItem('state') !== null
+        ? JSON.parse(localStorage.getItem('state')).ranking
+        : [],
     };
     localStorage.setItem('state', JSON.stringify(state));
+    this.handleHash();
     const returnedPromise = await
     fetch('https://opentdb.com/api_token.php?command=request');
     const returnedJson = await returnedPromise.json();
     localStorage.setItem('token', returnedJson.token);
-    this.handleHash();
     getAPI();
   }
 

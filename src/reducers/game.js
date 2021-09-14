@@ -5,6 +5,7 @@ import {
   fetchAPISUCESS,
   SET_TIMER,
   SET_POINT,
+  RESET,
 } from '../actions/actionTypes';
 
 const INITIAL_API_STATE = {
@@ -47,6 +48,15 @@ const Fetching = (state = INITIAL_API_STATE, action) => {
       point: state.point + action.point,
     };
 
+  case RESET:
+    return {
+      isLoading: true,
+      erro: null,
+      answer: {},
+      timer: 30,
+      question: false,
+      point: 0,
+    };
   default:
     return state;
   }

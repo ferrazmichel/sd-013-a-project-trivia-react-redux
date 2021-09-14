@@ -6,3 +6,4 @@ export const fetchAPIERROR = 'FETCH_API_ERROR';
 export const fetchAPI = 'fetchAPI';
 export const SET_TIMER = 'SET_TIMER';
 export const SET_POINT = 'SET_POINT';
+export const RESET = 'RESET';

@@ -5,7 +5,6 @@ import './Header.css';
 
 class Header extends React.Component {
   render() {
-    const { name, point } = this.props;
     return (
       <div className="header">
         <div className="header-logos">
@@ -61,6 +60,7 @@ Header.propTypes = {
 
 const mapStateToProps = ({ game, user }) => ({
   answers: game.answer,
+  loading: game.isLoading,
   name: user.name,
   timer: game.timer,
   point: game.point,
