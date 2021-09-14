@@ -18,7 +18,7 @@
 
 .feedback-text, .feedback-score {
   color: aliceblue;
-  font-family: "Press Start 2p" , cursive;
+  font-family: 'Press Start 2p' , cursive;
   font-size: 40px;
   text-shadow: 3px 3px black;
 }
