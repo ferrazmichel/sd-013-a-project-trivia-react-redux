@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { sendDone, setOptions, setRanking } from '../redux/actions';
+import { sendDone, setOptions } from '../redux/actions';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
 import Timer from '../componets/Timer';
@@ -22,7 +22,6 @@ class GameScreen extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
     this.changeDone = this.changeDone.bind(this);
-    this.handleButtons = this.handleButtons.bind(this);
   }
 
   componentDidMount() {
@@ -44,32 +43,25 @@ class GameScreen extends React.Component {
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
     const questionJson = await questionsApi.results;
-    // localStorage.setItem('questions', JSON.stringify(questionJson));
+    localStorage.setItem('questions', JSON.stringify(questionJson));
     setOption(questionJson);
   }
 
-  handleButtons() {
-    const { contador } = this.state;
-    const next = document.querySelector('#nextButton');
-    const correto = document.querySelector('#correct');
-    const incorretos = document.querySelectorAll('#incorrect');
-    this.setState({ done: false, contador: contador + 1, timer: 30 });
-    correto.classList.remove('correct');
-    correto.disabled = false;
-    incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
-    incorretos.forEach((incorreto) => { incorreto.disabled = false; });
-    next.classList.remove('next');
-    next.classList.add('nextDisabled');
-  }
-
   handleClick() {
-    const { history, setRank } = this.props;
+    const { history } = this.props;
     const { contador, quatro } = this.state;
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
     if (contador < quatro) {
-      this.handleButtons();
+      const next = document.querySelector('#nextButton');
+      const correto = document.querySelector('#correct');
+      const incorretos = document.querySelectorAll('#incorrect');
+      this.setState({ done: false, contador: contador + 1, timer: 30 });
+      correto.classList.remove('correct');
+      correto.disabled = false;
+      incorretos.forEach((incorreto) => incorreto.classList.remove('incorrect'));
+      incorretos.forEach((incorreto) => { incorreto.disabled = false; });
+      next.classList.remove('next');
+      next.classList.add('nextDisabled');
     } else {
-      setRank(ranking);
       history.push('/feedback');
     }
   }
@@ -151,7 +143,6 @@ const mapsStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setOption: (payload) => dispatch(setOptions(payload)),
   setDone: (done) => dispatch(sendDone(done)),
-  setRank: (payload) => dispatch(setRanking(payload)),
 });
 
 export default connect(mapsStateToProps, mapDispatchToProps)(GameScreen);

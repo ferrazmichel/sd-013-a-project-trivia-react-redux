@@ -3,7 +3,6 @@ export const SET_OPTIONS = 'SET_OPTIONS';
 export const SET_DONE = 'SET_DONE';
 export const SET_RESET = 'SET_RESET';
 export const SET_CONTADOR = 'SET_CONTADOR';
-export const SET_RANKING = 'SET_RANKING';
 // na
 
 export const sendScore = (payload) => ({
@@ -23,10 +22,5 @@ export const sendDone = (payload) => ({
 
 export const sendResetPontuation = (payload) => ({
   type: SET_RESET,
-  payload,
-});
-
-export const setRanking = (payload) => ({
-  type: SET_RANKING,
   payload,
 });

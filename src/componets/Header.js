@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
-// jnoafsdjfsadńko]npk
 
 class Header extends Component {
   constructor(props) {
@@ -29,13 +28,11 @@ class Header extends Component {
   render() {
     const { player } = JSON.parse(localStorage.state);
     const { score } = this.props;
-    const picture = `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}`;
-
     return (
       <header>
         <img
           data-testid="header-profile-picture"
-          src={ picture }
+          src={ `https://www.gravatar.com/avatar/${this.createGravatar(player.gravatarEmail)}` }
           alt="Avatar do Usuário"
         />
         <h3
@@ -56,9 +53,5 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   score: state.pontuador.score,
 });
-
-// const mapDispatchToProps = () => ({
-
-// })
 
 export default connect(mapStateToProps)(Header);
