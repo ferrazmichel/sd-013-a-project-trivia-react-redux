@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
 import { timerToggle, toggleNextButton, updateScore } from '../actions';
 
 const STARTING_POINTS = 10;
@@ -60,18 +61,18 @@ class Alternative extends React.Component {
     const { alternative, answered } = this.props;
 
     return (
-      <li>
-        <button
-          data-testid={ alternative.textId }
-          id={ alternative.textId === 'wrong-answer-0' ? 'incorrect' : '' }
-          type="button"
-          onClick={ this.handleAnswering }
-          disabled={ answered }
-          className={ this.getClassName() }
-        >
-          {alternative.text}
-        </button>
-      </li>
+      <Button
+        data-testid={ alternative.textId }
+        id={ alternative.textId === 'wrong-answer-0' ? 'incorrect' : '' }
+        type="button"
+        onClick={ this.handleAnswering }
+        disabled={ answered }
+        className={ this.getClassName() }
+        variant="outline-secondary"
+        size="lg"
+      >
+        { window.atob(alternative.text)}
+      </Button>
     );
   }
 }

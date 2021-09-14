@@ -6,7 +6,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import { Redirect } from 'react-router';
+import { Col, Container, Row, ProgressBar } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import Question from '../components/Question';
 import { timerToggle, toggleNextButton, updateTime } from '../actions/index';
 import Header from '../components/Header';
@@ -81,25 +82,43 @@ class Game extends React.Component {
   render() {
     const { questions, loading, answered } = this.props; // Vem da store do redux
     const { index, seconds } = this.state;
-    if (loading) {
-      return <h3>loading...</h3>;
-    }
+
+    if (loading) return <h3>Loading...</h3>;
 
     return (
-      <div>
+      <>
         <Header />
-        <Question key={ index } question={ questions[index] } />
-        {answered && (
-          <button
-            onClick={ this.nextQuestion }
-            type="button"
-            data-testid="btn-next"
-          >
-            Próxima pergunta
-          </button>
-        )}
-        <p>{!seconds ? 'acabou o tempo!' : `tempo: ${seconds}`}</p>
-      </div>
+        <Container>
+          <Row className="justify-content-md-center">
+            <Col xs={ 12 } md={ 6 }>
+              <Question key={ index } question={ questions[index] } />
+            </Col>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Col xs={ 12 } md={ 6 }>
+              {answered && (
+                <div className="d-grid gap-2 mt-5">
+                  <Button
+                    onClick={ this.nextQuestion }
+                    type="button"
+                    data-testid="btn-next"
+                    variant="primary"
+                    size="lg"
+                  >
+                    Próxima pergunta
+                  </Button>
+                </div>
+              )}
+            </Col>
+          </Row>
+          <Row className="justify-content-md-center">
+            <Col xs={ 12 } md={ 6 }>
+              {!answered
+                && <ProgressBar now={ seconds } className="mt-5" max={ 30 } min={ 0 } />}
+            </Col>
+          </Row>
+        </Container>
+      </>
     );
   }
 }
