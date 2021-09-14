@@ -5,7 +5,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import './Question.css';
 import { timerToggle, toggleNextButton, updateScore } from '../actions/index';
 import Alternative from './Alternative';
 

@@ -20,7 +20,7 @@ class Alternative extends React.Component {
 
     let theClass = '';
     if (answered) {
-      theClass = (alternative.textId === 'correct-answer')
+      theClass = this.isTheCorrect(alternative)
         ? 'correct-btn'
         : 'incorrect-btn';
     }
@@ -31,9 +31,8 @@ class Alternative extends React.Component {
   calculatePoints() {
     const { alternative, updatePlayerScore, toggleTimer } = this.props;
 
-    if (alternative.textId === 'correct-answer') {
+    if (this.isTheCorrect(alternative)) {
       // Atualiza o localStorage com a nova pontuação.
-      // const ONE_SECOND = 500;
       toggleTimer(true);
       const timer = JSON.parse(sessionStorage.getItem('time'));
       const localState = JSON.parse(localStorage.getItem('state'));
@@ -57,17 +56,25 @@ class Alternative extends React.Component {
     this.calculatePoints();
   }
 
+  isTheCorrect(alternative) {
+    return alternative.textId === 'correct-answer';
+  }
+
   render() {
     const { alternative, answered } = this.props;
+
+    const style = this.isTheCorrect(alternative)
+      ? { border: '3px solid rgb(6, 240, 15)' }
+      : { border: '3px solid red' };
 
     return (
       <Button
         data-testid={ alternative.textId }
-        id={ alternative.textId === 'wrong-answer-0' ? 'incorrect' : '' }
+        id={ this.isTheCorrect(alternative) && 'incorrect' }
         type="button"
         onClick={ this.handleAnswering }
         disabled={ answered }
-        className={ this.getClassName() }
+        style={ (answered) ? style : {} }
         variant="outline-secondary"
         size="lg"
       >
