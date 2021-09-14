@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { sendPlayerInfo, sendUserInfo } from '../actions';
 import { TokenApi } from '../services';
+import Trivia from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -65,7 +66,8 @@ class Login extends React.Component {
       return <Redirect to="/play" />;
     }
     return (
-      <>
+      <div className="login-main">
+        <img className="trivia-logo" src={ Trivia } alt="Trivia Logo" />
         <form className="forms" onSubmit={ this.formSubmit }>
           <label htmlFor="name">
             <input
@@ -92,11 +94,11 @@ class Login extends React.Component {
           >
             Jogar
           </button>
+          <button type="button" data-testid="btn-settings" on>
+            <Link className="button-link" to="/config">Configurações</Link>
+          </button>
         </form>
-        <button type="button" data-testid="btn-settings">
-          <Link to="/config">Configurações</Link>
-        </button>
-      </>
+      </div>
     );
   }
 }

@@ -1,11 +1,26 @@
+.answer-style {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  margin-top: 5px;
+}
+
 body {
+  background-image: linear-gradient(rgb(227, 240, 229), rgb(163, 177, 158));
   display: flex;
+  height: 100vh;
   justify-content: center;
 }
 
-html {
-  background-image: linear-gradient(rgb(41, 55, 44), white);
-  background-repeat: no-repeat;
+.button-link {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.button-link:hover {
+  background-color: rgb(77, 74, 74);
+  border-radius: 30px;
+  color: rgb(255, 255, 255);
+  font-weight: 900;
+  margin: 0;
 }
 
 .body-div {
@@ -13,10 +28,38 @@ html {
   display: flex;
 }
 
-.main-header {
-  align-items: center;
-  background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
+.forms {
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 30px;
+
+}
+
+.forms > label > input {
+  background-color: rgb(255, 255, 255);
   border-radius: 10px;
+  color: rgb(7, 7, 7);
+  margin: 2px;
+  text-align: center;
+  width: 100%;
+}
+
+.forms > button {
+  background-color: rgb(90, 88, 88);
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
+  margin: 2px 80px;
+  width: 135px;
+}
+
+.forms > button:hover {
+  background-color: rgb(77, 74, 74);
+  border-radius: 30px;
+  color: rgb(255, 255, 255);
+  font-weight: 900;
+  margin: 0 80px;
 }
 
 header img {
@@ -32,6 +75,31 @@ header h2 {
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
+}
+
+html {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  background-repeat: no-repeat;
+}
+
+.login-main {
+  display: flex;
+  flex-direction: column;
+  margin-top: 250px;
+  width: 300px;
+}
+
+.main-header {
+  align-items: center;
+  background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
+
+  /* border-radius: 10px; */
+  width: 100vw;
+}
+
+.nextButton {
+  background-image: linear-gradient(rgb(41, 55, 44), white);
+  margin-top: 100px;
 }
 
 .play-question {
@@ -58,29 +126,39 @@ header h2 {
   display: grid;
 }
 
-.answer-style {
-  background-image: linear-gradient(rgb(41, 55, 44), white);
-  margin-top: 5px;
-}
-
-.nextButton {
-  background-image: linear-gradient(rgb(41, 55, 44), white);
-  margin-top: 100px;
-}
-
 .ranking-table {
-  background-color: red;
+  font-size: xx-large;
+  font-weight: 900;
   justify-content: center;
   text-align: center;
-  width: 500px;
-}
-
-.ranking-table-column {
-  background-color: antiquewhite;
-  display: flex;
-  justify-content: space-around;
+  width: 400px;
 }
 
 .ranking-table-row {
-  background-color: azure;
+  background-image: linear-gradient(rgb(41, 55, 44), rgb(163, 177, 158));
+  border-bottom: 1px solid whitesmoke;
+  color: rgb(240, 240, 240);
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.ranking-table-row-item {
+  width: 100px;
+}
+
+.ranking-table-row > img {
+  width: 45px;
+}
+
+.ranking-table-row > h2 {
+  margin-right: 10px;
+  padding-left: 50px;
+  padding-right: 150px;
+  padding-top: 5px;
+  width: 45px;
+}
+
+.trivia-logo {
+  width: 300px;
 }

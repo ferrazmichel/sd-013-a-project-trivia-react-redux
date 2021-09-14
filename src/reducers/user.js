@@ -3,6 +3,12 @@ import { USER_INFO } from '../actions';
 const INITIAL_STATE = {
   name: '',
   gravatarEmail: '',
+  configuration: {
+    numberOfQuestions: 5,
+    category: '',
+    difficulty: '',
+    type: '',
+  },
 };
 
 function userReducer(state = INITIAL_STATE, action) {

@@ -13,22 +13,22 @@ class Ranking extends React.Component {
   rankingTable() {
     const { ranking } = this.props;
     return ranking.map((player, index) => (
-      <div key={ player.gravatarEmail } className="ranking-table-column">
+      <div key={ player.gravatarEmail } className="ranking-table-row">
         <img
-          className="ranking-table-row"
+          className="ranking-table-row-item"
           data-testid={ `player-gravatarEmail-${index}` }
           src={ `https://www.gravatar.com/avatar/
           ${md5(player.gravatarEmail.trim().toLowerCase()).toString()}` }
           alt="gravatarEmail icon"
         />
         <h2
-          className="ranking-table-row"
+          className="ranking-table-row-item"
           data-testid={ `player-name-${index}` }
         >
           {player.name}
         </h2>
         <h2
-          className="ranking-table-row"
+          className="ranking-table-row-item"
           data-testid={ `player-score-${index}` }
         >
           {player.score}
