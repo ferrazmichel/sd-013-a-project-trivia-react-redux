@@ -25,7 +25,7 @@ class Header extends React.Component {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="#" data-testid="header-player-name">
-                Nome:
+                Player
                 {' '}
                 {name}
               </Nav.Link>

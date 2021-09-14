@@ -20,7 +20,7 @@ const difficulties = {
 };
 
 const getDifficulty = (question) => {
-  switch (question.difficulty) {
+  switch (window.atob(question.difficulty)) {
   case 'easy':
     return difficulties.EASY;
   case 'medium':
