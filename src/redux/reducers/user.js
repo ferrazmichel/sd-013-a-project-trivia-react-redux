@@ -4,6 +4,7 @@ import {
   REQUEST_API,
   SAVE_USER,
   HANDLE_SCORE,
+  SET_SETTINGS,
 } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
@@ -13,6 +14,8 @@ const INITIAL_STATE = {
   isLoading: false,
   score: 0,
   assertions: 0,
+  difficulty: '',
+  questionType: '',
 };
 
 const user = (state = INITIAL_STATE, action) => {
@@ -36,6 +39,12 @@ const user = (state = INITIAL_STATE, action) => {
       ...state,
       score: state.score + action.score,
       assertions: state.assertions + 1,
+    };
+  case SET_SETTINGS:
+    return {
+      ...state,
+      difficulty: action.difficulty,
+      questionType: action.questionType,
     };
   default:
     return state;

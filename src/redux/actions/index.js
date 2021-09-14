@@ -3,7 +3,8 @@ import {
   GET_TOKEN,
   REQUEST_API,
   SAVE_USER,
-  HANDLE_SCORE } from './actionTypes';
+  HANDLE_SCORE,
+  SET_SETTINGS } from './actionTypes';
 
 export const saveUser = (email, name) => ({
   type: SAVE_USER,
@@ -40,4 +41,10 @@ export function fetchTrivia() {
 export const handleScore = (score) => ({
   type: HANDLE_SCORE,
   score,
+});
+
+export const setSettings = (difficulty, questionType) => ({
+  type: SET_SETTINGS,
+  difficulty,
+  questionType,
 });

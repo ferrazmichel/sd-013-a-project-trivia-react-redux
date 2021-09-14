@@ -102,7 +102,7 @@ class DisplayQuestion extends Component {
       classCorrect: 'correct-answer',
       classWrong: 'wrong-answer',
       isAnswered: true,
-      finalTime: prevState.finalTime - 1,
+      finalTime: prevState.finalTime,
       btnNext: 'btn-next-visible',
     }));
   }
@@ -139,7 +139,6 @@ class DisplayQuestion extends Component {
         this.timer(THIRTY);
       });
     } else {
-      console.log('oi');
       history.push('/feedback');
     }
   }

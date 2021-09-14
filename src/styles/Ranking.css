@@ -54,6 +54,8 @@
   margin-bottom: auto;
   margin-right: 10px;
   margin-top: auto;
+  text-align: center;
+  width: 60px;
 }
 
 .score-ranking:hover {
