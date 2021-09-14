@@ -17,6 +17,19 @@ class Login extends React.Component {
     this.handleClickPlay = this.handleClickPlay.bind(this);
     this.renderForm = this.renderForm.bind(this);
     this.handleClickConfig = this.handleClickConfig.bind(this);
+    this.setEmailAndName = this.setEmailAndName.bind(this);
+  }
+
+  componentDidMount() {
+    this.setEmailAndName();
+  }
+
+  setEmailAndName() {
+    const { name, email } = this.props;
+    this.setState({
+      email,
+      name,
+    });
   }
 
   async handleClickPlay(event) {
@@ -31,10 +44,10 @@ class Login extends React.Component {
 
   async handleClickConfig(event) {
     event.preventDefault();
-    const { history, dispatchValidLogin, dispatchfetchToken, token } = this.props;
+    const { history, dispatchValidLogin } = this.props;
     const { email, name } = this.state;
-    await dispatchfetchToken();
-    localStorage.setItem('token', token);
+    // await dispatchfetchToken();
+    // localStorage.setItem('token', token);
     dispatchValidLogin(name, email);
     history.push('/configuracoes');
   }
@@ -105,6 +118,8 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   dispatchValidLogin: PropTypes.func.isRequired,
   dispatchfetchToken: PropTypes.func.isRequired,
   history: PropTypes.shape({
@@ -119,6 +134,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
+  email: state.game.player.gravatarEmail,
+  name: state.game.player.name,
   token: state.game.token,
 });
 

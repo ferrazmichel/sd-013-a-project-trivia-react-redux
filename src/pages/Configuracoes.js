@@ -86,7 +86,7 @@ class Configuracoes extends React.Component {
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
         { this.renderSelects() }
-        <Link to="/jogo" onClick={ this.handleClick }>Vamos Jogar!</Link>
+        <Link to="/" onClick={ this.handleClick }>Salvar Configurações</Link>
       </div>
     );
   }
