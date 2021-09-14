@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { setTimer, PointSet } from '../actions';
+import { setTimer, PointSet, resetStore } from '../actions';
 import './GameScreen.css';
 
 class GameScreen extends React.Component {
@@ -25,6 +25,7 @@ class GameScreen extends React.Component {
     this.handleClickQuestion = this.handleClickQuestion.bind(this);
     this.renderButtonWithLink = this.renderButtonWithLink.bind(this);
     this.renderButtonWithoutLink = this.renderButtonWithoutLink.bind(this);
+    this.savePlayerRanking = this.savePlayerRanking.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +36,7 @@ class GameScreen extends React.Component {
     const state = localStorage.getItem('state');
     const { point } = this.props;
     const newPlayer = {
+      ...JSON.parse(state),
       player: {
         ...JSON.parse(state).player,
         score: point,
@@ -43,23 +45,15 @@ class GameScreen extends React.Component {
     localStorage.setItem('state', JSON.stringify(newPlayer));
   }
 
-  async setScore(param) {
+  setScore(param) {
     const { timer, pergunta, setPoint } = this.props;
+    const { indexQuestion } = this.state;
     const POINTS_CORRECT_ANSWER = 10;
-    const answerDifficulty = pergunta[0].difficulty;
-    const HARD = 3;
-    const MEDIUM = 2;
-    const EASY = 1;
-    const diff = () => {
-      if (answerDifficulty === 'hard') {
-        return HARD;
-      } if (answerDifficulty === 'medium') {
-        return MEDIUM;
-      } if (answerDifficulty === 'easy') {
-        return EASY;
-      }
-    };
-    await setPoint(param === 'correct' ? POINTS_CORRECT_ANSWER + (timer * diff()) : 0);
+    const answerDifficulty = pergunta[indexQuestion].difficulty;
+    const arryDifficulty = { easy: 1, medium: 2, hard: 3 };
+    setPoint(param === 'correct'
+      ? POINTS_CORRECT_ANSWER + (timer * arryDifficulty[answerDifficulty])
+      : 0);
     this.mudarState();
   }
 
@@ -109,6 +103,7 @@ class GameScreen extends React.Component {
       this.setState({ isCorrect: value, isIncorrect: 'incorrect' });
       this.setScore('correct');
       const newPlayer = {
+        ...JSON.parse(state),
         player: {
           ...JSON.parse(state).player,
           assertions: JSON.parse(state).player.assertions + 1,
@@ -145,6 +140,25 @@ class GameScreen extends React.Component {
     );
   }
 
+  savePlayerRanking() {
+    const { reset } = this.props;
+    const state = localStorage.getItem('state');
+    const newPlayerRank = {
+      name: JSON.parse(state).player.name,
+      score: JSON.parse(state).player.score,
+      picture: `https://www.gravatar.com/avatar/${localStorage.getItem('hash')}`,
+    };
+    const newRankig = {
+      ...JSON.parse(state),
+      ranking: [
+        ...JSON.parse(state).ranking,
+        newPlayerRank,
+      ],
+    };
+    localStorage.setItem('state', JSON.stringify(newRankig));
+    reset();
+  }
+
   renderButtonWithLink() {
     return (
       <Link to="/feedback">
@@ -152,6 +166,7 @@ class GameScreen extends React.Component {
           type="button"
           data-testid="btn-next"
           className="feedback"
+          onClick={ this.savePlayerRanking }
         >
           Feedback
         </button>
@@ -215,6 +230,7 @@ class GameScreen extends React.Component {
       isLoading === true
         ? <div className="loading">Loading...</div>
         : this.renderGame()
+      isLoading === true ? <h1>Loading</h1> : this.renderGame()
     );
   }
 }
@@ -241,6 +257,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   reduxTimer: (timer, answer) => dispatch(setTimer(timer, answer)),
   setPoint: (point) => dispatch(PointSet(point)),
+  reset: () => dispatch(resetStore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);
