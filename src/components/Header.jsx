@@ -31,7 +31,6 @@ class Header extends React.Component {
         <p data-testid="header-player-name">{`Jogador: ${nomeRedux}`}</p>
         <p>{`Pergunta número: ${numpergunta}`}</p>
         <p data-testid="header-score">{`Score: ${scoreRedux}`}</p>
-        <p>{`Número de acertos: ${assertionsRedux}`}</p>
         <p>{`Nível: ${questions[i].difficulty}`}</p>
       </header>
     );
