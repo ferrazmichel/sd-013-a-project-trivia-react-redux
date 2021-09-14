@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import { userLoggedIn, getQuestionsFromResponse } from '../actions';
-import ButtonConfig from '../components/buttonConfig';
+import ButtonConfig from '../components/ButtonConfig';
 import { fetchQuestions } from '../fetchers';
 
 const RE_EMAIL = /^[a-z0-9_.-]+@[a-z]+\.[a-z]{2,3}(?:\.[a-z]{2})?$/;
@@ -119,6 +119,8 @@ class Login extends React.Component {
           disabled={ disable } // Habilita o botão somente se os dados forem válidos.
         >
           Jogar
+          {' '}
+          <i className="bi bi-play-fill" />
         </Button>
         <ButtonConfig />
       </div>

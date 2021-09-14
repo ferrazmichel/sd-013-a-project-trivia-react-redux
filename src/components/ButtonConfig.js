@@ -1,16 +1,20 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class ButtonConfig extends React.Component {
   render() {
     return (
-      <Button
-        variant="secondary"
+      <Link
+        to="/configurations"
         type="button"
         data-testid="btn-settings"
+        title="Configurations"
+        className="btn btn-secondary"
       >
         Configurações
-      </Button>
+        {' '}
+        <i className="bi bi-sliders" />
+      </Link>
     );
   }
 }
