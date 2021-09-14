@@ -94,10 +94,14 @@ class Jogo extends React.Component {
   }
 
   fbRedirect() {
+    const buttonNext = document.querySelector(BUTTON_NEXT);
     const { i } = this.state;
     const { history } = this.props;
+    const num3 = 3;
     const NUMBER_OF_QUESTIONS = 4;
-    if (i === NUMBER_OF_QUESTIONS) {
+    if (i === num3) {
+      buttonNext.innerText = 'Ver Feedback';
+    } else if (i === NUMBER_OF_QUESTIONS) {
       history.push('/feedback');
     }
     return true;
@@ -158,7 +162,7 @@ class Jogo extends React.Component {
     ));
 
     const alternativasCorretas = (
-      <p>
+      <p key={ 3 }>
         <button
           disabled={ button }
           className="correct"
