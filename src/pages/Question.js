@@ -44,7 +44,7 @@ class Question extends Component {
   }
 
   render() {
-    const { question, disable, right, wrong, changeColor } = this.props;
+    const { question, disable, right, wrong, changeColor, scoreFunction } = this.props;
     // const { rigthBoarder, wrongBoarder } = this.state;
     return (
       <main>
@@ -63,7 +63,10 @@ class Question extends Component {
                 disabled={ disable }
                 className={ right }
                 data-testid="correct-answer"
-                onClick={ changeColor }
+                onClick={ () => {
+                  changeColor();
+                  scoreFunction();
+                } }
                 type="button"
               >
                 {question.correct_answer}

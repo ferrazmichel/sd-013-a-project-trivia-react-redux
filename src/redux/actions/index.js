@@ -6,6 +6,7 @@ export const USER_INFO = 'SEND_USER_EMAIL';
 export const FAIL_TRIVIA = 'FAIL_TRIVIA';
 export const LOAD_TRIVIA = 'LOAD_TRIVIA';
 export const SUCESS_TRIVIA = 'SUCESS_TRIVIA';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const sendUserInfo = (payload) => ({
   type: USER_INFO,
@@ -23,6 +24,11 @@ export const loadQuestions = () => ({
 
 export const sucessQuestions = (payload) => ({
   type: SUCESS_TRIVIA,
+  payload,
+});
+
+export const updateScore = (payload) => ({
+  type: UPDATE_SCORE,
   payload,
 });
 
