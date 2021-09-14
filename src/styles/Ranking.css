@@ -1,0 +1,90 @@
+.Ranking {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.Ranking-Wrapper {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 1px var(--background-shadow);
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 30px 40px;
+}
+
+.Ranking-Wrapper h1 {
+  text-align: center;
+  font: 500 30px Poppins , sans-serif;
+  margin: 0 0 15px;
+}
+
+.Ranking-Wrapper .GoHome {
+  margin: 15px 0 0;
+}
+
+.Ranking-List {
+  display: block;
+  background-color: ghostwhite;
+  width: 600px;
+  height: 400px;
+  overflow-y: scroll;
+  border: 0;
+  border-radius: 10px;
+  list-style: none;
+  counter-reset: ranking-counter;
+  padding: 0;
+}
+
+.Ranking-List li {
+  counter-increment: ranking-counter;
+}
+
+li::before {
+  content: counter(ranking-counter);
+  background: linear-gradient(170deg, rgba(141, 136, 255, 100) 0%, var(--hero-background) 100%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 2.5rem;
+  color: white;
+  text-align: center;
+  font-family: Poppins , sans-serif;
+}
+
+li:nth-child(1)::before {
+  background: linear-gradient(70deg, #ffd700 0%, var(--hero-background) 100%);
+}
+
+li:nth-child(2)::before {
+  background: linear-gradient(70deg, #cac8c4 0%, var(--hero-background) 100%);
+}
+
+li:nth-child(3)::before {
+  background: linear-gradient(70deg, #af633e 0%, var(--hero-background) 100%);
+}
+
+.Ranking-Item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  height: 130px;
+  border: 1px solid gainsboro;
+}
+
+.Ranking-Item img {
+  border: 0;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+}
+
+.Ranking-Name, .Ranking-Score {
+  width: 125px;
+  text-align: center;
+  font-family: Poppins , sans-serif;
+}

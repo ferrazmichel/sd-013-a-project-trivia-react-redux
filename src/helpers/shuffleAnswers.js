@@ -19,7 +19,7 @@ const shuffleAnswers = (
     .map((answer, index) => (
       <button
         type="button"
-        className="incorrect-answer"
+        className="incorrect-answer btn btn-light"
         data-testid={ `wrong-answer-${index}` }
         key={ `wrong-answer-${index}` }
         onClick={ (evt) => answered(evt) }
@@ -34,6 +34,7 @@ const shuffleAnswers = (
       <button
         type="button"
         id="correct-answer"
+        className="btn btn-light"
         data-testid="correct-answer"
         key="correct-answer"
         onClick={ (evt) => answered(evt) }

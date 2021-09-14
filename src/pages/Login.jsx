@@ -7,12 +7,19 @@ import PropTypes from 'prop-types';
 // Redux
 import { connect } from 'react-redux';
 import validateLogin from '../redux/actions/validateLogin';
-
-// Services
-import { apiTrivia } from '../helpers/apiTrivia';
-import { putTokenInLocalStorage } from '../helpers/servicesAPI';
 import { setGameInfo } from '../redux/actions/game';
 
+// Services
+import { apiTrivia } from '../services/apiTrivia';
+import { putTokenInLocalStorage } from '../services/servicesAPI';
+
+// Children
+import { EmailInput, NameInput, ViewSettings, SubmitLogin, Hero } from '../components';
+
+// Styles
+import '../styles/Login.css';
+
+// Static
 const regexEmail = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
 
 class Login extends React.Component {
@@ -67,45 +74,33 @@ class Login extends React.Component {
     const { nome, email } = this.state;
     const statusButton = !(regexEmail.test(email) && nome.length > 0);
     return (
-      <div>
-        <label htmlFor="name-input">
-          Nome:
-          <input
-            type="text"
-            id="name-input"
-            data-testid="input-player-name"
-            name="nome"
-            value={ nome }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email-input">
-          Email:
-          <input
-            type="text"
-            id="email-input"
-            data-testid="input-gravatar-email"
-            name="email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <button
-          disabled={ statusButton }
-          type="button"
-          data-testid="btn-play"
-          onClick={ this.submitLogin }
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.openSettings }
-        >
-          Configurações
-        </button>
-      </div>
+      <main className="Login">
+        <Hero />
+        <div className="Login-Wrapper">
+          <div className="Login-Form">
+            { /* Input de Nome */ }
+            <NameInput
+              name={ nome }
+              handleChange={ this.handleChange }
+            />
+            { /* Input de Email */ }
+            <EmailInput
+              email={ email }
+              handleChange={ this.handleChange }
+            />
+            { /* Jogar */ }
+            <SubmitLogin
+              statusButton={ statusButton }
+              submitLogin={ this.submitLogin }
+            />
+            <hr className="hr" />
+            { /* Configurações */ }
+            <ViewSettings
+              openSettings={ this.openSettings }
+            />
+          </div>
+        </div>
+      </main>
     );
   }
 }
@@ -116,7 +111,7 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  numberOfQuestions: PropTypes.number.isRequired,
+  numberOfQuestions: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   difficult: PropTypes.string.isRequired,
 };

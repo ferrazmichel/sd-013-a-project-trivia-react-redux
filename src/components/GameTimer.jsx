@@ -19,7 +19,7 @@ class GameTimer extends Component {
 
   /* As funções a seguir estão relacionadas com os eventos do timer */
   componentDidMount() {
-    const interval = 1000;
+    const interval = 50;
     window.setInterval(
       () => this.checkTimerStatus(),
       interval,
@@ -39,7 +39,7 @@ class GameTimer extends Component {
 
     if (timeLeft > 0) {
       this.setState((prev) => ({
-        timeLeft: prev.timeLeft - 1,
+        timeLeft: prev.timeLeft - 0.05,
       }), () => timerDispatch(timeLeft));
     } else {
       this.timesUp();
@@ -69,7 +69,7 @@ class GameTimer extends Component {
   render() {
     const { timeLeft } = this.state;
     return (
-      <span>{ timeLeft }</span>
+      <span style={ { display: 'none' } }>{ timeLeft }</span>
     );
   }
 }

@@ -23,6 +23,7 @@ class ViewRanking extends Component {
     return (
       <button
         type="button"
+        className="btn btn-outline-success"
         data-testid="btn-ranking"
         onClick={ () => this.redirectToRanking() }
       >

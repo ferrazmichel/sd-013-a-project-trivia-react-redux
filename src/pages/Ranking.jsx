@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 
 // Children
-import GoHome from '../components/GoHome';
+import { GoHome } from '../components';
+
+// Styles
+import '../styles/Ranking.css';
 
 class Ranking extends Component {
   constructor() {
@@ -17,26 +20,34 @@ class Ranking extends Component {
     rankingJson.sort((a, b) => b.score - a.score);
 
     return rankingJson.map((item, index) => (
-      <div key={ index }>
+      <li className="Ranking-Item" key={ index }>
         <img src={ item.picture } alt="Gravatar" />
-        <h4 data-testid={ `player-name-${index}` }>
+        <span className="Ranking-Name" data-testid={ `player-name-${index}` }>
           {item.name}
-        </h4>
-        <h4 data-testid={ `player-score-${index}` }>
+        </span>
+        <span className="Ranking-Score" data-testid={ `player-score-${index}` }>
+          Score:
+          {' '}
           {item.score}
-        </h4>
-      </div>
+        </span>
+      </li>
     ));
   }
 
   render() {
     return (
-      <section>
-        <h1 data-testid="ranking-title">
-          Ranking
-        </h1>
-        { this.returnRanking() }
-        <GoHome />
+      <section className="Ranking">
+        <div className="Ranking-Wrapper">
+          <h1 data-testid="ranking-title">
+            Ranking
+          </h1>
+          <ol className="Ranking-List">
+            {
+              this.returnRanking()
+            }
+          </ol>
+          <GoHome />
+        </div>
       </section>
     );
   }

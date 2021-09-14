@@ -7,13 +7,13 @@ import PropTypes from 'prop-types';
 // Redux
 import { connect } from 'react-redux';
 
-// GravatarAPI
-import getGravatar from '../helpers/gravatarAPI';
+// Services
+import getGravatar from '../services/gravatarAPI';
 
 // Children
-import HeaderGame from '../components/HeaderGame';
-import PlayAgain from '../components/PlayAgain';
-import ViewRanking from '../components/ViewRanking';
+import { HeaderGame, PlayAgain, ViewRanking } from '../components';
+
+import '../styles/Feedback.css';
 
 class Feedback extends Component {
   constructor(props) {
@@ -59,23 +59,29 @@ class Feedback extends Component {
   render() {
     const { score } = this.props;
     return (
-      <section>
+      <section className="feedback-section">
         <HeaderGame />
-        <div data-testid="feedback-text">
-          { this.renderMessage() }
+        <div className="feedback-content">
+          <div data-testid="feedback-text" className="feedback-text info">
+            { this.renderMessage() }
+          </div>
+          <div data-testid="feedback-total-score" className="feedback-total-score info">
+            <div className="score-content">
+              { score }
+            </div>
+          </div>
+          <div className="feedback-total-question info">
+            Voce acertou
+            {' '}
+            { this.renderFeedbackQuestion() }
+            {' '}
+            pergunta(s).
+          </div>
         </div>
-        <div data-testid="feedback-total-score">
-          { score }
+        <div className="feedback-btn">
+          <PlayAgain />
+          <ViewRanking />
         </div>
-        <div className="feedback-total-question">
-          Voce acertou
-          {' '}
-          { this.renderFeedbackQuestion() }
-          {' '}
-          questões!
-        </div>
-        <PlayAgain />
-        <ViewRanking />
       </section>
     );
   }

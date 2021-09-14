@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 // Redux
 import { connect } from 'react-redux';
 
-// Helpers
-import gravatar from '../helpers/gravatarAPI';
+// Services
+import gravatar from '../services/gravatarAPI';
+
+import '../styles/Header.css';
 
 class HeaderGame extends Component {
   render() {
@@ -22,11 +24,13 @@ class HeaderGame extends Component {
           id="header-profile-picture"
           data-testid="header-profile-picture"
           alt="gravatar"
+          className="img-header"
         />
         {/* Nome do jogador */}
         <span
           id="header-profile-picture"
           data-testid="header-player-name"
+          className="player-name"
         >
           { playerName }
         </span>
@@ -34,6 +38,7 @@ class HeaderGame extends Component {
         <span
           id="header-score"
           data-testid="header-score"
+          className="header-score"
         >
           { score }
         </span>

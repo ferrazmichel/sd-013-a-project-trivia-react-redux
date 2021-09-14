@@ -10,14 +10,11 @@ import { setAnswers, setAssertions, setScore } from '../redux/actions/game';
 import { toggleTimer } from '../redux/actions/timer';
 import { pressQuestionBtn } from '../redux/actions/pressBtn';
 
-// Helpers
-import gravatar from '../helpers/gravatarAPI';
+// Services
+import gravatar from '../services/gravatarAPI';
 
 // Children
-import HeaderGame from '../components/HeaderGame';
-import NextBtn from '../components/NextBtn';
-import GameTimer from '../components/GameTimer';
-import GameAnswers from '../components/GameAnswers';
+import { HeaderGame, NextBtn, GameTimer, GameAnswers } from '../components';
 
 // Helpers
 import shuffleAnswers from '../helpers/shuffleAnswers';
@@ -153,7 +150,7 @@ class Gamepage extends React.Component {
       // Obtendo dados do localStorage
       const state = JSON.parse(localStorage.getItem('state'));
       const defaultReward = 10;
-      state.player.score += defaultReward + valor * timer;
+      state.player.score += defaultReward + valor * Math.round(parseInt(timer*100,12)/100);
       // devolvendo os dados para o localStorage
       localStorage.setItem('state', JSON.stringify(state));
       scoreDispatch(state.player.score);
@@ -177,7 +174,7 @@ class Gamepage extends React.Component {
   }
 
   render() {
-    const { game, questionNumber } = this.props;
+    const { timer, game, questionNumber } = this.props;
     const { category, question } = game[questionNumber];
 
     return (
@@ -187,18 +184,22 @@ class Gamepage extends React.Component {
           addStyles={ this.addStyles }
           enableNextBtn={ this.enableNextBtn }
         />
-        <div>
-          <h3 data-testid="question-category">
-            { category }
-          </h3>
-          <p data-testid="question-text">
-            { decodeHtml(question) }
-          </p>
-          <GameAnswers />
+        <div className="questions-content">
+          <progress value={ timer-0.5 } max={ 30 } />
+          <div className="question-content">
+            <h3 data-testid="question-category">
+              { category }
+            </h3>
+            <p data-testid="question-text">
+              { decodeHtml(question) }
+            </p>
+          </div>
+          <div className="game-answers">
+            <GameAnswers />
+          </div>
         </div>
         <NextBtn setAnswers={ this.setAnswers } />
-      </section>
-    );
+      </section>);
   }
 }
 
@@ -216,9 +217,9 @@ Gamepage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  timer: state.timer.timer,
   game: state.game.game,
   questionNumber: state.game.questionNumber,
-  timer: state.timer.timer,
   playerName: state.login.nome,
   playerEmail: state.login.email,
 });
