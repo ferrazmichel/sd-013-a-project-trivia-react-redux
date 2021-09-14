@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import '../App.css';
 
 class Feedback extends React.Component {
   constructor() {
@@ -37,31 +38,41 @@ class Feedback extends React.Component {
     const resultadoBaixo = 'Podia ser melhor...';
     const resultadoBom = 'Mandou bem!';
     return (
-      <div>
+      <main className="feedback-page">
         <Header
           score={ totalPoints }
           respondido={ forcaRespondido }
         />
-        <h2 data-testid="feedback-total-question">
-          {correctAnswer || 0 }
-        </h2>
-        <h3 data-testid="feedback-total-score">{totalPoints}</h3>
-        <h3 data-testid="feedback-text">
+        <div className="total-points-feedback">
+          <h2 data-testid="feedback-total-question">
+            {correctAnswer || 0 }
+            {' corretas'}
+          </h2>
+          <h3 data-testid="feedback-total-score">
+            {totalPoints}
+            pts
+          </h3>
+        </div>
+        <h1 data-testid="feedback-text" className="feedback-result">
           {correctAnswer < ruim ? resultadoBaixo : resultadoBom }
-        </h3>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-        >
-          <Link to="/ranking">Ver Ranking</Link>
-        </button>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-        >
-          <Link to="/">Jogar Novamente</Link>
-        </button>
-      </div>
+        </h1>
+        <div className="feedback-buttons">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="ranking-button"
+          >
+            <Link to="/ranking">Ver Ranking</Link>
+          </button>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            className="again-button"
+          >
+            <Link to="/">Jogar Novamente</Link>
+          </button>
+        </div>
+      </main>
     );
   }
 }
