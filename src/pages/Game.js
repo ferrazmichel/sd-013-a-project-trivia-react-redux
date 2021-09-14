@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setTimer } from '../actions';
 import { Header, GameScreen } from '../components';
+import './Game.css';
 
 class Game extends React.Component {
   render() {
@@ -10,8 +11,10 @@ class Game extends React.Component {
     return (
       <>
         <Header name={ name } />
-        <GameScreen />
-        <span>{timer}</span>
+        <GameScreen onClick={ this.setAnswer } />
+        <div className="timer">
+          <span>{timer}</span>
+        </div>
       </>
     );
   }

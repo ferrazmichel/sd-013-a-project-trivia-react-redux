@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { setTimer, PointSet, resetStore } from '../actions';
+import { setTimer, PointSet } from '../actions';
 import './GameScreen.css';
 
 class GameScreen extends React.Component {
@@ -35,8 +35,7 @@ class GameScreen extends React.Component {
   componentDidUpdate() {
     const state = localStorage.getItem('state');
     const { point } = this.props;
-    const newPlayer = {
-      ...JSON.parse(state),
+    const newPlayer = { ...JSON.parse(state),
       player: {
         ...JSON.parse(state).player,
         score: point,
@@ -52,8 +51,7 @@ class GameScreen extends React.Component {
     const answerDifficulty = pergunta[indexQuestion].difficulty;
     const arryDifficulty = { easy: 1, medium: 2, hard: 3 };
     setPoint(param === 'correct'
-      ? POINTS_CORRECT_ANSWER + (timer * arryDifficulty[answerDifficulty])
-      : 0);
+      ? POINTS_CORRECT_ANSWER + (timer * arryDifficulty[answerDifficulty]) : 0);
     this.mudarState();
   }
 
@@ -75,8 +73,7 @@ class GameScreen extends React.Component {
 
   mudarState() {
     const { point } = this.props;
-    this.setState((prevState) => ({
-      ...prevState,
+    this.setState((prevState) => ({ ...prevState,
       player: parseFloat(prevState.player.point) + point,
     }));
   }
@@ -102,10 +99,8 @@ class GameScreen extends React.Component {
     if (value === 'correct') {
       this.setState({ isCorrect: value, isIncorrect: 'incorrect' });
       this.setScore('correct');
-      const newPlayer = {
-        ...JSON.parse(state),
-        player: {
-          ...JSON.parse(state).player,
+      const newPlayer = { ...JSON.parse(state),
+        player: { ...JSON.parse(state).player,
           assertions: JSON.parse(state).player.assertions + 1,
         },
       };
@@ -141,7 +136,6 @@ class GameScreen extends React.Component {
   }
 
   savePlayerRanking() {
-    const { reset } = this.props;
     const state = localStorage.getItem('state');
     const newPlayerRank = {
       name: JSON.parse(state).player.name,
@@ -156,7 +150,6 @@ class GameScreen extends React.Component {
       ],
     };
     localStorage.setItem('state', JSON.stringify(newRankig));
-    reset();
   }
 
   renderButtonWithLink() {
@@ -165,6 +158,7 @@ class GameScreen extends React.Component {
         <button
           type="button"
           data-testid="btn-next"
+          className="feedback"
           onClick={ this.savePlayerRanking }
         >
           Feedback
@@ -177,6 +171,7 @@ class GameScreen extends React.Component {
     return (
       <button
         type="button"
+        className="next-question"
         onClick={ this.handleClickQuestion }
         data-testid="btn-next"
       >
@@ -189,22 +184,29 @@ class GameScreen extends React.Component {
     const { pergunta, question } = this.props;
     const { indexQuestion, isCorrect } = this.state;
     return (
-      <div>
-        <h1 data-testid="question-category">{pergunta[indexQuestion].category}</h1>
-        <h1 data-testid="question-text">{pergunta[indexQuestion].question}</h1>
-        <button
-          type="button"
-          className={ `${isCorrect} botao` }
-          data-testid="correct-answer"
-          value="correct"
-          onClick={ this.handleClick }
-        >
-          {pergunta[indexQuestion].correct_answer}
-        </button>
-        {pergunta[indexQuestion].incorrect_answers.map(
-          (item, index) => this.handleBotao(item, index),
-        )}
-        {question === true ? this.nextAnswers() : null}
+      <div className="game-content">
+        <h1 data-testid="question-category" className="question">
+          {`Category: ${pergunta[indexQuestion].category}`}
+        </h1>
+        <h1 className="question" data-testid="question-text">
+          {pergunta[indexQuestion].question}
+        </h1>
+        <img className="bat" src="https://thumbs.gfycat.com/ActiveCheerfulBarnacle-max-1mb.gif" alt="curious bat" />
+        <div className="game-content buttons">
+          <button
+            type="button"
+            className={ `${isCorrect} botao` }
+            data-testid="correct-answer"
+            value="correct"
+            onClick={ this.handleClick }
+          >
+            {pergunta[indexQuestion].correct_answer}
+          </button>
+          {pergunta[indexQuestion].incorrect_answers.map(
+            (item, index) => this.handleBotao(item, index),
+          )}
+          {question === true ? this.nextAnswers() : null}
+        </div>
       </div>
     );
   }
@@ -212,15 +214,15 @@ class GameScreen extends React.Component {
   render() {
     const { answer: { isLoading } } = this.props;
     return (
-      isLoading === true ? <h1>Loading</h1> : this.renderGame()
+      isLoading === true
+        ? <div className="loading">Loading...</div>
+        : this.renderGame()
     );
   }
 }
 
 GameScreen.propTypes = {
-  answer: PropTypes.shape({
-    isLoading: PropTypes.bool,
-    answer: PropTypes.shape({}) }),
+  answer: PropTypes.shape({ isLoading: PropTypes.bool, answer: PropTypes.shape({}) }),
   reduxTimer: PropTypes.func,
   timer: PropTypes.number,
   question: PropTypes.bool,
@@ -239,7 +241,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   reduxTimer: (timer, answer) => dispatch(setTimer(timer, answer)),
   setPoint: (point) => dispatch(PointSet(point)),
-  reset: () => dispatch(resetStore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);

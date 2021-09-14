@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Header } from '../components';
+import { resetStore } from '../actions';
+import './Feedback.css';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -17,12 +21,12 @@ class Feedback extends React.Component {
     const THREE = 3;
     if (JSON.parse(state).player.assertions < THREE) {
       return (
-        <h1 data-testid="feedback-text">Podia ser melhor...</h1>
+        <h1 data-testid="feedback-text" className="feedback-text">Podia ser melhor...</h1>
       );
     }
     if (JSON.parse(state).player.assertions >= THREE) {
       return (
-        <h1 data-testid="feedback-text">Mandou bem!</h1>
+        <h1 data-testid="feedback-text" className="feedback-text">Mandou bem!</h1>
       );
     }
   }
@@ -32,25 +36,32 @@ class Feedback extends React.Component {
     return (
       <>
         <h1
+          className="feedback-score"
           data-testid="feedback-total-score"
         >
           {JSON.parse(state).player.score}
-
         </h1>
         <h1
           data-testid="feedback-total-question"
+          className="feedback-score"
         >
           {JSON.parse(state).player.assertions}
-
         </h1>
       </>
     );
   }
 
   handlePlayAgain() {
+    const { reset } = this.props;
     return (
       <Link to="/">
-        <button type="button" data-testid="btn-play-again">Jogar Novamente</button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => reset() }
+        >
+          Jogar Novamente
+        </button>
       </Link>
     );
   }
@@ -67,13 +78,28 @@ class Feedback extends React.Component {
     return (
       <>
         <Header />
-        { this.handleFeedback() }
-        { this.handleRanking() }
-        { this.handlePlayAgain() }
-        { this.handleButtRanking() }
+        <div className="feedback-content">
+          { this.handleFeedback() }
+          { this.handleRanking() }
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Worthy_artistic_new_year_fireworks_.gif"
+            alt="fireworks"
+            className="fireworks"
+          />
+          { this.handlePlayAgain() }
+          { this.handleButtRanking() }
+        </div>
       </>
     );
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  reset: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetStore()),
+});
+
+export default connect(null, mapDispatchToProps)(Feedback);
