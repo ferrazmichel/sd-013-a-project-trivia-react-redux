@@ -94,6 +94,7 @@ body {
 
 .material-icons {
   color: white;
+  top: 1px;
 }
 
 .main-game {
