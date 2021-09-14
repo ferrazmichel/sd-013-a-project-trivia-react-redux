@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 import fetchAvatar from '../fetchAvatar';
 
 class Header extends React.Component {
@@ -9,23 +10,32 @@ class Header extends React.Component {
     const avatar = fetchAvatar(gravatarEmail);
 
     return (
-      <header>
-        <div>
-          <div>
-            <img src={ avatar } alt="avatar" data-testid="header-profile-picture" />
-          </div>
-          <div>
-            <h1 data-testid="feedback-text">Feedback Page</h1>
-            <p data-testid="header-player-name">
-              Nome:
-              { name }
-            </p>
-            <p data-testid="header-score">
-              { score }
-            </p>
-          </div>
-        </div>
-      </header>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">
+            <img
+              src={ avatar }
+              alt="avatar"
+              data-testid="header-profile-picture"
+              width="50px"
+              className="rounded-circle"
+            />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="#" data-testid="header-player-name">
+                Player
+                {' '}
+                {name}
+              </Nav.Link>
+              <Nav.Link href="#" data-testid="header-score">
+                { score }
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
     );
   }
 }

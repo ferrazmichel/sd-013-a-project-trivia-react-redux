@@ -6,8 +6,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Container, Row, Col, Form, FloatingLabel, Button } from 'react-bootstrap';
 import { userLoggedIn, getQuestionsFromResponse } from '../actions';
-import ButtonConfig from '../components/buttonConfig';
+import ButtonConfig from '../components/ButtonConfig';
 import { fetchQuestions } from '../fetchers';
 
 const RE_EMAIL = /^[a-z0-9_.-]+@[a-z]+\.[a-z]{2,3}(?:\.[a-z]{2})?$/;
@@ -80,6 +81,52 @@ class Login extends React.Component {
     this.setState({ email: value });
   }
 
+  renderGravatarEmail() {
+    return (
+      <FloatingLabel controlId="gravatarEmail" label="Email do Gravatar" className="mb-3">
+        <Form.Control
+          name="gravatarEmail"
+          type="text"
+          placeholder="name@example.com"
+          onChange={ (e) => this.handleEmailChange(e.target.value) }
+          data-testid="input-gravatar-email"
+        />
+      </FloatingLabel>
+    );
+  }
+
+  renderPlayerName() {
+    return (
+      <FloatingLabel controlId="playerName" label="Nome do Jogador" className="mb-3">
+        <Form.Control
+          name="playerName"
+          type="text"
+          placeholder="Nome do Jogador"
+          onChange={ (e) => this.handleNameChange(e.target.value) }
+          data-testid="input-player-name"
+        />
+      </FloatingLabel>
+    );
+  }
+
+  renderButtons(disable) {
+    return (
+      <div className="d-grid gap-2">
+        <Button
+          variant="primary"
+          type="submit"
+          data-testid="btn-play"
+          disabled={ disable } // Habilita o botão somente se os dados forem válidos.
+        >
+          Jogar
+          {' '}
+          <i className="bi bi-play-fill" />
+        </Button>
+        <ButtonConfig />
+      </div>
+    );
+  }
+
   render() {
     const { name, email } = this.state;
 
@@ -88,40 +135,17 @@ class Login extends React.Component {
     if (name && email) disableButton = false;
 
     return (
-      <div>
-        <ButtonConfig />
-        <form onSubmit={ this.handleSubmission }>
-          <label htmlFor="gravatarEmail">
-            Email do Gravatar
-            <input
-              id="gravatarEmail"
-              type="text"
-              name="gravatarEmail"
-              onChange={ (e) => this.handleEmailChange(e.target.value) }
-              data-testid="input-gravatar-email"
-            />
-          </label>
-
-          <label htmlFor="playerName">
-            Nome do Jogador
-            <input
-              id="playerName"
-              type="text"
-              name="playerName"
-              onChange={ (e) => this.handleNameChange(e.target.value) }
-              data-testid="input-player-name"
-            />
-          </label>
-
-          <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ disableButton } // Habilita o botão somente se os dados forem válidos.
-          >
-            Jogar
-          </button>
-        </form>
-      </div>
+      <Container>
+        <Row className="justify-content-md-center mt-5">
+          <Col xs={ 12 } md={ 6 } lg={ 4 }>
+            <Form onSubmit={ this.handleSubmission }>
+              {this.renderGravatarEmail()}
+              {this.renderPlayerName()}
+              {this.renderButtons(disableButton)}
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

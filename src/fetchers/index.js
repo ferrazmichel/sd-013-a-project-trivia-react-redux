@@ -35,7 +35,7 @@ export const fetchToken = async () => {
 export const fetchQuestions = async () => {
   const token = await fetchToken(); // Pode ser um já armazenado no navegador ou um novo
 
-  const request = await fetch(`${TRIVIA_QUESTIONS_URL}&token=${token}`);
+  const request = await fetch(`${TRIVIA_QUESTIONS_URL}&token=${token}&encode=base64`);
   const data = await request.json();
 
   if (data.response_code === responseCodes.SUCCESS) return data.results;
