@@ -33,7 +33,9 @@ class Game extends Component {
     return (qIndex < questions.length - 1)
       ? this.setState((state) => ({ qIndex: state.qIndex + 1 }),
         resetQuestions('options', '.btn-next'))
-      : this.setState({ redirect: true });
+      : this.setState({ redirect: true }, () => {
+        // is playing game reducer to false
+      });
   }
 
   handleSelect(question, target, seconds) {

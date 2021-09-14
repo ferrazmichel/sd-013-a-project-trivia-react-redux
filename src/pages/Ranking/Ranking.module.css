@@ -1,0 +1,96 @@
+.main {
+  background: var(--primary);
+  display: grid;
+  grid: 1fr / 2fr 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.rankingPlayers {
+  background: var(--secondary);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  display: grid;
+  gap: 25px;
+  overflow: auto;
+  padding: 5px;
+  place-items: center;
+}
+
+.section {
+  display: grid;
+  place-items: center;
+}
+
+.playerInfo {
+  align-items: center;
+  border: 1px solid rgba(220, 220, 220, 0.95);
+  color: white;
+  display: grid;
+  grid: repeat(4, 1fr) / 1fr;
+  height: 100%;
+  padding: 5px;
+  width: 100%;
+}
+
+.playerInfo > div:nth-of-type( 1 ) > img {
+  border: var(--primary) 3px solid;
+  border-radius: 100px;
+  box-shadow: 0 5px 2px rgba(0, 0, 0, 0.25);
+  height: 100%;
+}
+
+.playerInfo > div {
+  background: var(--primary);
+  box-shadow: 0 2px 5px rgba(167, 75, 0, 0.25);
+  display: grid;
+  gap: 10px;
+  grid: 1fr / 100px 2fr;
+  margin-block: 5px;
+  place-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.playerInfo > div:not( :first-child ) > span {
+  background: var(--background);
+  font-weight: 700;
+  padding: 5px;
+  width: 100%;
+}
+
+.playerInfo > div:nth-of-type( 1 ) > span {
+  background: var(--secondary);
+  border-bottom: 3px solid white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(220, 220, 220, 0.25);
+  font-weight: 300;
+  padding: 5px;
+  width: 100%;
+}
+
+.playerInfo > div:nth-of-type( 1 ) {
+  background: var(--background);
+  border: 5px double rgba(0, 0, 0, 0.5);
+  border-right: 0;
+  grid: 1fr /1fr 1fr;
+  grid-row: span 3;
+  height: 90%;
+  padding: 10px;
+  place-items: center;
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .main {
+    grid: 1fr / 1fr 1fr;
+
+  }
+
+  .playerInfo {
+    grid: repeat(3, 1fr) / 1fr 3fr;
+  }
+
+  .rankingPlayers {
+    padding: 10px;
+  }
+}

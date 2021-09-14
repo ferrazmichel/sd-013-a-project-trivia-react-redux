@@ -16,6 +16,7 @@ const initialState = {
   assertions: 0,
   questions: [],
   ranking: [],
+  isPlaying: false,
 };
 
 function gameReducer(state = initialState, { type, payload }) {

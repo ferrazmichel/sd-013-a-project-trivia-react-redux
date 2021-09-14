@@ -2,7 +2,7 @@
   background: var(--tertiary);
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05);
   display: grid;
-  grid: 1fr / 1fr 2fr;
+  grid: 1fr / 1fr 0.5fr;
   place-items: center;
 }
 
@@ -60,4 +60,11 @@
 .points {
   color: var(--primary);
   font-size: 2rem;
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .header {
+    grid: 1fr / 1fr 2fr;
+  }
 }

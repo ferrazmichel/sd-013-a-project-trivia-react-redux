@@ -62,3 +62,10 @@
 .main > section > a > button:hover {
   filter: brightness(115%);
 }
+
+@media screen and ( max-width : 768px ) {
+
+  .main > section > p, .main > section > h3, .main > section > a > button {
+    font-size: 1rem;
+  }
+}
