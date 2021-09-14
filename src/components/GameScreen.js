@@ -35,8 +35,7 @@ class GameScreen extends React.Component {
   componentDidUpdate() {
     const state = localStorage.getItem('state');
     const { point } = this.props;
-    const newPlayer = {
-      ...JSON.parse(state),
+    const newPlayer = { ...JSON.parse(state),
       player: {
         ...JSON.parse(state).player,
         score: point,
@@ -52,8 +51,7 @@ class GameScreen extends React.Component {
     const answerDifficulty = pergunta[indexQuestion].difficulty;
     const arryDifficulty = { easy: 1, medium: 2, hard: 3 };
     setPoint(param === 'correct'
-      ? POINTS_CORRECT_ANSWER + (timer * arryDifficulty[answerDifficulty])
-      : 0);
+      ? POINTS_CORRECT_ANSWER + (timer * arryDifficulty[answerDifficulty]) : 0);
     this.mudarState();
   }
 
@@ -75,8 +73,7 @@ class GameScreen extends React.Component {
 
   mudarState() {
     const { point } = this.props;
-    this.setState((prevState) => ({
-      ...prevState,
+    this.setState((prevState) => ({ ...prevState,
       player: parseFloat(prevState.player.point) + point,
     }));
   }
@@ -102,10 +99,8 @@ class GameScreen extends React.Component {
     if (value === 'correct') {
       this.setState({ isCorrect: value, isIncorrect: 'incorrect' });
       this.setScore('correct');
-      const newPlayer = {
-        ...JSON.parse(state),
-        player: {
-          ...JSON.parse(state).player,
+      const newPlayer = { ...JSON.parse(state),
+        player: { ...JSON.parse(state).player,
           assertions: JSON.parse(state).player.assertions + 1,
         },
       };
@@ -192,16 +187,10 @@ class GameScreen extends React.Component {
     const { indexQuestion, isCorrect } = this.state;
     return (
       <div className="game-content">
-        <h1
-          data-testid="question-category"
-          className="question"
-        >
+        <h1 data-testid="question-category" className="question">
           {`Category: ${pergunta[indexQuestion].category}`}
         </h1>
-        <h1
-          className="question"
-          data-testid="question-text"
-        >
+        <h1 className="question" data-testid="question-text">
           {pergunta[indexQuestion].question}
         </h1>
         <img className="bat" src="https://thumbs.gfycat.com/ActiveCheerfulBarnacle-max-1mb.gif" alt="curious bat" />
@@ -230,15 +219,12 @@ class GameScreen extends React.Component {
       isLoading === true
         ? <div className="loading">Loading...</div>
         : this.renderGame()
-      isLoading === true ? <h1>Loading</h1> : this.renderGame()
     );
   }
 }
 
 GameScreen.propTypes = {
-  answer: PropTypes.shape({
-    isLoading: PropTypes.bool,
-    answer: PropTypes.shape({}) }),
+  answer: PropTypes.shape({ isLoading: PropTypes.bool, answer: PropTypes.shape({}) }),
   reduxTimer: PropTypes.func,
   timer: PropTypes.number,
   question: PropTypes.bool,

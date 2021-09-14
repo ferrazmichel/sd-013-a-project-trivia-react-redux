@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListPlayerRanking } from '../components';
+import './Ranking.css';
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -19,13 +20,17 @@ class Ranking extends React.Component {
   render() {
     const state = localStorage.getItem('state');
     return (
-      <>
-        <h1 data-testid="ranking-title">RANKING</h1>
+      <div className="div-button">
+        <div className="ranking-content">
+          <div className="ranking-content-inside">
+            <h1 data-testid="ranking-title">RANKING</h1>
+            {JSON.parse(state).ranking
+              .sort((a, b) => b.score - a.score)
+              .map((item, index) => <ListPlayerRanking key={ index } data={ item } />)}
+          </div>
+        </div>
         { this.handlePlayAgain() }
-        {JSON.parse(state).ranking
-          .sort((a, b) => b.score - a.score)
-          .map((item, index) => <ListPlayerRanking key={ index } data={ item } />)}
-      </>
+      </div>
     );
   }
 }

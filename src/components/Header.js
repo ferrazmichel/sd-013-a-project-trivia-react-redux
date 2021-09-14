@@ -5,6 +5,7 @@ import './Header.css';
 
 class Header extends React.Component {
   render() {
+    const { name, point } = this.props;
     return (
       <div className="header">
         <div className="header-logos">

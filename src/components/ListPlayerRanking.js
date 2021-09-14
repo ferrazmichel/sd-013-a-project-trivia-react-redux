@@ -5,13 +5,13 @@ class ListPlayerRanking extends React.Component {
   render() {
     const { data: { name, score, picture } } = this.props;
     return (
-      <div>
+      <div className="ranking-content-items">
         <img
           alt="img-profile"
           src={ picture }
         />
         <span data-testid={ `player-name-${name}` }>{name}</span>
-        <span data-testid={ `player-score-${score}` }>{score}</span>
+        <span data-testid={ `player-score-${score}` }>{`Score: ${score}`}</span>
       </div>
     );
   }

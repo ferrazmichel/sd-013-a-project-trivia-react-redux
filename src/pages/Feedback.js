@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from '../components';
+import './Feedback.css';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -17,12 +18,12 @@ class Feedback extends React.Component {
     const THREE = 3;
     if (JSON.parse(state).player.assertions < THREE) {
       return (
-        <h1 data-testid="feedback-text">Podia ser melhor...</h1>
+        <h1 data-testid="feedback-text" className="feedback-text">Podia ser melhor...</h1>
       );
     }
     if (JSON.parse(state).player.assertions >= THREE) {
       return (
-        <h1 data-testid="feedback-text">Mandou bem!</h1>
+        <h1 data-testid="feedback-text" className="feedback-text">Mandou bem!</h1>
       );
     }
   }
@@ -32,15 +33,17 @@ class Feedback extends React.Component {
     return (
       <>
         <h1
+          className="feedback-score"
           data-testid="feedback-total-score"
         >
-          {JSON.parse(state).player.score}
+          {`Pontos: ${JSON.parse(state).player.score}`}
 
         </h1>
         <h1
           data-testid="feedback-total-question"
+          className="feedback-score"
         >
-          {JSON.parse(state).player.assertions}
+          {`Acertos: ${JSON.parse(state).player.assertions}`}
 
         </h1>
       </>
@@ -67,10 +70,17 @@ class Feedback extends React.Component {
     return (
       <>
         <Header />
-        { this.handleFeedback() }
-        { this.handleRanking() }
-        { this.handlePlayAgain() }
-        { this.handleButtRanking() }
+        <div className="feedback-content">
+          { this.handleFeedback() }
+          { this.handleRanking() }
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Worthy_artistic_new_year_fireworks_.gif"
+            alt="fireworks"
+            className="fireworks"
+          />
+          { this.handlePlayAgain() }
+          { this.handleButtRanking() }
+        </div>
       </>
     );
   }
