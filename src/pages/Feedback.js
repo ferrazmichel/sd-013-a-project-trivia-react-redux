@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Header } from '../components';
+import { resetStore } from '../actions';
 import './Feedback.css';
 
 class Feedback extends React.Component {
@@ -36,24 +38,29 @@ class Feedback extends React.Component {
           className="feedback-score"
           data-testid="feedback-total-score"
         >
-          {`Pontos: ${JSON.parse(state).player.score}`}
-
+          {JSON.parse(state).player.score}
         </h1>
         <h1
           data-testid="feedback-total-question"
           className="feedback-score"
         >
-          {`Acertos: ${JSON.parse(state).player.assertions}`}
-
+          {JSON.parse(state).player.assertions}
         </h1>
       </>
     );
   }
 
   handlePlayAgain() {
+    const { reset } = this.props;
     return (
       <Link to="/">
-        <button type="button" data-testid="btn-play-again">Jogar Novamente</button>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => reset() }
+        >
+          Jogar Novamente
+        </button>
       </Link>
     );
   }
@@ -86,4 +93,12 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  reset: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetStore()),
+});
+
+export default connect(null, mapDispatchToProps)(Feedback);

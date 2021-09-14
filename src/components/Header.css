@@ -6,7 +6,7 @@
   box-shadow: 3px 3px 6px black;
   display: flex;
   justify-content: space-between;
-  opacity: 0;
+  opacity: 0.75;
   overflow: hidden;
   padding: 15px;
   position: fixed;

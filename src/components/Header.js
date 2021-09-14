@@ -33,9 +33,9 @@ class Header extends React.Component {
           </span>
           <span
             className="header-text"
-            data-testid="header-text"
+            data-testid="header-score"
           >
-            {`Pontos: ${point}`}
+            {point}
           </span>
         </div>
         <div className="header-logos">

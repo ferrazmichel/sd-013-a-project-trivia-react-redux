@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { setTimer, PointSet, resetStore } from '../actions';
+import { setTimer, PointSet } from '../actions';
 import './GameScreen.css';
 
 class GameScreen extends React.Component {
@@ -136,7 +136,6 @@ class GameScreen extends React.Component {
   }
 
   savePlayerRanking() {
-    const { reset } = this.props;
     const state = localStorage.getItem('state');
     const newPlayerRank = {
       name: JSON.parse(state).player.name,
@@ -151,7 +150,6 @@ class GameScreen extends React.Component {
       ],
     };
     localStorage.setItem('state', JSON.stringify(newRankig));
-    reset();
   }
 
   renderButtonWithLink() {
@@ -243,7 +241,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   reduxTimer: (timer, answer) => dispatch(setTimer(timer, answer)),
   setPoint: (point) => dispatch(PointSet(point)),
-  reset: () => dispatch(resetStore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreen);

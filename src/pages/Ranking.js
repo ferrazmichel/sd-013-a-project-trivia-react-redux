@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListPlayerRanking } from '../components';
+import { resetStore } from '../actions';
 import './Ranking.css';
 
 class Ranking extends React.Component {
@@ -10,9 +12,16 @@ class Ranking extends React.Component {
   }
 
   handlePlayAgain() {
+    const { reset } = this.props;
     return (
       <Link to="/">
-        <button type="button" data-testid="btn-go-home">Jogar Novamente</button>
+        <button
+          type="button"
+          data-testid="btn-go-home"
+          onClick={ () => reset() }
+        >
+          Jogar Novamente
+        </button>
       </Link>
     );
   }
@@ -35,4 +44,12 @@ class Ranking extends React.Component {
   }
 }
 
-export default Ranking;
+Ranking.propTypes = {
+  reset: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetStore()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
