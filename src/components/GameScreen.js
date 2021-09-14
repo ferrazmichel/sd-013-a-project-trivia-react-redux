@@ -151,6 +151,7 @@ class GameScreen extends React.Component {
         <button
           type="button"
           data-testid="btn-next"
+          className="feedback"
         >
           Feedback
         </button>
@@ -162,6 +163,7 @@ class GameScreen extends React.Component {
     return (
       <button
         type="button"
+        className="next-question"
         onClick={ this.handleClickQuestion }
         data-testid="btn-next"
       >
@@ -174,22 +176,35 @@ class GameScreen extends React.Component {
     const { pergunta, question } = this.props;
     const { indexQuestion, isCorrect } = this.state;
     return (
-      <div>
-        <h1 data-testid="question-category">{pergunta[indexQuestion].category}</h1>
-        <h1 data-testid="question-text">{pergunta[indexQuestion].question}</h1>
-        <button
-          type="button"
-          className={ `${isCorrect} botao` }
-          data-testid="correct-answer"
-          value="correct"
-          onClick={ this.handleClick }
+      <div className="game-content">
+        <h1
+          data-testid="question-category"
+          className="question"
         >
-          {pergunta[indexQuestion].correct_answer}
-        </button>
-        {pergunta[indexQuestion].incorrect_answers.map(
-          (item, index) => this.handleBotao(item, index),
-        )}
-        {question === true ? this.nextAnswers() : null}
+          {`Category: ${pergunta[indexQuestion].category}`}
+        </h1>
+        <h1
+          className="question"
+          data-testid="question-text"
+        >
+          {pergunta[indexQuestion].question}
+        </h1>
+        <img className="bat" src="https://thumbs.gfycat.com/ActiveCheerfulBarnacle-max-1mb.gif" alt="curious bat" />
+        <div className="game-content buttons">
+          <button
+            type="button"
+            className={ `${isCorrect} botao` }
+            data-testid="correct-answer"
+            value="correct"
+            onClick={ this.handleClick }
+          >
+            {pergunta[indexQuestion].correct_answer}
+          </button>
+          {pergunta[indexQuestion].incorrect_answers.map(
+            (item, index) => this.handleBotao(item, index),
+          )}
+          {question === true ? this.nextAnswers() : null}
+        </div>
       </div>
     );
   }
@@ -197,7 +212,9 @@ class GameScreen extends React.Component {
   render() {
     const { answer: { isLoading } } = this.props;
     return (
-      isLoading === true ? <h1>Oi</h1> : this.renderGame()
+      isLoading === true
+        ? <div className="loading">Loading...</div>
+        : this.renderGame()
     );
   }
 }
