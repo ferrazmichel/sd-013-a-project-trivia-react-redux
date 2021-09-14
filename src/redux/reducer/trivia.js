@@ -9,11 +9,11 @@ import {
 const INITIAL_STATE = {
   results: [],
   error: '',
-  player: {
-    name: '',
-    assertions: 0,
-    score: 0,
-    gravatarEmail: '' },
+  // player: {
+  //   name: '',
+  assertions: 0,
+  score: 0,
+  //   gravatarEmail: '' },
 };
 
 function triviaReducer(state = INITIAL_STATE, action) {

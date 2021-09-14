@@ -30,7 +30,7 @@ class Trivia extends Component {
 
   componentDidMount() {
     // const { fetchApi } = this.props;
-    this.fetchGravater();
+    // this.fetchGravater();
     // fetchApi();
     this.fetchQuestion();
     this.countdown();
@@ -65,6 +65,7 @@ class Trivia extends Component {
     const lsData = await JSON.stringify({ player:
       { name: userPlayer, assertions: 0, score: 0, gravatarEmail: userEmail } });
     localStorage.state = await lsData;
+    console.log('qualquercoisa');
   }
 
   fetchGravater() {
@@ -179,11 +180,11 @@ class Trivia extends Component {
   }
 
   render() {
-    const { userPlayer, questionsAPI } = this.props;
+    const { userPlayer, questionsAPI, placar } = this.props;
     const { disable,
       countdown,
       indexQuestions, rigthBoarder, wrongBoarder } = this.state;
-    const placar = JSON.parse(localStorage.state);
+    // const placar = JSON.parse(localStorage.state);
     return (
       <main>
         <header>
@@ -191,7 +192,7 @@ class Trivia extends Component {
           <p data-testid="header-player-name">{userPlayer}</p>
           <p data-testid="header-score">
             Placar:
-            { placar.player.score }
+            { placar }
 
           </p>
         </header>
@@ -226,6 +227,7 @@ const mapStateToProps = (state) => ({
   questionsAPI: state.trivia.results,
   userEmail: state.user.email,
   userPlayer: state.user.player,
+  placar: state.trivia.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
