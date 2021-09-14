@@ -8,12 +8,12 @@
   justify-content: space-between;
   opacity: 0.75;
   padding: 15px;
-  transition: all 1s ease-in-out;
   position: fixed;
-  top: 0;
-  overflow: hidden;
-  width: 100%;
+  transition: all 1s ease-in-out;
   opacity: 0;
+  overflow: hidden;
+  top: 0;
+  width: 100%;
 }
 
 .header-logos {
