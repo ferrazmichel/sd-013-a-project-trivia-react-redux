@@ -17,10 +17,10 @@
 }
 
 .feedback-text, .feedback-score {
-  font-family: Press Start 2P , cursive;
+  color: aliceblue;
+  font-family: "Press Start 2p" , cursive;
   font-size: 40px;
   text-shadow: 3px 3px black;
-  color: aliceblue;
 }
 
 .feedback-text:hover, .feedback-score:hover {

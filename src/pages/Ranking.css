@@ -24,7 +24,7 @@
   animation: movein 0.3s;
   animation-iteration-count: 3;
   color: whitesmoke;
-  font-family: Press Start 2P , cursive;
+  font-family: "Press Start 2p" , cursive;
   font-size: 40px;
   text-align: center;
   text-shadow: 3px 3px 3px black;
@@ -60,12 +60,12 @@
 }
 
 .ranking-content-items:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   transform: scale(1.1);
 }
 
 .ranking-content-items span {
-  font-family:  Press Start 2P , cursive;
+  font-family: "Press Start 2p" , cursive;
   font-size: 22px;
   font-weight: 700;
   line-height: 80px;
