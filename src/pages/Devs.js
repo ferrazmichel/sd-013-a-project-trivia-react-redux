@@ -27,7 +27,7 @@ class Devs extends React.Component {
           <div className="dev d-flex flex-column align-items-center">
             <h2>João Vieira</h2>
             <img className="dev-image mb-3 mt-3" src="https://ca.slack-edge.com/TMDDFEPFU-U01T5D9TGTE-c23adfbfaccd-512" alt="João" />
-            <a className="btn btn-info fw-bold mb-3" target="_blank" rel="noopener noreferrer" href="https://www.linkedIn.com/">
+            <a className="btn btn-info fw-bold mb-3" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/joao-francisco-da-silva-vieira-a8864972">
               LinkedIn
             </a>
             <a className="git-btn btn btn-dark fw-bold" target="_blank" rel="noopener noreferrer" href="https://github.com/jonnyvieirausa">
