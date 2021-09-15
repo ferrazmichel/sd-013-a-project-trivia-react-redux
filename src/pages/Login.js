@@ -54,8 +54,8 @@ class Login extends Component {
 
   render() {
     // ajuda do Rogerio P da silva, monstro!!
-    const playLocalStorage = '{"player":{"name":"Nome da pessoa","assertions":0,"score":0,"gravatarEmail":"email@pessoa.com"}}';
-    localStorage.setItem('state', playLocalStorage);
+    // const play = '{"player":{"name":"","assertions":0,"score":0,"gravatarEmail":""}}';
+    // localStorage.setItem('state', play);
     const { disableButton, redirect } = this.state;
     // const { questions } = this.props;
     // console.log(questions.length);

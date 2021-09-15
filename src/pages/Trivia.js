@@ -44,6 +44,9 @@ class Trivia extends Component {
 
   async fetchQuestion() {
     const { questionSucess, userEmail, userPlayer } = this.props;
+    const lsData = JSON.stringify({ player:
+      { name: userPlayer, assertions: 0, score: 0, gravatarEmail: userEmail } });
+    localStorage.state = lsData;
     const tokenGet = localStorage.getItem(('token'));
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
@@ -51,9 +54,6 @@ class Trivia extends Component {
     // localStorage.setItem('questions', JSON.stringify(questionJson));
     // this.setState({ questions: questionJson });
     questionSucess(questionJson);
-    const lsData = JSON.stringify({ player:
-      { name: userPlayer, assertions: 0, score: 0, gravatarEmail: userEmail } });
-    localStorage.state = lsData;
   }
 
   fetchGravater() {
