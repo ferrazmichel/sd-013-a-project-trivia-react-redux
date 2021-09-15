@@ -30,9 +30,10 @@ class Ranking extends Component {
 
     if (localStorage.ranking) {
       const ranking = JSON.parse(localStorage.ranking);
-      const newRanking = [...ranking, mockPlayer];
-      this.setState({ playersGame: newRanking });
-      localStorage.ranking = JSON.stringify(newRanking);
+      const addPlayer = [...ranking, mockPlayer];
+      addPlayer.sort((a, b) => b.score - a.score);
+      this.setState({ playersGame: addPlayer });
+      localStorage.ranking = JSON.stringify(addPlayer);
     } else {
       const ranking = [mockPlayer];
       localStorage.setItem('ranking', JSON.stringify(ranking));
