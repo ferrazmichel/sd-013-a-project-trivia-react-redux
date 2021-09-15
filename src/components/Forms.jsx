@@ -68,6 +68,7 @@ class Forms extends React.Component {
                 id="name"
                 type="text"
                 name="nome"
+                placeholder="username"
                 value={ nome }
                 data-testid="input-player-name"
                 onChange={ this.handleChange }
@@ -79,6 +80,7 @@ class Forms extends React.Component {
                 id="email"
                 type="text"
                 name="email"
+                placeholder="email"
                 value={ email }
                 data-testid="input-gravatar-email"
                 onChange={ this.handleChange }
