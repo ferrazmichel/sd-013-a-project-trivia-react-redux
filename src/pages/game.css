@@ -1,10 +1,11 @@
-@media screen and (max-width: 575px) {
-    #main {
-      display: block;
-    }
+@media screen and ( max-width : 575px ) {
+  #main {
+    display: block;
   }
+}
 
 .game {
+<<<<<<< HEAD
     height: 100%;
     position: absolute;
     margin: 0;
@@ -18,30 +19,45 @@
     align-items: center;
     justify-content: start;
   }
+=======
+  align-items: center;
+  align-self: center;
+  background-color: green;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: start;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+>>>>>>> 5a4966e9d9ac4b3182f1855318bb8f548d09cdce
 
-  .dc {
-      background-color: black;
-    height: 25%;
-    width: 90%;
-    display: flex;
-    align-self: center;
-    align-items: center;
-    color: orange;
-    justify-content:space-around;
-    
-  }
+.dc {
+  align-items: center;
+  align-self: center;
+  background-color: black;
+  color: orange;
+  display: flex;
+  height: 25%;
+  justify-content: space-around;
+  width: 90%;
 
-  .dc2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+}
 
-  .back {
-    text-decoration: none;
-    color: orange;
-    font-size: 100px;
-  }
+.dc2 {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.back {
+  color: orange;
+  font-size: 100px;
+  text-decoration: none;
+}
 
   .timer {
     color: orange;
@@ -139,6 +155,7 @@
   box-shadow: 0 0 0 0 #bd2a2a, 0 0 50px 0 #5cbf2a;
 }
 
+<<<<<<< HEAD
 .incorrect:active {
   position: relative;
   top: 1px;
@@ -159,3 +176,10 @@
   color: orange;
   font-size: 85px;
 }
+=======
+.button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed; */
+
+/* } */
+>>>>>>> 5a4966e9d9ac4b3182f1855318bb8f548d09cdce
