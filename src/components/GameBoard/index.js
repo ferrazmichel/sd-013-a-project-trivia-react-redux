@@ -71,7 +71,7 @@ class GameBoard extends React.Component {
               ? 'correct-answer'
               : `wrong-answer-${incorrectOptions.indexOf(opt)}`
           }
-          style={ opt === correctOption ? { background: 'purple' } : null }
+          // style={ opt === correctOption ? { background: 'purple' } : null }
           name="options"
           value={ opt }
           onClick={ ({ target }) => {

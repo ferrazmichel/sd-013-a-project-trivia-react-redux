@@ -52,7 +52,13 @@ class Game extends Component {
   render() {
     const { redirect, qIndex } = this.state;
     const { questions } = this.props;
-    if (questions.length < 1) return <h3>Loading...</h3>;
+    if (questions.length < 1) {
+      return (
+        <main className={ style.loading }>
+          <h3>Loading...</h3>
+        </main>
+      );
+    }
     if (redirect) return <Redirect to="/feedback" />;
     return (
       <main className={ style.main }>

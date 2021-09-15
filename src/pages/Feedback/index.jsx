@@ -23,14 +23,14 @@ class Feedback extends Component {
         <section>
           <h3 data-testid="feedback-text">{msg}</h3>
           <p>
-            Você fez um total de&nbsp;
+            Você fez um total de
             <span data-testid="feedback-total-score">{score}</span>
-              &nbsp;pontos
+            pontos
           </p>
           <p>
-            Acertou&nbsp;
+            Acertou
             <span data-testid="feedback-total-question">{assertions}</span>
-              &nbsp;questões!
+            questões!
           </p>
           <Link
             to="/"

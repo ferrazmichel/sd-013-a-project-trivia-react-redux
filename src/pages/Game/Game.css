@@ -35,10 +35,6 @@
   transition: all 0.25s ease;
 }
 
-.dev-correct {
-  background-color: blueviolet;
-}
-
 @media screen and ( min-width : 768px ) {
 
   .btn-next {

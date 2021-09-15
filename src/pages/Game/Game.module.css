@@ -3,5 +3,16 @@
   display: grid;
   grid: 1fr 8fr / 1fr;
   height: 100vh;
+  transition: all 2s ease;
+  width: 100vw;
+}
+
+.loading {
+  background: var(--background);
+  color: white;
+  display: grid;
+  grid: 1fr / 1fr;
+  height: 100vh;
+  place-items: center;
   width: 100vw;
 }
