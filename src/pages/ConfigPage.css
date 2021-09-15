@@ -5,6 +5,7 @@
   color: antiquewhite;
   height: 30px;
   margin-left: 10px;
+  margin-top: 5em;
 }
 
 .btn-config:hover {
@@ -14,4 +15,19 @@
 
 .title {
   color: aliceblue;
+}
+
+.config {
+  display: flex;
+  flex-direction: column;
+}
+
+.config label {
+  color: antiquewhite;
+  font-size: 20px;
+  margin-top: 5em;
+}
+
+.config input, .config select {
+  margin-left: 1em;
 }
