@@ -9,11 +9,11 @@ import {
 const INITIAL_STATE = {
   results: [],
   error: '',
-  // player: {
-  //   name: '',
-  assertions: 0,
-  score: 0,
-  //   gravatarEmail: '' },
+  player: {
+    name: '',
+    assertions: 0,
+    score: 0,
+    gravatarEmail: '' },
 };
 
 function triviaReducer(state = INITIAL_STATE, action) {
@@ -24,6 +24,7 @@ function triviaReducer(state = INITIAL_STATE, action) {
     };
 
   case SUCESS_TRIVIA:
+    localStorage.setItem('state', JSON.stringify(state.player));
     return {
       ...state,
       results: action.payload,
