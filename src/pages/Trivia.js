@@ -134,8 +134,8 @@ class Trivia extends Component {
       updtScore({ score: lsData.player.score, assertions: lsData.player.assertions });
       localStorage.state = JSON.stringify(lsData);
 
-      console.log(lsData.player.score);
-      console.log(lsData.player.assertions);
+      // console.log(lsData.player.score);
+      // console.log(lsData.player.assertions);
     }
   }
 
