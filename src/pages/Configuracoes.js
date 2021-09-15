@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Option from '../components/Option';
 import { setConfigs } from '../redux/actions';
 import { categories, difficulties, types } from '../data';
+import './configuracoes.css';
 
 class Configuracoes extends React.Component {
   constructor() {
@@ -40,7 +41,7 @@ class Configuracoes extends React.Component {
           name="category"
           value={ category }
           onChange={ this.handleChange }
-          className="form-control"
+          className="form-control select mb-3 fw-bold"
         >
           { categories.map((cat, index) => (
             <Option
@@ -55,7 +56,7 @@ class Configuracoes extends React.Component {
           name="difficulty"
           value={ difficulty }
           onChange={ this.handleChange }
-          className="form-control"
+          className="form-control select mb-3 fw-bold"
         >
           { difficulties.map((dif, index) => (
             <Option
@@ -70,7 +71,7 @@ class Configuracoes extends React.Component {
           name="type"
           value={ type }
           onChange={ this.handleChange }
-          className="form-control"
+          className="form-control select mb-4 fw-bold"
         >
           {
             types.map((item, index) => (
@@ -83,10 +84,17 @@ class Configuracoes extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 data-testid="settings-title">Configurações</h1>
+      <div className="container">
+        <h1
+          className="text-center fw-bold mb-4 title"
+          data-testid="settings-title"
+        >
+          Configurações
+        </h1>
         { this.renderSelects() }
-        <Link to="/" onClick={ this.handleClick }>Salvar Configurações</Link>
+        <Link to="/" onClick={ this.handleClick } className="btn btn-config fw-bold">
+          Salvar Configurações
+        </Link>
       </div>
     );
   }

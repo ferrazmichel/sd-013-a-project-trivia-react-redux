@@ -15,9 +15,9 @@ ol {
   list-style-type: none;
 }
 
-li {
+/* li {
   display: block;
-}
+} */
 
 li:before {
   content: counter(item) '  ';
@@ -28,12 +28,17 @@ li:before {
 }
 
 .player-image-name {
-  flex-basis: 60%;
-  justify-self: start;
+
+  /* flex-basis: 60%;
+
+  justify-self: start; */
 }
 
 .player-image-name img {
   border-radius: 50%;
+  height: 50px;
+  margin: 0 20px;
+  width: 50px;
 }
 
 .player-score {
