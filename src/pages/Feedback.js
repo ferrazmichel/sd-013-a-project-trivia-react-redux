@@ -66,6 +66,15 @@ class Feedback extends Component {
   }
 }
 
+Feedback.propTypes = {
+  acertos: PropTypes.number,
+  placar: PropTypes.number,
+  userEmail: PropTypes.shape({
+    toLowerCase: PropTypes.func,
+  }),
+  userPlayer: PropTypes.string,
+}.isRequired;
+
 const mapStateToProps = (state) => ({
   userEmail: state.user.email,
   userPlayer: state.user.player,
