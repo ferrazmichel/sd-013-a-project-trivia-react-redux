@@ -1,50 +1,50 @@
 @media screen and (max-width: 575px) {
-    #main {
-      display: block;
-    }
+  #main {
+    display: block;
   }
+}
 
 .App {
-    height: 100%;
-    position: absolute;
-    margin: 0;
-    width: 100%;
-    overflow: hidden;
-    text-align: center;
-    background-color: #0b0e07;
-    display: flex;
-    align-self: center;
-    align-items: stretch;
-    justify-content: center;
-  }
+  height: 100%;
+  position: absolute;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  background-color: #0b0e07;
+  display: flex;
+  align-self: center;
+  align-items: stretch;
+  justify-content: center;
+}
 
-  .forms {
-    height: 350px;
-    display: flex;
-    align-self: center;
-    align-items: center;
-    flex-direction: column;
-    color: orange;
-    justify-content: space-between;
-    
-  }
+.forms {
+  height: 350px;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  color: orange;
+  justify-content: space-between;
+  
+}
 
-  .flexLBL {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.flexLBL {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .label {
-    font-size: 100px;
-  }
+.label {
+  font-size: 100px;
+}
 
-  .input::placeholder {
-    color: orange;
-    opacity: 0.2;
-  }
+.input::placeholder {
+  color: orange;
+  opacity: 0.2;
+}
 
-  .input {
+.input {
   width: 25%;
   background-color: black;
   color: orange;
