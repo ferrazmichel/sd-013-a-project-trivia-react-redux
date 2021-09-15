@@ -4,6 +4,7 @@ import md5 from 'crypto-js/md5';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import fetchTokenApi from './index';
+import './login.css';
 
 class LoginScreen extends React.Component {
   constructor() {
@@ -92,41 +93,50 @@ class LoginScreen extends React.Component {
     const { nickname, email, validate, shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
     return (
-      <form>
-        <label htmlFor="name">
-          Nickname:
-          <input
-            data-testid="input-player-name"
-            id="name"
-            name="nickname"
-            type="text"
-            placeholder="Seu Nickname"
-            value={ nickname }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Seu Email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <button
-          onClick={ this.handleClick }
-          type="button"
-          data-testid="btn-play"
-          disabled={ !validate.validateEmail || !validate.validateNickname }
-        >
-          Jogar
-        </button>
-        <Link to="/config" data-testid="btn-settings">Settings</Link>
-      </form>
+      <body className="App">
+        <form className="forms">
+          <div className="flexLBL">
+            <label className="label" htmlFor="name">
+              Nickname:
+              <input
+                className="input"
+                data-testid="input-player-name"
+                id="name"
+                name="nickname"
+                type="text"
+                placeholder="Nick"
+                value={ nickname }
+                onChange={ this.handleChange }
+              />
+            </label>
+          </div>
+          <div className="flexLBL">
+            <label className="label" htmlFor="email">
+              Email:
+              <input
+                className="input"
+                data-testid="input-gravatar-email"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email"
+                value={ email }
+                onChange={ this.handleChange }
+              />
+            </label>
+          </div>
+          <button
+            className="button"
+            onClick={ this.handleClick }
+            type="button"
+            data-testid="btn-play"
+            disabled={ !validate.validateEmail || !validate.validateNickname }
+          >
+            Jogar
+          </button>
+          <Link to="/config" data-testid="btn-settings">Creditos</Link>
+        </form>
+      </body>
     );
   }
 }

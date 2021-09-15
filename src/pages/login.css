@@ -1,0 +1,81 @@
+@media screen and (max-width: 575px) {
+    #main {
+      display: block;
+    }
+  }
+
+.App {
+    height: 100%;
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    background-color: #0b0e07;
+    display: flex;
+    align-self: center;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .forms {
+    height: 350px;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    flex-direction: column;
+    color: orange;
+    justify-content: space-between;
+    
+  }
+
+  .flexLBL {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .label {
+    font-size: 100px;
+  }
+
+  .input::placeholder {
+    color: orange;
+    opacity: 0.2;
+  }
+
+  .input {
+  width: 25%;
+  background-color: black;
+  color: orange;
+  font-size: 100px;
+  padding-top: 0px;
+  margin-bottom: 0;
+  box-shadow: rgb(0, 255, 55);
+  transition: width 0.4s ease-in-out;
+}
+
+.input:focus {
+  width: 50%;
+}
+
+.button {
+  background-color: orange;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.button:hover {
+  box-shadow: 0 0 0 0 orange, 0 0 50px 0 orange;
+}
+
+.button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
