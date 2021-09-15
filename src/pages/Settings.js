@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveSettings } from '../actions';
+import '../App.css';
 
 class Settings extends React.Component {
   constructor() {
@@ -32,7 +33,7 @@ class Settings extends React.Component {
   category() {
     return (
       <label htmlFor="trivia_category">
-        Select Category:
+        Selecionar categoria:
         <select name="trivia_category" onClick={ this.selectTypes }>
           <option value="">Any Category</option>
           <option value="9">General Knowledge</option>
@@ -66,28 +67,39 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 data-testid="settings-title">TELA DE CONF</h1>
-        {this.category()}
-        <label htmlFor="trivia_difficulty">
-          Select Difficulty:
-          <select name="trivia_difficulty" onClick={ this.selectTypes }>
-            <option value="any">Any Difficulty</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </label>
-        <label htmlFor="trivia_type">
-          Select Type:
-          <select name="trivia_type" onClick={ this.selectTypes }>
-            &gt;
-            <option value="any">Any Type</option>
-            <option value="multiple">Multiple Choice</option>
-            <option value="boolean">True / False</option>
-          </select>
-        </label>
-        <button onClick={ this.saveConfig } type="button">Salvar Configurações</button>
+      <div className="config-screen">
+        <div className="config-header">
+          <h1 data-testid="settings-title">CONFIGURAÇÕES</h1>
+        </div>
+        <div className="config-forms">
+          {this.category()}
+          <label htmlFor="trivia_difficulty">
+            Selecionar dificuldade:
+            <select name="trivia_difficulty" onClick={ this.selectTypes }>
+              <option value="any">Any Difficulty</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </label>
+          <label htmlFor="trivia_type">
+            Selecionar tipo:
+            <select name="trivia_type" onClick={ this.selectTypes }>
+              &gt;
+              <option value="any">Any Type</option>
+              <option value="multiple">Multiple Choice</option>
+              <option value="boolean">True / False</option>
+            </select>
+          </label>
+        </div>
+        <button
+          className="config-button"
+          onClick={ this.saveConfig }
+          type="button"
+        >
+          Salvar Configurações
+
+        </button>
       </div>
     );
   }

@@ -186,11 +186,6 @@ class Game extends React.Component {
     return (
       <main className="main-game">
         <Header score={ total } respondido={ respondido } />
-        <h2>{ timer }</h2>
-        <h2 data-testid="question-category">
-          {category}
-        </h2>
-        teste
         <div className="div-timer-category">
           <h2 className="timer">{ timer }</h2>
           <h2 data-testid="question-category" className="category-game">

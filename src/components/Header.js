@@ -44,23 +44,20 @@ class Header extends React.Component {
     // const page1 = window.location('/game');
     // const page2 = window.location('/feedback');
     return (
-      <div className="header-container">
-        <header className="header-game">
-          <img
-            src={ `https://www.gravatar.com/avatar/${img}` }
-            alt="imagem"
-            data-testid="header-profile-picture"
-          />
-          <h3 data-testid="header-player-name">
-            {user}
-          </h3>
-          <p data-testid="header-score">
-            {score}
-            {' pontos'}
-            pts
-          </p>
-        </header>
-      </div>
+      <header className="header-game">
+        <img
+          src={ `https://www.gravatar.com/avatar/${img}` }
+          alt="imagem"
+          data-testid="header-profile-picture"
+        />
+        <h3 data-testid="header-player-name">
+          {user}
+        </h3>
+        <p data-testid="header-score">
+          {score}
+          pts
+        </p>
+      </header>
     );
   }
 }

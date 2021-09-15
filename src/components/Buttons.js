@@ -20,7 +20,7 @@ class Buttons extends React.Component {
           type="button"
           data-testid="btn-settings"
         >
-          <Link to="/settings">Configurações</Link>
+          <Link to="/settings" className="config-link">Configurações</Link>
         </button>
       </div>
     );
