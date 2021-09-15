@@ -2,30 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { saveEmail, fetchApiToken } from '../actions';
+import { saveEmail, fetchApiToken } from '../redux/actions';
 
 class Login extends React.Component {
-  constructor() { 
+  constructor() {
     super();
     this.state = {
       email: '',
       nameUser: '',
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
-    // this.receiveToken = this.receiveToken.bind(this);
     this.saveNameEmail = this.saveNameEmail.bind(this);
   }
 
   async onSubmitForm() {
-    const { emailKey, apiToken, history } = this.props;
+    const { emailKey, apiToken, history, token } = this.props;
     // Disparamos a nossa action através da função importada
     // de actions.js, que apelidamos de EmailKey
     const { email } = this.state;
     emailKey(email);
     this.saveNameEmail();
-    // this.receiveToken();
     await apiToken();
+    localStorage.setItem('token', token);
     history.push('/trivia');
   }
 
@@ -41,14 +41,6 @@ class Login extends React.Component {
     };
     localStorage.setItem('state', JSON.stringify(state));
   }
-
-  // async receiveToken() {
-  //   const { history } = this.props;
-  //   // const Api = await fetch('https://opentdb.com/api_token.php?command=request');
-  //   // const json = await Api.json();
-  //   // localStorage.setItem('token', JSON.stringify(json.token));
-  //   history.push('/trivia');
-  // }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
@@ -102,11 +94,13 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  apiToken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   emailKey: (email) => dispatch(saveEmail(email)),
-  apiToken: () => dispatch(fetchApiToken())
+  apiToken: () => dispatch(fetchApiToken()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
