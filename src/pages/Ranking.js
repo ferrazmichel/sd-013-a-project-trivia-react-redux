@@ -21,20 +21,22 @@ class Ranking extends Component {
     // const newPerson = { name, score };
     // Fiz o mockPlayer para poder pegar o token e chamar a imagem
     // aproveitei e juntei todas as informações.
-    const mockPlayer = [{
+    const mockPlayer = {
       name,
       score,
       image: `https://www.gravatar.com/avatar/${token}`,
-    }];
+    };
     this.setState({ playersGame: mockPlayer });
 
     if (localStorage.ranking) {
-      const newRanking = mockPlayer;
+      const ranking = JSON.parse(localStorage.ranking);
+      const newRanking = [...ranking, mockPlayer];
+      this.setState({ playersGame: newRanking });
       localStorage.ranking = JSON.stringify(newRanking);
-      // const ranking = this.setState({ playersGame: mockPlayer });
     } else {
-      const { playersGame } = this.state;
-      localStorage.setItem('ranking', JSON.stringify(playersGame));
+      const ranking = [mockPlayer];
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+      this.setState({ playersGame: ranking });
     }
   }
 
