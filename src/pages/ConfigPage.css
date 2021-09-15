@@ -1,0 +1,33 @@
+.btn-config {
+  background-color: #036b52;
+  border-radius: 5px;
+  border-style: none;
+  color: antiquewhite;
+  height: 30px;
+  margin-left: 10px;
+  margin-top: 5em;
+}
+
+.btn-config:hover {
+  background-color: #0d9273;
+  color: rgb(161, 161, 29);
+}
+
+.title {
+  color: aliceblue;
+}
+
+.config {
+  display: flex;
+  flex-direction: column;
+}
+
+.config label {
+  color: antiquewhite;
+  font-size: 20px;
+  margin-top: 5em;
+}
+
+.config input, .config select {
+  margin-left: 1em;
+}

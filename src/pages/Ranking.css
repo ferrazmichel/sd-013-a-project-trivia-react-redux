@@ -1,0 +1,13 @@
+.btn-ranking {
+  background-color: #036b52;
+  border-radius: 5px;
+  border-style: none;
+  color: antiquewhite;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.btn-ranking:hover {
+  background-color: #0d9273;
+  color: rgb(161, 161, 29);
+}
