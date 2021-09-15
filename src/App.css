@@ -1,4 +1,4 @@
-/* * {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -9,10 +9,53 @@ body {
   height: 100vh;
   place-items: center;
   width: 100vw;
-} */
+  background-image: linear-gradient(-45deg, rgb(202, 198, 198),rgb(241, 239, 239));
+}
+.form-login {
+  background-color: rgb(134, 134, 134);
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(145, 145, 145, 0.8);
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  justify-content: center;
+  place-items: center;
+  width: 40vw;
+}
+.input-login {
+  margin-bottom: 10px;
+  width: 240px;
+  height: 31px;
+  border-radius: 5px;
+}
+
+.buttons {
+  margin: 20px;
+  width: 240px;
+  height: 31px;
+  border-radius: 5px;
+}
+
+.button-login {
+  margin-right: 10px;
+  width: 130px;
+  height: 31px;
+  border-radius: 5px;
+  background-color: rgb(96, 243, 96);
+}
+
+.button-settings {
+  width: 100px;
+  height: 31px;
+}
+
+.header-form {
+  margin-bottom:
+}
 
 .red-border {
   border: 3px solid red;
+  
 }
 
 .green-border {

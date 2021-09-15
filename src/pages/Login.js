@@ -54,13 +54,14 @@ class Login extends Component {
 
   render() {
     const { disableButton, redirect } = this.state;
-    // const { questions } = this.props;
-    // console.log(questions.length);
+
     if (redirect) return <Redirect to="/trivia" />;
     return (
-      <form>
+      <form className="form-login">
+        <h1 className="header-form">TRYBEE TRIVIA</h1>
         <label htmlFor="email">
           <input
+            className="input-login"
             onChange={ this.handleonChange }
             id="email"
             data-testid="input-gravatar-email"
@@ -70,6 +71,7 @@ class Login extends Component {
         </label>
         <label htmlFor="player">
           <input
+            className="input-login"
             onChange={ this.handleonChange }
             id="player"
             data-testid="input-player-name"
@@ -77,22 +79,26 @@ class Login extends Component {
             placeholder="Player"
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          onClick={ this.handleonClick }
-          disabled={ disableButton }
-        >
-          Jogar
-        </button>
-        <Link to="/config">
+        <section className="buttons">
           <button
+            className="button-login"
             type="button"
-            data-testid="btn-settings"
+            data-testid="btn-play"
+            onClick={ this.handleonClick }
+            disabled={ disableButton }
           >
-            Configurações
+            Jogar
           </button>
-        </Link>
+          <Link to="/config">
+            <button
+              className="button-settings"
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+        </section>
       </form>
     );
   }
