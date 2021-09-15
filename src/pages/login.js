@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router';
 import fetchTokenApi from './index';
 import './login.css';
+import Pato from '../componets/pato';
 
 class LoginScreen extends React.Component {
   constructor() {
@@ -94,6 +95,7 @@ class LoginScreen extends React.Component {
     if (shouldRedirect) return <Redirect to="/game" />;
     return (
       <body className="App">
+        
         <form className="forms">
           <div className="flexLBL">
             <label className="label" htmlFor="name">
@@ -134,7 +136,10 @@ class LoginScreen extends React.Component {
           >
             Jogar
           </button>
-          <Link to="/config" data-testid="btn-settings">Creditos</Link>
+          
+          <Link to="/config" data-testid="btn-settings">
+          <Pato />
+            </Link>
         </form>
       </body>
     );

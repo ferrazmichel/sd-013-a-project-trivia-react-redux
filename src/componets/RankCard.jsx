@@ -56,7 +56,7 @@ class RankCard extends Component {
     const { playersState } = this.state;
 
     return (
-      <div>
+      <div className="dc">
         {playersState.map((player, index) => (
           <header key={ player }>
             <img
@@ -65,11 +65,17 @@ class RankCard extends Component {
               alt="Avatar do Usuário"
             />
             <h3
+              className="rankinginfo"
               data-testid={ `player-name-${index}` }
             >
               { player.name }
             </h3>
-            <p data-testid={ `player-score-${index}` }>{player.score}</p>
+            <p
+              className="rankinginfo"
+              data-testid={ `player-score-${index}` }
+            >
+              {player.score}
+            </p>
           </header>))}
       </div>
     );

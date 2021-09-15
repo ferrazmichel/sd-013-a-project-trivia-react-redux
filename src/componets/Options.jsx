@@ -79,6 +79,7 @@ class Options extends Component {
       question } = questionChosen;
     const btnCorrect = (
       <button
+        className="answerbutton"
         key={ question }
         type="button"
         id="correct"
@@ -92,6 +93,7 @@ class Options extends Component {
     const btnsIncorrect = (
       inCorrectAnswer.map((ques, i) => (
         <button
+          className="answerbutton"
           key={ i }
           type="button"
           id="incorrect"
@@ -114,10 +116,11 @@ class Options extends Component {
     const { category, question } = questionChosen;
     return (
       <div>
-        <h2 data-testid="question-category">{category}</h2>
-        <h3 data-testid="question-text">{question}</h3>
-        <div className="answers" />
-        {arrayOptions}
+        <h2 className="category" data-testid="question-category">{category}</h2>
+        <h3 className="question" data-testid="question-text">{question}</h3>
+        <div className="answers">
+          {arrayOptions}
+        </div>
       </div>
     );
   }

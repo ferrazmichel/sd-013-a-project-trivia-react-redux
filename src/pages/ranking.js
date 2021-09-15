@@ -22,11 +22,16 @@ class RankingScreen extends Component {
 
   render() {
     return (
-      <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
+      <div className="game">
+        <h1 className="rankinginfo" data-testid="ranking-title">Ranking</h1>
         <RankCard />
         <Link to="/">
-          <button onClick={ this.resetLocal } type="button" data-testid="btn-go-home">
+          <button
+            className="button"
+            onClick={ this.resetLocal }
+            type="button"
+            data-testid="btn-go-home"
+          >
             Tela Inicial
           </button>
         </Link>

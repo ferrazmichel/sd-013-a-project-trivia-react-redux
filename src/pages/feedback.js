@@ -35,18 +35,23 @@ class FeedbackScreen extends Component {
     const acertoBase = 3;
 
     return (
-      <div>
-        <Header />
-        <p data-testid="feedback-text">
-          {assertions > acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
-        </p>
-        <div data-testid="feedback-total-score">
-          {score}
+      <div className="game">
+        <div className="dc">
+          <Header />
         </div>
-        <div data-testid="feedback-total-question">
-          {assertions}
+        <div className="dc">
+          <p className="label" data-testid="feedback-text">
+            {assertions > acertoBase ? 'Mandou bem!' : 'Podia ser melhor...'}
+          </p>
+          <div className="label" data-testid="feedback-total-score">
+            {score}
+          </div>
+          <div className="label" data-testid="feedback-total-question">
+            {assertions}
+          </div>
         </div>
         <button
+          className="button"
           type="button"
           data-testid="btn-play-again"
           name="Jogar Novamente"
@@ -55,6 +60,7 @@ class FeedbackScreen extends Component {
           Jogar Novamente
         </button>
         <button
+          className="button"
           type="button"
           data-testid="btn-ranking"
           name="Ver Ranking"
@@ -63,6 +69,7 @@ class FeedbackScreen extends Component {
           Ver Ranking
         </button>
       </div>
+
     );
   }
 }
