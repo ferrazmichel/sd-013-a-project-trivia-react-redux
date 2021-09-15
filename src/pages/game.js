@@ -6,6 +6,7 @@ import { sendDone, setOptions, setRanking } from '../redux/actions';
 import Options from '../componets/Options';
 import Header from '../componets/Header';
 import Timer from '../componets/Timer';
+import './game.css';
 
 class GameScreen extends React.Component {
   constructor() {
@@ -113,18 +114,19 @@ class GameScreen extends React.Component {
       return <p>loading...</p>;
     }
     return (
-      <div>
-        <div>
+      <div className="game">
+        <div className="dc">
           <Header />
-          <Link to="/">Back</Link>
-          <Options
-            timer={ timer }
-            changeDone={ this.changeDone }
-            done={ done }
-            questionChosen={ questions[contador] }
-          />
+          <Link className="back" to="/">Close</Link>
         </div>
         <Timer timer={ timer } />
+        <Options
+          timer={ timer }
+          changeDone={ this.changeDone }
+          done={ done }
+          questionChosen={ questions[contador] }
+        />
+
         <button
           className="nextDisabled"
           id="nextButton"

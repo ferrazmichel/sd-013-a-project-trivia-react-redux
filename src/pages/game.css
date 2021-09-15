@@ -1,0 +1,65 @@
+@media screen and (max-width: 575px) {
+    #main {
+      display: block;
+    }
+  }
+
+.game {
+    height: 100%;
+    position: absolute;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    background-color: green;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    justify-content: start;
+  }
+
+  .dc {
+      background-color: black;
+    height: 25%;
+    width: 90%;
+    display: flex;
+    align-self: center;
+    align-items: center;
+    color: orange;
+    justify-content:space-around;
+    
+  }
+
+  .dc2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .back {
+    text-decoration: none;
+    color: orange;
+    font-size: 100px;
+  }
+
+/* .button {
+  background-color: orange;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+}
+
+.button:hover {
+  box-shadow: 0 0 0 0 orange, 0 0 50px 0 orange;
+}
+
+.button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed; */
+/* } */
