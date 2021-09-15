@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Forms from '../components/Forms';
+import './Login.css';
 
 class Login extends React.Component {
   render() {
@@ -8,7 +9,13 @@ class Login extends React.Component {
       <>
         <Forms />
         <Link to="/config">
-          <button type="button" data-testid="btn-settings">Configuração</button>
+          <button
+            className="button-config"
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configuração
+          </button>
         </Link>
       </>
     );

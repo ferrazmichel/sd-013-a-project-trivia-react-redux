@@ -1,0 +1,26 @@
+.countainer-feedback {
+  color: azure;
+  margin-top: 10%;
+}
+
+.frase-feed {
+  color: aliceblue;
+}
+
+.body-feed {
+  color: aliceblue;
+}
+
+.btn-feed {
+  background-color: #036b52;
+  border-radius: 5px;
+  border-style: none;
+  color: antiquewhite;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.btn-feed:hover {
+  background-color: #0d9273;
+  color: rgb(161, 161, 29);
+}

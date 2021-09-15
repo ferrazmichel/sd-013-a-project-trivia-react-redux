@@ -1,7 +1,33 @@
+.countainer-questions {
+  align-items: center;
+  color: rgb(36, 136, 98);
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+}
+
+.countainer-questions button {
+  background-color: #036b52;
+  border-bottom-left-radius: 8px;
+  color: snow;
+  font-size: 18px;
+  width: 200px;
+}
+
+.countainer-questions button:hover {
+  background-color: #228f75;
+  color: rgb(245, 178, 97);
+}
+
 .certo {
   border: 3px solid rgb(6, 240, 15);
 }
 
 .errado {
   border: 3px solid red;
+}
+
+.quest {
+  color: aliceblue;
+  font-size: 25px;
 }

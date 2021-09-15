@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import './Header.css';
 
 class Header extends React.Component {
   render() {
@@ -26,7 +27,7 @@ class Header extends React.Component {
     };
     localStorage.setItem('state', JSON.stringify(obj));
     return (
-      <header>
+      <header className="countainer-header">
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{`Jogador: ${nomeRedux}`}</p>
         <p>{`Pergunta número: ${numpergunta}`}</p>

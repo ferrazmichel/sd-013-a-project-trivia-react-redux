@@ -186,25 +186,20 @@ class Jogo extends React.Component {
     return (
       <div>
         <Header i={ i } />
-        <div>
-          <h1 data-testid="question-text">{questions[i].question}</h1>
+        <div className="countainer-questions">
+          <h1 className="quest" data-testid="question-text">{questions[i].question}</h1>
           <h2 data-testid="question-category">{questions[i].category}</h2>
           { this.answerAlternatives() }
+          <p>{`Tempo restante:${timer}s`}</p>
+          <button
+            data-testid="btn-next"
+            type="button"
+            id="button-next"
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>
         </div>
-        <p>
-          Tempo restante:
-          {' '}
-          { timer }
-          s
-        </p>
-        <button
-          data-testid="btn-next"
-          type="button"
-          id="button-next"
-          onClick={ this.nextQuestion }
-        >
-          Próxima
-        </button>
       </div>
     );
   }
