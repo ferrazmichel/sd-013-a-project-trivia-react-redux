@@ -16,11 +16,8 @@ class Trivia extends Component {
       disable: false,
       countdown: 30,
       indexQuestions: 0,
-      // disableButtonNext: true,
-      // questions: [],
     };
     this.fetchGravater = this.fetchGravater.bind(this);
-    // this.gameInfo = this.gameInfo.bind(this);
     this.changeColor = this.changeColor.bind(this);
     this.timerDisable = this.timerDisable.bind(this);
     this.countdown = this.countdown.bind(this);
@@ -30,9 +27,6 @@ class Trivia extends Component {
   }
 
   componentDidMount() {
-    // const { fetchApi } = this.props;
-    // this.fetchGravater();
-    // fetchApi();
     this.fetchQuestion();
     this.countdown();
     this.timerDisable();
@@ -48,12 +42,6 @@ class Trivia extends Component {
   //   }
   // }
 
-  // fecthLocalStorage() {
-  // async fetchApiQuestions() {
-  //   // let token = localStorage.getItem('token');
-  //   // if (!localStorage[token]) {
-  //   //   token = await getTokenApi();
-  //   // }
   async fetchQuestion() {
     const { questionSucess, userEmail, userPlayer } = this.props;
     const tokenGet = localStorage.getItem(('token'));
@@ -135,7 +123,7 @@ class Trivia extends Component {
     const { target } = event;
     const { updtScore, questionsAPI } = this.props;
     const { countdown, indexQuestions } = this.state;
-    const { correct_answer: correctOpt, difficulty } = questionsAPI;
+    // const { correct_answer: correctOpt, difficulty } = questionsAPI;
 
     if (target.id === 'correct-answer') {
       const basePoints = 10;
@@ -219,6 +207,25 @@ class Trivia extends Component {
     );
   }
 }
+
+Trivia.propTypes = {
+  acertos: PropTypes.number,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  placar: PropTypes.number,
+  questionSucess: PropTypes.func,
+  questionsAPI: PropTypes.shape({
+    correct_answer: PropTypes.string,
+    difficulty: PropTypes.string,
+    length: PropTypes.number,
+  }),
+  updtScore: PropTypes.func,
+  userEmail: PropTypes.shape({
+    toLowerCase: PropTypes.func,
+  }),
+  userPlayer: PropTypes.string,
+}.isRequired;
 
 const mapStateToProps = (state) => ({
   questionsAPI: state.trivia.results,
