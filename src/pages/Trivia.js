@@ -54,6 +54,7 @@ class Trivia extends Component {
     // localStorage.setItem('questions', JSON.stringify(questionJson));
     // this.setState({ questions: questionJson });
     questionSucess(questionJson);
+    // console.log('qualquercoisa');
   }
 
   fetchGravater() {
@@ -117,7 +118,7 @@ class Trivia extends Component {
     }
   }
 
-  // ajuda do gabriel gaspar e Josué Lobo
+  // ajuda do gabriel gaspar
   scoreFunction(event) {
     const { target } = event;
     const { updtScore, questionsAPI } = this.props;
@@ -131,8 +132,7 @@ class Trivia extends Component {
       const diffMultiplier = diff.indexOf(questionsAPI[indexQuestions].difficulty);
       lsData.player.assertions += 1;
       lsData.player.score += (basePoints + (countdown * (diffMultiplier)));
-      updtScore({ player:
-        { score: lsData.player.score, assertions: lsData.player.assertions } });
+      updtScore({ score: lsData.player.score, assertions: lsData.player.assertions });
       localStorage.state = JSON.stringify(lsData);
 
       console.log(lsData.player.score);
@@ -170,10 +170,14 @@ class Trivia extends Component {
           { this.fetchGravater() }
           <p data-testid="header-player-name">{userPlayer}</p>
           <p data-testid="header-score">
+            Score:
             { placar }
+
           </p>
           <p data-testid="header-score">
+            Acertos:
             { acertos }
+
           </p>
         </header>
         <h3>{ countdown }</h3>
@@ -227,8 +231,8 @@ const mapStateToProps = (state) => ({
   questionsAPI: state.trivia.results,
   userEmail: state.user.email,
   userPlayer: state.user.player,
-  placar: state.trivia.player.score,
-  acertos: state.trivia.player.assertions,
+  placar: state.trivia.score,
+  acertos: state.trivia.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
