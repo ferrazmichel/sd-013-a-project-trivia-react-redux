@@ -54,7 +54,6 @@ class Trivia extends Component {
     const lsData = JSON.stringify({ player:
       { name: userPlayer, assertions: 0, score: 0, gravatarEmail: userEmail } });
     localStorage.state = lsData;
-    // console.log('qualquercoisa');
   }
 
   fetchGravater() {
