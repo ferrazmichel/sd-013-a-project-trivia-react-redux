@@ -3,7 +3,6 @@ export const RECEIVE_API_TOKEN = 'RECEIVE_API_TOKEN';
 export const GET_API_TOKEN = 'GET_API_TOKEN';
 export const RECEIVE_API_QUESTIONS = 'RECEIVE_API_QUESTIONS';
 export const STATE_ANSWERED = 'STATE_ANSWERED';
-
 export const saveEmail = (email) => ({ type: SAVE_EMAIL, email });
 
 export const receiveApiToken = (data) => ({
