@@ -20,6 +20,10 @@ class Login extends Component {
     this.handleonClick = this.handleonClick.bind(this);
   }
 
+  componentDidMount() {
+    getTokenApi();
+  }
+
   handleonChange() {
     const valueEmail = document.getElementById('email');
     const valuePlayer = document.getElementById('player');
@@ -32,9 +36,9 @@ class Login extends Component {
   handleonClick() {
     const { email, player } = this.state;
     const { userLogin } = this.props;
-    this.setState({ redirect: true });
     userLogin(({ email, player }));
-    getTokenApi();
+    // fetchApi();
+    this.setState({ redirect: true });
   }
 
   activateButton() {
@@ -50,6 +54,8 @@ class Login extends Component {
 
   render() {
     const { disableButton, redirect } = this.state;
+    // const { questions } = this.props;
+    // console.log(questions.length);
     if (redirect) return <Redirect to="/trivia" />;
     return (
       <form>
@@ -98,6 +104,11 @@ Login.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   userLogin: (payload) => dispatch(sendUserInfo(payload)),
+  // fetchApi: () => dispatch(fetchApiQuestions()),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  questions: state.trivia.results,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

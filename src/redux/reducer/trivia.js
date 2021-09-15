@@ -2,16 +2,21 @@ import {
   FAIL_TRIVIA,
   LOAD_TRIVIA,
   SUCESS_TRIVIA,
+  UPDATE_SCORE,
 } from '../actions';
 
-// Esse reducer será responsável por tratar as informações da pessoa usuária
+// Esse reducer será responsável por tratar as informações das questões
 const INITIAL_STATE = {
-  response_code: 0,
   results: [],
   error: '',
+  // player: {
+  //   name: '',
+  assertions: 0,
+  score: 0,
+  //   gravatarEmail: '' },
 };
 
-function userReducer(state = INITIAL_STATE, action) {
+function triviaReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case LOAD_TRIVIA:
     return {
@@ -21,10 +26,7 @@ function userReducer(state = INITIAL_STATE, action) {
   case SUCESS_TRIVIA:
     return {
       ...state,
-      response_code: action.payload.response_code,
-      results: [
-        ...action.payload.results,
-      ],
+      results: action.payload,
     };
 
   case FAIL_TRIVIA:
@@ -33,9 +35,12 @@ function userReducer(state = INITIAL_STATE, action) {
       error: 'Not found',
     };
 
+  case UPDATE_SCORE:
+    return { ...state, ...action.payload };
+
   default:
     return state;
   }
 }
 
-export default userReducer;
+export default triviaReducer;
