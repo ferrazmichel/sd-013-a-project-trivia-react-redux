@@ -5,12 +5,13 @@
 }
 
 body {
+  background-image: linear-gradient(-45deg, rgb(202, 198, 198), rgb(241, 239, 239));
   display: grid;
   height: 100vh;
   place-items: center;
   width: 100vw;
-  background-image: linear-gradient(-45deg, rgb(202, 198, 198),rgb(241, 239, 239));
 }
+
 .form-login {
   background-color: rgb(134, 134, 134);
   border-radius: 20px;
@@ -22,31 +23,32 @@ body {
   place-items: center;
   width: 40vw;
 }
+
 .input-login {
+  border-radius: 5px;
+  height: 31px;
   margin-bottom: 10px;
   width: 240px;
-  height: 31px;
-  border-radius: 5px;
 }
 
 .buttons {
+  border-radius: 5px;
+  height: 31px;
   margin: 20px;
   width: 240px;
-  height: 31px;
-  border-radius: 5px;
 }
 
 .button-login {
+  background-color: rgb(96, 243, 96);
+  border-radius: 5px;
+  height: 31px;
   margin-right: 10px;
   width: 130px;
-  height: 31px;
-  border-radius: 5px;
-  background-color: rgb(96, 243, 96);
 }
 
 .button-settings {
-  width: 100px;
   height: 31px;
+  width: 100px;
 }
 
 .header-form {
@@ -55,7 +57,6 @@ body {
 
 .red-border {
   border: 3px solid red;
-  
 }
 
 .green-border {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { sucessQuestions, updateScore } from '../redux/actions';
 import Question from './Question';
-// import '../App.css';
+import '../App.css';
 
 class Trivia extends Component {
   constructor(props) {
