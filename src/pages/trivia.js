@@ -1,34 +1,42 @@
 import React from 'react';
-import './style.css';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import Questions from '../components/Header';
+import Questions from '../components/Questions';
+import { stateAnswered, fetchApiQuestions } from '../redux/actions';
 
 class Trivia extends React.Component {
   constructor() {
     super();
     this.state = {
-      answered: false,
       id: 0,
       seconds: 30,
       difficulty: '',
+      answered: false,
     };
     this.timer = 0;
     this.countDown = this.countDown.bind(this);
-    this.changeState = this.changeState.bind(this);
-    // this.isAnswered = this.isAnswered.bind(this);
-    this.next = this.next.bind(this);
     this.renderButton = this.renderButton.bind(this);
     this.timerMount = this.timerMount.bind(this);
     this.linkOrNext = this.linkOrNext.bind(this);
+    this.getQuestions = this.getQuestions.bind(this);
     this.sumScore = this.sumScore.bind(this);
+    this.changeState = this.changeState.bind(this);
   }
 
   componentDidMount() {
+    const { dispatchAnswered } = this.props;
+    const { answered } = this.state;
+    dispatchAnswered(answered);
+    this.getQuestions();
     this.timerMount();
   }
 
+  async getQuestions() {
+    const { trivia: { token }, apiQuestions } = this.props;
+    const questions = await apiQuestions(token);
+    return questions;
+  }
 
   timerMount() {
     const { seconds } = this.state;
@@ -39,36 +47,32 @@ class Trivia extends React.Component {
   }
 
   countDown() {
-    const { answered, seconds } = this.state;
+    const { dispatchAnswered,
+      trivia: { answered } } = this.props;
+    const { seconds } = this.state;
     if (!answered) {
       if (seconds === 0) {
         clearInterval(this.timer);
-        this.setState({ answered: true });
-      } else this.setState({ seconds: seconds - 1 });
+        dispatchAnswered(true);
+      } else {
+        this.setState({
+          seconds: seconds - 1,
+        });
+      }
     }
   }
-
-  changeState() { this.setState({ answered: true }); }
-
-  // isAnswered(className) {
-  //   const { answered } = this.state;
-  //   return answered ? className : '';
-  // }
-
-  // isCompleted() {
-  //   const { answered } = this.state;
-  //   return answered;
-  // }
 
   next() {
     const maxId = 4;
     const { id, seconds } = this.state;
+    const {
+      dispatchAnswered } = this.props;
     if (id !== maxId) {
       this.setState({
         id: id + 1,
-        answered: false,
         seconds: 30,
       });
+      dispatchAnswered(false);
       this.countDown();
       if (seconds === 0) {
         const timeToInitiate = 1000;
@@ -81,18 +85,24 @@ class Trivia extends React.Component {
     const { id } = this.state;
     const { history } = this.props;
     const maxId = 4;
-    if (id === maxId) history.push('/feedback');
-    else this.next();
+    if (id === maxId) {
+      history.push('/feedback');
+    } else this.next();
+  }
+
+  changeState() {
+    const { dispatchAnswered } = this.props;
+    return dispatchAnswered(true);
   }
 
   async sumScore() {
     this.changeState();
     const { trivia: { questions } } = this.props;
-    const { id, correct } = this.state;
+    const { id, seconds } = this.state;
     await this.setState({
-      difficulty: questions[id].difficulty, correct: correct + 1,
+      difficulty: questions[id].difficulty,
     });
-    const { seconds, difficulty } = this.state;
+    const { difficulty } = this.state;
     const state = JSON.parse(localStorage.getItem('state'));
     const ten = 10;
     const two = 2;
@@ -109,8 +119,7 @@ class Trivia extends React.Component {
       break;
     default: return;
     }
-    const one = 1;
-    state.player.assertions += one;
+    state.player.assertions += 1;
     localStorage.setItem('state', JSON.stringify(state));
   }
 
@@ -127,14 +136,17 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { trivia: { questions } } = this.props;
-    const { seconds, id, answered } = this.state;
-    if (questions.length === 0) return <p>Loading...</p>;
+    const { trivia: { answered } } = this.props;
+    const { seconds, id } = this.state;
     return (
       <div>
         <div>
           <Header />
-          <Questions id={ id } />
+          <Questions
+            id={ id }
+            sumScore={ this.sumScore }
+            changeState={ this.changeState }
+          />
           <div>{ seconds }</div>
         </div>
         {answered && this.renderButton()}
@@ -147,10 +159,18 @@ Trivia.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  trivia: PropTypes.shape(PropTypes.obj).isRequired,
+  dispatchAnswered: PropTypes.func.isRequired,
+  apiQuestions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ...state,
-})
+});
 
-export default connect(mapStateToProps)(Trivia);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchAnswered: (payload) => dispatch(stateAnswered(payload)),
+  apiQuestions: (token) => dispatch(fetchApiQuestions(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
