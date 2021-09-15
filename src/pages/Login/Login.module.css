@@ -1,0 +1,167 @@
+/*
+  SECTION
+  LINK Referências CSS
+  Caso tenha dúvida de algum propriedade, consulte: https://www.w3schools.com/cssref/
+
+  O conceito que é aplicado o elemento pai (main) fica com os tamanhos explicitos
+  ou seja nele há a definição da abragência da tela com 100vh (altura) e 100vw (largura)
+  E nos elementos filhos é utilizado a porcentagem para
+  o navegador basear o calculo nas dimensões dadas do elemento pai
+  Importante reforçar que o grid tem a responsabilidade de organizar o layout
+  e os passos acimas se tratam das dimensões do elemento para espaçamento
+
+*/
+
+.main {
+  align-items: center;
+  animation: BackgroundAnimate 20s ease infinite;
+  background: linear-gradient(150deg, rgb(21, 35, 99) 0%, var(--primary) 100%);
+  background-size: 400% 400%;
+  display: grid;
+  grid: 1fr 1fr / 1fr;
+  height: 100vh;
+  justify-items: center;
+  width: 100vw;
+
+  /*
+
+  NOTE Shorthand Grid
+  A propriedade grid é um atalho para as propriedades acima:
+
+  LINHAS: grid-template-rows: 1fr 1fr;
+  COLUNAS: grid-template-columns: 1fr;
+  grid: LINHA / COLUNA;
+  */
+}
+
+.main > article {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+.main > article > img {
+  width: 50%;
+}
+
+.form {
+  display: grid;
+  gap: 25px;
+  grid: 1fr 1fr 2fr 1fr / 1fr;
+  height: 80%;
+
+  /*
+  NOTE Outro exemplo do Shorthand
+  A propriedade grid é um atalho para as propriedades acima
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 2fr 1fr;
+  grid: LINHA / COLUNA;
+  */
+}
+
+.input {
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  padding-left: 5px;
+}
+
+/*
+  LINK Pseudo seletor para a classe input
+  https://www.w3schools.com/cssref/css_selectors.asp
+*/
+
+.input::placeholder {
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+/* NOTE Reaproveitando classes do botões com definições padrões */
+.settings, .play {
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  height: 100%;
+  transition: filter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  width: 100%;
+}
+
+/* NOTE Agora podemos aplicar o que queremos para cada */
+.settings {
+  background: var(--secondary);
+  color: white;
+}
+
+
+/* NOTE Botão Play
+Como o botão fica desativado temos que definir a classe para ele
+O transition serve para uma transição suave
+*/
+
+.play {
+  background: rgb(0, 207, 0);
+  color: white;
+  font-weight: 500;
+  transition: 0.5s ease;
+}
+
+.play:disabled {
+  background: #283312;
+  color: black;
+  font-weight: 500;
+}
+
+.settings:hover, .play:hover {
+  filter: brightness(125%);
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .main {
+    grid: 1fr / 1fr 1fr;
+  }
+
+  .form {
+    height: 50%;
+  }
+}
+
+/* NOTE Use Geradores!
+  LINK https://www.gradient-animator.com/
+  Eles facilitam a complexidade de fazer tudo do zero
+*/
+
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
+}
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
+}
+
+@keyframes BackgroundAnimate {
+
+  0% { background-position: 0% 48%;}
+
+  50% { background-position: 100% 53%;}
+
+  100% { background-position: 0% 48%;}
+}
+
+/* !SECTION */

@@ -1,0 +1,124 @@
+.section {
+  display: grid;
+  grid: 1fr / 1fr 1fr;
+  place-items: center;
+}
+
+.section > article {
+  height: 100%;
+  width: 100%;
+}
+
+.time {
+  color: white;
+  display: grid;
+  font-size: 1.5rem;
+  font-weight: 600;
+  place-items: center;
+  text-align: center;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.question {
+  background: var(--primary);
+  display: grid;
+  grid: 1fr 2fr / 1fr;
+  place-items: center;
+}
+
+.question > h3 {
+  background: var(--background);
+  border-bottom: inset 2px rgba(0, 0, 0, 0.25);
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  color: var(--primary);
+  display: grid;
+  font-size: 1rem;
+  height: 100%;
+  padding: 10px;
+  place-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.question > h4 {
+  background: var(--secondary);
+  color: white;
+  display: grid;
+  font-size: 0.75rem;
+  font-weight: 300;
+  height: 50%;
+  padding: 10px;
+  place-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.options {
+  background: var(--primary);
+  display: grid;
+  gap: 5px;
+  grid: 1fr / 1fr;
+  grid-auto-rows: 1fr;
+  padding: 10px;
+  place-items: center;
+}
+
+.options > button {
+  background: var(--background);
+  border-radius: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  color: white;
+  cursor: help;
+  height: 60%;
+  transition: all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
+  width: 60%;
+}
+
+.options > button:hover {
+  background: rgb(197 197 255);
+  box-shadow: 0 5px 5px rgb(0 0 0 / 35%);
+  color: black;
+  filter: brightness(115%);
+}
+
+.options > button:disabled {
+  background: var(--primary);
+  box-shadow: 0 5px 5px rgb(0 0 0 / 35%);
+  color: black;
+  cursor: not-allowed;
+  filter: brightness(75%);
+}
+
+
+.next {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  width: 100%;
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .section {
+    grid: 4fr 1fr / 1fr 3fr;
+  }
+
+  .time {
+    font-size: 2.5rem;
+  }
+
+  .question > h3 {
+    font-size: 1.75rem;
+  }
+
+  .question > h4 {
+    font-size: 1rem;
+  }
+
+  .options {
+    grid: 1fr / 1fr 1fr;
+    grid-auto-rows: 1fr;
+  }
+}

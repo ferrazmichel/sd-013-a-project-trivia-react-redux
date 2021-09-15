@@ -1,0 +1,73 @@
+.main {
+  background: var(--background);
+  display: grid;
+  grid: 1fr 5fr / 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.main > section {
+  display: grid;
+  gap: 15px;
+  grid: 0.5fr 1fr 1fr / 1fr 1fr;
+  height: 100%;
+  padding: 5px;
+  place-items: center;
+  width: 100%;
+
+}
+
+.main > section > h3 {
+  background: var(--primary);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  font-size: 3rem;
+  font-weight: 600;
+  grid-column: span 2;
+  padding: 5px;
+  text-align: center;
+  width: 50%;
+}
+
+.main > section > p {
+  background: lightgrey;
+  display: grid;
+  font-size: 1rem;
+  height: 100%;
+  place-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.main > section > a {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  text-decoration: none;
+  width: 100%;
+}
+
+.main > section > a > button {
+  background: var(--primary);
+  border: 0;
+  border-radius: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.75);
+  color: white;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-style: italic;
+  height: 60%;
+  transition: all 0.5s ease;
+  width: 80%;
+}
+
+.main > section > a > button:hover {
+  filter: brightness(115%);
+}
+
+@media screen and ( max-width : 768px ) {
+
+  .main > section > p, .main > section > h3, .main > section > a > button {
+    font-size: 1rem;
+  }
+}

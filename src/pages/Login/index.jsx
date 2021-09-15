@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import md5 from 'crypto-js/md5';
-import { getToken } from '../redux/actions';
+import { getToken } from '../../redux/actions';
+import style from './Login.module.css';
+import logo from '../../assets/Trivia.png';
+import { generateGravatar, validateEmail } from './helpers';
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class Login extends Component {
       name: '',
       email: '',
       shouldRedirect: false,
+      invalidEmail: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -22,29 +25,30 @@ class Login extends Component {
   async handleSubmit(event) {
     const { dispatchLogin } = this.props;
     const { name, email } = this.state;
+    const gravatar = generateGravatar(email);
+
     event.preventDefault();
-    const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     await dispatchLogin(({ name, email, gravatar }));
-    this.setState({
-      shouldRedirect: true,
-    });
+    this.setState({ shouldRedirect: true });
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+    this.setState({ [name]: value }, () => (
+      (name === 'email' && validateEmail(value))
+        ? this.setState({ invalidEmail: false })
+        : this.setState({ invalidEmail: true })));
   }
 
-  render() {
-    const { name, email, shouldRedirect } = this.state;
-    if (shouldRedirect) return <Redirect to="/game" />;
-
+  renderForm() {
+    const { name, email, invalidEmail } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit }>
+      <form className={ style.form } onSubmit={ this.handleSubmit }>
         <input
           data-testid="input-player-name"
           type="text"
           name="name"
-          placeholder="Nome"
+          className={ style.input }
+          placeholder="Digite seu nome"
           value={ name }
           onChange={ this.handleChange }
         />
@@ -52,20 +56,24 @@ class Login extends Component {
           data-testid="input-gravatar-email"
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Digite seu e-mail com gravatar"
           value={ email }
+          className={ style.input }
           onChange={ this.handleChange }
         />
         <button
           type="submit"
+          title="Clique aqui para jogar"
+          className={ style.play }
           data-testid="btn-play"
-          disabled={ name.length < 1 || email.length < 1 }
+          disabled={ name.length < 1 || invalidEmail }
         >
           Jogar
         </button>
 
         <Link to="/settings">
           <button
+            className={ style.settings }
             type="button"
             data-testid="btn-settings"
           >
@@ -75,11 +83,23 @@ class Login extends Component {
       </form>
     );
   }
+
+  render() {
+    const { shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/game" />;
+
+    return (
+      <main className={ style.main }>
+        <article>
+          {this.renderForm()}
+        </article>
+        <article>
+          <img src={ logo } alt="Logo" />
+        </article>
+      </main>
+    );
+  }
 }
-
-// const mapStateToProps = (state) => ({
-
-// });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (userInfo) => dispatch(getToken(userInfo)),

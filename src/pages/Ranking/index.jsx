@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { main, playerInfo, rankingPlayers, section } from './Ranking.module.css';
 
 class Ranking extends Component {
   constructor(props) {
@@ -37,22 +37,33 @@ class Ranking extends Component {
     const { players } = this.state;
     return (
 
-      <div data-testid="ranking-title">
-        {players.map((player, index) => (
-          <div key={ player }>
-            <img src={ player.gravatar } alt={ `Foto de pessoa ${player.name}` } />
-            <span data-testid={ `player-name-${index}` }>
-              {player.name}
-            </span>
-            <span data-testid={ `player-score-${index}` }>
-              {player.score}
-            </span>
-            <span>
-              Acertos:
-              {player.assertions}
-            </span>
-          </div>))}
-        <p>
+      <main data-testid="ranking-title" className={ main }>
+        <section className={ rankingPlayers }>
+          {players.map((player, index) => (
+            <article className={ playerInfo } key={ player }>
+              <div>
+                <span>{`${index + 1}º LUGAR`}</span>
+                <img src={ player.gravatar } alt={ `Foto de pessoa ${player.name}` } />
+              </div>
+              <div>
+                Jogador
+                <span data-testid={ `player-name-${index}` }>{player.name}</span>
+              </div>
+              <div>
+                Pontuação
+                <span data-testid={ `player-score-${index}` }>
+                  {player.score}
+                </span>
+              </div>
+              <div>
+                Acertos
+                <span>
+                  {player.assertions}
+                </span>
+              </div>
+            </article>))}
+        </section>
+        <section className={ section }>
           <Link to="/">
             <button
               type="button"
@@ -61,22 +72,10 @@ class Ranking extends Component {
               Recomeçar jogo
             </button>
           </Link>
-        </p>
-      </div>
+        </section>
+      </main>
     );
   }
 }
 
-// const mapStateToProps = (state) => ({
-
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
-
 export default connect(null, null)(Ranking);
-
-// Ranking.propTypes = {
-
-// };

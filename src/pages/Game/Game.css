@@ -1,0 +1,44 @@
+.btn-next {
+  background: var(--primary);
+  border: 0.15px solid rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+  color: var(--background);
+  cursor: progress;
+  font-size: 0.75rem;
+  font-weight: 400;
+  height: 50%;
+  letter-spacing: 0.5px;
+  opacity: 1;
+  transition: all 0.25s ease;
+  width: 85%;
+}
+
+.invisible {
+  display: none;
+  transition: all 0.5s ease;
+}
+
+.game-correct {
+  border: 3px solid rgb(6, 240, 15);
+  color: black;
+  font-weight: 500;
+  outline: 3px solid rgb(6, 240, 15);
+  outline-offset: 2.5px;
+  transition: all 0.25s ease;
+}
+
+.game-incorrect {
+  border: 3px solid red;
+  color: black;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+@media screen and ( min-width : 768px ) {
+
+  .btn-next {
+    font-size: 1.5rem;
+
+  }
+}
