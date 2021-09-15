@@ -25,3 +25,15 @@
   padding: 50px;
   width: 350px;
 }
+
+.devs {
+  background-color: #0f6016;
+}
+
+.header-devs {
+  color: white;
+}
+
+.devs:hover .header-devs {
+  color: #212529;
+}

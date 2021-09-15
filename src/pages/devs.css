@@ -1,0 +1,44 @@
+.dev-page {
+  position: absolute;
+  top: 0;
+}
+
+.trybe-logo {
+  height: 100px;
+  width: 245px;
+}
+
+.devs-box {
+  background: #0f6016;
+  padding: 20px;
+}
+
+.dev {
+  margin-left: 50px;
+  padding: 10px;
+}
+
+.dev-special {
+  margin-left: 20px;
+  padding: 10px;
+}
+
+.dev-image {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+}
+
+.linked-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.git-icon {
+  height: 50px;
+  width: 50px;
+}
+
+.git-btn {
+  width: 90px;
+}
