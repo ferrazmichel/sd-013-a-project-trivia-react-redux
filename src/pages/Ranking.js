@@ -16,9 +16,12 @@ class Ranking extends React.Component {
               className="ranking-item
                 list-group-item
                 d-flex justify-content-between align-items-center text-white fw-bold
-                mb-3"
+                mb-3 rounded"
             >
-              <div className="player-image-name">
+              <div
+                className="player-image-name
+                d-flex justify-content-between align-items-center"
+              >
                 <img
                   src={ player.picture }
                   alt={ `${player.name} Avatar` }
@@ -30,7 +33,7 @@ class Ranking extends React.Component {
               <div className="player-score">
                 <span>{ ' Pontos: ' }</span>
                 <span
-                  className="player-score-span"
+                  className="player-score-span text-end"
                   data-testid={ `player-score-${index}` }
                 >
                   { player.score }
