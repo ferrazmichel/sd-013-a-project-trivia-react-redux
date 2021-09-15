@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import history from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import { sucessQuestions, updateScore } from '../redux/actions';
 import Question from './Question';
@@ -169,16 +168,8 @@ class Trivia extends Component {
         <header>
           { this.fetchGravater() }
           <p data-testid="header-player-name">{userPlayer}</p>
-          <p data-testid="header-score">
-            Score:
-            { placar }
-
-          </p>
-          <p data-testid="header-score">
-            Acertos:
-            { acertos }
-
-          </p>
+          <p data-testid="header-score">{ placar }</p>
+          <p data-testid="header-assertions">{ acertos }</p>
         </header>
         <h3>{ countdown }</h3>
         { disable && clearInterval(this.interval) && clearTimeout(this.timeout) }
@@ -192,17 +183,11 @@ class Trivia extends Component {
             question={ questionsAPI[indexQuestions] }
           />)
           : <p> Loading...</p>}
-        {(rigthBoarder === 'green-border'
-          || wrongBoarder === 'red-border'
+        {(rigthBoarder === 'green-border' || wrongBoarder === 'red-border'
           || countdown === 0) ? (
-            <button
-              type="button"
-              data-testid="btn-next"
-              onClick={ this.handleClick }
-            >
+            <button type="button" data-testid="btn-next" onClick={ this.handleClick }>
               Next
-            </button>
-          ) : null}
+            </button>) : null}
       </main>
     );
   }
