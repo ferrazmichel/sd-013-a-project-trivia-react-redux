@@ -31,6 +31,7 @@ class Login extends React.Component {
     const { token, config } = this.props;
     const settings = { ...config, token };
     console.log(settings);
+    console.log(settings);
     await fetchQuest(settings);
     // const { perguntas } = this.props;
     // localStorage.setItem('perguntas', JSON.stringify(perguntas));
@@ -94,6 +95,11 @@ Login.propTypes = {
   fetchQuest: PropTypes.func.isRequired,
   loginSet: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  config: PropTypes.shape({
+    category: PropTypes.string,
+    type: PropTypes.string,
+    difficulty: PropTypes.string,
+  }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
