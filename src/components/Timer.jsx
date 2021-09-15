@@ -1,32 +1,69 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { updateCountdown } from '../redux/action';
+import { updateCountdown as updateCountDownAction } from '../redux/action';
 
 class Timer extends Component {
-  constructor() {
-    super();
-    this.disableBtns = this.disableBtns.bind(this);
+  constructor(props) {
+    super(props);
     this.state = {
-      counter: 30,
+      time: 30,
     };
+    this.disableBtns = this.disableBtns.bind(this);
+    this.setNewInterval = this.setNewInterval.bind(this);
+    this.setTimeState = this.setTimeState.bind(this);
   }
 
   componentDidMount() {
-    const SECOND = 1000;
-    this.countdownInterval = setInterval(() => {
-      this.setState((prevState) => ({ counter: prevState.counter - 1 }));
-    }, SECOND);
+    this.setNewInterval();
   }
 
   componentDidUpdate() {
-    const { counter } = this.state;
-    const { timeRemaining, stopCount } = this.props;
-    if (counter === 0 || stopCount) {
-      clearInterval(this.countdownInterval);
-      this.disableBtns();
+    const { time } = this.state;
+    const { stopCount, callback, restart, updateCountdown } = this.props;
+    updateCountdown(time);
+    if (restart) {
+      this.handleRestart();
+      return;
     }
-    timeRemaining({ time: counter });
+    if (stopCount) {
+      updateCountdown(time);
+      clearInterval(this.countdownInterval);
+      return;
+    }
+    if (time === 0) {
+      this.disableBtns();
+      callback(true);
+      clearInterval(this.countdownInterval);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.countdownInterval);
+  }
+
+  setTimeState() {
+    this.setState((prevState) => ({ time: prevState.time - 1 }));
+  }
+
+  setNewInterval() {
+    const SECOND = 1000;
+    const { updateCountdown } = this.props;
+    const { time } = this.state;
+    this.setState({ time: 30 });
+    this.countdownInterval = setInterval(() => {
+      this.setTimeState();
+      updateCountdown(time);
+    }, SECOND);
+  }
+
+  handleRestart() {
+    const { setRestart, updateCountdown } = this.props;
+    const MAX_TIME = 30;
+    updateCountdown(MAX_TIME);
+    clearInterval(this.countdownInterval);
+    this.setNewInterval();
+    setRestart(false);
   }
 
   disableBtns() {
@@ -37,20 +74,23 @@ class Timer extends Component {
   }
 
   render() {
-    const { counter } = this.state;
+    const { time } = this.state;
     return (
-      <div>{ `Tempo restante: ${counter}` }</div>
+      <p className="timer">{ `Tempo restante: ${time}` }</p>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  timeRemaining: (time) => dispatch(updateCountdown(time)),
+  updateCountdown: (time) => dispatch(updateCountDownAction({ time })),
 });
 
 Timer.propTypes = {
-  timeRemaining: PropTypes.func.isRequired,
+  updateCountdown: PropTypes.func.isRequired,
   stopCount: PropTypes.bool.isRequired,
+  callback: PropTypes.func.isRequired,
+  setRestart: PropTypes.func.isRequired,
+  restart: PropTypes.bool.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);

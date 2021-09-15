@@ -8,17 +8,21 @@ class Feedback extends React.Component {
     const { assertions, score } = localStore.player;
     const THREE = 3;
     return (
-      <div>
+      <div className="gameboard">
         <Header />
-        <h3 data-testid="feedback-total-score">{ score }</h3>
-        <h3 data-testid="feedback-total-question">
-          { assertions }
-        </h3>
+        <div className="feedback-column">
+          <span className="label-feedback bold">Score: </span>
+          <h3 data-testid="feedback-total-score">{ score }</h3>
+        </div>
+        <div className="feedback-column">
+          <span className="label-feedback bold">Quantidade de acertos:</span>
+          <h3 data-testid="feedback-total-question">{ assertions }</h3>
+        </div>
         <h3 data-testid="feedback-text">
           { assertions >= THREE ? 'Mandou bem!' : 'Podia ser melhor...' }
         </h3>
-        <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <Link to="/ranking" className="link" data-testid="btn-ranking">Ver Ranking</Link>
+        <Link to="/" className="link" data-testid="btn-play-again">Jogar novamente</Link>
       </div>
     );
   }

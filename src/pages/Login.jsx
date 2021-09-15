@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { saveEmail, saveQuestion } from '../redux/action';
 
 class Login extends React.Component {
@@ -61,32 +61,32 @@ class Login extends React.Component {
     const nameAllowed = nome.length >= nameMin;
     const emailValid = () => (/\S+@\S+\.\S+/).test(email);
     return (
-      <div>
-        <fieldset className="login">
-          <label htmlFor="input-gravatar-email">
-            Email do Gravatar:
-            <input
-              data-testid="input-gravatar-email"
-              type="email"
-              name="email"
-              onChange={ this.handleChange }
-              value={ email }
-            />
-          </label>
-          <label htmlFor="input-player-name">
-            Nome do Jogador:
-            <input
-              data-testid="input-player-name"
-              type="nome"
-              name="nome"
-              onChange={ this.handleChange }
-              value={ nome }
-            />
-          </label>
+      <fieldset className="login">
+        <label htmlFor="input-gravatar-email">
+          <span className="label">Email do Gravatar:</span>
+          <input
+            data-testid="input-gravatar-email"
+            type="email"
+            name="email"
+            onChange={ this.handleChange }
+            value={ email }
+          />
+        </label>
+        <label htmlFor="input-player-name">
+          <span className="label">Nome do Jogador:</span>
+          <input
+            data-testid="input-player-name"
+            type="nome"
+            name="nome"
+            onChange={ this.handleChange }
+            value={ nome }
+          />
+        </label>
+        <div className="login-buttons">
           <button
             data-testid="btn-play"
             disabled={ !(emailValid() && nameAllowed) }
-            className="button"
+            className="main-button"
             type="submit"
             onClick={ () => this.onSubmitForm() }
           >
@@ -95,13 +95,14 @@ class Login extends React.Component {
           <Link to="/config">
             <button
               data-testid="btn-settings"
+              className="main-button"
               type="button"
             >
               Configuração
             </button>
           </Link>
-        </fieldset>
-      </div>
+        </div>
+      </fieldset>
     );
   }
 }

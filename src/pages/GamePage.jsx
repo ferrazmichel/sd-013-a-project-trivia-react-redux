@@ -1,6 +1,7 @@
+import { decode } from 'html-entities';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 
@@ -12,12 +13,29 @@ class GamePage extends React.Component {
       showNextButton: false,
       numeroDaPergunta: 0,
       stopCount: false,
+      restartCounter: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
     this.handleScore = this.handleScore.bind(this);
+    this.renderBtnsMultiple = this.renderBtnsMultiple.bind(this);
+    this.setShowNextButtonState = this.setShowNextButtonState.bind(this);
+    this.setStopCount = this.setStopCount.bind(this);
+    this.setRestartCounter = this.setRestartCounter.bind(this);
+  }
+
+  setShowNextButtonState(bool) {
+    this.setState({ showNextButton: bool });
+  }
+
+  setStopCount(bool) {
+    this.setState({ stopCount: bool });
+  }
+
+  setRestartCounter(bool) {
+    this.setState({ restartCounter: bool });
   }
 
   handleClick({ target }) {
@@ -30,13 +48,14 @@ class GamePage extends React.Component {
     });
 
     this.handleScore(target);
-    this.setState({ stopCount: true });
-    this.setState({ showNextButton: true });
+    this.setStopCount(true);
+    this.setShowNextButtonState(true);
   }
 
   handleScore(target) {
     const { numeroDaPergunta } = this.state;
     const { remainingTime, results } = this.props;
+    console.log(remainingTime);
     const { difficulty } = results[numeroDaPergunta];
     const difficultyPoints = { hard: 3, medium: 2, easy: 1 };
     const TEN = 10;
@@ -65,14 +84,16 @@ class GamePage extends React.Component {
       button.className = 'alternativas';
       button.disabled = false;
     });
-    this.setState({ showNextButton: false });
+    this.setShowNextButtonState(false);
+    this.setRestartCounter(true);
+    this.setStopCount(false);
   }
 
   renderNextButton() {
     return (
       <button
         data-testid="btn-next"
-        className="button"
+        className="button-next"
         type="submit"
         onClick={ this.handleNext }
       >
@@ -81,24 +102,57 @@ class GamePage extends React.Component {
     );
   }
 
+  renderBtnsMultiple(result) {
+    const { buttonClass } = this.state;
+    return (
+      <>
+        <button
+          className={ buttonClass }
+          onClick={ this.handleClick }
+          type="button"
+          data-testid="wrong-answer-1"
+        >
+          {decode(result.incorrect_answers[1])}
+        </button>
+        <button
+          className={ buttonClass }
+          onClick={ this.handleClick }
+          type="button"
+          data-testid="wrong-answer-2"
+        >
+          {decode(result.incorrect_answers[2])}
+        </button>
+      </>
+    );
+  }
+
   renderButtons() {
-    const { numeroDaPergunta, buttonClass } = this.state;
+    const { numeroDaPergunta, buttonClass, showNextButton } = this.state;
     const { results } = this.props;
     const pergunta = results.filter((_result, index) => (index === numeroDaPergunta));
-
     return (
-      <div>
-        { pergunta.map((result, index) => (
-          <div key={ index }>
-            <div data-testid="question-category">{result.category}</div>
-            <div data-testid="question-text">{result.question}</div>
+      pergunta.map((result, index) => (
+        <div className="main-questions" key={ index }>
+          <div
+            className="question-category"
+            data-testid="question-category"
+          >
+            {decode(result.category)}
+          </div>
+          <div
+            className="main-question"
+            data-testid="question-text"
+          >
+            {decode(result.question)}
+          </div>
+          <div className="game-buttons">
             <button
               className={ buttonClass }
               onClick={ this.handleClick }
               type="button"
               data-testid="correct-answer"
             >
-              {result.correct_answer}
+              {decode(result.correct_answer)}
             </button>
             <button
               className={ buttonClass }
@@ -106,42 +160,31 @@ class GamePage extends React.Component {
               type="button"
               data-testid="wrong-answer-0"
             >
-              {result.incorrect_answers[0]}
+              {decode(result.incorrect_answers[0])}
             </button>
-            <button
-              className={ buttonClass }
-              onClick={ this.handleClick }
-              type="button"
-              data-testid="wrong-answer-1"
-            >
-              {result.incorrect_answers[1]}
-            </button>
-            <button
-              className={ buttonClass }
-              onClick={ this.handleClick }
-              type="button"
-              data-testid="wrong-answer-2"
-            >
-              {result.incorrect_answers[2]}
-            </button>
+            {result.type === 'multiple' && this.renderBtnsMultiple(result)}
+            { showNextButton && this.renderNextButton() }
           </div>
-        )) }
-      </div>
+        </div>
+      ))
     );
   }
 
   render() {
-    const { showNextButton, stopCount } = this.state;
+    const { stopCount, restartCounter } = this.state;
+    console.log(`restartCounter: ${restartCounter}`);
+    console.log(`stopCount: ${stopCount}`);
     return (
-      <div>
+      <div className="gameboard main-content">
         <Header />
         { this.renderButtons() }
-        {
-          showNextButton
-            ? this.renderNextButton()
-            : console.log('')
-        }
-        <Timer stopCount={ stopCount } />
+        <Timer
+          stopCount={ stopCount }
+          setStopCount={ this.setStopCount }
+          restart={ restartCounter }
+          setRestart={ this.setRestartCounter }
+          callback={ this.setShowNextButtonState }
+        />
       </div>
     );
   }
@@ -153,7 +196,7 @@ const mapStateToProps = (state) => ({
 });
 
 GamePage.propTypes = {
-  results: PropTypes.arrayOf.isRequired,
+  results: PropTypes.arrayOf(PropTypes.any).isRequired,
   remainingTime: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
