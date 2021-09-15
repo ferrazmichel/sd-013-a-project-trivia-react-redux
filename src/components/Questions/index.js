@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 class Questions extends React.Component {
   constructor() {
     super();
-
     this.isAnswered = this.isAnswered.bind(this);
     this.isCompleted = this.isCompleted.bind(this);
     this.decodeHtml = this.decodeHtml.bind(this);
