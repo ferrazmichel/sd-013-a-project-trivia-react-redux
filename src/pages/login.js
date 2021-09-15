@@ -11,6 +11,7 @@ class Login extends React.Component {
       email: '',
       nameUser: '',
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.saveNameEmail = this.saveNameEmail.bind(this);
