@@ -97,6 +97,7 @@ body {
   background-position: center;
   color: white;
   display: inline-block;
+  top: 1px;
 }
 
 .main-game {
@@ -115,7 +116,7 @@ body {
   justify-content: space-around;
   margin-top: 20px;
   padding: 5px;
-  width: 50%;
+  width: 80%;
 }
 
 .category-game {
