@@ -5,9 +5,18 @@ import Dropdown from '../components/Dropdown';
 import { fetchURL } from '../services';
 
 const MAX_QUESTIONS = 50;
+const MIN_QUESTIONS = 5;
 const categoryURL = 'https://opentdb.com/api_category.php';
 const DIFFICULT = ['Easy', 'Medium', 'Hard', 'Any'];
 const TYPE = ['Multiple Choice', 'True/False'];
+const INITIAL_STATE = {
+  options: {
+    questions: MIN_QUESTIONS,
+    category: '',
+    difficulty: '',
+    type: '',
+  },
+};
 class Config extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +24,7 @@ class Config extends Component {
       categories: '',
       loading: 'onMount',
       options: {
-        numberOfQuestions: 5,
+        questions: MIN_QUESTIONS,
         category: '',
         difficulty: '',
         type: '',
@@ -23,6 +32,8 @@ class Config extends Component {
     };
     this.handleCategories = this.handleCategories.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.saveOptions = this.saveOptions.bind(this);
   }
 
   componentDidMount() {
@@ -40,38 +51,77 @@ class Config extends Component {
     });
   }
 
-  handleOnChange(e) {
-    if (Number(e.target.value) >= MAX_QUESTIONS) e.target.value = MAX_QUESTIONS;
-    this.setState((prevState) => ({ ...prevState.options, ...{ numberOfQuestions: MAX_QUESTIONS } }));
+  handleOnChange({ target: { value } }) {
+    let numberOfQuestions = Number(value);
+    if (numberOfQuestions >= MAX_QUESTIONS) numberOfQuestions = MAX_QUESTIONS;
+    if (numberOfQuestions <= MIN_QUESTIONS) numberOfQuestions = MIN_QUESTIONS;
+    this.setState((prevState) => ({
+      options: { ...prevState.options, ...{ questions: numberOfQuestions } },
+    }));
+  }
+
+  handleOnClick({ target: { name, value } }) {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, ...{ [name]: value } },
+    }));
+  }
+
+  resetOptions() {
+    this.setState((prevState) => ({
+      options: { ...prevState.options, ...INITIAL_STATE,
+      },
+    }), () => {
+      this.props.saveConfig(this.state.options);
+    });
+  }
+
+  saveOptions() {
+    const { options, categories } = this.state;
+    const { questions, difficulty, category, type } = this.state;
+    const categoryID = categories
+      .find((category) => category.contains(options.category)).id;
+    const { saveConfig } = this.props;
+    saveConfig({
+      options: {
+        questions, difficulty, category: categoryID, type,
+      },
+    });
   }
 
   render() {
-    const { categories, loading } = this.state;
+    const { categories, loading, options } = this.state;
+    const { category, difficulty, type } = options;
+    const { history, saveConfig } = this.props;
     return (
-      <div>
-        <h1 data-testid="settings-title">Configurações</h1>
+      <div className="config-main">
+        <h1 data-testid="settings-title" className="config-title">SETUP ⚙</h1>
         { loading && (
           <div className="spinner-border text-secondary" role="status">
             <span className="sr-only">...</span>
           </div>)}
         { categories && (
-          <div>
-            <Dropdown onClick={ (e) => console.log(e.target.name) } nameBtn="Categoria" options={ categories } />
-            <Dropdown onClick={ (e) => console.log(e.target.name) } nameBtn="Dificuldade" options={ DIFFICULT } />
-            <Dropdown onClick={ (e) => console.log(e.target.name) } nameBtn="Tipo" options={ TYPE } />
+          <div className="config-dropdown">
+            <Dropdown onClick={ this.handleOnClick } title="Category" nameBtn={ category || 'Category' } options={ categories } />
+            <Dropdown onClick={ this.handleOnClick } title="Difficulty" nameBtn={ difficulty || 'Difficulty' } options={ DIFFICULT } />
+            <Dropdown onClick={ this.handleOnClick } title="Type" nameBtn={ type || 'Type' } options={ TYPE } />
             <div className="form-outline">
               <label className="form-label" htmlFor="typeNumber">
-                Number input
+                <h2>Questions</h2>
                 <input
                   type="number"
                   id="typeNumber"
                   className="form-control"
-                  value="5"
+                  value={ options.numberOfQuestions }
                   onChange={ this.handleOnChange }
-                  min="5"
-                  max="50"
+                  min={ MIN_QUESTIONS }
+                  max={ MAX_QUESTIONS }
                 />
               </label>
+            </div>
+            <div className="config-btn-holder">
+              <button type="button" onClick={ this.saveOptions }> SAVE </button>
+              <button type="button" onClick={ this.resetOptions }> RESET </button>
+              <button type="button" onClick={ () => history.push('/') }> BACK </button>
             </div>
           </div>
         )}
@@ -79,8 +129,9 @@ class Config extends Component {
     );
   }
 }
+
 const mapDispatchToProps = (dispatch) => ({
-  sendUserConfig: (payload) => dispatch(sendUserInfo(payload)),
+  saveConfig: (payload) => dispatch(sendUserInfo(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Config);
