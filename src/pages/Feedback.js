@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 
@@ -8,6 +9,7 @@ class Feedback extends Component {
     super(props);
 
     this.fetchGravater = this.fetchGravater.bind(this);
+    this.msgAcertos = this.msgAcertos.bind(this);
   }
 
   fetchGravater() {
@@ -21,6 +23,16 @@ class Feedback extends Component {
     />);
   }
 
+  msgAcertos() {
+    const { acertos } = this.props;
+    const tres = 3;
+    if (acertos < tres) {
+      return (<p>Podia ser melhor...</p>);
+    }
+
+    return (<p>Mandou bem!</p>);
+  }
+
   render() {
     const { userPlayer, placar, acertos } = this.props;
     return (
@@ -29,7 +41,17 @@ class Feedback extends Component {
           { this.fetchGravater() }
           <p data-testid="header-player-name">{ userPlayer }</p>
           <p data-testid="header-score">{ placar }</p>
-          <p data-testid="header-assertions">{ acertos }</p>
+          <span data-testid="feedback-total-question">{ acertos }</span>
+          <span data-testid="feedback-total-score">{placar}</span>
+          {this.msgAcertos()}
+          <Link to="/">
+            <button
+              type="button"
+              data-testid="btn-play-again"
+            >
+              Jogar novamente
+            </button>
+          </Link>
         </header>
       </div>
     );
