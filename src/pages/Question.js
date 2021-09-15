@@ -63,10 +63,8 @@ class Question extends Component {
                 disabled={ disable }
                 className={ right }
                 data-testid="correct-answer"
-                onClick={ () => {
-                  changeColor();
-                  scoreFunction();
-                } }
+                id="correct-answer"
+                onClick={ (event) => { changeColor(); scoreFunction(event); } }
                 type="button"
               >
                 {question.correct_answer}
@@ -78,7 +76,7 @@ class Question extends Component {
                   disabled={ disable }
                   className={ wrong }
                   data-testid={ `wrong-answer-${i}` }
-                  onClick={ changeColor }
+                  onClick={ (event) => { changeColor(); scoreFunction(event); } }
                   type="button"
                 >
                   {incorrect}
@@ -91,5 +89,21 @@ class Question extends Component {
     );
   }
 }
+
+Question.propTypes = {
+  changeColor: PropTypes.func,
+  disable: PropTypes.bool,
+  question: PropTypes.shape({
+    category: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.shape({
+      map: PropTypes.func,
+    }),
+    question: PropTypes.string,
+  }),
+  right: PropTypes.string,
+  scoreFunction: PropTypes.func,
+  wrong: PropTypes.string,
+}.isRequired;
 
 export default Question;

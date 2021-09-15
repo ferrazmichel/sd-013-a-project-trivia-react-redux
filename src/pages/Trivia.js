@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// import history from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import { sucessQuestions, updateScore } from '../redux/actions';
 import Question from './Question';
@@ -59,13 +60,13 @@ class Trivia extends Component {
     const fetchQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenGet}`);
     const questionsApi = await fetchQuestions.json();
     const questionJson = await questionsApi.results;
-    localStorage.setItem('questions', JSON.stringify(questionJson));
+    // localStorage.setItem('questions', JSON.stringify(questionJson));
     // this.setState({ questions: questionJson });
     questionSucess(questionJson);
     const lsData = await JSON.stringify({ player:
       { name: userPlayer, assertions: 0, score: 0, gravatarEmail: userEmail } });
     localStorage.state = await lsData;
-    console.log('qualquercoisa');
+    // console.log('qualquercoisa');
   }
 
   fetchGravater() {
@@ -108,6 +109,7 @@ class Trivia extends Component {
   handleClick() {
     const { indexQuestions } = this.state;
     const INDEX_LIMIT = 4;
+    const { history } = this.props;
     // const { rigthBoarder, wrongBoarder } = this.state;
 
     if (indexQuestions < INDEX_LIMIT) {
@@ -123,42 +125,31 @@ class Trivia extends Component {
       // asudhs({right, wrong})
       clearTimeout(this.timeout);
       clearInterval(this.interval);
+    } else {
+      history.push('/feedback');
     }
   }
 
-  // scoreQuestion() {
-  //   const { userPlayer } = this.props;
-  //   const stateLocalStorage = { player: {
-  //     userPlayer,
-  //     assertions,
-  //     score,
-  //     gravatarEmail,
-  //   } };
-  //   const scoreQuestion = localstorage.setItem('state',
-  //     JSON.stringify(stateLocalStorage));
-  // }
-
-  // auxFunctionButtonQuestion() {
-  //   if
-  // }
-
   // ajuda do gabriel gaspar
-  scoreFunction() {
+  scoreFunction(event) {
+    const { target } = event;
     const { updtScore, questionsAPI } = this.props;
     const { countdown, indexQuestions } = this.state;
-    // const { correct_answer: correctOpt, difficulty } = questionsAPI;
+    const { correct_answer: correctOpt, difficulty } = questionsAPI;
 
-    const basePoints = 10;
-    const lsData = JSON.parse(localStorage.state);
-    const diff = ['batata', 'easy', 'medium', 'hard'];
-    const diffMultiplier = diff.indexOf(questionsAPI[indexQuestions].difficulty);
-    lsData.player.assertions += 1;
-    lsData.player.score += (basePoints + (countdown * (diffMultiplier)));
-    updtScore({ score: lsData.player.score, assertions: lsData.player.assertions });
-    localStorage.state = JSON.stringify(lsData);
+    if (target.id === 'correct-answer') {
+      const basePoints = 10;
+      const lsData = JSON.parse(localStorage.state);
+      const diff = ['batata', 'easy', 'medium', 'hard'];
+      const diffMultiplier = diff.indexOf(questionsAPI[indexQuestions].difficulty);
+      lsData.player.assertions += 1;
+      lsData.player.score += (basePoints + (countdown * (diffMultiplier)));
+      updtScore({ score: lsData.player.score, assertions: lsData.player.assertions });
+      localStorage.state = JSON.stringify(lsData);
 
-    console.log(countdown);
-    console.log(diffMultiplier);
+      console.log(lsData.player.score);
+      console.log(lsData.player.assertions);
+    }
   }
 
   // Decidir trocar o nome mais especifico para essa função que faz tudo.
@@ -180,7 +171,7 @@ class Trivia extends Component {
   }
 
   render() {
-    const { userPlayer, questionsAPI, placar } = this.props;
+    const { userPlayer, questionsAPI, placar, acertos } = this.props;
     const { disable,
       countdown,
       indexQuestions, rigthBoarder, wrongBoarder } = this.state;
@@ -191,8 +182,13 @@ class Trivia extends Component {
           { this.fetchGravater() }
           <p data-testid="header-player-name">{userPlayer}</p>
           <p data-testid="header-score">
-            Placar:
+            Score:
             { placar }
+
+          </p>
+          <p data-testid="header-score">
+            Acertos:
+            { acertos }
 
           </p>
         </header>
@@ -213,6 +209,7 @@ class Trivia extends Component {
           || countdown === 0) ? (
             <button
               type="button"
+              data-testid="btn-next"
               onClick={ this.handleClick }
             >
               Next
@@ -228,6 +225,7 @@ const mapStateToProps = (state) => ({
   userEmail: state.user.email,
   userPlayer: state.user.player,
   placar: state.trivia.score,
+  acertos: state.trivia.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
