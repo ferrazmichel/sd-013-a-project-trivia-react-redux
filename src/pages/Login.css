@@ -1,0 +1,12 @@
+.button-config {
+  background-color: #036b52;
+  border-radius: 8px;
+  border-style: none;
+  color: white;
+  height: 30px;
+}
+
+.button-config:hover {
+  background-color: #25976d;
+  color: white;
+}

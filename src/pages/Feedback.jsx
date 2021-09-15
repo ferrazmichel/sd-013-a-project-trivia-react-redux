@@ -13,8 +13,8 @@ class Feedback extends React.Component {
   numeroDeAcertos() {
     const { assertionsRedux } = this.props;
     const NUM = 3;
-    if (assertionsRedux < NUM) return 'Podia ser melhor...';
-    if (assertionsRedux >= NUM) return 'Mandou bem!';
+    if (assertionsRedux < NUM) return <h2 className="frase-feed">Podia ser melhor...</h2>;
+    if (assertionsRedux >= NUM) return <h2 className="frase-feed">Mandou bem!</h2>;
   }
 
   render() {
@@ -25,21 +25,33 @@ class Feedback extends React.Component {
         <HeaderFeedback />
         <p data-testid="feedback-text">{ this.numeroDeAcertos() }</p>
 
-        <p>
+        <p className="body-feed">
           Placar Total:
           <span data-testid="feedback-total-score">{scoreTotal}</span>
         </p>
 
-        <p>
+        <p className="body-feed">
           Número de Acertos:
           <span data-testid="feedback-total-question">{assertionsRedux}</span>
         </p>
 
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+          <button
+            className="btn-feed"
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
         </Link>
         <Link to="/ranking">
-          <button data-testid="btn-ranking" type="button">Ver Ranking</button>
+          <button
+            className="btn-feed"
+            data-testid="btn-ranking"
+            type="button"
+          >
+            Ver Ranking
+          </button>
         </Link>
       </>
     );

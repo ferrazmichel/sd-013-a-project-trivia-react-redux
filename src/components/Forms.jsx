@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { setLogin, setQuestions } from '../Actions';
+import './Forms.css';
 
 class Forms extends React.Component {
   constructor() {
@@ -58,39 +59,45 @@ class Forms extends React.Component {
   render() {
     const { nome, email } = this.state;
     return (
-      <fieldset>
-        <form action="">
-          <label htmlFor="input-player-name">
-            Nome:
-            <input
-              type="text"
-              name="nome"
-              value={ nome }
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="input-gravatar-email">
-            Email:
-            <input
-              type="text"
-              name="email"
-              value={ email }
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ this.validEmail(email, nome) }
-            onClick={ this.onSubmitForm }
-          >
-            Jogar
-          </button>
-
-        </form>
-      </fieldset>
+      <div className="countainer">
+        <fieldset className="countainer-Form">
+          <form action="">
+            <label className="label-name" htmlFor="name">
+              Nome:
+              <input
+                id="name"
+                type="text"
+                name="nome"
+                placeholder="username"
+                value={ nome }
+                data-testid="input-player-name"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label className="label-email" htmlFor="email">
+              Email:
+              <input
+                id="email"
+                type="text"
+                name="email"
+                placeholder="email"
+                value={ email }
+                data-testid="input-gravatar-email"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <button
+              className="button-login"
+              type="button"
+              data-testid="btn-play"
+              disabled={ this.validEmail(email, nome) }
+              onClick={ this.onSubmitForm }
+            >
+              Jogar
+            </button>
+          </form>
+        </fieldset>
+      </div>
     );
   }
 }
