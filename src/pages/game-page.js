@@ -1,28 +1,173 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Header from '../components/Header';
+import { showMilhaoAPI } from '../actions/index';
 
 class GamePage extends Component {
-  componentDidMount() {
-    const { questions } = this.props;
-    questions();
+  constructor(props) {
+    super(props);
+    const noMagicNumber = 4;
+    this.state = {
+      numberOfQuestion: 0,
+      counter: 30,
+      cronoInterval: 'Timer Function Interval',
+      cronoTimeout: 'Timer Function Timeout',
+      answersButtonsDisables: false,
+      nextButtonAppear: 'none',
+      randomNumber: Math.floor(Math.random() * noMagicNumber),
+    };
+
+    this.submitAnswer = this.submitAnswer.bind(this);
+    this.randomAnswer = this.randomAnswer.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
+    this.dispatchRequestQuestions = this.dispatchRequestQuestions.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
+  componentDidMount() {
+    this.dispatchRequestQuestions();
+    this.timer();
+  }
+
+  async dispatchRequestQuestions() {
+    const { startGame } = this.props;
+    await startGame();
+  }
+
+  handleColorChange() {
+    const { cronoInterval } = this.state;
+    const getBtnsOptions = document.querySelectorAll('.button-answers');
+    getBtnsOptions.forEach((button) => {
+      if (button.name === 'correct') {
+        button.style.border = '3px solid rgb(6, 240, 15)';
+      } else { button.style.border = '3px solid rgb(255, 0, 0)'; }
+    });
+    clearInterval(cronoInterval);
+    this.setState(() => ({ answersButtonsDisables: true, nextButtonAppear: 'flex' }));
+  }
+
+  timer() {
+    document.querySelectorAll('.button-answers')
+      .forEach((element) => {
+        element.style.border = '1px solid black';
+      });
+    const INTERVAL = 1000;
+    const TIMEOUT = 30000;
+    const cronoTimeout = setTimeout(this.handleColorChange, TIMEOUT);
+    const cronoInterval = setInterval(() => {
+      this.setState(({ counter }) => ({ counter: counter - 1 }));
+    }, INTERVAL);
+    this.setState(() => ({ cronoTimeout, cronoInterval, nextButtonAppear: 'none' }));
+  }
+
+  randomAnswer() {
+    const { numberOfQuestion, randomNumber } = this.state;
+    const { questions } = this.props;
+    const randomizer = [...questions[numberOfQuestion].incorrect_answers];
+    randomizer.splice(randomNumber,
+      0, questions[numberOfQuestion].correct_answer);
+    return randomizer;
+  }
+
+  submitAnswer() {
+    const { numberOfQuestion: question } = this.state;
+    const noMagicNumber = 4;
+    if (question === noMagicNumber) {
+      const { history } = this.props;
+      history.push('/feedbackpage');
+    } else {
+      this.setState(
+        ({ numberOfQuestion }) => ({
+          numberOfQuestion: numberOfQuestion + 1,
+          counter: 30,
+          answersButtonsDisables: false,
+          randomNumber: Math.floor(Math.random() * noMagicNumber),
+        }), this.timer,
+      );
+    }
+  }
+
+  questionAndAnswers() {
+    const { questions } = this.props;
+    const { numberOfQuestion, answersButtonsDisables, cronoTimeout } = this.state;
+
+    GamePage.propTypes = {
+      startGame: PropTypes.func,
+    }.isRequired;
+
+const mapStateToProps = ({ questions: { questions } }) => ({
+  questions,
+});
+return (
+    <>
+      <h3 data-testid="question-text">{ questions[numberOfQuestion].question }</h3>
+      <h4 data-testid="question-category">{ questions[numberOfQuestion].type }</h4>
+      { this.randomAnswer().map((answer, index) => {
+        let testidButton;
+        let nameButton;
+        if (answer === questions[numberOfQuestion].correct_answer) {
+          testidButton = 'correct-answer';
+          nameButton = 'correct';
+        } else {
+          testidButton = `wrong-answer-${index}`;
+          nameButton = 'wrong';
+        }
+        return (
+          <button
+            className="button-answers"
+            data-testid={ testidButton }
+            disabled={ answersButtonsDisables }
+            key={ index }
+            name={ nameButton }
+            onClick={ () => {
+              clearTimeout(cronoTimeout);
+              this.handleColorChange();
+            } }
+            type="button"
+          >
+            { answer }
+          </button>
+        );
+      }) }
+    </>
+  );
+}
+
   render() {
+    const { isLoading, questions } = this.props;
+    const { counter, nextButtonAppear } = this.state;
+    const loading = (<span>Loading...</span>);
     return (
       <div>
-        <h1>oi</h1>
+        <Header />
+        <h1>Game Page</h1>
+        <span>{ counter }</span>
+        { (isLoading || !questions) ? loading : this.questionAndAnswers() }
+        <button
+          data-testid="btn-next"
+          onClick={ this.submitAnswer }
+          style={ { display: nextButtonAppear } }
+          type="button"
+        >
+          Next Question
+        </button>
       </div>
     );
   }
 }
 
 GamePage.propTypes = {
-  startGame: PropTypes.func,
+  questions: PropTypes.object,
 }.isRequired;
 
-const mapStateToProps = ({ questions: { questions } }) => ({
-  questions,
+const mapStateToProps = (stateStore) => ({
+  questions: stateStore.questions.questions.results,
+  isLoading: stateStore.questions.isLoading,
+  token: stateStore.questions.token.token,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = (dispatch) => ({
+  startGame: () => dispatch(showMilhaoAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
