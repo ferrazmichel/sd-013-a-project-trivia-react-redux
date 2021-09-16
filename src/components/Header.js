@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { scorelocalStorage } from '../services/localstage';
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.scorelocalStorage = this.scorelocalStorage.bind(this);
-  }
-
-  scorelocalStorage() {
-    const score = JSON.parse(localStorage.getItem('state'));
-    return score.player.score;
-  }
-
   render() {
     const { nickname, gravatarEmail } = this.props;
     return (
@@ -23,7 +14,7 @@ class Header extends Component {
           alt="Gravatar Email Img"
         />
         <h2 data-testid="header-player-name">{ nickname }</h2>
-        <h2 data-testid="header-score">{`score: ${this.scorelocalStorage()}`}</h2>
+        <h2 data-testid="header-score">{scorelocalStorage()}</h2>
       </header>
     );
   }
@@ -33,6 +24,7 @@ const mapStateToProps = (stateStore) => ({
   gravatarEmail: stateStore.user.gravatarEmail,
   nickname: stateStore.user.nickname,
 });
+
 Header.propTypes = {
   gravatarEmail: PropTypes.string,
   nickname: PropTypes.string,

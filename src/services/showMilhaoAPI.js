@@ -10,7 +10,7 @@ export const getShowMilhao = () => (
 );
 
 export const getQuestionsApi = async (token) => {
-    const results = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const json = await results.json();
-    return json;
-  };
+  const results = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+  const json = await results.json();
+  return json;
+};

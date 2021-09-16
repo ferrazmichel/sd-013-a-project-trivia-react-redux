@@ -1,40 +1,27 @@
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import { assertionsLocalStorage, scorelocalStorage } from '../services/localstage';
 
 class FeedbackPage extends Component {
-  constructor(props) {
-    super(props);
-    this.assertionsLocalStorage = this.assertionsLocalStorage.bind(this);
-    this.scorelocalStorage = this.scorelocalStorage.bind(this);
-  }
-
-  scorelocalStorage() {
-    const score = JSON.parse(localStorage.getItem('state'));
-    return score.player.score;
-  }
-
-  assertionsLocalStorage() {
-    const assertions = JSON.parse(localStorage.getItem('state'));
-    return assertions.player.assertions;
-  }
-
   render() {
     const number = 3;
     return (
       <div>
         <Header />
-        {this.assertionsLocalStorage() < number ? (
+        {assertionsLocalStorage() < number ? (
           <p data-testid="feedback-text">Podia ser melhor...</p>
         ) : (
           <p data-testid="feedback-text">Mandou bem!</p>
         )}
         <div>
           <span data-testid="feedback-total-question"></span>
-          {`Right answers: ${this.assertionsLocalStorage()}`}
+          {assertionsLocalStorage()}
           </span>
         </div>
         <div>
           <span data-testid="feedback-total-score"></span>
-          {`Final score: ${this.scorelocalStorage()}`}
+          {scorelocalStorage()}
           </span>
         </div>
         <Link data-testid="btn-play-again" to="/">
@@ -53,4 +40,3 @@ FeedbackPage.propTypes = {
   }.isRequired;
 
   export default connect()(FeedbackPage);
-  

@@ -1,6 +1,7 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import md5 from 'crypto-js/md5';
 import { infoPlayer } from '../actions';
 
 class LoginPage extends Component {
@@ -10,10 +11,18 @@ class LoginPage extends Component {
       email: '',
       nickname: '',
       buttonDisable: true,
+      score: 0,
     };
     this.verifyInputs = this.verifyInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.startLocalStorage = this.startLocalStorage.bind(this);
+  }
+
+  startLocalStorage() {
+    const { score } = this.state;
+    const obj = { player: { score } };
+    return localStorage.setItem('state', JSON.stringify(obj));
   }
 
   handleChange({ target: { name, value } }) {
@@ -25,8 +34,11 @@ class LoginPage extends Component {
   handleClick(e) {
     e.preventDefault();
     const { email, nickname } = this.state;
-    const { player } = this.props;
-    player(email);
+    const { player, history } = this.props;
+    const cryptoEmail = md5(email.trim()).toString();
+    const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
+    player({ email, nickname, gravatarEmail });
+    history.push('/gamepage');
   }
 
   verifyInputs() {
@@ -40,8 +52,7 @@ class LoginPage extends Component {
 
   render() {
     const { handleChange, handleClick,
-        state: { buttonDisable }, props: { stateEmail } } = this;
-        if (stateEmail) { return <Redirect to="/gamepage" />; }
+      state: { buttonDisable } } = this;
     return (
       <div className="login-container">
         <form className="login-form">
@@ -81,18 +92,17 @@ class LoginPage extends Component {
 LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
-}),
-startGame: PropTypes.func,
-dispatchInputLogin: PropTypes.func,
+  }),
+  startGame: PropTypes.func,
+  dispatchInputLogin: PropTypes.func,
 }.isRequired;
 
-
 const mapDispatchToProps = (dispatch) => ({
-    player: (payload) => dispatch(infoPlayer(payload)),
-  });
-  
-  const mapStateToProps = (state) => ({
-    stateEmail: state.user.email,
-  });
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+  player: (userInfos) => dispatch(infoPlayer(userInfos)),
+
+const mapStateToProps = (state) => ({
+  stateEmail: state.user.email,
+  name: state.user.nickname,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

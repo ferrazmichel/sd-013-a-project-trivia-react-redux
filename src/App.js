@@ -7,26 +7,15 @@ import FeedBackPage from './pages/FeedbackPage';
 import SettingsPage from './pages/SettingsPage';
 import './App.css';
 
-
 export default function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/">
-          <LoginPage />
-        </Route>
-        <Route path="/gamepage">
-          <GamePage />
-        </Route>
-        <Route path="/rakingpage">
-          <RankingPage />
-        </Route>
-        <Route path="/feedbackpage">
-          <FeedBackPage />
-        </Route>
-        <Route path="/settingspage">
-          <SettingsPage />
-        </Route>
+        <Route exact path="/" component={ LoginPage } />
+        <Route exact path="/gamepage" component={ GamePage } />
+        <Route exact path="/rankingpage" component={ RankingPage } />
+        <Route exact path="/feedbackpage" component={ FeedBackPage } />
+        <Route exact path="/settingspage" component={ SettingsPage } />
       </Switch>
     </div>
   );
