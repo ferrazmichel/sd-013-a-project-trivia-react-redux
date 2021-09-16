@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 const qtdAssetions = 3;
@@ -17,7 +18,11 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        <h3 data-testid="feedback-text">{ message }</h3>
+        <h3
+          data-testid="feedback-text"
+        >
+          { message }
+        </h3>
         <span
           data-testid="feedback-total-score"
         >
@@ -34,7 +39,12 @@ class Feedback extends Component {
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  score: state.gameReducer.score,
+  assertions: state.gameReducer.assertions,
+});
+
+export default connect(mapStateToProps, null)(Feedback);
 
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
