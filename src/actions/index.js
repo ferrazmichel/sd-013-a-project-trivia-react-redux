@@ -8,11 +8,12 @@ import {
 
 export const infoPlayer = ({ email, nickname, gravatarEmail }) => ({
   type: SAVE_INFO_PLAYER, email, nickname, gravatarEmail,
+});
 
-  const isLoading = () => ({ type: IS_LOADING });
+const isLoading = () => ({ type: IS_LOADING });
 
-  const requestShowMilhaoSucess = ({ token, questions }) => ({
-    type: REQUEST_SHOW_MILHAO_SUCESS, token, questions,
+const requestShowMilhaoSucess = ({ token, questions }) => ({
+  type: REQUEST_SHOW_MILHAO_SUCESS, token, questions,
 });
 
 const requestFailed = (error) => ({

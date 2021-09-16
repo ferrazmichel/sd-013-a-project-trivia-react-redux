@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
@@ -15,13 +17,13 @@ class FeedbackPage extends Component {
           <p data-testid="feedback-text">Mandou bem!</p>
         )}
         <div>
-          <span data-testid="feedback-total-question"></span>
-          {assertionsLocalStorage()}
+          <span data-testid="feedback-total-question">
+            {assertionsLocalStorage()}
           </span>
         </div>
         <div>
-          <span data-testid="feedback-total-score"></span>
-          {scorelocalStorage()}
+          <span data-testid="feedback-total-score">
+            {scorelocalStorage()}
           </span>
         </div>
         <Link data-testid="btn-play-again" to="/">
@@ -36,7 +38,7 @@ class FeedbackPage extends Component {
 }
 
 FeedbackPage.propTypes = {
-    feedback: PropTypes.func,
-  }.isRequired;
+  feedback: PropTypes.func,
+}.isRequired;
 
-  export default connect()(FeedbackPage);
+export default connect()(FeedbackPage);
