@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 const qtdAssetions = 3;
@@ -33,6 +34,16 @@ class Feedback extends Component {
         >
           {assertions}
         </span>
+        <Link
+          to="/"
+        >
+          <button
+            data-testid="btn-play-again"
+            type="button"
+          >
+            Jogar novamente
+          </button>
+        </Link>
 
       </div>
     );
