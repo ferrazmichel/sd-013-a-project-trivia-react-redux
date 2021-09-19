@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class RankingPage extends Component {
@@ -61,4 +62,5 @@ class RankingPage extends Component {
     );
   }
 }
+
 export default RankingPage;
