@@ -9,6 +9,7 @@ class GamePage extends Component {
     super(props);
 
     const noMagicNumber = 4;
+
     this.state = {
       numberOfQuestion: 0,
       counter: 30,
@@ -25,8 +26,8 @@ class GamePage extends Component {
     this.randomAnswer = this.randomAnswer.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
     this.dispatchRequestQuestions = this.dispatchRequestQuestions.bind(this);
-    this.timer = this.timer.bind(this);
     this.initialLocalStorage = this.initialLocalStorage.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
@@ -103,7 +104,6 @@ class GamePage extends Component {
   submitAnswer() {
     const { numberOfQuestion: question } = this.state;
     const noMagicNumber = 4;
-
     if (question === noMagicNumber) {
       const { history } = this.props;
       history.push('/feedbackpage');
