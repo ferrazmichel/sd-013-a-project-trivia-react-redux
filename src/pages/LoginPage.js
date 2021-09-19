@@ -39,6 +39,7 @@ class LoginPage extends Component {
     const gravatarEmail = `https://www.gravatar.com/avatar/${cryptoEmail}`;
     player({ email, nickname, gravatarEmail });
     history.push('/gamepage');
+    this.startLocalStorage();
   }
 
   verifyInputs() {
@@ -80,9 +81,18 @@ class LoginPage extends Component {
             onClick={ handleClick }
             disabled={ buttonDisable }
           >
-            Jogar
+            Play
           </button>
-          <Link to="/settingspage" data-testid="btn-settings">Settings</Link>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => {
+              const { history } = this.props;
+              history.push('/settingspage');
+            } }
+          >
+            Settings
+          </button>
         </form>
       </div>
     );
@@ -93,12 +103,13 @@ LoginPage.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  startGame: PropTypes.func,
+  StartToken: PropTypes.func,
   dispatchInputLogin: PropTypes.func,
 }.isRequired;
 
 const mapDispatchToProps = (dispatch) => ({
   player: (userInfos) => dispatch(infoPlayer(userInfos)),
+});
 
 const mapStateToProps = (state) => ({
   stateEmail: state.user.email,
