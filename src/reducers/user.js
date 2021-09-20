@@ -10,6 +10,7 @@ const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case SAVE_INFO_PLAYER:
     return {
+      ...state,
       email: action.email,
       nickname: action.nickname,
       gravatarEmail: action.gravatarEmail,
