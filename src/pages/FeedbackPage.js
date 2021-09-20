@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { assertionsLocalStorage, scorelocalStorage } from '../services/localstage';
+import { assertionsLocalStorage, scorelocalStorage } from '../services/local-storage';
 
 class FeedbackPage extends Component {
   render() {

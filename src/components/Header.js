@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { scorelocalStorage } from '../services/localstage';
+import { scorelocalStorage } from '../services/local-storage';
 
 class Header extends Component {
   render() {
