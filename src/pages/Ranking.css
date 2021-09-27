@@ -5,9 +5,45 @@
   color: antiquewhite;
   height: 30px;
   margin-left: 10px;
+  margin-top: 30px;
+}
+
+.title-ranking {
+  color: aliceblue;
+}
+
+.list-ranking {
+  align-items: center;
+  border: solid 1px yellow;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  width: 400px;
+}
+
+.list-ranking:hover {
+  background-color: rgb(50, 51, 109);
+}
+
+.list-ranking img {
+  width: 60px;
 }
 
 .btn-ranking:hover {
   background-color: #0d9273;
-  color: rgb(161, 161, 29);
+  color: rgb(24, 50, 97);
+}
+
+.countainer-ranking {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.indice {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
 }
