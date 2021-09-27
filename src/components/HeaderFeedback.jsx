@@ -8,7 +8,6 @@ class HeaderFeedback extends React.Component {
   render() {
     const { emailRedux, scoreRedux, nomeRedux } = this.props;
     const imgGravatar = md5(emailRedux).toString();
-
     return (
       <header className="countainer-feedback">
         <img src={ `https://www.gravatar.com/avatar/${imgGravatar}` } alt="" data-testid="header-profile-picture" />
