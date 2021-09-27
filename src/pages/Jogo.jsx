@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { BUTTON_NEXT, INLINE_BLOCK } from './JogoConstante';
+import { BUTTON_NEXT, INLINE_BLOCK, num3 } from './JogoConstante';
 import './Jogo.css';
 import { setPlacar } from '../Actions';
 
@@ -26,6 +26,7 @@ class Jogo extends React.Component {
     this.scoreByLevelDifficulty = this.scoreByLevelDifficulty.bind(this);
     this.auxNextQuestion = this.auxNextQuestion.bind(this);
     this.answerAlternatives = this.answerAlternatives.bind(this);
+    this.rankingStorage = this.rankingStorage.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,10 @@ class Jogo extends React.Component {
       const { dispatchsetPlacar } = this.props;
       dispatchsetPlacar({ i, assertions, score });
     }
+  }
+
+  componentWillUnmount() {
+    this.rankingStorage();
   }
 
   setTimer() {
@@ -60,6 +65,22 @@ class Jogo extends React.Component {
         timer: timer - 1,
       });
     }
+  }
+
+  rankingStorage() {
+    const { scoreRedux, nomeRedux, emailRedux } = this.props;
+    if (!localStorage.rankin) {
+      const ranking = [];
+      localStorage.setItem('rankin', JSON.stringify(ranking));
+    }
+    const user = JSON.parse(localStorage.getItem('rankin'));
+    const users = {
+      nome: nomeRedux,
+      score: scoreRedux,
+      email: emailRedux,
+    };
+    user.push(users);
+    localStorage.setItem('rankin', JSON.stringify(user));
   }
 
   scoreByLevelDifficulty(nivel) {
@@ -97,7 +118,6 @@ class Jogo extends React.Component {
     const buttonNext = document.querySelector(BUTTON_NEXT);
     const { i } = this.state;
     const { history } = this.props;
-    const num3 = 3;
     const NUMBER_OF_QUESTIONS = 4;
     if (i === num3) {
       buttonNext.innerText = 'Ver Feedback';
@@ -160,7 +180,6 @@ class Jogo extends React.Component {
         </button>
       </p>
     ));
-
     const alternativasCorretas = (
       <p key={ 3 }>
         <button
@@ -204,15 +223,15 @@ class Jogo extends React.Component {
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   questions: state.reducerQuestions.questions,
+  emailRedux: state.reducerLogin.email,
+  scoreRedux: state.reducerPlacar.score,
+  nomeRedux: state.reducerLogin.nome,
 });
-
 const mapDispatchToProps = (dispatch) => ({
   dispatchsetPlacar: (state) => dispatch(setPlacar(state)),
 });
-
 Jogo.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchsetPlacar: PropTypes.func.isRequired,
@@ -220,9 +239,10 @@ Jogo.propTypes = {
     push: PropTypes.func,
   }).isRequired,
 };
-
+Jogo.propTypes = {
+  scoreRedux: PropTypes.number,
+  emailRedux: PropTypes.string,
+  nomeRedux: PropTypes.string,
+}.isRequired;
 export default connect(mapStateToProps, mapDispatchToProps)(Jogo);
-
-/* Referências para a função que muda a posição da alternativa correta:
-https://www.horadecodar.com.br/2020/03/30/javascript-mudar-a-posicao-de-um-elemento-no-array/
-https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
+/* Referências para a função que muda a posição da alternativa correta: -- https://www.horadecodar.com.br/2020/03/30/javascript-mudar-a-posicao-de-um-elemento-no-array/ -- https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random */
